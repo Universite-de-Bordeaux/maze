@@ -6,7 +6,9 @@
 void read(std::string filename) {
     std::fstream file;
     file.open(filename, std::ios_base::in);
-    while (std::getline()) {
-
+    std::string line;
+    while (!file.eof()) {
+        std::getline(file, line);
+        std::cout << line << std::endl;
     }
 }

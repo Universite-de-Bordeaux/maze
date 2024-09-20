@@ -2,4 +2,4 @@
 # include <iostream>
 #include <fstream>
 
-void read(char * filename);
+void read(std::string filename);
