@@ -42,6 +42,7 @@ bool Cell::getWall(enum WallType type) const {
         case WallType::LEFT:
             return walls.left;
     }
+    return false;
 }
 
 struct Wall Cell::getWalls() const {
