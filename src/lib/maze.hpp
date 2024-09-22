@@ -1,3 +1,6 @@
+#ifndef MAZE_HPP
+#define MAZE_HPP
+
 #include <string>
 
 class Maze {
@@ -7,3 +10,5 @@ class Maze {
         void solve();
         void printSolution();
 };
+
+#endif // MAZE_HPP
