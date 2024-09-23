@@ -12,6 +12,19 @@ Maze::Maze(int n) {
 }
 
 Maze::~Maze() {
+    setMat(getMat(), NULL);
+}
+
+int Maze::getWidth() const {
+    return this->width;
+}
+
+int Maze::getHeight() const {
+    return this->height;
+}
+
+Cell **Maze::getMat() const {
+    return this->mat;
 }
 
 void Maze::setCell(int i, int j, enum WallType wall) {
@@ -44,10 +57,14 @@ void Maze::removeWall(int i, int j, enum WallType wall) {
     }
 }
 
-void setWidth(int width) {
+void Maze::setWidth(int width) {
     this->width = width;
 }
 
-void setHeight(int height) {
+void Maze::setHeight(int height) {
     this->height = height;
+}
+
+void Maze::setMat(Cell **mat, Cell **new_mat) {
+    mat = new_mat;
 }
