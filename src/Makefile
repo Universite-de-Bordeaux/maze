@@ -9,7 +9,7 @@ $(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o
 
 reader.o : lib/reader.hpp lib/maze.hpp
 
-maze.o: lib/maze.cpp
+maze.o: lib/maze.cpp lib/maze.hpp lib/reader.hpp
 
 cell.o: lib/cell.cpp lib/cell.hpp lib/wall.hpp
 

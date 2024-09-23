@@ -1,10 +1,9 @@
-#ifndef MAZE_HPP
-# define MAZE_HPP
+#ifndef READER_HPP
+# define READER_HPP
 
-# include "maze.hpp"
-# include <iostream>
-#include <fstream>
+#include <string>
+#include "maze.hpp"
 
-void read(std::string filename);
+void read(std::string filename, Maze * maze);
 
 #endif // MAZE_HPP

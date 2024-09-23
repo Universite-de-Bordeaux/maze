@@ -19,7 +19,6 @@ class Cell {
         void setX(int x);
         void setY(int y);
         bool setWall(enum WallType, bool);
-        bool setWalls(struct Wall);
 
     private:
         int x;
