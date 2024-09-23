@@ -15,32 +15,30 @@ Cell::Cell(int x, int y, struct Wall walls) {
 }
 
 Cell::Cell(const Cell &cell) {
-    this->x = cell.x;
-    this->y = cell.y;
-    this->walls = cell.walls;
+    Cell(cell.x, cell.y, cell.walls);
 }
 
 Cell::~Cell() {
 }
 
 int Cell::getX() const {
-    return x;
+    return this->x;
 }
 
 int Cell::getY() const {
-    return y;
+    return this->y;
 }
 
 bool Cell::getWall(enum WallType type) const {
     switch (type) {
         case WallType::TOP:
-            return walls.top;
+            return this->walls.top;
         case WallType::RIGHT:
-            return walls.right;
+            return this->walls.right;
         case WallType::BOTTOM:
-            return walls.bottom;
+            return this->walls.bottom;
         case WallType::LEFT:
-            return walls.left;
+            return this->walls.left;
     }
     return false;
 }

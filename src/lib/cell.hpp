@@ -6,9 +6,9 @@
 class Cell {
     public:
         Cell();
-        Cell(int, int);
-        Cell(int, int, struct Wall);
-        Cell(const Cell&);
+        Cell(int x, int y);
+        Cell(int x, int y, struct Wall walls);
+        Cell(const Cell& cell);
         ~Cell();
 
         int getX() const;
@@ -28,6 +28,5 @@ class Cell {
 
         bool isPrisoner() const;
 };
-
 
 #endif // CELL_H
