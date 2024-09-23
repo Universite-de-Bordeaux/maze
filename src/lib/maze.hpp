@@ -8,8 +8,8 @@
 class Maze {
     public:
         Maze();
-        Maze(int n);
-        Maze(std::string filename);
+        Maze(int, int);
+        Maze(std::string);
         ~Maze();
 
         int getWidth() const;

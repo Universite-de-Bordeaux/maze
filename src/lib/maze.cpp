@@ -1,14 +1,15 @@
 #include "maze.hpp"
-#include "wall.hpp"
+#include <cstdlib>
 #include <iostream>
 
 Maze::Maze() {
-    Maze(0);
+    Maze(0, 0);
 }
 
-Maze::Maze(int n) {
+Maze::Maze(int n, int m) {
     this->width = n;
-    this->height = n;
+    this->height = m;
+    this->mat = (Cell**)malloc(m*n*sizeof(Cell*));
 }
 
 Maze::~Maze() {
@@ -31,9 +32,11 @@ void Maze::setCell(int i, int j, enum WallType wall) {
     switch (wall) {
         case WallType::RIGHT:
             (*(*(this->mat+i)+j)).setWall(wall, 1);
+            std::cout << "test2" << std::endl;
             (*(*(this->mat+i)+j+1)).setWall(LEFT, 1);
         case WallType::BOTTOM:
             (*(*(this->mat+i)+j)).setWall(wall, 1);
+            std::cout << "test2" << std::endl;
             (*(*(this->mat+i+1)+j)).setWall(TOP, 1);
         case WallType::LEFT:
             std::cerr << "Direction invalide" << std::endl;

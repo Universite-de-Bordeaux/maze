@@ -4,6 +4,6 @@
 #include <string>
 #include "maze.hpp"
 
-void read(std::string filename, Maze * maze);
+Maze read(std::string filename);
 
 #endif // MAZE_HPP
