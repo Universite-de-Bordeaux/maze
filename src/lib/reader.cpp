@@ -9,16 +9,17 @@
 
 // }
 
-Maze read(std::string filename) {
+void read(std::string filename, Maze *maze) {
     std::fstream file;
     file.open(filename, std::ios_base::in);
     std::string line;
     getline(file, line);
-    Maze maze = Maze((int)line[0], (int)line[2]);
-    for (int i = 0;i<maze.getHeight();i++) {
-        for (int j = 0;j<maze.getWidth();j++) {
+    maze->setHeight((int)line[0]);
+    maze->setWidth((int)line[2]);
+    for (int i = 0;i<maze->getHeight();i++) {
+        for (int j = 0;j<maze->getWidth();j++) {
             std::cout << "test" << std::endl;
-            *(*(maze.getMat()+i)+j) = Cell(i, j);
+            *(*(maze->getMat()+i)+j) = Cell(i, j);
         }
     }
     std::cout << "test" << std::endl;
@@ -29,5 +30,4 @@ Maze read(std::string filename) {
         // maze.setCell((int)line[0], (int)line[2], wall);
     }
     file.close();
-    return maze;
 }

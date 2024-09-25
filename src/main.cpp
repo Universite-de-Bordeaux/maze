@@ -1,10 +1,9 @@
-#include <cstddef>
 #include <cstdlib>
-#include <iostream>
 #include "lib/reader.hpp"
 
 int main() {
-    read("lib/instances/maze1.txt");
+    Maze maze = Maze();
+    read("lib/instances/maze1.txt", &maze);
     // Cell cell1 = Cell(1, 2);
     // std::cout << cell1.getX() << std::endl;
     // cell1.setX(10);
