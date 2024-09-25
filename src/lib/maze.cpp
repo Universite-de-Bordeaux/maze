@@ -9,7 +9,7 @@ Maze::Maze() {
 Maze::Maze(int n, int m) {
     this->width = n;
     this->height = m;
-    this->mat = (Cell**)malloc(m*n*sizeof(Cell*));
+    this->regenerateMat();
 }
 
 Maze::~Maze() {
@@ -62,12 +62,27 @@ void Maze::removeWall(int i, int j, enum WallType wall) {
 
 void Maze::setWidth(int width) {
     this->width = width;
+    this->regenerateMat();
 }
 
 void Maze::setHeight(int height) {
     this->height = height;
+    this->regenerateMat();
+}
+
+void Maze::setWidthHeight(int width, int height) {
+    this->width = width;
+    this->height = height;
+    this->regenerateMat();
 }
 
 void Maze::setMat(Cell **mat, Cell **new_mat) {
     mat = new_mat;
+}
+
+void Maze::regenerateMat() {
+    if(this->mat != nullptr) {
+        free(this->mat);
+    }
+    this->mat = (Cell**)malloc(this->height*this->width*sizeof(Cell*));
 }

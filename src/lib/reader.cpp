@@ -14,8 +14,7 @@ void read(std::string filename, Maze *maze) {
     file.open(filename, std::ios_base::in);
     std::string line;
     getline(file, line);
-    maze->setHeight((int)line[0]);
-    maze->setWidth((int)line[2]);
+    maze->setWidthHeight(line[0], line[2]);
     for (int i = 0;i<maze->getHeight();i++) {
         for (int j = 0;j<maze->getWidth();j++) {
             std::cout << "test" << std::endl;

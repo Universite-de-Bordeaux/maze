@@ -21,11 +21,13 @@ class Maze {
         void removeWall(int, int, enum WallType);
         void setWidth(int);
         void setHeight(int);
+        void setWidthHeight(int, int);
+        void regenerateMat();
 
     private:
         int width;
         int height;
-        Cell **mat;
+        Cell **mat = nullptr;
 };
 
 #endif // MAZE_HPP
