@@ -2,7 +2,6 @@
 #include "lib/reader.hpp"
 
 int main() {
-<<<<<<< HEAD
     // Maze a = Maze();
     // Maze *maze = &a;
     // read("lib/instances/maze1.txt", maze);

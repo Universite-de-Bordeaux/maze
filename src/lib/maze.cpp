@@ -3,15 +3,15 @@
 #include <iostream>
 
 
-Maze::Maze() {
-    Maze(0, 0);
-}
+// Maze::Maze() {
+//     Maze(0, 0);
+// }
 
-Maze::Maze(int n, int m) {
-    this->width = n;
-    this->height = m;
-    this->regenerateMat();
-}
+// Maze::Maze(int n, int m) {
+//     this->width = n;
+//     this->height = m;
+//     this->regenerateMat();
+// }
 
 // Maze::~Maze() {
 //     setMat(getMat(), NULL);
@@ -62,29 +62,29 @@ Maze::Maze(int n, int m) {
 // }
 
 
-void Maze::setWidth(int width) {
-    this->width = width;
-    this->regenerateMat();
-}
+// void Maze::setWidth(int width) {
+//     this->width = width;
+//     this->regenerateMat();
+// }
 
-void Maze::setHeight(int height) {
-    this->height = height;
-    this->regenerateMat();
-}
+// void Maze::setHeight(int height) {
+//     this->height = height;
+//     this->regenerateMat();
+// }
 
-void Maze::setWidthHeight(int width, int height) {
-    this->width = width;
-    this->height = height;
-    this->regenerateMat();
-}
+// void Maze::setWidthHeight(int width, int height) {
+//     this->width = width;
+//     this->height = height;
+//     this->regenerateMat();
+// }
 
-void Maze::setMat(Cell **mat, Cell **new_mat) {
-    mat = new_mat;
-}
+// void Maze::setMat(Cell **mat, Cell **new_mat) {
+//     mat = new_mat;
+// }
 
-void Maze::regenerateMat() {
-    if(this->mat != nullptr) {
-        free(this->mat);
-    }
-    this->mat = (Cell**)malloc(this->height*this->width*sizeof(Cell*));
-}
+// void Maze::regenerateMat() {
+//     if(this->mat != nullptr) {
+//         free(this->mat);
+//     }
+//     this->mat = (Cell**)malloc(this->height*this->width*sizeof(Cell*));
+// }
