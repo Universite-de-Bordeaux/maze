@@ -8,8 +8,8 @@
 class Maze {
     public:
         Maze();
-        Maze(int n);
-        Maze(std::string filename);
+        Maze(int, int);
+        Maze(std::string);
         ~Maze();
 
         int getWidth() const;
@@ -21,11 +21,13 @@ class Maze {
         // void removeWall(int, int, enum WallType);
         void setWidth(int);
         void setHeight(int);
+        void setWidthHeight(int, int);
+        void regenerateMat();
 
     private:
         int width;
         int height;
-        Cell **mat;
+        Cell **mat = nullptr;
 };
 
 #endif // MAZE_HPP

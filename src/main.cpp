@@ -1,9 +1,8 @@
-#include <cstddef>
-#include <iostream>
+#include <cstdlib>
 #include "lib/reader.hpp"
-#include "lib/cell.hpp"
 
 int main() {
+<<<<<<< HEAD
     // Maze a = Maze();
     // Maze *maze = &a;
     // read("lib/instances/maze1.txt", maze);
