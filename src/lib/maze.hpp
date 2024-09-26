@@ -16,9 +16,9 @@ class Maze {
         int getHeight() const;
         Cell ** getMat() const;
 
-        void setCell(int, int, enum WallType);
+        // void setCell(int, int, enum WallType);
         void setMat(Cell **, Cell **);
-        void removeWall(int, int, enum WallType);
+        // void removeWall(int, int, enum WallType);
         void setWidth(int);
         void setHeight(int);
 

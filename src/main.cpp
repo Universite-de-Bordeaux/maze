@@ -4,9 +4,9 @@
 #include "lib/cell.hpp"
 
 int main() {
-    Maze a = Maze();
-    Maze *maze = &a;
-    read("lib/instances/maze1.txt", maze);
+    // Maze a = Maze();
+    // Maze *maze = &a;
+    // read("lib/instances/maze1.txt", maze);
     // Cell cell1 = Cell(1, 2);
     // std::cout << cell1.getX() << std::endl;
     // cell1.setX(10);

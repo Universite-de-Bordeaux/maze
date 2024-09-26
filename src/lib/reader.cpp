@@ -13,12 +13,12 @@ void read(std::string filename, Maze * maze) {
     file.open(filename, std::ios_base::in);
     std::string line;
     getline(file, line);
-    maze->setWidth((int)line[0]);
-    maze->setHeight((int)line[2]);
+    // maze->setWidth((int)line[0]);
+    // maze->setHeight((int)line[2]);
     while (!file.eof()) {
         getline(file, line);
-        WallType wall = line[4] == 'V' ? RIGHT : BOTTOM;
-        maze->setCell((int)line[0], (int)line[2], wall);
+        // WallType wall = line[4] == 'V' ? RIGHT : BOTTOM;
+        // maze->setCell((int)line[0], (int)line[2], wall);
     }
     file.close();
 }
