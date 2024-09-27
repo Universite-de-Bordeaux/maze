@@ -19,7 +19,7 @@ void read(std::string filename, Maze *maze) {
             // *(*(maze->getMat()+i)+j) = Cell(i, j);
     //     }
     // }
-    std::cout << "test" << std::endl;
+    std::cout << "test reader" << std::endl;
     while (!file.eof()) {
         getline(file, line);
         std::cout << line << std::endl;
