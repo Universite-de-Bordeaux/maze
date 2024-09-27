@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -Wextra
-OUTPUT = main
+OUTPUT = main.out
 
 $(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o
 	@echo "Compiling..."
