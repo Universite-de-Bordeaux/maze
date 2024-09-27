@@ -3,8 +3,16 @@
 
 #include "wall.hpp"
 
+/**
+@class Cell
+@brief Classe représentant une cellule de la grille
+*/
 class Cell {
     public:
+        /**
+        @enum NeighborsEnum
+        @brief Enumération des voisins possibles d'une cellule
+        */
         enum NeighborsEnum {
             TOP = 0,
             RIGHT = 1,
@@ -12,29 +20,97 @@ class Cell {
             LEFT = 3
         };
 
+        /**
+        @brief Constructeur par défaut
+        */
         Cell();
+        /**
+        @brief Constructeur
+        @param x Coordonnée x de la cellule
+        @param y Coordonnée y de la cellule
+        */
         Cell(int x, int y);
+        /**
+        @brief Destructeur
+        */
         ~Cell();
 
+        /**
+        @brief Récupère la coordonnée x de la cellule
+        @return La coordonnée x de la cellule
+        */
         int getX() const;
+        /**
+        @brief Récupère la coordonnée y de la cellule
+        @return La coordonnée y de la cellule
+        */
         int getY() const;
+        /**
+        @brief Récupère les voisins de la cellule
+        @return Les voisins de la cellule
+        */
         Cell** getNeighbors();
+        /**
+        @brief Récupère un voisin de la cellule
+        @param NeighborsEnum Voisin à récupérer
+        @return Le voisin de la cellule
+        */
         Cell* getNeighbor(NeighborsEnum);
+        /**
+        @brief Récupère les murs de la cellule
+        @return Les murs de la cellule
+        */
         Wall** getWalls();
+        /**
+        @brief Récupère un mur de la cellule
+        @param NeighborsEnum Mur à récupérer
+        @return Le mur de la cellule
+        */
         Wall* getWall(NeighborsEnum);
 
+        /**
+        @brief Définit la coordonnée x de la cellule
+        @param x Nouvelle coordonnée x de la cellule
+        */
         void setX(int x);
+        /**
+        @brief Définit la coordonnée y de la cellule
+        @param y Nouvelle coordonnée y de la cellule
+        */
         void setY(int y);
+        /**
+        @brief Définit les voisins de la cellule
+        @param neighbors Nouveaux voisins de la cellule
+        */
         void setXY(int x, int y);
+        /**
+        @brief Définit un voisin de la cellule
+        @param NeighborsEnum Voisin à définir
+        @param neighbor Nouveau voisin de la cellule
+        */
         void setNeighbors(Cell*[4]);
+        /**
+        @brief Définit un voisin de la cellule
+        @param NeighborsEnum Voisin à définir
+        @param neighbor Nouveau voisin de la cellule
+        */
         void setNeighbor(NeighborsEnum, Cell*);
+        /**
+        @brief Définit les murs de la cellule
+        @param walls Nouveaux murs de la cellule
+        */
         void setWalls(Wall*[4]);
+        /**
+        @brief Définit un mur de la cellule
+        @param NeighborsEnum Mur à définir
+        @param wall Nouveau mur de la cellule
+        */
         void setWall(NeighborsEnum, Wall*);
 
     private:
-        int x, y;
-        Wall *walls[4];
-        Cell *neighbors[4];
+        int x, y; ///< Coordonnées de la cellule
+        Wall *walls[4]; ///< Murs de la cellule
+        Cell *neighbors[4]; ///< Voisins de la cellule
 };
 
 #endif // CELL_H
