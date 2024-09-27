@@ -1,7 +1,19 @@
-#include <cstdlib>
+#include <iostream>
+#include <fstream>
 #include "lib/reader.hpp"
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    if (argc < 2) {
+        std::cout << "Usage: ./main <instance_file>" << std::endl;
+        return 1;
+    }
+    std::ifstream file(argv[1]);
+    if (!file) {
+        std::cout << "File not found" << std::endl;
+        return 1;
+    }
+
     // Maze a = Maze();
     // Maze *maze = &a;
     // read("lib/instances/maze1.txt", maze);

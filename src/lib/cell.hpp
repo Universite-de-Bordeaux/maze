@@ -29,7 +29,7 @@ class Cell {
         @param x Coordonnée x de la cellule
         @param y Coordonnée y de la cellule
         */
-        Cell(int x, int y);
+        Cell(int, int);
         /**
         @brief Destructeur
         */
@@ -72,17 +72,17 @@ class Cell {
         @brief Définit la coordonnée x de la cellule
         @param x Nouvelle coordonnée x de la cellule
         */
-        void setX(int x);
+        void setX(int);
         /**
         @brief Définit la coordonnée y de la cellule
         @param y Nouvelle coordonnée y de la cellule
         */
-        void setY(int y);
+        void setY(int);
         /**
         @brief Définit les voisins de la cellule
         @param neighbors Nouveaux voisins de la cellule
         */
-        void setXY(int x, int y);
+        void setXY(int, int);
         /**
         @brief Définit un voisin de la cellule
         @param NeighborsEnum Voisin à définir

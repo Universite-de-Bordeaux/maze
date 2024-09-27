@@ -15,8 +15,23 @@ cell.o: lib/cell.cpp lib/cell.hpp lib/wall.hpp
 
 wall.o: lib/wall.cpp lib/wall.hpp
 
-.PHONY: clean
+
+
+run_cmd =./$(OUTPUT) $(1); \
+	EXIT_CODE=$$?; \
+    echo "Exit code: $$EXIT_CODE"; \
+    if [ $$EXIT_CODE -ne 0 ]; then \
+        echo "    Error: $(OUTPUT) returned non-zero exit code $$EXIT_CODE"; \
+    fi
+
+.PHONY: clean run
 clean:
 	@echo "Cleaning up..."
 	@rm -f $(OUTPUT) */*.o
+	@echo "Done."
+
+run: $(OUTPUT)
+	@echo "Running..."
+	@$(call run_cmd, "")
+	@$(call run_cmd, "Makefile")
 	@echo "Done."

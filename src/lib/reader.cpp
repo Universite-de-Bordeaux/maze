@@ -2,8 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include "reader.hpp"
-#include "cell.hpp"
-#include "wall.hpp"
 
 // void print_file(std::string file_tab) {
 
