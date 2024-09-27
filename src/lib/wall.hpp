@@ -1,35 +1,32 @@
 #ifndef WALL_HPP
 #define WALL_HPP
 
-// struct WallStruct {
-//     bool top = false;
-//     bool bottom = false;
-//     bool left = false;
-//     bool right = false;
-// };
-
-// enum WallType {
-//     TOP,
-//     BOTTOM,
-//     LEFT,
-//     RIGHT
-// };
-
 class Wall {
     public:
+        enum NeighborsEnum {
+            START_RIGHT_TOP = 0 ,
+            START = 1,
+            START_LEFT_BOTTOM = 2,
+            END_RIGHT_TOP = 3,
+            END = 4,
+            END_LEFT_BOTTOM = 5
+        };
+
         Wall();
         Wall(bool isHorizontal);
+        ~Wall();
+
+        bool getIsHorizontal() const;
+        Wall** getNeighbors();
+        Wall* getNeighbor(NeighborsEnum);
+
+        void setIsHorizontal(bool);
+        void setNeighbors(Wall*[6]);
+        void setNeighbor(NeighborsEnum, Wall*);
 
     private:
         bool isHorizontal;
-        struct neighbors {
-            Wall* startRightTop;
-            Wall* start;
-            Wall* startLeftBottom;
-            Wall* endRightTop;
-            Wall* end;
-            Wall* endLeftBottom;
-        } neighbors;
+        Wall* neighbors[6];
 
 };
 
