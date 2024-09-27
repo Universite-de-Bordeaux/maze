@@ -1,90 +1,55 @@
 #include "maze.hpp"
-#include <cstdlib>
-#include <iostream>
+#include "stdlib.h"
 
+Maze::Maze() {
+    Maze(0, 0);
+}
 
-// Maze::Maze() {
-//     Maze(0, 0);
-// }
+Maze::Maze(int width, int height) {
+    this->width = width, this->height = height;
+    generate();
+}
 
-// Maze::Maze(int n, int m) {
-//     this->width = n;
-//     this->height = m;
-//     this->regenerateMat();
-// }
+Maze::~Maze() {
+    //dtor
+}
 
-// Maze::~Maze() {
-//     setMat(getMat(), NULL);
-// }
+int Maze::getWidth() const {
+    return this->width;
+}
 
-// int Maze::getWidth() const {
-//     return this->width;
-// }
+int Maze::getHeight() const {
+    return this->height;
+}
 
-// int Maze::getHeight() const {
-//     return this->height;
-// }
+Cell **Maze::getCells() const {
+    return this->cells;
+}
 
-// Cell **Maze::getMat() const {
-//     return this->mat;
-// }
+Cell *Maze::getCell(int x, int y) const {
+    return this->cells[y*this->width+x];
+}
 
-// void Maze::setCell(int i, int j, enum WallType wall) {
-//     switch (wall) {
-//         case WallType::RIGHT:
-//             (*(*(this->mat+i)+j)).setWall(wall, 1);
-//             std::cout << "test2" << std::endl;
-//             (*(*(this->mat+i)+j+1)).setWall(LEFT, 1);
-//         case WallType::BOTTOM:
-//             (*(*(this->mat+i)+j)).setWall(wall, 1);
-//             std::cout << "test2" << std::endl;
-//             (*(*(this->mat+i+1)+j)).setWall(TOP, 1);
-//         case WallType::LEFT:
-//             std::cerr << "Direction invalide" << std::endl;
-//         case WallType::TOP:
-//             std::cerr << "Direction invalide" << std::endl;
-//     }
-// }
+void Maze::setWidthHeight(int width, int height) {
+    this->width = width, this->height = height;
+}
 
-// void Maze::removeWall(int i, int j, enum WallType wall) {
-//     switch (wall) {
-//         case WallType::RIGHT:
-//             (*(*(this->mat+i)+j)).setWall(wall, 0);
-//             (*(*(this->mat+i)+j+1)).setWall(LEFT, 0);
-//         case WallType::BOTTOM:
-//             (*(*(this->mat+i)+j)).setWall(wall, 0);
-//             (*(*(this->mat+i+1)+j)).setWall(TOP, 0);
-//         case WallType::LEFT:
-//             std::cerr << "Direction invalide" << std::endl;
-//         case WallType::TOP:
-//             std::cerr << "Direction invalide" << std::endl;
-//     }
-// }
+void Maze::setCells(Cell **cells) {
+    this->cells = cells;
+}
 
+void Maze::setCell(int x, int y, Cell *cell) {
+    this->cells[y*this->width+x] = cell;
+}
 
-// void Maze::setWidth(int width) {
-//     this->width = width;
-//     this->regenerateMat();
-// }
-
-// void Maze::setHeight(int height) {
-//     this->height = height;
-//     this->regenerateMat();
-// }
-
-// void Maze::setWidthHeight(int width, int height) {
-//     this->width = width;
-//     this->height = height;
-//     this->regenerateMat();
-// }
-
-// void Maze::setMat(Cell **mat, Cell **new_mat) {
-//     mat = new_mat;
-// }
-
-// void Maze::regenerateMat() {
-//     if(this->mat != nullptr) {
-//         free(this->mat);
-//     }
-//     this->mat = (Cell**)malloc(this->height*this->width*sizeof(Cell*));
-// }
+void Maze::generate() {
+    if (this->cells != nullptr) {
+        free(this->cells);
+    }
+    this->cells = (Cell**)malloc(this->width*this->height*sizeof(Cell*));
+    for(int x = 0; x < this->width; x++) {
+        for(int y = 0; y < this->height; y++) {
+            this->cells[y*this->width+x] = new Cell(x, y);
+        }
+    }
+}
