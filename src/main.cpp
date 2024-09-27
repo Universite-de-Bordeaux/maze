@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "lib/reader.hpp"
+// #include "lib/reader.hpp"
+#include "lib/maze.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -14,9 +15,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Maze a = Maze();
+    Maze a = Maze();
     // Maze *maze = &a;
-    // read("lib/instances/maze1.txt", maze);
+    // read(argv[1], maze);
     // Cell cell1 = Cell(1, 2);
     // std::cout << cell1.getX() << std::endl;
     // cell1.setX(10);
