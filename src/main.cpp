@@ -46,7 +46,7 @@ int help(std::string a, int b) {
 }
 
 /**
- * Commande -r
+ * Commande -i
  * @param file Fichier
  */
 void readMaze(char *file, Maze *maze) {
@@ -56,16 +56,31 @@ void readMaze(char *file, Maze *maze) {
     read(file, b);
 }
 
+/**
+ * Commande -g
+ * @param type Type d'algorithme
+ * @param x Dimension x
+ * @param y Dimension y
+ * @param perfect Parfait
+*/
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
     *maze = Maze();
     // TODO : Générer un labyrinthe
 }
 
+/**
+ * Commande -r
+ * @param algorithm Algorithme
+ */
 void resolveMaze(Maze *maze, std::string algorithm) {
     std::cout << "Resolve" << std::endl;
     // TODO : Résoudre un labyrinthe
 }
 
+/**
+ * Commande -o
+ * @param file Fichier
+ */
 void writeMaze(char *file, Maze *maze) {
     std::cout << "Write" << std::endl;
     // write(file, maze);
