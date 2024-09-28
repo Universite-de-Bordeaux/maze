@@ -40,6 +40,7 @@ L'utilisation de l'application est la suivante :
 * `-s` ou `--show` : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)
 * `-o` ou `--output` `<fichier>` : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)
 * `-i` ou `--input` `<fichier>` : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)
+* `-c` ou `--clear` : Efface le(s) labyrinthe(s) en mémoire
 
 #### Génération de labyrinthe
 
