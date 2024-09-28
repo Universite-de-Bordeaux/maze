@@ -45,19 +45,19 @@ clean:
 	@echo "Done."
 
 # Run the program
-# 1. Lancez le programme avec l'argument "instances/maze1.txt -v"
+# 1. Lancez le programme avec l'argument "-i instances/maze1.txt"
 run: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "instances/maze1.txt", "-r")
+	@$(call run_output, "-i", "instances/maze1.txt")
 	@echo "--------------------------------"
 	@echo "Done."
 
 # Run tests
 # 1. Lancez le programme sans argument
 # 2. Lancez le programme avec l'argument "test"
-# 3. Lancez le programme avec l'argument "instances/maze1.txt -v"
-# 4. Lancez le programme avec l'argument "instances/maze1.txt -r"
+# 3. Lancez le programme avec l'argument "-i instances/maze1.txt"
+# 4. Lancez le programme avec l'argument "-g -o instances/maze2.txt"
 run_test: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
@@ -65,8 +65,8 @@ run_test: $(OUTPUT)
 	@echo "--------------------------------"
 	@$(call run_output, "test")
 	@echo "--------------------------------"
-	@$(call run_output, "instances/maze1.txt", "-v")
+	@$(call run_output, "-i", "instances/maze1.txt")
 	@echo "--------------------------------"
-	@$(call run_output, "instances/maze1.txt", "-r")
+	@$(call run_output, "-g", "-o", "instances/maze2.txt")
 	@echo "--------------------------------"
 	@echo "Done."

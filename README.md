@@ -26,23 +26,32 @@ Pour compiler le projet, il suffit de se placer dans le dossier `src` et de lanc
 
 ## Utilisation
 
-Pour générer un labyrinthe, il suffit de lancer la commande `./main` suivie des options désirées.
+L'utilisation de l'application est la suivante :
+
+```bash
+./main [-option] <instance_file>
+```
 
 ### Options
 
-Quand un paramètre nécessite une valeur, il faut la spécifier après l'option en question.
-Sous cette forme : `-option valeur` ou `--option valeur`
+#### Générales
 
-- `-h` ou `--help` : Affiche l'aide
-- `-s` ou `--show` : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)
-- `-o` ou `--output` : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)
-- `-i` ou `--input` : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)
-- `-g` ou `--generate` : Génère un labyrinthe
-  - `-t` ou `--type` : Spécifie le type d'algorithme à utiliser pour la génération (`cours`, `perso`, par défaut l'algorithme utilisé sera `cours`)
-  - `-d` ou `--dimension` : Spécifie les dimensions du labyrinthe à génerer (sous la forme `x y`, par défaut les dimensions seront `10 10`)
-  - `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
-- `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
-  - `-a` ou `--algorithm` : Spécifie l'algorithme à utiliser pour la résolution (`aaa`, `bbb`, par défaut l'algorithme utilisé sera `aaa`)
+* `-h` ou `--help` : Affiche cette aide
+* `-s` ou `--show` : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)
+* `-o` ou `--output` `<fichier>` : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)
+* `-i` ou `--input` `<fichier>` : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)
+
+#### Génération de labyrinthe
+
+* `-g` ou `--generate` : Génère un labyrinthe
+	+ `-t` ou `--type` `<type>` : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, par défaut : cours)
+	+ `-d` ou `--dimension` `<x> <y>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
+	+ `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
+
+#### Résolution de labyrinthe
+
+* `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
+	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)
 
 ## Exemples
 
