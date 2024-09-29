@@ -60,6 +60,8 @@ void readMaze(char *file, Maze *maze) {
  */
 void writeMaze(char *file, Maze *maze) {
     std::cout << "Write" << std::endl;
+    file = file;
+    maze = maze;
 }
 
 /**
@@ -72,6 +74,10 @@ void writeMaze(char *file, Maze *maze) {
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
     *maze = Maze();
     // TODO : Générer un labyrinthe
+    type = type;
+    x = x;
+    y = y;
+    perfect = perfect;
 }
 
 /**
@@ -82,6 +88,8 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
 void resolveMaze(Maze *maze, std::string algorithm) {
     std::cout << "Resolve" << std::endl;
     // TODO : Résoudre un labyrinthe
+    maze = maze;
+    algorithm = algorithm;
 }
 
 /**

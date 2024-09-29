@@ -49,7 +49,7 @@ clean:
 run: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "-i", "instances/maze1.txt", "-s")
+	@$(call run_output, "-i", "instances/maze1.txt", "-s", "-c", "-i", "instances/maze2.txt", "-s")
 	@echo "--------------------------------"
 	@echo "Done."
 
