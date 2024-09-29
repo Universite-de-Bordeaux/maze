@@ -70,12 +70,16 @@ class Maze {
         */
         void generate();
 
+        bool addWall(int, int, bool);
+        bool removeWall(int, int, bool);
+        Wall* getWall(int, int, bool);
+
     private:
         int width; ///< Largeur du labyrinthe
         int height; ///< Hauteur du labyrinthe
         Cell **cells = nullptr; ///< Cellules du labyrinthe
 
-
+        void initNeighborsCells(); ///< Initialise toutes les cellules en tant que voisines
 };
 
 #endif // MAZE_HPP

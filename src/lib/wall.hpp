@@ -68,15 +68,9 @@ class Wall {
         */
         void setNeighbor(NeighborsEnum, Wall*);
 
-        bool addWall(int, int, bool);
-        bool removeWall(int, int, bool);
-        Wall* getWall(int, int, bool);
-
     private:
         bool isHorizontal; ///< Booléen indiquant si le mur est horizontal
         Wall* neighbors[6]; ///< Tableau de pointeurs sur les voisins du mur
-
-        void initNeighborsCells(); ///< Initialise toutes les cellules en tant que voisines
 };
 
 #endif
