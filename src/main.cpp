@@ -94,7 +94,7 @@ void showMaze(Maze *maze) {
     for (int i = 0; i < maze->getHeight(); i++) {
         for (int j = 0; j < maze->getWidth(); j++) {
             Cell* cell = maze->getCell(i, j);
-            if (cell->getWall(cell->NeighborsEnum::LEFT)) {
+            if (cell->getWall(cell->NeighborsEnum::RIGHT)) {
                 std::cout << i << " " << j << " " << "V" << std::endl;
             }
             if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
