@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include "lib/reader.hpp"
+#include "lib/show.hpp"
 #include "lib/maze.hpp"
 
 /**
@@ -46,15 +47,6 @@ int help(std::string a, int b) {
 }
 
 /**
- * Commande -i
- * @param file Fichier
- */
-void readMaze(char *file, Maze *maze) {
-    std::cout << "Read" << std::endl;
-    read(file, maze);
-}
-
-/**
  * Commande -o
  * @param file Fichier
  */
@@ -93,26 +85,6 @@ void resolveMaze(Maze *maze, std::string algorithm) {
 }
 
 /**
- * Commande -s
- * @param maze Labyrinthe
- */
-void showMaze(Maze *maze) {
-    std::cout << "Show" << std::endl;
-    std::cout << maze->getWidth() << " x " << maze->getHeight() << std::endl;
-    for (int y = 0; y < maze->getHeight(); y++) {
-        for (int x = 0; x < maze->getWidth(); x++) {
-            Cell* cell = maze->getCell(x, y);
-            if (cell->getWall(cell->NeighborsEnum::RIGHT)) {
-                std::cout << x << " " << y << " " << "V" << std::endl;
-            }
-            if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
-                std::cout << x << " " << y << " " << "H" << std::endl;
-            }
-        }
-    }
-}
-
-/**
  * Main
  * @param argc Nombre d'arguments
  * @param argv Arguments
@@ -137,7 +109,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                showMaze(&maze);
+                show(&maze);
             }
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
                 if (i + 1 >= argc) return help(1);
@@ -160,7 +132,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "File not found : " << argv[i + 1] << std::endl;
                     return 1;
                 }
-                readMaze(argv[i + 1], &maze);
+                read(argv[i + 1], &maze);
                 mazeLoaded = true;
                 i++;
             }

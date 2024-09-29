@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -Wall -Wextra
 OUTPUT = main.out
 
-$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o
+$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o
 	@echo "Compiling..."
 	@$(CC) $(CFLAGS) $^ -o $(OUTPUT)
 	@echo "Done."
@@ -14,6 +14,8 @@ maze.o: lib/maze.cpp lib/maze.hpp lib/cell.hpp lib/wall.hpp
 cell.o: lib/cell.cpp lib/cell.hpp lib/wall.hpp
 
 wall.o: lib/wall.cpp lib/wall.hpp
+
+show.o: lib/show.cpp lib/show.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp
 
 # Run the program with the given arguments
 # $1: The first argument
