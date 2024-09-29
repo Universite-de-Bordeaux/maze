@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include "reader.hpp"
@@ -13,10 +14,13 @@ void read(std::string filename, Maze *maze) {
     std::string line;
     getline(file, line);
     maze->setWidthHeight(line[0], line[2]);
-    while (!file.eof()) {
-        getline(file, line);
+    getline(file, line);
+    while (!file.eof() && line.size() > 0) {
         std::cout << line << std::endl;
-        maze->addWall(line[0], line[2], line[4] == 'H');
+        if (!maze->addWall((int)line[0], (int)line[2], (int)line[4] == 'H')) {
+            exit(EXIT_FAILURE);
+        }
+        getline(file, line);
     }
     file.close();
 }
