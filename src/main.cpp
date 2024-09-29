@@ -91,14 +91,14 @@ void resolveMaze(Maze *maze, std::string algorithm) {
 void showMaze(Maze *maze) {
     std::cout << "Show" << std::endl;
     std::cout << maze->getWidth() << " x " << maze->getHeight() << std::endl;
-    for (int i = 0; i < maze->getHeight(); i++) {
-        for (int j = 0; j < maze->getWidth(); j++) {
-            Cell* cell = maze->getCell(i, j);
+    for (int y = 0; y < maze->getHeight(); y++) {
+        for (int x = 0; x < maze->getWidth(); x++) {
+            Cell* cell = maze->getCell(x, y);
             if (cell->getWall(cell->NeighborsEnum::RIGHT)) {
-                std::cout << i << " " << j << " " << "V" << std::endl;
+                std::cout << x << " " << y << " " << "V" << std::endl;
             }
             if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
-                std::cout << i << " " << j << " " << "H" << std::endl;
+                std::cout << x << " " << y << " " << "H" << std::endl;
             }
         }
     }
