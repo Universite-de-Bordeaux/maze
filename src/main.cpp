@@ -60,7 +60,6 @@ void readMaze(char *file, Maze *maze) {
  */
 void writeMaze(char *file, Maze *maze) {
     std::cout << "Write" << std::endl;
-    // write(file, maze);
 }
 
 /**
@@ -91,7 +90,17 @@ void resolveMaze(Maze *maze, std::string algorithm) {
  */
 void showMaze(Maze *maze) {
     std::cout << "Show" << std::endl;
-    // TODO : Afficher un labyrinthe
+    for (int i = 0; i < maze->getHeight(); i++) {
+        for (int j = 0; j < maze->getWidth(); j++) {
+            Cell* cell = maze->getCell(i, j);
+            if (cell->getWall(cell->NeighborsEnum::LEFT)) {
+                std::cout << i << " " << j << " " << "V" << std::endl;
+            }
+            if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
+                std::cout << i << " " << j << " " << "H" << std::endl;
+            }
+        }
+    }
 }
 
 /**

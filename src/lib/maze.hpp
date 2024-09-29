@@ -73,6 +73,7 @@ class Maze {
         bool addWall(int, int, bool);
         bool removeWall(int, int, bool);
         Wall* getWall(int, int, bool);
+        int getSize() const;
 
     private:
         int width; ///< Largeur du labyrinthe

@@ -105,3 +105,7 @@ void Maze::initNeighborsCells() {
         }
     }
 }
+
+int Maze::getSize() const {
+    return this->width*this->height;
+}
