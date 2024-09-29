@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -Wall -Wextra
 OUTPUT = main.out
-SDLFLAGS = -lSDL2
+SDLFLAGS =
 
 $(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o lib/var.hpp
 	@echo "Compiling..."

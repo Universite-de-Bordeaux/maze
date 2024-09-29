@@ -28,7 +28,7 @@ void read(std::string filename, Maze *maze) {
                 if (!maze->addWall(x, y, orientation == 'H')) {
                     exit(MAZE_FILE_ERROR);
                 }
-                std::cout << x << ' ' << y << ' ' << orientation << std::endl;
+                // std::cout << x << ' ' << y << ' ' << orientation << std::endl;
             }
             getline(file, line);
         }
