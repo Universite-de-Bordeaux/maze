@@ -90,6 +90,7 @@ void resolveMaze(Maze *maze, std::string algorithm) {
  */
 void showMaze(Maze *maze) {
     std::cout << "Show" << std::endl;
+    std::cout << maze->getWidth() << " x " << maze->getHeight() << std::endl;
     for (int i = 0; i < maze->getHeight(); i++) {
         for (int j = 0; j < maze->getWidth(); j++) {
             Cell* cell = maze->getCell(i, j);
