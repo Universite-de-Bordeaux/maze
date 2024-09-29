@@ -13,11 +13,11 @@ Le but de ce projet est de générer des labyrinthes parfaits et imparfaits, de 
 
 ## Prérequis
 
-Pour compiler le projet, il est nécessaire d'avoir installé `g++`, `make` et `sdl2` sur sa machine.
+Pour compiler le projet, il est nécessaire d'avoir installé `g++`, `make` et `sfml` sur sa machine.
 
 Pour installer ces outils, il suffit de lancer la commande suivante :
 ```bash
-sudo apt-get install g++ make libsdl2-dev
+sudo apt-get install g++ make libsfml-dev
 ```
 
 ## Compilation

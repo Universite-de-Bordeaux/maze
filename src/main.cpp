@@ -133,9 +133,23 @@ int main(int argc, char *argv[]) {
                     std::cout << "File not found : " << argv[i + 1] << std::endl;
                     return 1;
                 }
+                maze = Maze();
                 read(argv[i + 1], &maze);
                 mazeLoaded = true;
                 i++;
+
+                // std::cout << "Maze loaded" << std::endl;
+                // for (int x = 0; x < maze.getWidth(); x++) {
+                //     for (int y = 0; y < maze.getHeight(); y++) {
+                //         Cell* cell = maze.getCell(x, y);
+                //         if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
+                //             std::cout << x << ' ' << y << ' ' << 'H' << std::endl;
+                //         }
+                //         if (cell->getWall(cell->NeighborsEnum::RIGHT)) {
+                //             std::cout << x << ' ' << y << ' ' << 'V' << std::endl;
+                //         }
+                //     }
+                // }
             }
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;

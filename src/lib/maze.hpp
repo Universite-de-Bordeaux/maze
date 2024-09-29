@@ -99,16 +99,16 @@ class Maze {
         */
         void generate();
 
+        /**
+        @brief Initialise les cellules du labyrinthe
+        */
+        void initNeighborsCells();
+
 
     private:
         int width; ///< Largeur du labyrinthe
         int height; ///< Hauteur du labyrinthe
         Cell **cells = nullptr; ///< Cellules du labyrinthe
-
-        /**
-        @brief Initialise les cellules du labyrinthe
-        */
-        void initNeighborsCells();
 };
 
 #endif // MAZE_HPP

@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -Wall -Wextra
 OUTPUT = main.out
-SDLFLAGS =
+SDLFLAGS = -LSFML-2.5.1/lib -ISFML-2.5.1/include -lsfml-graphics -lsfml-window -lsfml-system
 
 $(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o lib/var.hpp
 	@echo "Compiling..."
@@ -29,8 +29,8 @@ show.o: lib/show.cpp lib/show.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp lib/var
 # Si le programme retourne un code de succès, elle affiche un message de succès
 # Les messages d'erreur sont affichés en rouge
 # Les messages de succès sont affichés en vert
-run_output =echo "Running:./$(OUTPUT) $1 $2 $3 $4 $5 $6 $7 $8 $9"; \
-  ./$(OUTPUT) $1 $2 $3 $4 $5 $6 $7 $8 $9; \
+run_output =echo "Running:./$(OUTPUT) $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}"; \
+  ./$(OUTPUT) $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}; \
     EXIT_CODE=$$?; \
     if [ $$EXIT_CODE -ne 0 ]; then \
         echo -e "\033[31mExit code: $$EXIT_CODE\033[0m"; \
@@ -53,7 +53,7 @@ clean:
 run: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "-i", "instances/maze1.txt", "-s", "-c", "-i", "instances/maze2.txt", "-s")
+	@$(call run_output, "-i", "instances/maze1.txt", "-s", "-c", "-i", "instances/maze2.txt", "-s", "-c", "-i", "instances/maze3.txt", "-s")
 	@echo "Done."
 
 # Run tests
