@@ -45,11 +45,11 @@ clean:
 	@echo "Done."
 
 # Run the program
-# 1. Lancez le programme avec l'argument "-i instances/maze1.txt"
+# 1. Lancez le programme avec l'argument "-i instances/maze1.txt -s"
 run: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "-i", "instances/maze1.txt")
+	@$(call run_output, "-i", "instances/maze1.txt", "-s")
 	@echo "--------------------------------"
 	@echo "Done."
 

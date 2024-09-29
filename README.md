@@ -29,7 +29,7 @@ Pour compiler le projet, il suffit de se placer dans le dossier `src` et de lanc
 L'utilisation de l'application est la suivante :
 
 ```bash
-./main [-option] <instance_file>
+./main.out [-option] <instance_file>
 ```
 
 ### Options
@@ -58,9 +58,9 @@ L'utilisation de l'application est la suivante :
 
 - Générer un labyrinthe parfait avec l'algorithme perso de dimensions 10x10 et l'afficher puis l'enregistrer dans un fichier :
   ```bash
-  ./main -g -t perso -d 10 10 -s -o labyrinthe.txt
+  ./main.out -g -t perso -d 10 10 -s -o labyrinthe.txt
   ```
 - Résoudre un labyrinthe avec l'algorithme de aaa et l'afficher :
   ```bash
-  ./main -i labyrinthe.txt -r -a aaa -s
+  ./main.out -i labyrinthe.txt -r -a aaa -s
   ```
