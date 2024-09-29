@@ -32,6 +32,7 @@ Cell *Maze::getCell(int x, int y) const {
 
 void Maze::setWidthHeight(int width, int height) {
     this->width = width, this->height = height;
+    generate();
 }
 
 void Maze::setCells(Cell **cells) {
