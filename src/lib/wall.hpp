@@ -28,7 +28,7 @@ class Wall {
         @brief Constructeur
         @param isHorizontal booléen indiquant si le mur est horizontal
         */
-        Wall(bool isHorizontal);
+        Wall(bool);
         /**
         @brief Destructeur
         */
