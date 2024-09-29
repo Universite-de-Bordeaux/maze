@@ -16,9 +16,7 @@ void read(std::string filename, Maze *maze) {
     while (!file.eof()) {
         getline(file, line);
         std::cout << line << std::endl;
-        if (line[4] == 'V') {
-
-        }
+        maze->addWall(line[0], line[2], line[4] == 'H');
     }
     file.close();
 }

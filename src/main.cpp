@@ -51,9 +51,7 @@ int help(std::string a, int b) {
  */
 void readMaze(char *file, Maze *maze) {
     std::cout << "Read" << std::endl;
-    Maze a = Maze();
-    Maze *b = &a;
-    read(file, b);
+    read(file, maze);
 }
 
 /**
