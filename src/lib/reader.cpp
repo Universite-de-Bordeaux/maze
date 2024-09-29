@@ -5,6 +5,7 @@
 #include <ostream>
 #include <sstream>
 #include "reader.hpp"
+#include "var.hpp"
 
 void read(std::string filename, Maze *maze) {
     std::fstream file;
@@ -22,17 +23,17 @@ void read(std::string filename, Maze *maze) {
             char orientation;
             if (iss >> x >> y >> orientation) {
                 if (orientation != 'H' && orientation != 'V') {
-                    exit(1);
+                    exit(MAZE_FILE_ERROR);
                 }
                 if (!maze->addWall(x, y, orientation == 'H')) {
-                    exit(1);
+                    exit(MAZE_FILE_ERROR);
                 }
                 std::cout << x << ' ' << y << ' ' << orientation << std::endl;
             }
             getline(file, line);
         }
     } else {
-        exit(1);
+        exit(MAZE_FILE_ERROR);
     }
     file.close();
 }

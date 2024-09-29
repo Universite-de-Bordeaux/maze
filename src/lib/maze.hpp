@@ -35,6 +35,11 @@ class Maze {
         */
         int getHeight() const;
         /**
+        @brief Retourne la taille du labyrinthe
+        @return La taille du labyrinthe
+        */
+        int getSize() const;
+        /**
         @brief Retourne les cellules du labyrinthe
         @return Les cellules du labyrinthe
         */
@@ -46,6 +51,14 @@ class Maze {
         @return La cellule du labyrinthe
         */
         Cell * getCell(int, int) const;
+        /**
+        @brief Retourne un mur
+        @param x Coordonnée x du mur
+        @param y Coordonnée y du mur
+        @param horizontal Vrai si le mur est horizontal, faux sinon
+        @return Le mur
+        */
+        Wall* getWall(int, int, bool);
 
         /**
         @brief Modifie la largeur et la hauteur du labyrinthe
@@ -66,21 +79,36 @@ class Maze {
         */
         void setCell(int, int, Cell *);
         /**
+        @brief Ajoute ou supprime un mur
+        @param x Coordonnée x du mur
+        @param y Coordonnée y du mur
+        @param horizontal Vrai si le mur est horizontal, faux sinon
+        @return Vrai si le mur a été ajouté ou supprimé, faux sinon
+        */
+        bool addWall(int, int, bool);
+        /**
+        @brief Supprime un mur
+        @param x Coordonnée x du mur
+        @param y Coordonnée y du mur
+        @param horizontal Vrai si le mur est horizontal, faux sinon
+        @return Vrai si le mur a été supprimé, faux sinon
+        */
+        bool removeWall(int, int, bool);
+        /**
         @brief Génère un labyrinthe
         */
         void generate();
 
-        bool addWall(int, int, bool);
-        bool removeWall(int, int, bool);
-        Wall* getWall(int, int, bool);
-        int getSize() const;
 
     private:
         int width; ///< Largeur du labyrinthe
         int height; ///< Hauteur du labyrinthe
         Cell **cells = nullptr; ///< Cellules du labyrinthe
 
-        void initNeighborsCells(); ///< Initialise toutes les cellules en tant que voisines
+        /**
+        @brief Initialise les cellules du labyrinthe
+        */
+        void initNeighborsCells();
 };
 
 #endif // MAZE_HPP

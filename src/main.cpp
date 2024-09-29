@@ -5,6 +5,7 @@
 #include "lib/reader.hpp"
 #include "lib/show.hpp"
 #include "lib/maze.hpp"
+#include "lib/var.hpp"
 
 /**
  * Affiche l'aide
@@ -41,7 +42,7 @@ int help(int a) {
  * @return Code d'erreur
  */
 int help(std::string a, int b) {
-    std::cout << a << std::endl;
+    std::cout << "Error : " << a << std::endl;
     help();
     return b;
 }
@@ -91,7 +92,7 @@ void resolveMaze(Maze *maze, std::string algorithm) {
  * @return Code d'erreur
  */
 int main(int argc, char *argv[]) {
-    if (argc < 2) return help(1);
+    if (argc < 2) return help(MAZE_COMMAND_ERROR);
 
     // Vérifie que le premier argument est une commande
     if (argv[1][0] != '-') {
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
         bool mazeLoaded = false;
         Maze maze = Maze();
         for (int i = 1; i < argc; i++) {
-            if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) return help(0);
+            if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) return help(MAZE_OK);
             else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--show") == 0) {
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
@@ -112,7 +113,7 @@ int main(int argc, char *argv[]) {
                 show(&maze);
             }
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
-                if (i + 1 >= argc) return help(1);
+                if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
                 std::ofstream file(argv[i + 1]);
                 if (!file) {
                     std::cout << "File not found : " << argv[i + 1] << std::endl;
@@ -126,7 +127,7 @@ int main(int argc, char *argv[]) {
                 i++;
             }
             else if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--input") == 0) {
-                if (i + 1 >= argc) return help(1);
+                if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
                 std::ifstream file(argv[i + 1]);
                 if (!file) {
                     std::cout << "File not found : " << argv[i + 1] << std::endl;
@@ -152,7 +153,7 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "perso") == 0) {
                             type = "perso";
                         } else {
-                            return help(1);
+                            return help(MAZE_COMMAND_ERROR);
                         }
                         i++;
                     }
@@ -186,7 +187,7 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "bbb") == 0) {
                             algorithm = "bbb";
                         } else {
-                            return help(1);
+                            return help(MAZE_COMMAND_ERROR);
                         }
                         i++;
                     }
@@ -194,7 +195,7 @@ int main(int argc, char *argv[]) {
                 resolveMaze(&maze, algorithm);
             }
             else {
-                return help(argv[i], 1);
+                return help(argv[i], MAZE_COMMAND_ERROR);
             }
         }
     }

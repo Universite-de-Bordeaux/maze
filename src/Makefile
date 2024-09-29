@@ -1,13 +1,14 @@
 CC = g++
 CFLAGS = -Wall -Wextra
 OUTPUT = main.out
+SDLFLAGS = -lSDL2
 
-$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o
+$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o lib/var.hpp
 	@echo "Compiling..."
-	@$(CC) $(CFLAGS) $^ -o $(OUTPUT)
+	@$(CC) $(CFLAGS) $^ -o $(OUTPUT) $(SDLFLAGS)
 	@echo "Done."
 
-reader.o : lib/reader.cpp lib/reader.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp
+reader.o : lib/reader.cpp lib/reader.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp lib/var.hpp
 
 maze.o: lib/maze.cpp lib/maze.hpp lib/cell.hpp lib/wall.hpp
 
@@ -15,7 +16,7 @@ cell.o: lib/cell.cpp lib/cell.hpp lib/wall.hpp
 
 wall.o: lib/wall.cpp lib/wall.hpp
 
-show.o: lib/show.cpp lib/show.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp
+show.o: lib/show.cpp lib/show.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp lib/var.hpp
 
 # Run the program with the given arguments
 # $1: The first argument
@@ -37,7 +38,8 @@ run_output =echo "Running:./$(OUTPUT) $1 $2 $3 $4 $5 $6 $7 $8 $9"; \
     else \
         echo -e "\033[32mExit code: $$EXIT_CODE\033[0m"; \
         echo -e "\033[32mSuccess: $(OUTPUT) returned zero exit code\033[0m"; \
-    fi
+    fi; \
+    echo "--------------------------------";
 
 .PHONY: clean run_test run
 # Clean up
@@ -52,7 +54,6 @@ run: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
 	@$(call run_output, "-i", "instances/maze1.txt", "-s", "-c", "-i", "instances/maze2.txt", "-s")
-	@echo "--------------------------------"
 	@echo "Done."
 
 # Run tests
@@ -65,13 +66,8 @@ run_test: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
 	@$(call run_output, "")
-	@echo "--------------------------------"
 	@$(call run_output, "test")
-	@echo "--------------------------------"
 	@$(call run_output, "-i", "instances/maze1.txt")
-	@echo "--------------------------------"
 	@$(call run_output, "-g", "-i", "instances/maze1.txt")
-	@echo "--------------------------------"
 	@$(call run_output, "-g", "-i", "instances/maze1.txt", "-s", "-c", "-r", "-s")
-	@echo "--------------------------------"
 	@echo "Done."
