@@ -74,6 +74,8 @@ class Maze {
         int width; ///< Largeur du labyrinthe
         int height; ///< Hauteur du labyrinthe
         Cell **cells = nullptr; ///< Cellules du labyrinthe
+
+
 };
 
 #endif // MAZE_HPP

@@ -9,7 +9,7 @@
  * Affiche l'aide
  */
  void help() {
-     std::cout << "Usage:./main [-option] <instance_file>" << std::endl;
+     std::cout << "Usage:./main.out [-option] <instance_file>" << std::endl;
      std::cout << "Options:" << std::endl;
      std::cout << "-h ou --help : Affiche cette aide" << std::endl;
      std::cout << "-s ou --show : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
@@ -57,6 +57,15 @@ void readMaze(char *file, Maze *maze) {
 }
 
 /**
+ * Commande -o
+ * @param file Fichier
+ */
+void writeMaze(char *file, Maze *maze) {
+    std::cout << "Write" << std::endl;
+    // write(file, maze);
+}
+
+/**
  * Commande -g
  * @param type Type d'algorithme
  * @param x Dimension x
@@ -70,6 +79,7 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
 
 /**
  * Commande -r
+ * @param maze Labyrinthe
  * @param algorithm Algorithme
  */
 void resolveMaze(Maze *maze, std::string algorithm) {
@@ -78,12 +88,12 @@ void resolveMaze(Maze *maze, std::string algorithm) {
 }
 
 /**
- * Commande -o
- * @param file Fichier
+ * Commande -s
+ * @param maze Labyrinthe
  */
-void writeMaze(char *file, Maze *maze) {
-    std::cout << "Write" << std::endl;
-    // write(file, maze);
+void showMaze(Maze *maze) {
+    std::cout << "Show" << std::endl;
+    // TODO : Afficher un labyrinthe
 }
 
 /**
@@ -111,7 +121,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                std::cout << "Show" << std::endl;
+                showMaze(&maze);
             }
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
                 if (i + 1 >= argc) return help(1);
