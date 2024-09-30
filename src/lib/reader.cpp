@@ -2,19 +2,23 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <ostream>
 #include <sstream>
 #include "reader.hpp"
 #include "var.hpp"
 
 void read(std::string filename, Maze *maze) {
+    // ouverture du fichier ---------------
     std::fstream file;
     file.open(filename, std::ios_base::in);
     std::string line;
-    getline(file, line);
+    // ------------------------------------
+
+    // initialisation des variable --------
+    getline(file, line); // permet de lire une ligne
     int width, height;
     std::istringstream iss(line);
-    if (iss >> width >> height) {
+    // ------------------------------------
+    if (iss >> width >> height) { // iss permet de récuperer la largeur et la hauteur'
         maze->setWidthHeight(width, height);
         getline(file, line);
         while (!file.eof() && line.size() > 0) {
@@ -22,9 +26,13 @@ void read(std::string filename, Maze *maze) {
             std::istringstream iss(line);
             char orientation;
             if (iss >> x >> y >> orientation) {
+                // vérification d'erreur -------------------------
                 if (orientation != 'H' && orientation != 'V') {
                     exit(MAZE_FILE_ERROR);
                 }
+                // -----------------------------------------------
+
+                // ajout du mur en prenant en compte les potentielles erreurs renvoyer par addWall
                 if (!maze->addWall(x, y, orientation == 'H')) {
                     exit(MAZE_FILE_ERROR);
                 }
@@ -32,8 +40,11 @@ void read(std::string filename, Maze *maze) {
             }
             getline(file, line);
         }
-    } else {
+    }
+    // gestion d'erreur --------
+    else {
         exit(MAZE_FILE_ERROR);
     }
+    // -------------------------
     file.close();
 }
