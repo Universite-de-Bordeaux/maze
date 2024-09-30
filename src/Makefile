@@ -71,3 +71,9 @@ run_test: $(OUTPUT)
 	@$(call run_output, "-g", "-i", "instances/maze1.txt")
 	@$(call run_output, "-g", "-i", "instances/maze1.txt", "-s", "-c", "-r", "-s")
 	@echo "Done."
+
+run_algo: $(OUTPUT)
+	@echo "Running..."
+	@echo "--------------------------------"
+	@$(call run_output, "-g")
+	@echo "Done."
