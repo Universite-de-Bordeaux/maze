@@ -20,8 +20,8 @@ Wall** Wall::getNeighbors() {
     return this->neighbors;
 }
 
-Wall* Wall::getNeighbor(NeighborsEnum neighbor) {
-    return this->neighbors[neighbor];
+Wall* Wall::getNeighbor(int i) {
+    return this->neighbors[i];
 }
 
 void Wall::setIsHorizontal(bool isHorizontal) {
@@ -34,6 +34,6 @@ void Wall::setNeighbors(Wall* neighbors[6]) {
     }
 }
 
-void Wall::setNeighbor(NeighborsEnum neighbor, Wall* wall) {
-    this->neighbors[neighbor] = wall;
+void Wall::setNeighbor(int i, Wall* wall) {
+    this->neighbors[i] = wall;
 }

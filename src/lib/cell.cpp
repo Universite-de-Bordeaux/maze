@@ -24,16 +24,16 @@ Cell** Cell::getNeighbors() {
     return this->neighbors;
 }
 
-Cell* Cell::getNeighbor(NeighborsEnum neighbor) {
-    return this->neighbors[neighbor];
+Cell* Cell::getNeighbor(int i) {
+    return this->neighbors[i];
 }
 
 Wall** Cell::getWalls() {
     return this->walls;
 }
 
-Wall* Cell::getWall(NeighborsEnum neighbor) {
-    return this->walls[neighbor];
+Wall* Cell::getWall(int i) {
+    return this->walls[i];
 }
 
 void Cell::setX(int x) {
@@ -55,8 +55,8 @@ void Cell::setNeighbors(Cell* neighbors[4]) {
     }
 }
 
-void Cell::setNeighbor(NeighborsEnum neighbor, Cell* cell) {
-    this->neighbors[neighbor] = cell;
+void Cell::setNeighbor(int i, Cell* cell) {
+    this->neighbors[i] = cell;
 }
 
 void Cell::setWalls(Wall* walls[4]) {
@@ -65,6 +65,6 @@ void Cell::setWalls(Wall* walls[4]) {
     }
 }
 
-void Cell::setWall(NeighborsEnum neighbor, Wall* wall) {
-    this->walls[neighbor] = wall;
+void Cell::setWall(int i, Wall* wall) {
+    this->walls[i] = wall;
 }

@@ -11,14 +11,6 @@ class Wall {
         @enum NeighborsEnum
         @brief Enumération des voisins possibles d'un mur
         */
-        enum NeighborsEnum {
-            START_RIGHT_TOP = 0 ,
-            START = 1,
-            START_LEFT_BOTTOM = 2,
-            END_RIGHT_TOP = 3,
-            END = 4,
-            END_LEFT_BOTTOM = 5
-        };
 
         /**
         @brief Constructeur par défaut
@@ -49,7 +41,7 @@ class Wall {
         @param NeighborsEnum voisin à retourner
         @return pointeur sur le voisin demandé
         */
-        Wall* getNeighbor(NeighborsEnum);
+        Wall* getNeighbor(int);
 
         /**
         @brief Définit si le mur est horizontal
@@ -66,7 +58,7 @@ class Wall {
         @param NeighborsEnum voisin à définir
         @param pointeur sur le voisin à définir
         */
-        void setNeighbor(NeighborsEnum, Wall*);
+        void setNeighbor(int, Wall*);
 
     private:
         bool isHorizontal; ///< Booléen indiquant si le mur est horizontal

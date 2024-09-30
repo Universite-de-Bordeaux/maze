@@ -9,16 +9,6 @@
 */
 class Cell {
     public:
-        /**
-        @enum NeighborsEnum
-        @brief Enumération des voisins possibles d'une cellule
-        */
-        enum NeighborsEnum {
-            TOP = 0,
-            RIGHT = 1,
-            BOTTOM = 2,
-            LEFT = 3
-        };
 
         /**
         @brief Constructeur par défaut
@@ -52,10 +42,10 @@ class Cell {
         Cell** getNeighbors();
         /**
         @brief Récupère un voisin de la cellule
-        @param NeighborsEnum Voisin à récupérer
+        @param int Voisin à récupérer
         @return Le voisin de la cellule
         */
-        Cell* getNeighbor(NeighborsEnum);
+        Cell* getNeighbor(int);
         /**
         @brief Récupère les murs de la cellule
         @return Les murs de la cellule
@@ -63,10 +53,10 @@ class Cell {
         Wall** getWalls();
         /**
         @brief Récupère un mur de la cellule
-        @param NeighborsEnum Mur à récupérer
+        @param int Mur à récupérer
         @return Le mur de la cellule
         */
-        Wall* getWall(NeighborsEnum);
+        Wall* getWall(int);
 
         /**
         @brief Définit la coordonnée x de la cellule
@@ -85,16 +75,16 @@ class Cell {
         void setXY(int, int);
         /**
         @brief Définit un voisin de la cellule
-        @param NeighborsEnum Voisin à définir
+        @param int Voisin à définir
         @param neighbor Nouveau voisin de la cellule
         */
         void setNeighbors(Cell*[4]);
         /**
         @brief Définit un voisin de la cellule
-        @param NeighborsEnum Voisin à définir
+        @param int Voisin à définir
         @param neighbor Nouveau voisin de la cellule
         */
-        void setNeighbor(NeighborsEnum, Cell*);
+        void setNeighbor(int, Cell*);
         /**
         @brief Définit les murs de la cellule
         @param walls Nouveaux murs de la cellule
@@ -102,10 +92,10 @@ class Cell {
         void setWalls(Wall*[4]);
         /**
         @brief Définit un mur de la cellule
-        @param NeighborsEnum Mur à définir
+        @param int Mur à définir
         @param wall Nouveau mur de la cellule
         */
-        void setWall(NeighborsEnum, Wall*);
+        void setWall(int, Wall*);
 
     private:
         int x, y; ///< Coordonnées de la cellule

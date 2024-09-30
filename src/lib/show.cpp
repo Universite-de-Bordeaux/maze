@@ -1,34 +1,46 @@
 #include "show.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "var.hpp"
 
 void show(Maze *maze) {
-    for (int x = 0; x < maze->getWidth() * 2 + 2; x++) {
+    for (int x = 0; x < maze->getWidth() * 2 + 1; x++) {
         std::cout << "_";
     }
     std::cout << std::endl;
     for (int y = 0; y < maze->getHeight() - 1; y++) {
         std::cout << "|";
-        for (int x = 0; x < maze->getWidth(); x++) {
+        for (int x = 0; x < maze->getWidth() - 1; x++) {
             Cell* cell = maze->getCell(x, y);
-            if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
+            if (cell->getWall(MAZE_CELL_BOTTOM)) {
                 std::cout << "_";
             } else {
                 std::cout << " ";
             }
-            if (cell->getWall(cell->NeighborsEnum::RIGHT)) {
+            if (cell->getWall(MAZE_CELL_RIGHT)) {
                 std::cout << "|";
             } else {
                 std::cout << " ";
             }
         }
+        if (maze->getCell(maze->getWidth() - 1, y)->getWall(MAZE_CELL_BOTTOM)) {
+            std::cout << "_";
+        } else {
+            std::cout << " ";
+        }
         std::cout << "|" << std::endl;
     }
     std::cout << "|";
-    for (int x = 0; x < maze->getWidth() * 2; x++) {
+    for (int x = 0; x < maze->getWidth() - 1; x++) {
+        Cell* cell = maze->getCell(x, maze->getHeight() - 1);
         std::cout << "_";
+        if (cell->getWall(MAZE_CELL_RIGHT)) {
+            std::cout << "|";
+        } else {
+            std::cout << "_";
+        }
     }
-    std::cout << "|" << std::endl;
+    std::cout << "_|" << std::endl;
 
     // Création de la fenêtre
     // sf::RenderWindow window(sf::VideoMode(maze->getWidth() * 20, maze->getHeight() * 20), "Maze");
