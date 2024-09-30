@@ -148,35 +148,34 @@ int main(int argc, char *argv[]) {
                 std::string type = "cours";
                 int x = 10, y = 10;
                 bool perfect = true;
-                // FIXME
-                // if (i < argc) {
-                //     if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
-                //         i++;
-                //         if (i < argc) {
-                //             if (strcmp(argv[i + 1], "cours") == 0) {
-                //                 type = "cours";
-                //             } else if (strcmp(argv[i + 1], "perso") == 0) {
-                //                 type = "perso";
-                //             } else {
-                //                 return help(MAZE_COMMAND_ERROR);
-                //             }
-                //             i++;
-                //         }
-                //         std::cout << "Type" << std::endl;
-                //     }
-                // }
-                // if (i < argc) {
-                //     if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
-                //         i++;
-                //         if (i + 2 >= argc) {
-                //             x = atoi(argv[i + 1]);
-                //             y = atoi(argv[i + 2]);
-                //             i += 2;
-                //         }
-                //         std::cout << "Dimension : " << x << "x" << y << std::endl;
-                //     }
-                // }
-                if (i < argc) {
+                if (i + 1 < argc) {
+                    if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
+                        i++;
+                        if (i + 1 < argc) {
+                            if (strcmp(argv[i + 1], "cours") == 0) {
+                                type = "cours";
+                            } else if (strcmp(argv[i + 1], "perso") == 0) {
+                                type = "perso";
+                            } else {
+                                return help(MAZE_COMMAND_ERROR);
+                            }
+                            i++;
+                        }
+                        std::cout << "Type : " << type << std::endl;
+                    }
+                }
+                if (i + 1 < argc) {
+                    if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
+                        i++;
+                        if (i + 2 < argc) {
+                            x = atoi(argv[i + 1]);
+                            y = atoi(argv[i + 2]);
+                            i += 2;
+                        }
+                        std::cout << "Dimension : " << x << "x" << y << std::endl;
+                    }
+                }
+                if (i + 1 < argc) {
                     if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
                         perfect = false;
                         i++;
