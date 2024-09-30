@@ -6,6 +6,7 @@
 #include "lib/show.hpp"
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
+#include "lib/algo_cours.hpp"
 
 /**
  * Affiche l'aide

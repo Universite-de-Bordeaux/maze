@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra
 OUTPUT = main.out
 SDLFLAGS = -LSFML-2.5.1/lib -ISFML-2.5.1/include -lsfml-graphics -lsfml-window -lsfml-system
 
-$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o lib/var.hpp
+$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o lib/var.hpp lib/algo_cours.o
 	@echo "Compiling..."
 	@$(CC) $(CFLAGS) $^ -o $(OUTPUT) $(SDLFLAGS)
 	@echo "Done."
@@ -17,6 +17,8 @@ cell.o: lib/cell.cpp lib/cell.hpp lib/wall.hpp
 wall.o: lib/wall.cpp lib/wall.hpp
 
 show.o: lib/show.cpp lib/show.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp lib/var.hpp
+
+algo_cours.o: lib/algo_cours.cpp lib/algo_cours.hpp
 
 # Run the program with the given arguments
 # $1: The first argument
