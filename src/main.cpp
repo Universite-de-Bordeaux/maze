@@ -138,19 +138,6 @@ int main(int argc, char *argv[]) {
                 read(argv[i + 1], &maze);
                 mazeLoaded = true;
                 i++;
-
-                // std::cout << "Maze loaded" << std::endl;
-                // for (int x = 0; x < maze.getWidth(); x++) {
-                //     for (int y = 0; y < maze.getHeight(); y++) {
-                //         Cell* cell = maze.getCell(x, y);
-                //         if (cell->getWall(cell->NeighborsEnum::BOTTOM)) {
-                //             std::cout << x << ' ' << y << ' ' << 'H' << std::endl;
-                //         }
-                //         if (cell->getWall(cell->NeighborsEnum::RIGHT)) {
-                //             std::cout << x << ' ' << y << ' ' << 'V' << std::endl;
-                //         }
-                //     }
-                // }
             }
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
@@ -162,31 +149,40 @@ int main(int argc, char *argv[]) {
                 int x = 10, y = 10;
                 bool perfect = true;
                 // FIXME
-                // if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
-                //     i++;
-                //     if (i + 1 >= argc) {
-                //         if (strcmp(argv[i + 1], "cours") == 0) {
-                //             type = "cours";
-                //         } else if (strcmp(argv[i + 1], "perso") == 0) {
-                //             type = "perso";
-                //         } else {
-                //             return help(MAZE_COMMAND_ERROR);
-                //         }
+                // if (i < argc) {
+                //     if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
                 //         i++;
-                //     }
-                // // }
-                // if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
-                //     i++;
-                //     if (i + 2 >= argc) {
-                //         x = atoi(argv[i + 1]);
-                //         y = atoi(argv[i + 2]);
-                //         i += 2;
+                //         if (i < argc) {
+                //             if (strcmp(argv[i + 1], "cours") == 0) {
+                //                 type = "cours";
+                //             } else if (strcmp(argv[i + 1], "perso") == 0) {
+                //                 type = "perso";
+                //             } else {
+                //                 return help(MAZE_COMMAND_ERROR);
+                //             }
+                //             i++;
+                //         }
+                //         std::cout << "Type" << std::endl;
                 //     }
                 // }
-                // if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
-                //     perfect = false;
-                //     i++;
+                // if (i < argc) {
+                //     if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
+                //         i++;
+                //         if (i + 2 >= argc) {
+                //             x = atoi(argv[i + 1]);
+                //             y = atoi(argv[i + 2]);
+                //             i += 2;
+                //         }
+                //         std::cout << "Dimension : " << x << "x" << y << std::endl;
+                //     }
                 // }
+                if (i < argc) {
+                    if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
+                        perfect = false;
+                        i++;
+                        std::cout << "Unperfect" << std::endl;
+                    }
+                }
                 generateMaze(&maze, type, x, y, perfect);
                 mazeLoaded = true;
             }
