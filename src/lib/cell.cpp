@@ -1,4 +1,6 @@
 #include "cell.hpp"
+#include "var.hpp"
+#include "wall.hpp"
 
 Cell::Cell() {
     Cell(0, 0);

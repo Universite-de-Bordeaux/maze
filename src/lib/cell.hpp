@@ -97,6 +97,11 @@ class Cell {
         */
         void setWall(int, Wall*);
 
+        /**
+        @brief Supprime les murs de la cellule
+        */
+        void freeWalls();
+
     private:
         int x, y; ///< Coordonnées de la cellule
         Wall *walls[4]; ///< Murs de la cellule

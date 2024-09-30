@@ -104,6 +104,11 @@ class Maze {
         */
         void initNeighborsCells();
 
+        /**
+        @brief Libère la mémoire allouée pour les cellules du labyrinthe
+        */
+        void freeMaze();
+
 
     private:
         int width; ///< Largeur du labyrinthe

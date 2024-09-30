@@ -154,6 +154,7 @@ int main(int argc, char *argv[]) {
             }
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
+                maze.freeMaze();
                 mazeLoaded = false;
             }
             else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generate") == 0) {

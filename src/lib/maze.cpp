@@ -1,4 +1,5 @@
 #include "maze.hpp"
+#include "cell.hpp"
 #include "stdlib.h"
 #include <cstdlib>
 #include "var.hpp"
@@ -103,10 +104,23 @@ void Maze::initNeighborsCells() {
             if (y < this->height-1) {
                 cellNeighbors[MAZE_CELL_BOTTOM] = this->cells[(y+1)*this->width+x];
             }
+            cell->setWall(MAZE_CELL_RIGHT, nullptr);
+            cell->setWall(MAZE_CELL_BOTTOM, nullptr);
         }
     }
 }
 
 int Maze::getSize() const {
     return this->width*this->height;
+}
+
+void Maze::freeMaze() {
+    if (this->cells != nullptr) {
+        for(int x = 0; x < this->width; x++) {
+            for(int y = 0; y < this->height; y++) {
+                delete this->cells[y*this->width+x];
+            }
+        }
+        free(this->cells);
+    }
 }
