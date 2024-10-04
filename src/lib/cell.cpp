@@ -38,6 +38,10 @@ Wall* Cell::getWall(int i) {
     return this->walls[i];
 }
 
+bool Cell::isAlreadyVisited() {
+    return this-alreadyVisited;
+}
+
 void Cell::setX(int x) {
     this->x = x;
 }
@@ -69,4 +73,8 @@ void Cell::setWalls(Wall* walls[4]) {
 
 void Cell::setWall(int i, Wall* wall) {
     this->walls[i] = wall;
+}
+
+void Cell::setAlreadyVisited(bool alreadyVisited) {
+    this->alreadyVisited = alreadyVisited;
 }

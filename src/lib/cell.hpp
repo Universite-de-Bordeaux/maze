@@ -57,6 +57,7 @@ class Cell {
         @return Le mur de la cellule
         */
         Wall* getWall(int);
+        bool isAlreadyVisited();
 
         /**
         @brief Définit la coordonnée x de la cellule
@@ -96,6 +97,7 @@ class Cell {
         @param wall Nouveau mur de la cellule
         */
         void setWall(int, Wall*);
+        void setAlreadyVisited(bool);
 
         /**
         @brief Supprime les murs de la cellule
@@ -106,6 +108,7 @@ class Cell {
         int x, y; ///< Coordonnées de la cellule
         Wall *walls[4]; ///< Murs de la cellule
         Cell *neighbors[4]; ///< Voisins de la cellule
+        bool alreadyVisited = false;
 };
 
 #endif // CELL_H

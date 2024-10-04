@@ -2,6 +2,7 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Graphics.hpp>
 #include "var.hpp"
+#include <iostream>
 
 void show(Maze *maze) {
     // Création de la fenêtre

@@ -79,7 +79,7 @@ class Maze {
         */
         void setCell(int, int, Cell *);
         /**
-        @brief Ajoute ou supprime un mur
+        @brief Ajoute un mur
         @param x Coordonnée x du mur
         @param y Coordonnée y du mur
         @param horizontal Vrai si le mur est horizontal, faux sinon

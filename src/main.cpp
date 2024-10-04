@@ -66,12 +66,10 @@ void writeMaze(char *file, Maze *maze) {
  * @param perfect Parfait
 */
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
-    *maze = Maze();
     // TODO : Générer un labyrinthe
-    type = type;
-    x = x;
-    y = y;
-    perfect = perfect;
+    if (type == "cours") algo_cours(maze, x, y, perfect);
+    else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
+    else exit(MAZE_COMMAND_ERROR);
 }
 
 /**

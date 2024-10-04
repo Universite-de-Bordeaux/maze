@@ -77,5 +77,5 @@ run_test: $(OUTPUT)
 run_algo: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "-g")
+	@$(call run_output, "-g","-d","20","10", "-s")
 	@echo "Done."
