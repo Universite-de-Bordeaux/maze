@@ -58,6 +58,8 @@ class Cell {
         */
         Wall* getWall(int);
         bool isAlreadyVisited();
+        int getNumberOfNeighbors();
+        Cell ** getAbsoluteNeighbors();
 
         /**
         @brief Définit la coordonnée x de la cellule
