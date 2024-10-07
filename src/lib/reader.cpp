@@ -12,7 +12,7 @@ void read(std::string filename, Maze *maze) {
     file.open(filename, std::ios_base::in);
     std::string line;
 
-    // initialisation des variable
+    // initialisation des variables
     getline(file, line); // permet de lire une ligne
     int width, height;
     std::istringstream iss(line);
