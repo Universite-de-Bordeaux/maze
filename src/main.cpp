@@ -7,6 +7,7 @@
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
 #include "lib/algo_cours.hpp"
+#include "lib/writer.hpp"
 
 /**
  * Affiche l'aide
@@ -55,7 +56,7 @@ int help(std::string a, int b) {
 void writeMaze(char *file, Maze *maze) {
     std::cout << "Write" << std::endl;
     file = file;
-    maze = maze;
+    write(maze, file);
 }
 
 /**

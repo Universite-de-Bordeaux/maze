@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra
 OUTPUT = src/main.out
 SDLFLAGS = -LSFML-2.5.1/lib -ISFML-2.5.1/include -lsfml-graphics -lsfml-window -lsfml-system
 
-$(OUTPUT): src/main.cpp src/lib/reader.o src/lib/maze.o src/lib/cell.o src/lib/wall.o src/lib/show.o src/lib/var.hpp src/lib/algo_cours.o
+$(OUTPUT): src/main.cpp src/lib/reader.o src/lib/maze.o src/lib/cell.o src/lib/wall.o src/lib/show.o src/lib/var.hpp src/lib/algo_cours.o src/lib/writer.o
 	@echo "Compiling..."
 	@$(CC) $(CFLAGS) $^ -o $(OUTPUT) $(SDLFLAGS)
 	@echo "Done."
@@ -19,6 +19,8 @@ wall.o: src/lib/wall.cpp src/lib/wall.hpp
 show.o: src/lib/show.cpp src/lib/show.hpp src/lib/maze.hpp src/lib/cell.hpp src/lib/wall.hpp src/lib/var.hpp
 
 algo_cours.o: src/lib/algo_cours.cpp src/lib/algo_cours.hpp
+
+writer.o : src/lib/writer.cpp src/lib/writer.hpp src/lib/maze.hpp src/lib/cell.hpp src/lib/wall.hpp src/lib/var.hpp
 
 # Run the program with the given arguments
 # $1: The first argument
@@ -78,4 +80,10 @@ run_algo: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
 	@$(call run_output, "-g","-d","20","10", "-s")
+	@echo "Done."
+
+run_writer: $(OUTPUT)
+	@echo "Running..."
+	@echo "--------------------------------"
+	@$(call run_output, "-i", "src/instances/maze1.txt", "-o", "src/instances/maze1_writer.txt")
 	@echo "Done."
