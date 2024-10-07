@@ -39,7 +39,7 @@ Wall* Cell::getWall(int i) {
 }
 
 bool Cell::isAlreadyVisited() {
-    return this-alreadyVisited;
+    return this->alreadyVisited;
 }
 
 int Cell::getAbsoluteNumberOfNeighbors() {
@@ -65,7 +65,7 @@ void Cell::getAbsoluteNeighbors(Cell** neighbors) {
 int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (this->neighbors[i] != nullptr && this->neighbors[i]->isAlreadyVisited()) { // FIXME: should be !isAlreadyVisited()
+        if (this->neighbors[i] != nullptr && !this->neighbors[i]->isAlreadyVisited()) {
             count++;
         }
     }
@@ -75,7 +75,7 @@ int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
 void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (this->neighbors[i] != nullptr && this->neighbors[i]->isAlreadyVisited()) { // FIXME: should be !isAlreadyVisited()
+        if (this->neighbors[i] != nullptr && !this->neighbors[i]->isAlreadyVisited()) {
             neighbors[count] = this->neighbors[i];
             count++;
         }
