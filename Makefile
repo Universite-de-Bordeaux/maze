@@ -85,5 +85,5 @@ run_algo: $(OUTPUT)
 run_writer: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "-i", "src/instances/maze1.txt", "-o", "src/instances/maze1_writer.txt")
+	@$(call run_output, "-i", "src/instances/maze2.txt", "-o", "src/instances/tmp/maze2_writer.txt", "-c", "-i", "src/instances/maze3.txt", "-o", "src/instances/tmp/maze3_writer.txt")
 	@echo "Done."
