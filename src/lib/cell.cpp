@@ -42,6 +42,26 @@ bool Cell::isAlreadyVisited() {
     return this-alreadyVisited;
 }
 
+int Cell::getNumberOfNeighbors() {
+    int count = 0;
+    for (int i = 0; i < 4; i++) {
+        if (this->neighbors[i] != nullptr) {
+            count++;
+        }
+    }
+    return count;
+}
+
+void Cell::getAbsoluteNeighbors(Cell** neighbors) {
+    int count = 0;
+    for (int i = 0; i < 4; i++) {
+        if (this->neighbors[i] != nullptr) {
+            neighbors[count] = this->neighbors[i];
+            count++;
+        }
+    }
+}
+
 void Cell::setX(int x) {
     this->x = x;
 }
