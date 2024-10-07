@@ -103,22 +103,30 @@ int main(int argc, char *argv[]) {
     {
         bool mazeLoaded = false;
         Maze maze = Maze();
+        // Parcours les arguments
         for (int i = 1; i < argc; i++) {
+            // Vérifie si l'argument est une commande
             if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) return help(MAZE_OK);
+            // Si l'utilisateur veut afficher le labyrinthe
             else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--show") == 0) {
+                // Si aucun labyrinthe n'est chargé
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
                 show(&maze);
             }
+            // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
+                // Si aucun fichier n'est spécifié
                 if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
                 std::ofstream file(argv[i + 1]);
+                // Si le fichier n'existe pas
                 if (!file) {
                     std::cout << "File not found : " << argv[i + 1] << std::endl;
                     return 1;
                 }
+                // Si aucun labyrinthe n'est chargé
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
@@ -126,9 +134,12 @@ int main(int argc, char *argv[]) {
                 writeMaze(argv[i + 1], &maze);
                 i++;
             }
+            // Si l'utilisateur veut charger un labyrinthe depuis un fichier
             else if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--input") == 0) {
+                // Si aucun fichier n'est spécifié
                 if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
                 std::ifstream file(argv[i + 1]);
+                // Si le fichier n'existe pas
                 if (!file) {
                     std::cout << "File not found : " << argv[i + 1] << std::endl;
                     return 1;
@@ -138,16 +149,20 @@ int main(int argc, char *argv[]) {
                 mazeLoaded = true;
                 i++;
             }
+            // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
                 maze.freeMaze();
                 mazeLoaded = false;
             }
+            // Si l'utilisateur veut générer un labyrinthe
             else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generate") == 0) {
                 std::string type = "cours";
                 int x = 10, y = 10;
                 bool perfect = true;
+                // Si l'utilisateur a spécifié des options
                 if (i + 1 < argc) {
+                    // Si l'utilisateur a spécifié le type d'algorithme
                     if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
                         i++;
                         if (i + 1 < argc) {
@@ -164,6 +179,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 if (i + 1 < argc) {
+                    // Si l'utilisateur a spécifié les dimensions du labyrinthe
                     if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
                         i++;
                         if (i + 2 < argc) {
@@ -175,6 +191,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 if (i + 1 < argc) {
+                    // Si l'utilisateur a spécifié que le labyrinthe n'est pas parfait
                     if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
                         perfect = false;
                         i++;
@@ -184,12 +201,15 @@ int main(int argc, char *argv[]) {
                 generateMaze(&maze, type, x, y, perfect);
                 mazeLoaded = true;
             }
+            // Si l'utilisateur veut résoudre un labyrinthe
             else if (strcmp(argv[i], "-r") == 0 || strcmp(argv[i], "--resolve") == 0) {
+                // Si aucun labyrinthe n'est chargé
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
                 std::string algorithm = "aaa";
+                // Si l'utilisateur a spécifié l'algorithme
                 if (strcmp(argv[i + 1], "-a") == 0 || strcmp(argv[i + 1], "--algorithm") == 0) {
                     i++;
                     if (i + 1 >= argc) {
@@ -205,6 +225,7 @@ int main(int argc, char *argv[]) {
                 }
                 resolveMaze(&maze, algorithm);
             }
+            // Si l'utilisateur a spécifié une commande inconnue
             else {
                 return help(argv[i], MAZE_COMMAND_ERROR);
             }
