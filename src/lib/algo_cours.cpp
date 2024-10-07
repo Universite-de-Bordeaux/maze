@@ -7,7 +7,7 @@ struct coordinate{
 } ;
 
 static Cell* nextNeighbor (Cell* current) {
-    int numberOfNeighbors = current->getNumberOfNeighborsNotVisited();
+    int numberOfNeighbors = current->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighbors == 0) {
         return nullptr;
     }
@@ -24,7 +24,7 @@ void algo_cours(Maze* maze, int width, int height, bool perfect) {
     struct coordinate cellHistory[width * height];
     Cell *cellStart = maze->getCell(3, 2);
     nextNeighbor(cellStart);
-    int numberOfNeighbors = cellStart->getNumberOfNeighbors();
+    int numberOfNeighbors = cellStart->getAbsoluteNumberOfNeighbors();
     Cell* currentNeighbor[numberOfNeighbors];
     cellStart->getAbsoluteNeighbors(currentNeighbor);
 

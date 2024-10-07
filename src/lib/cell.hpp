@@ -57,10 +57,30 @@ class Cell {
         @return Le mur de la cellule
         */
         Wall* getWall(int);
+        /**
+        @brief Récupère si la cellule a déjà été visitée
+        @return Vrai si la cellule a déjà été visitée
+        */
         bool isAlreadyVisited();
-        int getNumberOfNeighbors();
+        /**
+        @brief Récupère le nombre de voisins de la cellule
+        @return Le nombre de voisins de la cellule
+        */
+        int getAbsoluteNumberOfNeighbors();
+        /**
+        @brief Récupère les voisins de la cellule qui n'ont pas encore été visités
+        @param neighbors Tableau de cellules dans lequel stocker les voisins
+        */
         void getAbsoluteNeighbors(Cell**);
-        int getNumberOfNeighborsNotVisited();
+        /**
+        @brief Récupère le nombre de voisins de la cellule qui n'ont pas encore été visités
+        @return Le nombre de voisins de la cellule qui n'ont pas encore été visités
+        */
+        int getAbsoluteNumberOfNeighborsNotVisited();
+        /**
+        @brief Récupère les voisins de la cellule qui n'ont pas encore été visités
+        @param neighbors Tableau de cellules dans lequel stocker les voisins
+        */
         void getAbsoluteNeighborsNotVisited(Cell**);
 
         /**
@@ -101,6 +121,10 @@ class Cell {
         @param wall Nouveau mur de la cellule
         */
         void setWall(int, Wall*);
+        /**
+        @brief Définit si la cellule a déjà été visitée
+        @param bool Vrai si la cellule a déjà été visitée
+        */
         void setAlreadyVisited(bool);
 
         /**
