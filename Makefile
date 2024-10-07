@@ -1,24 +1,24 @@
 CC = g++
 CFLAGS = -Wall -Wextra
-OUTPUT = main.out
+OUTPUT = src/main.out
 SDLFLAGS = -LSFML-2.5.1/lib -ISFML-2.5.1/include -lsfml-graphics -lsfml-window -lsfml-system
 
-$(OUTPUT): main.cpp lib/reader.o lib/maze.o lib/cell.o lib/wall.o lib/show.o lib/var.hpp lib/algo_cours.o
+$(OUTPUT): src/main.cpp src/lib/reader.o src/lib/maze.o src/lib/cell.o src/lib/wall.o src/lib/show.o src/lib/var.hpp src/lib/algo_cours.o
 	@echo "Compiling..."
 	@$(CC) $(CFLAGS) $^ -o $(OUTPUT) $(SDLFLAGS)
 	@echo "Done."
 
-reader.o : lib/reader.cpp lib/reader.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp lib/var.hpp
+reader.o : src/lib/reader.cpp src/lib/reader.hpp src/lib/maze.hpp src/lib/cell.hpp src/lib/wall.hpp src/lib/var.hpp
 
-maze.o: lib/maze.cpp lib/maze.hpp lib/cell.hpp lib/wall.hpp
+maze.o: src/lib/maze.cpp src/lib/maze.hpp src/lib/cell.hpp src/lib/wall.hpp
 
-cell.o: lib/cell.cpp lib/cell.hpp lib/wall.hpp
+cell.o: src/lib/cell.cpp src/lib/cell.hpp src/lib/wall.hpp
 
-wall.o: lib/wall.cpp lib/wall.hpp
+wall.o: src/lib/wall.cpp src/lib/wall.hpp
 
-show.o: lib/show.cpp lib/show.hpp lib/maze.hpp lib/cell.hpp lib/wall.hpp lib/var.hpp
+show.o: src/lib/show.cpp src/lib/show.hpp src/lib/maze.hpp src/lib/cell.hpp src/lib/wall.hpp src/lib/var.hpp
 
-algo_cours.o: lib/algo_cours.cpp lib/algo_cours.hpp
+algo_cours.o: src/lib/algo_cours.cpp src/lib/algo_cours.hpp
 
 # Run the program with the given arguments
 # $1: The first argument
@@ -47,7 +47,7 @@ run_output =echo "Running:./$(OUTPUT) $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${1
 # Clean up
 clean:
 	@echo "Cleaning up..."
-	@rm -f $(OUTPUT) */*.o
+	@rm -f $(OUTPUT) src/*/*.o
 	@echo "Done."
 
 # Run the program
@@ -55,23 +55,23 @@ clean:
 run: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
-	@$(call run_output, "-i", "instances/maze1.txt", "-s", "-c", "-i", "instances/maze2.txt", "-s", "-c", "-i", "instances/maze3.txt", "-s")
+	@$(call run_output, "-i", "src/instances/maze1.txt", "-s", "-c", "-i", "src/instances/maze2.txt", "-s", "-c", "-i", "src/instances/maze3.txt", "-s")
 	@echo "Done."
 
 # Run tests
 # 1. Lancez le programme sans argument
 # 2. Lancez le programme avec l'argument "test"
-# 3. Lancez le programme avec l'argument "-i instances/maze1.txt"
-# 4. Lancez le programme avec l'argument "-g -i instances/maze1.txt"
-# 5. Lancez le programme avec l'argument "-g -i instances/maze1.txt -s -c -r -s"
+# 3. Lancez le programme avec l'argument "-i src/instances/maze1.txt"
+# 4. Lancez le programme avec l'argument "-g -i src/instances/maze1.txt"
+# 5. Lancez le programme avec l'argument "-g -i src/instances/maze1.txt -s -c -r -s"
 run_test: $(OUTPUT)
 	@echo "Running..."
 	@echo "--------------------------------"
 	@$(call run_output, "")
 	@$(call run_output, "test")
-	@$(call run_output, "-i", "instances/maze1.txt")
-	@$(call run_output, "-g", "-i", "instances/maze1.txt")
-	@$(call run_output, "-g", "-i", "instances/maze1.txt", "-s", "-c", "-r", "-s")
+	@$(call run_output, "-i", "src/instances/maze1.txt")
+	@$(call run_output, "-g", "-i", "src/instances/maze1.txt")
+	@$(call run_output, "-g", "-i", "src/instances/maze1.txt", "-s", "-c", "-r", "-s")
 	@echo "Done."
 
 run_algo: $(OUTPUT)
