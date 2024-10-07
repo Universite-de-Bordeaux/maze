@@ -3,11 +3,15 @@
 #include <ostream>
 
 void write(Maze * maze, char *file) {
+    // ouverture du fichier
     std::ofstream new_file;
     new_file.open(file, std::ios_base::out);
+    // récupération de largeur et hauteur
     int height = maze->getHeight();
     int width = maze->getWidth();
+    // écriture de la première ligne
     new_file << width << ' ' << height << std::endl;
+    //écriture des lignes suivantes
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             Cell *cell = maze->getCell(x, y);
