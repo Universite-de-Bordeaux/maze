@@ -22,7 +22,7 @@ sudo apt-get install g++ make libsfml-dev
 
 ## Compilation
 
-Pour compiler le projet, il suffit de se placer dans le dossier `src` et de lancer la commande `make`.
+Pour compiler le projet, il suffit de lancer la commande `make`.
 
 ## Utilisation
 
@@ -53,6 +53,13 @@ L'utilisation de l'application est la suivante :
 
 * `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
 	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)
+
+### Codes d'erreur
+
+- 0 : Aucune erreur
+- 1 : Erreur dans les arguments de l'appel du fichier
+- 2 : Erreur avec une intéraction sur un fichier (lecture ou écriture)
+- 3 : Erreur lors de l'affichage d'un labyrinthe
 
 ## Exemples
 
