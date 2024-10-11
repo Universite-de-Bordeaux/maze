@@ -1,0 +1,65 @@
+cmake_minimum_required(VERSION 3.10)
+project(maze.out)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(SOURCE_FILES
+    src/main.cpp
+    src/lib/reader.cpp
+    src/lib/maze.cpp
+    src/lib/cell.cpp
+    src/lib/wall.cpp
+    src/lib/show.cpp
+    src/lib/algo_cours.cpp
+    src/lib/writer.cpp
+)
+
+set(INCLUDE_DIRS
+    src/lib
+    SFML-2.5.1/include
+)
+
+set(LINK_DIRS
+    SFML-2.5.1/lib
+)
+
+set(LINK_LIBS
+    sfml-graphics
+    sfml-window
+    sfml-system
+)
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS})
+target_link_directories(${PROJECT_NAME} PUBLIC ${LINK_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${LINK_LIBS})
+
+add_custom_target(run_test
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} ""
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "test"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-i" "src/instances/maze1.txt"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-i" "src/instances/maze1.txt" "-s" "-c" "-r" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_algo
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "20" "10" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_writer
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze2.txt" "-o" "src/instances/tmp/maze2_writer.txt" "-c" "-i" "src/instances/maze3.txt" "-o" "src/instances/tmp/maze3_writer.txt"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_web
+    COMMAND npm run dev
+)
+
+add_custom_target(run
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-s" "-c" "-i" "src/instances/maze2.txt" "-s" "-c" "-i" "src/instances/maze3.txt" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
