@@ -9,6 +9,7 @@
 #include "lib/algo_cours.hpp"
 #include "lib/algo_1.hpp"
 #include "lib/writer.hpp"
+#include "lib/checker.hpp"
 
 /**
  * Affiche l'aide
@@ -107,6 +108,15 @@ int main(int argc, char *argv[]) {
                     return 1;
                 }
                 show(&maze);
+            }
+            // Vérifie si le labyrinthe est valide
+            else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--check") == 0) {
+                // Si aucun labyrinthe n'est chargé
+                if (!mazeLoaded) {
+                    std::cout << "No maze loaded" << std::endl;
+                    return 1;
+                }
+                checker(&maze);
             }
             // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {

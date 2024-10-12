@@ -14,6 +14,7 @@ set(SOURCE_FILES
     src/lib/algo_cours.cpp
     src/lib/algo_1.cpp
     src/lib/writer.cpp
+    src/lib/checker.cpp
 )
 
 set(INCLUDE_DIRS
@@ -48,6 +49,12 @@ add_custom_target(run_test
 
 add_custom_target(run_algo_cours
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "20" "10" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_checker
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-s" "-c"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-s" "-c"
     DEPENDS ${PROJECT_NAME}
 )
 

@@ -3,7 +3,6 @@
 #include "stdlib.h"
 #include <cstdlib>
 #include "var.hpp"
-#include <iostream>
 
 Maze::Maze() {
     Maze(0, 0);
