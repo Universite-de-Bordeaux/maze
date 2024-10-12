@@ -111,9 +111,9 @@ class Maze {
 
 
     private:
-        int width; ///< Largeur du labyrinthe
-        int height; ///< Hauteur du labyrinthe
-        Cell **cells = nullptr; ///< Cellules du labyrinthe
+        int width_; ///< Largeur du labyrinthe
+        int height_; ///< Hauteur du labyrinthe
+        Cell **cells_ = nullptr; ///< Cellules du labyrinthe
 };
 
 #endif // MAZE_HPP
