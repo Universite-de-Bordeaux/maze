@@ -1,12 +1,21 @@
 #ifndef SHOW_HPP
 #define SHOW_HPP
 
-#include "maze.hpp"
+#include <SFML/Graphics.hpp>
+#include "maze.hpp" // Incluez votre fichier de header Maze.hpp
 
-/**
- * Affiche le labyrinthe
- * @param maze le labyrinthe à afficher
- */
-void show(Maze*);
+class Show {
+public:
+    Show(Maze* maze);
+    void create();
+    void update();
+    void destroy();
+    bool isOpen();
 
-#endif // SHOW_HPP
+private:
+    Maze* maze_;
+    sf::RenderWindow* window_;
+    int cellSize_;
+};
+
+#endif  // SHOW_HPP

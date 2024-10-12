@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
     {
         bool mazeLoaded = false;
         Maze maze = Maze();
+        Show show = Show(&maze);
         // Parcours les arguments
         for (int i = 1; i < argc; i++) {
             // Vérifie si l'argument est une commande
@@ -109,7 +110,11 @@ int main(int argc, char *argv[]) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                show(&maze);
+                show.create();
+                while (show.isOpen()) {
+                    show.update();
+                }
+                show.destroy();
             }
             // Vérifie si le labyrinthe est valide
             else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verify") == 0) {
@@ -165,6 +170,7 @@ int main(int argc, char *argv[]) {
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
                 // maze.freeMaze();
+                show.destroy();
                 mazeLoaded = false;
             }
             // Si l'utilisateur veut générer un labyrinthe
