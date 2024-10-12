@@ -179,43 +179,48 @@ int main(int argc, char *argv[]) {
                 int x = 10, y = 10;
                 bool perfect = true;
                 // Si l'utilisateur a spécifié des options
-                if (i + 1 < argc) {
-                    // Si l'utilisateur a spécifié le type d'algorithme
-                    if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
-                        i++;
-                        if (i + 1 < argc) {
-                            if (strcmp(argv[i + 1], "cours") == 0) {
-                                type = "cours";
-                            } else if (strcmp(argv[i + 1], "perso") == 0) {
-                                type = "perso";
-                            } else if (strcmp(argv[i + 1], "1") == 0) {
-                                type = "1";
-                            } else {
-                                return help(MAZE_COMMAND_ERROR);
-                            }
+                while (i + 1 < argc && argv[i + 1][0] == '-' &&
+                    ((strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) ||
+                        (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) ||
+                        (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0))) {
+                    if (i + 1 < argc) {
+                        // Si l'utilisateur a spécifié le type d'algorithme
+                        if (strcmp(argv[i + 1], "-t") == 0 || strcmp(argv[i + 1], "--type") == 0) {
                             i++;
+                            if (i + 1 < argc) {
+                                if (strcmp(argv[i + 1], "cours") == 0) {
+                                    type = "cours";
+                                } else if (strcmp(argv[i + 1], "perso") == 0) {
+                                    type = "perso";
+                                } else if (strcmp(argv[i + 1], "1") == 0) {
+                                    type = "1";
+                                } else {
+                                    return help(MAZE_COMMAND_ERROR);
+                                }
+                                i++;
+                            }
+                            std::cout << "Type : " << type << std::endl;
                         }
-                        std::cout << "Type : " << type << std::endl;
                     }
-                }
-                if (i + 1 < argc) {
-                    // Si l'utilisateur a spécifié les dimensions du labyrinthe
-                    if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
-                        i++;
-                        if (i + 2 < argc) {
-                            x = atoi(argv[i + 1]);
-                            y = atoi(argv[i + 2]);
-                            i += 2;
+                    if (i + 1 < argc) {
+                        // Si l'utilisateur a spécifié les dimensions du labyrinthe
+                        if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
+                            i++;
+                            if (i + 2 < argc) {
+                                x = atoi(argv[i + 1]);
+                                y = atoi(argv[i + 2]);
+                                i += 2;
+                            }
+                            std::cout << "Dimension : " << x << "x" << y << std::endl;
                         }
-                        std::cout << "Dimension : " << x << "x" << y << std::endl;
                     }
-                }
-                if (i + 1 < argc) {
-                    // Si l'utilisateur a spécifié que le labyrinthe n'est pas parfait
-                    if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
-                        perfect = false;
-                        i++;
-                        std::cout << "Unperfect" << std::endl;
+                    if (i + 1 < argc) {
+                        // Si l'utilisateur a spécifié que le labyrinthe n'est pas parfait
+                        if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
+                            perfect = false;
+                            i++;
+                            std::cout << "Unperfect" << std::endl;
+                        }
                     }
                 }
                 generateMaze(&maze, type, x, y, perfect);
