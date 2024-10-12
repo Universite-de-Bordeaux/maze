@@ -3,6 +3,7 @@
 #include "stdlib.h"
 #include <cstdlib>
 #include "var.hpp"
+#include <iostream>
 
 Maze::Maze() {
     Maze(0, 0);
@@ -14,14 +15,7 @@ Maze::Maze(int width, int height) {
 }
 
 Maze::~Maze() {
-    if (this->cells != nullptr) {
-        for(int x = 0; x < this->width; x++) {
-            for(int y = 0; y < this->height; y++) {
-                delete this->cells[y*this->width+x];
-            }
-        }
-        free(this->cells);
-    }
+    this->freeMaze();
 }
 
 int Maze::getWidth() const {
@@ -69,10 +63,11 @@ void Maze::generate() {
     if (this->cells != nullptr) {
         this->freeMaze();
     }
-    this->cells = (Cell**)malloc(this->width*this->height*sizeof(Cell*));
+    this->cells = new Cell*[this->width*this->height];
     for(int x = 0; x < this->width; x++) {
         for(int y = 0; y < this->height; y++) {
-            this->cells[y*this->width+x] = new Cell(x, y);
+            Cell *cell = new Cell(x, y);
+            this->cells[y*this->width+x] = cell;
         }
     }
     initNeighborsCells();
@@ -83,16 +78,15 @@ bool Maze::addWall(int x, int y, bool isHorizontal) {
         return false;
     }
     Cell *cell = this->cells[y*this->width+x];
-    Wall wall = (Wall*)malloc(sizeof(Wall));
-    wall = new Wall(isHorizontal);
+    Wall *wall = new Wall(isHorizontal);
     if (isHorizontal) {
-        cell->setWall(MAZE_CELL_BOTTOM, &wall);
-        cell->getNeighbor(MAZE_CELL_BOTTOM)->setWall(MAZE_CELL_TOP, &wall);
+        cell->setWall(MAZE_CELL_BOTTOM, wall);
+        cell->getNeighbor(MAZE_CELL_BOTTOM)->setWall(MAZE_CELL_TOP, wall);
         cell->getNeighbor(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_CELL_TOP, nullptr);
         cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr);
     } else {
-        cell->setWall(MAZE_CELL_RIGHT, &wall);
-        cell->getNeighbor(MAZE_CELL_RIGHT)->setWall(MAZE_CELL_LEFT, &wall);
+        cell->setWall(MAZE_CELL_RIGHT, wall);
+        cell->getNeighbor(MAZE_CELL_RIGHT)->setWall(MAZE_CELL_LEFT, wall);
         cell->getNeighbor(MAZE_CELL_RIGHT)->setNeighbor(MAZE_CELL_LEFT, nullptr);
         cell->setNeighbor(MAZE_CELL_RIGHT, nullptr);
     }
@@ -131,15 +125,14 @@ void Maze::freeMaze() {
         for(int x = 0; x < this->width; x++) {
             for(int y = 0; y < this->height; y++) {
                 Cell *cell = this->cells[y*this->width+x];
-                if (cell->getWall(MAZE_CELL_RIGHT) != nullptr) {
-                    free (cell->getWall(MAZE_CELL_RIGHT));
-                }
-                if (cell->getWall(MAZE_CELL_BOTTOM) != nullptr) {
-                    free (cell->getWall(MAZE_CELL_BOTTOM));
-                }
-                delete cell;
+                // if (cell->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                //     delete (cell->getWall(MAZE_CELL_RIGHT));
+                // }
+                // if (cell->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                //     delete (cell->getWall(MAZE_CELL_BOTTOM));
+                // }
             }
         }
-        free(this->cells);
+        delete[]this->cells;
     }
 }

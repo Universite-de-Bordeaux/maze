@@ -124,7 +124,7 @@ void Cell::freeWall(int i) {
         return;
     }
     if (this->getWall(i) != nullptr) {
-        free (this->walls[i]);
+        delete (this->walls[i]);
     }
 }
 

@@ -1,9 +1,11 @@
 #include "writer.hpp"
 #include <ios>
 #include <ostream>
+#include <iostream>
 
 void write(Maze * maze, char *file) {
     // ouverture du fichier
+    std::cout << "Writing maze to file " << file << std::endl;
     std::ofstream new_file;
     new_file.open(file, std::ios_base::out);
     // récupération de largeur et hauteur

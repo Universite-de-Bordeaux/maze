@@ -13,21 +13,21 @@
 /**
  * Affiche l'aide
  */
- void help() {
-     std::cout << "Usage:./main.out [-option] <instance_file>" << std::endl;
-     std::cout << "Options:" << std::endl;
-     std::cout << "-h ou --help : Affiche cette aide" << std::endl;
-     std::cout << "-s ou --show : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
-     std::cout << "-o ou --output <fichier> : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)" << std::endl;
-     std::cout << "-i ou --input <fichier> : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)" << std::endl;
-     std::cout << "-c ou --clear : Efface le(s) labyrinthe(s) en mémoire" << std::endl;
-     std::cout << "-g ou --generate : Génère un labyrinthe" << std::endl;
-     std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, par défaut : cours)" << std::endl;
-     std::cout << "  -d ou --dimension <x> <y> : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)" << std::endl;
-     std::cout << "  -u ou --unperfect : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)" << std::endl;
-     std::cout << "-r ou --resolve : Résout un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
-     std::cout << "  -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)" << std::endl;
- }
+void help() {
+    std::cout << "Usage:./main.out [-option] <instance_file>" << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout << "-h ou --help : Affiche cette aide" << std::endl;
+    std::cout << "-s ou --show : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
+    std::cout << "-o ou --output <fichier> : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)" << std::endl;
+    std::cout << "-i ou --input <fichier> : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)" << std::endl;
+    std::cout << "-c ou --clear : Efface le(s) labyrinthe(s) en mémoire" << std::endl;
+    std::cout << "-g ou --generate : Génère un labyrinthe" << std::endl;
+    std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, par défaut : cours)" << std::endl;
+    std::cout << "  -d ou --dimension <x> <y> : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)" << std::endl;
+    std::cout << "  -u ou --unperfect : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)" << std::endl;
+    std::cout << "-r ou --resolve : Résout un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
+    std::cout << "  -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)" << std::endl;
+}
 
 /**
  * Affiche l'aide et retourne le code d'erreur
@@ -48,16 +48,6 @@ int help(std::string a, int b) {
     std::cout << "Error : " << a << std::endl;
     help();
     return b;
-}
-
-/**
- * Commande -o
- * @param file Fichier
- */
-void writeMaze(char *file, Maze *maze) {
-    std::cout << "Write" << std::endl;
-    file = file;
-    write(maze, file);
 }
 
 /**
@@ -133,7 +123,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                writeMaze(argv[i + 1], &maze);
+                write(&maze, argv[i + 1]);
                 i++;
             }
             // Si l'utilisateur veut charger un labyrinthe depuis un fichier
@@ -154,7 +144,7 @@ int main(int argc, char *argv[]) {
             // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
-                maze = Maze();
+                // maze.freeMaze();
                 mazeLoaded = false;
             }
             // Si l'utilisateur veut générer un labyrinthe
