@@ -138,10 +138,10 @@ class Cell {
         void freeWalls();
 
     private:
-        int x, y; ///< Coordonnées de la cellule
-        Wall *walls[4]; ///< Murs de la cellule
-        Cell *neighbors[4]; ///< Voisins de la cellule
-        bool alreadyVisited = false;
+        int x_, y_; ///< Coordonnées de la cellule
+        Wall *walls_[4]; ///< Murs de la cellule
+        Cell *neighbors_[4]; ///< Voisins de la cellule
+        bool alreadyVisited_ = false;
 };
 
 #endif // CELL_H
