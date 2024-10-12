@@ -1,7 +1,6 @@
 #include "algo_1.hpp"
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 
 struct start {
     bool left;

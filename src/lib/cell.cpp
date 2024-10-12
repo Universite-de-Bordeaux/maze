@@ -1,8 +1,5 @@
 #include "cell.hpp"
-#include "var.hpp"
 #include "wall.hpp"
-#include <iostream>
-#include <iterator>
 #include <stdlib.h>
 
 Cell::Cell() {
@@ -14,7 +11,7 @@ Cell::Cell(int x, int y) {
 }
 
 Cell::~Cell() {
-    //dtor
+    this->freeWalls();
 }
 
 int Cell::getX() const {
@@ -128,5 +125,11 @@ void Cell::freeWall(int i) {
     }
     if (this->getWall(i) != nullptr) {
         free (this->walls[i]);
+    }
+}
+
+void Cell::freeWalls() {
+    for (int i = 0; i < 4; i++) {
+        this->freeWall(i);
     }
 }

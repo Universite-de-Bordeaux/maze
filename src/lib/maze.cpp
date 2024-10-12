@@ -2,7 +2,6 @@
 #include "cell.hpp"
 #include "stdlib.h"
 #include <cstdlib>
-#include <iostream>
 #include "var.hpp"
 
 Maze::Maze() {
@@ -45,7 +44,7 @@ Wall *Maze::getWall(int x, int y, bool isHorizontal) {
     if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
         return nullptr;
     }
-    Cell *cell = this->cells[y*this->width+x];
+    Cell *cell = this->getCell(x, y);
     if (isHorizontal) {
         return cell->getWall(MAZE_CELL_BOTTOM);
     } else {
@@ -68,14 +67,7 @@ void Maze::setCell(int x, int y, Cell *cell) {
 
 void Maze::generate() {
     if (this->cells != nullptr) {
-        for(int x = 0; x < this->width; x++) {
-            for(int y = 0; y < this->height; y++) {
-                Cell *cell = this->cells[y*this->width+x];
-                cell->freeWall(MAZE_CELL_RIGHT);
-                cell->freeWall(MAZE_CELL_BOTTOM);
-            }
-        }
-        free(this->cells);
+        this->freeMaze();
     }
     this->cells = (Cell**)malloc(this->width*this->height*sizeof(Cell*));
     for(int x = 0; x < this->width; x++) {
@@ -138,7 +130,14 @@ void Maze::freeMaze() {
     if (this->cells != nullptr) {
         for(int x = 0; x < this->width; x++) {
             for(int y = 0; y < this->height; y++) {
-                delete this->cells[y*this->width+x];
+                Cell *cell = this->cells[y*this->width+x];
+                if (cell->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                    free (cell->getWall(MAZE_CELL_RIGHT));
+                }
+                if (cell->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                    free (cell->getWall(MAZE_CELL_BOTTOM));
+                }
+                delete cell;
             }
         }
         free(this->cells);
