@@ -61,8 +61,8 @@ class Wall {
         void setNeighbor(int, Wall*);
 
     private:
-        bool isHorizontal; ///< Booléen indiquant si le mur est horizontal
-        Wall* neighbors[6]; ///< Tableau de pointeurs sur les voisins du mur
+        bool isHorizontal_; ///< Booléen indiquant si le mur est horizontal
+        Wall* neighbors_[6]; ///< Tableau de pointeurs sur les voisins du mur
 };
 
 #endif

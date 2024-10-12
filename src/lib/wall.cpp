@@ -5,7 +5,7 @@ Wall::Wall() {
 }
 
 Wall::Wall(bool isHorizontal) {
-    this->isHorizontal = isHorizontal;
+    isHorizontal_ = isHorizontal;
 }
 
 Wall::~Wall() {
@@ -13,27 +13,27 @@ Wall::~Wall() {
 }
 
 bool Wall::getIsHorizontal() const {
-    return this->isHorizontal;
+    return isHorizontal_;
 }
 
 Wall** Wall::getNeighbors() {
-    return this->neighbors;
+    return neighbors_;
 }
 
 Wall* Wall::getNeighbor(int i) {
-    return this->neighbors[i];
+    return neighbors_[i];
 }
 
 void Wall::setIsHorizontal(bool isHorizontal) {
-    this->isHorizontal = isHorizontal;
+    isHorizontal_ = isHorizontal;
 }
 
 void Wall::setNeighbors(Wall* neighbors[6]) {
     for(int i = 0; i < 6; i++) {
-        this->neighbors[i] = neighbors[i];
+        neighbors_[i] = neighbors[i];
     }
 }
 
 void Wall::setNeighbor(int i, Wall* wall) {
-    this->neighbors[i] = wall;
+    neighbors_[i] = wall;
 }
