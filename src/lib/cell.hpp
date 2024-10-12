@@ -128,6 +128,11 @@ class Cell {
         void setAlreadyVisited(bool);
 
         /**
+        @brief Supprime un mur de la cellule
+        @param int Mur à supprimer
+        */
+        void freeWall(int);
+        /**
         @brief Supprime les murs de la cellule
         */
         void freeWalls();

@@ -7,6 +7,7 @@
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
 #include "lib/algo_cours.hpp"
+#include "lib/algo_1.hpp"
 #include "lib/writer.hpp"
 
 /**
@@ -70,6 +71,7 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
     // TODO : Générer un labyrinthe
     if (type == "cours") algo_cours(maze, x, y, perfect);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
+    else if ((type == "1")) algo_1(maze, x, y, perfect);
     else exit(MAZE_COMMAND_ERROR);
 }
 
@@ -152,7 +154,7 @@ int main(int argc, char *argv[]) {
             // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
-                maze.freeMaze();
+                maze = Maze();
                 mazeLoaded = false;
             }
             // Si l'utilisateur veut générer un labyrinthe
@@ -170,6 +172,8 @@ int main(int argc, char *argv[]) {
                                 type = "cours";
                             } else if (strcmp(argv[i + 1], "perso") == 0) {
                                 type = "perso";
+                            } else if (strcmp(argv[i + 1], "1") == 0) {
+                                type = "1";
                             } else {
                                 return help(MAZE_COMMAND_ERROR);
                             }

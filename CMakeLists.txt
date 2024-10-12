@@ -12,6 +12,7 @@ set(SOURCE_FILES
     src/lib/wall.cpp
     src/lib/show.cpp
     src/lib/algo_cours.cpp
+    src/lib/algo_1.cpp
     src/lib/writer.cpp
 )
 
@@ -45,8 +46,15 @@ add_custom_target(run_test
     DEPENDS ${PROJECT_NAME}
 )
 
-add_custom_target(run_algo
+add_custom_target(run_algo_cours
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "20" "10" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_algo_1
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "20" "10" "-s" "-o" "src/instances/tmp/maze1_algo1.txt"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "20" "20" "-s" "-o" "src/instances/tmp/maze2_algo1.txt"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-s" "-c" "-g" "-t" "1" "-s"
     DEPENDS ${PROJECT_NAME}
 )
 

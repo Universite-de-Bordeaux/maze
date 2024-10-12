@@ -1,6 +1,9 @@
 #include "cell.hpp"
 #include "var.hpp"
 #include "wall.hpp"
+#include <iostream>
+#include <iterator>
+#include <stdlib.h>
 
 Cell::Cell() {
     Cell(0, 0);
@@ -117,4 +120,13 @@ void Cell::setWall(int i, Wall* wall) {
 
 void Cell::setAlreadyVisited(bool alreadyVisited) {
     this->alreadyVisited = alreadyVisited;
+}
+
+void Cell::freeWall(int i) {
+    if (i < 0 || i > 3) {
+        return;
+    }
+    if (this->getWall(i) != nullptr) {
+        free (this->walls[i]);
+    }
 }

@@ -2,6 +2,7 @@
 #include "cell.hpp"
 #include "stdlib.h"
 #include <cstdlib>
+#include <iostream>
 #include "var.hpp"
 
 Maze::Maze() {
@@ -40,6 +41,18 @@ Cell *Maze::getCell(int x, int y) const {
     return this->cells[y*this->width+x];
 }
 
+Wall *Maze::getWall(int x, int y, bool isHorizontal) {
+    if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
+        return nullptr;
+    }
+    Cell *cell = this->cells[y*this->width+x];
+    if (isHorizontal) {
+        return cell->getWall(MAZE_CELL_BOTTOM);
+    } else {
+        return cell->getWall(MAZE_CELL_RIGHT);
+    }
+}
+
 void Maze::setWidthHeight(int width, int height) {
     this->width = width, this->height = height;
     generate();
@@ -55,6 +68,13 @@ void Maze::setCell(int x, int y, Cell *cell) {
 
 void Maze::generate() {
     if (this->cells != nullptr) {
+        for(int x = 0; x < this->width; x++) {
+            for(int y = 0; y < this->height; y++) {
+                Cell *cell = this->cells[y*this->width+x];
+                cell->freeWall(MAZE_CELL_RIGHT);
+                cell->freeWall(MAZE_CELL_BOTTOM);
+            }
+        }
         free(this->cells);
     }
     this->cells = (Cell**)malloc(this->width*this->height*sizeof(Cell*));
