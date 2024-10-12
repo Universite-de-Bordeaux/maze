@@ -1,4 +1,5 @@
 #include "cell.hpp"
+#include "var.hpp"
 #include "wall.hpp"
 #include <stdlib.h>
 
@@ -7,7 +8,12 @@ Cell::Cell() {
 }
 
 Cell::Cell(int x, int y) {
+    Cell(x, y, -1, -1);
+}
+
+Cell::Cell(int x, int y, int width, int height) {
     x_ = x, y_ = y;
+    width_ = width, height_ = height;
 }
 
 Cell::~Cell() {
@@ -65,8 +71,13 @@ void Cell::getAbsoluteNeighbors(Cell** neighbors) {
 int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (neighbors_[i] != nullptr && !neighbors_[i]->isAlreadyVisited()) {
-            count++;
+        if (!((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
+                (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
+        ) && neighbors_[i] != nullptr) {
+            Cell* neighbor = neighbors_[i];
+            if (!(neighbor->isAlreadyVisited())) {
+                count++;
+            }
         }
     }
     return count;
@@ -75,9 +86,13 @@ int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
 void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (neighbors_[i] != nullptr && !neighbors_[i]->isAlreadyVisited()) {
-            neighbors[count] = neighbors_[i];
-            count++;
+        if (!((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
+                (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
+        )) {
+            if (neighbors_[i] != nullptr && !neighbors_[i]->isAlreadyVisited()) {
+                neighbors[count] = neighbors_[i];
+                count++;
+            }
         }
     }
 }

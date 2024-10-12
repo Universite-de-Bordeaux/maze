@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
             // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
                 std::cout << "Clear" << std::endl;
-                // maze.freeMaze();
+                maze.setWidthHeight(0, 0);
                 show.destroy();
                 mazeLoaded = false;
             }

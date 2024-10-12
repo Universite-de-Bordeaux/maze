@@ -15,16 +15,21 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
     if (show != nullptr) {
         show->update();
     }
-    if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
-        cell->setStatus(MAZE_STATUS_HOPELESS);
+    if (cell == nullptr) {
         return;
     }
     int numberOfNeighborsNotVisited = cell->getAbsoluteNumberOfNeighborsNotVisited();
+    if (numberOfNeighborsNotVisited <= 0) {
+        cell->setStatus(MAZE_STATUS_HOPELESS);
+        return;
+    }
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {
         Cell *neighbor = neighbors[i];
-        checkCell(maze, neighbor->getX(), neighbor->getY(), show);
+        if (neighbor != nullptr) {
+            checkCell(maze, neighbor->getX(), neighbor->getY(), show);
+        }
     }
     return;
 }

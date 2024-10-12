@@ -60,9 +60,9 @@ add_custom_target(run_checker
 )
 
 add_custom_target(run_algo_1
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-c" "-gs" "-t" "1"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-vs" "-c" "-gs" "-t" "1" "-vs"
     DEPENDS ${PROJECT_NAME}
 )
 

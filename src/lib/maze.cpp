@@ -65,7 +65,7 @@ void Maze::generate() {
     cells_ = new Cell*[width_*height_];
     for(int x = 0; x < width_; x++) {
         for(int y = 0; y < height_; y++) {
-            Cell *cell = new Cell(x, y);
+            Cell *cell = new Cell(x, y, width_, height_);
             cells_[y*width_+x] = cell;
         }
     }

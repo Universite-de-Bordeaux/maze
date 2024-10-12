@@ -21,6 +21,7 @@ class Cell {
         @param y Coordonnée y de la cellule
         */
         Cell(int, int);
+        Cell(int, int, int, int);
         /**
         @brief Destructeur
         */
@@ -150,6 +151,7 @@ class Cell {
 
     private:
         int x_, y_; ///< Coordonnées de la cellule
+        int width_, height_; ///< Largeur et hauteur du labirynthe
         Wall *walls_[4]; ///< Murs de la cellule
         Cell *neighbors_[4]; ///< Voisins de la cellule
         bool alreadyVisited_ = false;
