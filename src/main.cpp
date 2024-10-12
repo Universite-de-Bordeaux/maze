@@ -23,11 +23,13 @@ void help() {
     std::cout << "-i ou --input <fichier> : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)" << std::endl;
     std::cout << "-c ou --clear : Efface le(s) labyrinthe(s) en mémoire" << std::endl;
     std::cout << "-g ou --generate : Génère un labyrinthe" << std::endl;
-    std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, par défaut : cours)" << std::endl;
+    std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, 1, par défaut : cours)" << std::endl;
     std::cout << "  -d ou --dimension <x> <y> : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)" << std::endl;
     std::cout << "  -u ou --unperfect : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)" << std::endl;
     std::cout << "-r ou --resolve : Résout un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
     std::cout << "  -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)" << std::endl;
+    std::cout << "-v ou --verify : Vérifie si un labyrinthe est valide (nécessite un labyrinthe en mémoire)" << std::endl;
+    std::cout << "  -p ou --perfect : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)" << std::endl;
 }
 
 /**
@@ -110,18 +112,18 @@ int main(int argc, char *argv[]) {
                 show(&maze);
             }
             // Vérifie si le labyrinthe est valide
-            else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--check") == 0) {
+            else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verify") == 0) {
                 // Si aucun labyrinthe n'est chargé
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                bool perfect = true;
+                bool perfect = false;
                 if (i + 1 < argc) {
                     // Si l'utilisateur a spécifié le type d'algorithme
-                    if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
+                    if (strcmp(argv[i + 1], "-p") == 0 || strcmp(argv[i + 1], "--perfect") == 0) {
                         i++;
-                        perfect = false;
+                        perfect = true;
                     }
                 }
                 checker(&maze, perfect);

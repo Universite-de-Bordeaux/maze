@@ -53,9 +53,9 @@ add_custom_target(run_algo_cours
 )
 
 add_custom_target(run_checker
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-s" "-c"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-s" "-c"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-s" "-c"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-s" "-v"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-s" "-v"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-s" "-v"
     DEPENDS ${PROJECT_NAME}
 )
 

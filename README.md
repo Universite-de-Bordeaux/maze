@@ -50,7 +50,7 @@ L'utilisation de l'application est la suivante :
 #### Génération de labyrinthe
 
 * `-g` ou `--generate` : Génère un labyrinthe
-	+ `-t` ou `--type` `<type>` : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, par défaut : cours)
+	+ `-t` ou `--type` `<type>` : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, 1, par défaut : cours)
 	+ `-d` ou `--dimension` `<x> <y>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
 	+ `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
 
@@ -58,6 +58,11 @@ L'utilisation de l'application est la suivante :
 
 * `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
 	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)
+
+#### Vérification de labyrinthe
+
+* `-v` ou `--verify` : Vérifie si un labyrinthe est parfait (nécessite un labyrinthe en mémoire)
+  + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
 
 ### Codes d'erreur
 
