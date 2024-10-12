@@ -18,4 +18,13 @@
 #define MAZE_WALL_END 4 //> End wall
 #define MAZE_WALL_END_LEFT_BOTTOM 5 //> End wall left bottom
 
+#define MAZE_STATUS_IDLE 0 //> Idle cell
+#define MAZE_STATUS_IDLE_COLOR 0, 0, 0 //> Idle cell color
+#define MAZE_STATUS_VISITED 1 //> Visited cell
+#define MAZE_STATUS_VISITED_COLOR 0, 0, 128 //> Visited cell color
+#define MAZE_STATUS_HOPELESS 2 //> Hopeless cell
+#define MAZE_STATUS_HOPELESS_COLOR 0, 0, 255 //> Hopeless cell color
+#define MAZE_STATUS_TOO_MANY_NEIGHBORS 3 //> Too many neighbors cell
+#define MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR 255, 255, 0 //> Too many neighbors cell color
+
 #endif // MAZE_VAR_HPP

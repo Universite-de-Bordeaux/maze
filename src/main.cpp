@@ -23,12 +23,14 @@ void help() {
     std::cout << "-i ou --input <fichier> : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)" << std::endl;
     std::cout << "-c ou --clear : Efface le(s) labyrinthe(s) en mémoire" << std::endl;
     std::cout << "-g ou --generate : Génère un labyrinthe" << std::endl;
+    std::cout << "  -gs ou --generate-show : Génère un labyrinthe et l'affiche pendant la génération" << std::endl;
     std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, 1, par défaut : cours)" << std::endl;
     std::cout << "  -d ou --dimension <x> <y> : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)" << std::endl;
     std::cout << "  -u ou --unperfect : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)" << std::endl;
     std::cout << "-r ou --resolve : Résout un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
     std::cout << "  -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)" << std::endl;
     std::cout << "-v ou --verify : Vérifie si un labyrinthe est valide (nécessite un labyrinthe en mémoire)" << std::endl;
+    std::cout << "  -vs ou --verify-show : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)" << std::endl;
     std::cout << "  -p ou --perfect : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)" << std::endl;
 }
 
@@ -60,11 +62,11 @@ int help(std::string a, int b) {
  * @param y Dimension y
  * @param perfect Parfait
 */
-void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect) {
+void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show *show) {
     // TODO : Générer un labyrinthe
     if (type == "cours") algo_cours(maze, x, y, perfect);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
-    else if ((type == "1")) algo_1(maze, x, y, perfect);
+    else if ((type == "1")) algo_1(maze, x, y, perfect, show);
     else exit(MAZE_COMMAND_ERROR);
 }
 
@@ -114,15 +116,17 @@ int main(int argc, char *argv[]) {
                 while (show.isOpen()) {
                     show.update();
                 }
-                show.destroy();
+                // std::cout << "Show" << std::endl;
             }
             // Vérifie si le labyrinthe est valide
-            else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verify") == 0) {
+            else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verify") == 0 ||
+                strcmp(argv[i], "-vs") == 0 || strcmp(argv[i], "--verify-show") == 0) {
                 // Si aucun labyrinthe n'est chargé
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
+                bool isShow = (strcmp(argv[i], "-vs") == 0 || strcmp(argv[i], "--verify-show") == 0);
                 bool perfect = false;
                 if (i + 1 < argc) {
                     // Si l'utilisateur a spécifié le type d'algorithme
@@ -131,7 +135,16 @@ int main(int argc, char *argv[]) {
                         perfect = true;
                     }
                 }
-                checker(&maze, perfect);
+                if (isShow) {
+                    show.create();
+                    checker(&maze, perfect, &show);
+                    while (show.isOpen()) {
+                        show.update();
+                    }
+                }
+                else {
+                    checker(&maze, perfect, nullptr);
+                }
             }
             // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
@@ -174,7 +187,9 @@ int main(int argc, char *argv[]) {
                 mazeLoaded = false;
             }
             // Si l'utilisateur veut générer un labyrinthe
-            else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generate") == 0) {
+            else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generate") == 0 ||
+                strcmp(argv[i], "-gs") == 0 || strcmp(argv[i], "--generate-show") == 0) {
+                bool isShow = (strcmp(argv[i], "-gs") == 0 || strcmp(argv[i], "--generate-show") == 0);
                 std::string type = "cours";
                 int x = 10, y = 10;
                 bool perfect = true;
@@ -223,7 +238,20 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
-                generateMaze(&maze, type, x, y, perfect);
+
+                maze.setWidthHeight(x, y);
+                if (isShow) {
+                    show.create();
+                    generateMaze(&maze, type, x, y, perfect, &show);
+                    while (show.isOpen()) {
+                        show.update();
+                    }
+                }
+                else {
+                    std::cout << "Generate" << std::endl;
+                    generateMaze(&maze, type, x, y, perfect, nullptr);
+                }
+
                 mazeLoaded = true;
             }
             // Si l'utilisateur veut résoudre un labyrinthe

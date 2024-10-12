@@ -20,7 +20,6 @@ static Cell* nextNeighbor (Cell* current) {
 }
 
 void algo_cours(Maze* maze, int width, int height, bool perfect) {
-    maze->setWidthHeight(width, height);
     struct coordinate cellHistory[width * height];
     Cell *cellStart = maze->getCell(3, 2);
     nextNeighbor(cellStart);

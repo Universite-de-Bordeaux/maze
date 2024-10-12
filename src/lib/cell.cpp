@@ -82,6 +82,10 @@ void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
     }
 }
 
+int Cell::getStatus() {
+    return status_;
+}
+
 void Cell::setX(int x) {
     x_ = x;
 }
@@ -117,6 +121,10 @@ void Cell::setWall(int i, Wall* wall) {
 
 void Cell::setAlreadyVisited(bool alreadyVisited) {
     alreadyVisited_ = alreadyVisited;
+}
+
+void Cell::setStatus(int status) {
+    status_ = status;
 }
 
 void Cell::freeWall(int i) {

@@ -2,6 +2,7 @@
 #define CELL_HPP
 
 #include "wall.hpp"
+#include "var.hpp"
 
 /**
 @class Cell
@@ -82,6 +83,11 @@ class Cell {
         @param neighbors Tableau de cellules dans lequel stocker les voisins
         */
         void getAbsoluteNeighborsNotVisited(Cell**);
+        /**
+        @brief Récupère le statut de la cellule
+        @return Le statut de la cellule
+        */
+        int getStatus();
 
         /**
         @brief Définit la coordonnée x de la cellule
@@ -126,6 +132,11 @@ class Cell {
         @param bool Vrai si la cellule a déjà été visitée
         */
         void setAlreadyVisited(bool);
+        /**
+        @brief Définit le statut de la cellule
+        @param int Nouveau statut de la cellule
+        */
+        void setStatus(int);
 
         /**
         @brief Supprime un mur de la cellule
@@ -142,6 +153,7 @@ class Cell {
         Wall *walls_[4]; ///< Murs de la cellule
         Cell *neighbors_[4]; ///< Voisins de la cellule
         bool alreadyVisited_ = false;
+        int status_ = MAZE_STATUS_IDLE;
 };
 
 #endif // CELL_H
