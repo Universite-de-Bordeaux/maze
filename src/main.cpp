@@ -116,7 +116,15 @@ int main(int argc, char *argv[]) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                checker(&maze);
+                bool perfect = true;
+                if (i + 1 < argc) {
+                    // Si l'utilisateur a spécifié le type d'algorithme
+                    if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
+                        i++;
+                        perfect = false;
+                    }
+                }
+                checker(&maze, perfect);
             }
             // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
