@@ -81,7 +81,6 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
 }
 
 void checker(Maze *maze, bool perfect, Show *show) {
-    std::cout << "Checking maze..." << std::endl;
     bool unperfect = false;
     if (perfect) {
         checkCellPerfect(maze, 0, 0, 0, 0, &unperfect, show);

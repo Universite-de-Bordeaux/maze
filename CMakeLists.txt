@@ -77,8 +77,9 @@ add_custom_target(run_solver_1
 )
 
 add_custom_target(run_complex
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "250" "250" "-rs" "-a" "1" "-o" "src/instances/tmp/maze_complex_algo1.txt" "-cm" "-vs"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "250" "250" "-rs" "-a" "1r" "-o" "src/instances/tmp/maze_complex_algo2.txt" "-cm" "-vs"
+    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "250" "250" "-r" "-a" "1" "-o" "src/instances/tmp/maze_complex_algo1.txt" "-cm" "-v"
+    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "250" "250" "-r" "-a" "1r" "-o" "src/instances/tmp/maze_complex_algo2.txt" "-cm" "-v"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "1000" "1000" "-o" "src/instances/tmp/maze_complex_algo3.txt" "-r" "-a" "1" "-cm" "-v"
     DEPENDS ${PROJECT_NAME}
 )
 

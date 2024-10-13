@@ -1,7 +1,9 @@
 #include "solver_1.hpp"
 #include "var.hpp"
+#include <iostream>
 
 static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLeft) {
+    // std::cout << "x: " << x << " y: " << y << " direction: " << direction << " toLeft: " << toLeft << std::endl;
     if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
         if (show != nullptr && show->isOpen()) {
             show->update();
@@ -41,8 +43,9 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLe
         // std::cout << "index: " << index << " direction: " << direction << " i: " << i << std::endl;
         if (cell->isNeighbor(index)) {
             Cell *neighbor = cell->getNeighbor(index);
-            if (!neighbor->isAlreadyVisited()) {
-                if (solve(maze, show, neighbor->getX(), neighbor->getY(), (index + 2) % 4, toLeft)) {
+            if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
+                bool result = solve(maze, show, neighbor->getX(), neighbor->getY(), (index + 2) % 4, toLeft);
+                if (result) {
                     cell->setStatus(MAZE_STATUS_WAY_OUT);
                     return true;
                 }

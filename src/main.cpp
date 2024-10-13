@@ -11,6 +11,7 @@
 #include "lib/writer.hpp"
 #include "lib/checker.hpp"
 #include "lib/solver_1.hpp"
+#include <ctime>
 
 /**
  * Affiche l'aide
@@ -67,11 +68,14 @@ int help(std::string a, int b) {
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show *show) {
     std::cout << "Generating..." << std::endl;
     std::cout << "Params : type=" << type << ", x=" << x << ", y=" << y << ", perfect=" << perfect << std::endl;
+    clock_t start = clock();
     if (type == "cours") algo_cours(maze, x, y, perfect);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
     else if ((type == "1")) algo_1(maze, x, y, perfect, show);
     else exit(MAZE_COMMAND_ERROR);
-    std::cout << "Generated" << std::endl;
+    clock_t end = clock();
+    // en millisecondes
+    std::cout << "Generated in " << (double)(end - start) / CLOCKS_PER_SEC * 1000 << "ms" << std::endl;
 }
 
 /**
@@ -82,10 +86,20 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
 void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
     std::cout << "Resolving..." << std::endl;
     std::cout << "Params : algorithm=" << algorithm << std::endl;
+    clock_t start = clock();
     if (algorithm == "1r") solver_1(maze, show, false);
     else if (algorithm == "1") solver_1(maze, show, true);
     else exit(MAZE_COMMAND_ERROR);
-    std::cout << "Resolved" << std::endl;
+    clock_t end = clock();
+    std::cout << "Resolved in " << (double)(end - start) / CLOCKS_PER_SEC * 1000 << "ms" << std::endl;
+}
+
+void checkMaze(Maze *maze, bool perfect, Show *show) {
+    std::cout << "Checking..." << std::endl;
+    clock_t start = clock();
+    checker(maze, perfect, show);
+    clock_t end = clock();
+    std::cout << "Checked in " << (double)(end - start) / CLOCKS_PER_SEC * 1000 << "ms" << std::endl;
 }
 
 /**
@@ -143,13 +157,13 @@ int main(int argc, char *argv[]) {
                 }
                 if (isShow) {
                     show.create();
-                    checker(&maze, perfect, &show);
+                    checkMaze(&maze, perfect, &show);
                     while (show.isOpen()) {
                         show.update();
                     }
                 }
                 else {
-                    checker(&maze, perfect, nullptr);
+                    checkMaze(&maze, perfect, nullptr);
                 }
             }
             // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire

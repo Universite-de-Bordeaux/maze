@@ -22,8 +22,8 @@ Show::Show(Maze* maze) {
 void Show::create() {
     cellSize_ = 50;
     sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
-    if (maze_->getWidth() * cellSize_ > desktopSize.width *.9 || maze_->getHeight() * cellSize_ > desktopSize.height *.9) {
-        cellSize_ = std::min(desktopSize.width / maze_->getWidth(), desktopSize.height / maze_->getHeight()) *.9;
+    if (maze_->getWidth() * cellSize_ > desktopSize.width * MAZE_MAX_WINDOW_RATIO || maze_->getHeight() * cellSize_ > desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
+        cellSize_ = std::min(desktopSize.width / maze_->getWidth(), desktopSize.height / maze_->getHeight()) * MAZE_MAX_WINDOW_RATIO;
     }
     renderWindow_ = new sf::RenderWindow(sf::VideoMode(maze_->getWidth() * cellSize_, maze_->getHeight() * cellSize_), "Maze");
     renderWindow_->setVerticalSyncEnabled(true);

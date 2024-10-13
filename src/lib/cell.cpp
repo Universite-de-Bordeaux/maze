@@ -1,6 +1,7 @@
 #include "cell.hpp"
 #include "var.hpp"
 #include "wall.hpp"
+#include <iostream>
 #include <stdlib.h>
 
 Cell::Cell() {
