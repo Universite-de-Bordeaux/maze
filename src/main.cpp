@@ -64,11 +64,13 @@ int help(std::string a, int b) {
  * @param perfect Parfait
 */
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show *show) {
-    // TODO : Générer un labyrinthe
+    std::cout << "Generating..." << std::endl;
+    std::cout << "Params : type=" << type << ", x=" << x << ", y=" << y << ", perfect=" << perfect << std::endl;
     if (type == "cours") algo_cours(maze, x, y, perfect);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
     else if ((type == "1")) algo_1(maze, x, y, perfect, show);
     else exit(MAZE_COMMAND_ERROR);
+    std::cout << "Generated" << std::endl;
 }
 
 /**
@@ -77,11 +79,12 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
  * @param algorithm Algorithme
  */
 void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
-    std::cout << "Resolve" << std::endl;
-    // TODO : Résoudre un labyrinthe
+    std::cout << "Resolving..." << std::endl;
+    std::cout << "Params : algorithm=" << algorithm << std::endl;
     if (algorithm == "1r") solver_1(maze, show, false);
     else if (algorithm == "1") solver_1(maze, show, true);
     else exit(MAZE_COMMAND_ERROR);
+    std::cout << "Resolved" << std::endl;
 }
 
 /**
@@ -216,7 +219,6 @@ int main(int argc, char *argv[]) {
                                 }
                                 i++;
                             }
-                            std::cout << "Type : " << type << std::endl;
                         }
                     }
                     if (i + 1 < argc) {
@@ -228,7 +230,6 @@ int main(int argc, char *argv[]) {
                                 y = atoi(argv[i + 2]);
                                 i += 2;
                             }
-                            std::cout << "Dimension : " << x << "x" << y << std::endl;
                         }
                     }
                     if (i + 1 < argc) {
@@ -236,7 +237,6 @@ int main(int argc, char *argv[]) {
                         if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
                             perfect = false;
                             i++;
-                            std::cout << "Unperfect" << std::endl;
                         }
                     }
                 }
@@ -250,10 +250,8 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 else {
-                    std::cout << "Generate" << std::endl;
                     generateMaze(&maze, type, x, y, perfect, nullptr);
                 }
-
                 mazeLoaded = true;
             }
             // Si l'utilisateur veut résoudre un labyrinthe
