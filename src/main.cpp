@@ -23,6 +23,7 @@ void help() {
     std::cout << "-o ou --output <fichier> : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)" << std::endl;
     std::cout << "-i ou --input <fichier> : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)" << std::endl;
     std::cout << "-c ou --clear : Efface le(s) labyrinthe(s) en mémoire" << std::endl;
+    std::cout << "  -cm ou --clear-maze : Netttoie le labyrinthe en mémoire" << std::endl;
     std::cout << "-g ou --generate : Génère un labyrinthe" << std::endl;
     std::cout << "  -gs ou --generate-show : Génère un labyrinthe et l'affiche pendant la génération" << std::endl;
     std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, 1, par défaut : cours)" << std::endl;
@@ -185,11 +186,21 @@ int main(int argc, char *argv[]) {
                 i++;
             }
             // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
-            else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0) {
+            else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0 ||
+                strcmp(argv[i], "-cm") == 0 || strcmp(argv[i], "--clear-maze") == 0) {
+                if (!mazeLoaded) {
+                    std::cout << "No maze loaded" << std::endl;
+                    return 1;
+                }
                 std::cout << "Clear" << std::endl;
-                maze.setWidthHeight(0, 0);
-                show.destroy();
-                mazeLoaded = false;
+                if (strcmp(argv[i], "-cm") == 0 || strcmp(argv[i], "--clear-maze") == 0) {
+                    maze.clearMaze();
+                }
+                else {
+                    maze.setWidthHeight(0, 0);
+                    mazeLoaded = false;
+                    show.destroy();
+                }
             }
             // Si l'utilisateur veut générer un labyrinthe
             else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generate") == 0 ||

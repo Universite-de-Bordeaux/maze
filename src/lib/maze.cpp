@@ -199,3 +199,13 @@ void Maze::freeMaze() {
     start_[0] = defaultStartX, start_[1] = defaultStartY;
     end_[0] = defaultEndX(width_), end_[1] = defaultEndY(height_);
 }
+
+void Maze::clearMaze() {
+    for(int x = 0; x < width_; x++) {
+        for(int y = 0; y < height_; y++) {
+            Cell *cell = cells_[y*width_+x];
+            cell->setAlreadyVisited(false);
+            cell->setStatus(MAZE_STATUS_IDLE);
+        }
+    }
+}

@@ -168,6 +168,10 @@ class Maze {
         @brief Libère la mémoire allouée pour les cellules du labyrinthe
         */
         void freeMaze();
+        /**
+        @brief Nettoie le labyrinthe
+        */
+        void clearMaze();
 
 
     private:
