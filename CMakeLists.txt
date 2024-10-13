@@ -68,11 +68,17 @@ add_custom_target(run_algo_1
 )
 
 add_custom_target(run_solver_1
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "100" "100" "-s" "-r" "-a" "1" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "100" "100" "-r" "-a" "1" "-s"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-s" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-rs" "-a" "1" "-c" "-gs" "-t" "1" "-rs" "-a" "1"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_complex
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "250" "250" "-rs" "-a" "1" "-o" "src/instances/tmp/maze_complex_algo1.txt"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "250" "250" "-rs" "-a" "1r" "-o" "src/instances/tmp/maze_complex_algo2.txt"
     DEPENDS ${PROJECT_NAME}
 )
 

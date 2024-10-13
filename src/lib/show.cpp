@@ -73,14 +73,14 @@ void Show::draw() {
 
             // Dessin des murs
             if (cell->getWall(MAZE_CELL_BOTTOM)) {
-                sf::RectangleShape wall(sf::Vector2f(cellSize_, 2));
-                wall.setPosition(x * cellSize_, y * cellSize_ + cellSize_ - 2);
+                sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
+                wall.setPosition(x * cellSize_, y * cellSize_ + cellSize_ - 1);
                 wall.setFillColor(sf::Color::White);
                 renderWindow_->draw(wall);
             }
             if (cell->getWall(MAZE_CELL_RIGHT)) {
-                sf::RectangleShape wall(sf::Vector2f(2, cellSize_));
-                wall.setPosition(x * cellSize_ + cellSize_ - 2, y * cellSize_);
+                sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
+                wall.setPosition(x * cellSize_ + cellSize_ - 1, y * cellSize_);
                 wall.setFillColor(sf::Color::White);
                 renderWindow_->draw(wall);
             }

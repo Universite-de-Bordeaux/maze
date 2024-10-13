@@ -38,11 +38,18 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
                 }
             }
-            if (show != nullptr) {
-                show->update();
+            if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
+                if (show != nullptr && show->isOpen()) {
+                    show->update();
+                }
             }
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
+        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+            if (show != nullptr && show->isOpen()) {
+                show->update();
+            }
+        }
     }
 }
 
