@@ -15,6 +15,7 @@ set(SOURCE_FILES
     src/lib/algo_1.cpp
     src/lib/writer.cpp
     src/lib/checker.cpp
+    src/lib/solver_1.cpp
 )
 
 set(INCLUDE_DIRS
@@ -63,6 +64,13 @@ add_custom_target(run_algo_1
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-vs" "-c" "-gs" "-t" "1" "-vs"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_solver_1
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "100" "100" "-s" "-r" "-a" "1" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-rs" "-a" "1"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-rs" "-a" "1" "-c" "-gs" "-t" "1" "-rs" "-a" "1"
     DEPENDS ${PROJECT_NAME}
 )
 

@@ -10,6 +10,7 @@
 #include "lib/algo_1.hpp"
 #include "lib/writer.hpp"
 #include "lib/checker.hpp"
+#include "lib/solver_1.hpp"
 
 /**
  * Affiche l'aide
@@ -28,7 +29,7 @@ void help() {
     std::cout << "  -d ou --dimension <x> <y> : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)" << std::endl;
     std::cout << "  -u ou --unperfect : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)" << std::endl;
     std::cout << "-r ou --resolve : Résout un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
-    std::cout << "  -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)" << std::endl;
+    std::cout << "  -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (1, 1d, par défaut : 1)" << std::endl;
     std::cout << "-v ou --verify : Vérifie si un labyrinthe est valide (nécessite un labyrinthe en mémoire)" << std::endl;
     std::cout << "  -vs ou --verify-show : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)" << std::endl;
     std::cout << "  -p ou --perfect : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)" << std::endl;
@@ -75,11 +76,12 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
  * @param maze Labyrinthe
  * @param algorithm Algorithme
  */
-void resolveMaze(Maze *maze, std::string algorithm) {
+void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
     std::cout << "Resolve" << std::endl;
     // TODO : Résoudre un labyrinthe
-    maze = maze;
-    algorithm = algorithm;
+    if (algorithm == "1r") solver_1(maze, show, false);
+    else if (algorithm == "1") solver_1(maze, show, true);
+    else exit(MAZE_COMMAND_ERROR);
 }
 
 /**
@@ -255,28 +257,41 @@ int main(int argc, char *argv[]) {
                 mazeLoaded = true;
             }
             // Si l'utilisateur veut résoudre un labyrinthe
-            else if (strcmp(argv[i], "-r") == 0 || strcmp(argv[i], "--resolve") == 0) {
+            else if (strcmp(argv[i], "-r") == 0 || strcmp(argv[i], "--resolve") == 0 ||
+                strcmp(argv[i], "-rs") == 0 || strcmp(argv[i], "--resolve-show") == 0) {
+                bool isShow = (strcmp(argv[i], "-rs") == 0 || strcmp(argv[i], "--resolve-show") == 0);
                 // Si aucun labyrinthe n'est chargé
                 if (!mazeLoaded) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                std::string algorithm = "aaa";
+                std::string algorithm = "1";
                 // Si l'utilisateur a spécifié l'algorithme
                 if (strcmp(argv[i + 1], "-a") == 0 || strcmp(argv[i + 1], "--algorithm") == 0) {
                     i++;
-                    if (i + 1 >= argc) {
-                        if (strcmp(argv[i + 1], "aaa") == 0) {
-                            algorithm = "aaa";
-                        } else if (strcmp(argv[i + 1], "bbb") == 0) {
-                            algorithm = "bbb";
+                    if (i + 1 < argc) {
+                        if (strcmp(argv[i + 1], "1r") == 0) {
+                            algorithm = "1r";
+                        } else if (strcmp(argv[i + 1], "1") == 0) {
+                            algorithm = "1";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }
                         i++;
+                    } else {
+                        return help(MAZE_COMMAND_ERROR);
                     }
                 }
-                resolveMaze(&maze, algorithm);
+                if (isShow) {
+                    show.create();
+                    resolveMaze(&maze, algorithm, &show);
+                    while (show.isOpen()) {
+                        show.update();
+                    }
+                }
+                else {
+                    resolveMaze(&maze, algorithm, nullptr);
+                }
             }
             // Si l'utilisateur a spécifié une commande inconnue
             else {

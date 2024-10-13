@@ -71,9 +71,7 @@ void Cell::getAbsoluteNeighbors(Cell** neighbors) {
 int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (!((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
-                (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
-        ) && neighbors_[i] != nullptr) {
+        if (isNeighbor(i)) {
             Cell* neighbor = neighbors_[i];
             if (!(neighbor->isAlreadyVisited())) {
                 count++;
@@ -86,10 +84,8 @@ int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
 void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (!((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
-                (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
-        )) {
-            if (neighbors_[i] != nullptr && !neighbors_[i]->isAlreadyVisited()) {
+        if (isNeighbor(i)) {
+            if (!neighbors_[i]->isAlreadyVisited()) {
                 neighbors[count] = neighbors_[i];
                 count++;
             }
@@ -99,6 +95,12 @@ void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
 
 int Cell::getStatus() {
     return status_;
+}
+
+bool Cell::isNeighbor(int i) {
+    return !((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
+            (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
+    ) && neighbors_[i] != nullptr;
 }
 
 void Cell::setX(int x) {

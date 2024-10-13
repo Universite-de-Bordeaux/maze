@@ -58,7 +58,7 @@ L'utilisation de l'application est la suivante :
 #### Résolution de labyrinthe
 
 * `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
-	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)
+	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (1, 1r, par défaut : 1)
 
 #### Vérification de labyrinthe
 

@@ -1,5 +1,6 @@
 #include "show.hpp"
 #include "var.hpp"
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Clock.hpp>
@@ -29,22 +30,6 @@ void Show::create() {
 
     sf::Vector2i screenCenter(desktopSize.width / 2, desktopSize.height / 2);
     renderWindow_->setPosition(screenCenter - sf::Vector2i(renderWindow_->getSize().x / 2, renderWindow_->getSize().y / 2));
-
-    // sf::Text text;
-    // text.setFont(font_);
-    // text.setString("Hello World");
-    // text.setCharacterSize(24);
-    // text.setFillColor(sf::Color::Red);
-
-    // int x = 0;
-    // while (renderWindow_->isOpen()) {
-    //     eventHandler();
-    //     clear();
-    //     // text.setString(std::to_string(x));
-    //     // renderWindow_->draw(text);
-    //     display();
-    //     // x++;
-    // }
 }
 
 void Show::destroy() {
@@ -79,6 +64,10 @@ void Show::draw() {
                 visited.setFillColor(sf::Color(MAZE_STATUS_HOPELESS_COLOR, 255));
             } else if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
                 visited.setFillColor(sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255));
+            } else if (cell->getStatus() == MAZE_STATUS_WAY_OUT) {
+                visited.setFillColor(sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255));
+            } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
+                visited.setFillColor(sf::Color(MAZE_STATUS_CURRENT_COLOR, 255));
             }
             renderWindow_->draw(visited);
 
@@ -110,20 +99,32 @@ void Show::draw() {
     renderWindow_->draw(border);
     border.setPosition(maze_->getWidth() * cellSize_ - 1, 0);
     renderWindow_->draw(border);
-    border.setFillColor(sf::Color::Red);
-    border.setSize(sf::Vector2f(1, cellSize_));
-    border.setPosition(0, 0);
-    renderWindow_->draw(border);
-    border.setSize(sf::Vector2f(cellSize_, 1));
-    border.setPosition(0, 0);
-    renderWindow_->draw(border);
-    border.setFillColor(sf::Color::Green);
-    border.setSize(sf::Vector2f(1, cellSize_));
-    border.setPosition(maze_->getWidth() * cellSize_ - 1, maze_->getHeight() * cellSize_ - cellSize_);
-    renderWindow_->draw(border);
-    border.setSize(sf::Vector2f(cellSize_, 1));
-    border.setPosition(maze_->getWidth() * cellSize_ - cellSize_, maze_->getHeight() * cellSize_ - 1);
-    renderWindow_->draw(border);
+
+    int circleSize = 2;
+    sf::CircleShape start(circleSize);
+    start.setFillColor(sf::Color::Red);
+    start.setPosition(maze_->getStartX() * cellSize_ + cellSize_ / 2 - circleSize, maze_->getStartY() * cellSize_ + cellSize_ / 2 - circleSize);
+    renderWindow_->draw(start);
+
+    sf::CircleShape end(circleSize);
+    end.setFillColor(sf::Color::Green);
+    end.setPosition(maze_->getEndX() * cellSize_ + cellSize_ / 2 - circleSize, maze_->getEndY() * cellSize_ + cellSize_ / 2 - circleSize);
+    renderWindow_->draw(end);
+
+    // border.setFillColor(sf::Color::Red);
+    // border.setSize(sf::Vector2f(1, cellSize_));
+    // border.setPosition(0, 0);
+    // renderWindow_->draw(border);
+    // border.setSize(sf::Vector2f(cellSize_, 1));
+    // border.setPosition(0, 0);
+    // renderWindow_->draw(border);
+    // border.setFillColor(sf::Color::Green);
+    // border.setSize(sf::Vector2f(1, cellSize_));
+    // border.setPosition(maze_->getWidth() * cellSize_ - 1, maze_->getHeight() * cellSize_ - cellSize_);
+    // renderWindow_->draw(border);
+    // border.setSize(sf::Vector2f(cellSize_, 1));
+    // border.setPosition(maze_->getWidth() * cellSize_ - cellSize_, maze_->getHeight() * cellSize_ - 1);
+    // renderWindow_->draw(border);
 }
 
 void Show::eventHandler_(sf::Event &event) {

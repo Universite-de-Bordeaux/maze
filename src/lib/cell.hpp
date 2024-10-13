@@ -89,6 +89,7 @@ class Cell {
         @return Le statut de la cellule
         */
         int getStatus();
+        bool isNeighbor(int);
 
         /**
         @brief Définit la coordonnée x de la cellule
