@@ -35,12 +35,10 @@ Maze::~Maze() {
 }
 
 int Maze::getWidth() const {
-    std::cout << "- width : " << width_ << std::endl;
     return width_;
 }
 
 int Maze::getHeight() const {
-    std::cout << "- height : " << height_ << std::endl;
     return height_;
 }
 
@@ -53,13 +51,9 @@ Cell **Maze::getCells() const {
 }
 
 Cell *Maze::getCell(int x, int y) const {
-    std::cout << "-- x : " << x << " y : " << y << std::endl;
-    std::cout << "- width : " << getWidth() << " height : " << getHeight() << std::endl;
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
-        std::cout << "- index not found" << std::endl;
         return nullptr;
     }
-    std::cout << "- index : " << y*width_+x << std::endl;
     return cells_[y*width_+x];
 }
 
