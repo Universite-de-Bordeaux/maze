@@ -69,7 +69,7 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
     std::cout << "Generating..." << std::endl;
     std::cout << "Params : type=" << type << ", x=" << x << ", y=" << y << ", perfect=" << perfect << std::endl;
     clock_t start = clock();
-    if (type == "cours") algo_cours(maze, x, y, perfect);
+    if (type == "cours") algo_cours(maze, x, y, perfect, show);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
     else if ((type == "1")) algo_1(maze, x, y, perfect, show);
     else exit(MAZE_COMMAND_ERROR);

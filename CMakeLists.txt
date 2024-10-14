@@ -49,7 +49,7 @@ add_custom_target(run_test
 )
 
 add_custom_target(run_algo_cours
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "20" "10" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "10" "10" "-s"
     DEPENDS ${PROJECT_NAME}
 )
 
