@@ -106,11 +106,7 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
                 cellHistory[historyIndex] = newCoord;
                 maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
                 historyIndex++;
-                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-                    if (show != nullptr && show->isOpen()) {
-                        show->update();
-                    }
-                }
+                updateShowLive(show, maze, false);
             } else if (currentCell->getY() > 0 && maze->getCell(currentX, currentY - 1)->isAlreadyVisited() == false) {
                 coordinate newCoord;
                 newCoord.x = currentX;
@@ -119,11 +115,7 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
                 cellHistory[historyIndex] = newCoord;
                 maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
                 historyIndex++;
-                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-                    if (show != nullptr && show->isOpen()) {
-                        show->update();
-                    }
-                }
+                updateShowLive(show, maze, false);
             } else if (currentCell->getX() < width - 1 && maze->getCell(currentX + 1, currentY)->isAlreadyVisited() == false) {
                 coordinate newCoord;
                 newCoord.x = currentX + 1;
@@ -132,11 +124,7 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
                 cellHistory[historyIndex] = newCoord;
                 maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
                 historyIndex++;
-                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-                    if (show != nullptr && show->isOpen()) {
-                        show->update();
-                    }
-                }
+                updateShowLive(show, maze, false);
             } else if (currentCell->getY() < height - 1 && maze->getCell(currentX, currentY + 1)->isAlreadyVisited() == false) {
                 coordinate newCoord;
                 newCoord.x = currentX;
@@ -145,20 +133,12 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
                 cellHistory[historyIndex] = newCoord;
                 maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
                 historyIndex++;
-                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-                    if (show != nullptr && show->isOpen()) {
-                        show->update();
-                    }
-                }
+                updateShowLive(show, maze, false);
             } else {
                 historyIndex--;
             }
         }
-        if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        updateShowLive(show, maze, true);
     }
     maze -> clearMaze();
 }

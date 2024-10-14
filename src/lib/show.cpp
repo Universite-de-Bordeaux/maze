@@ -158,3 +158,17 @@ void Show::update() {
     draw();
     display();
 }
+
+void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
+    if (show == nullptr) return;
+    if (!show->isOpen()) return;
+    if (fastCooling) {
+        if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
+            show->update();
+        }
+    } else {
+        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+            show->update();
+        }
+    }
+}

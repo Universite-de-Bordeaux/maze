@@ -1,4 +1,5 @@
 #include "algo_1.hpp"
+#include "show.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -38,18 +39,10 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
                 }
             }
-            if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-                if (show != nullptr && show->isOpen()) {
-                    show->update();
-                }
-            }
+            updateShowLive(show, maze, true);
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        updateShowLive(show, maze, false);
     }
 }
 

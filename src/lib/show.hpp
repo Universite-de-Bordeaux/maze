@@ -66,4 +66,6 @@ private:
     void eventHandler_(sf::Event&);
 };
 
+void updateShowLive(Show*, Maze*, bool);
+
 #endif  // SHOW_HPP

@@ -1,33 +1,20 @@
 #include "solver_1.hpp"
 #include "var.hpp"
-#include <iostream>
 
 static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLeft) {
     // std::cout << "x: " << x << " y: " << y << " direction: " << direction << " toLeft: " << toLeft << std::endl;
-    if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-        if (show != nullptr && show->isOpen()) {
-            show->update();
-        }
-    }
+    updateShowLive(show, maze, true);
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_CURRENT);
     if (x == maze->getEndX() && y == maze->getEndY()) {
         cell->setStatus(MAZE_STATUS_WAY_OUT);
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        updateShowLive(show, maze, false);
         return true;
     }
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        updateShowLive(show, maze, false);
         return false;
     }
     for (int i = 0; i < 4; i++) {

@@ -12,22 +12,13 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
-    if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-        if (show != nullptr && show->isOpen()) {
-            show->update();
-        }
-    }
+    updateShowLive(show, maze, true);
     if (cell == nullptr) {
         return;
     }
     int numberOfNeighborsNotVisited = cell->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighborsNotVisited <= 0) {
-        cell->setStatus(MAZE_STATUS_HOPELESS);
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        cell->setStatus(MAZE_STATUS_HOPELESS);updateShowLive(show, maze, false);
         return;
     }
     Cell *neighbors[numberOfNeighborsNotVisited];
@@ -50,11 +41,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
-    if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-        if (show != nullptr && show->isOpen()) {
-            show->update();
-        }
-    }
+    updateShowLive(show, maze, true);
     if (cell->getAbsoluteNumberOfNeighbors() - cell->getAbsoluteNumberOfNeighborsNotVisited() >= 2) {
         cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
         *unperfect = true;
@@ -63,11 +50,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
         if (!(cell->getAbsoluteNumberOfNeighbors() - cell->getAbsoluteNumberOfNeighborsNotVisited() >= 2)) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
         }
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        updateShowLive(show, maze, false);
         return;
     }
     int numberOfNeighborsNotVisited = cell->getAbsoluteNumberOfNeighborsNotVisited();
