@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
                 read(argv[i + 1], &maze);
                 mazeLoaded = true;
                 i++;
-            }2
+            }
             // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0 ||
                 strcmp(argv[i], "-cm") == 0 || strcmp(argv[i], "--clear-maze") == 0) {
