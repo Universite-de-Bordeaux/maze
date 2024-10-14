@@ -11,6 +11,7 @@
 #include "lib/writer.hpp"
 #include "lib/checker.hpp"
 #include "lib/solver_1.hpp"
+#include "lib/algo_fractal.hpp"
 #include <ctime>
 
 /**
@@ -72,6 +73,7 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
     if (type == "cours") algo_cours(maze, x, y, perfect, show);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
     else if ((type == "1")) algo_1(maze, x, y, perfect, show);
+    else if ((type == "fractal")) algo_fractal(maze, x, perfect, show);
     else exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
     // en millisecondes
@@ -198,7 +200,7 @@ int main(int argc, char *argv[]) {
                 read(argv[i + 1], &maze);
                 mazeLoaded = true;
                 i++;
-            }
+            }2
             // Si l'utilisateur veut effacer le labyrinthe chargé en mémoire
             else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--clear") == 0 ||
                 strcmp(argv[i], "-cm") == 0 || strcmp(argv[i], "--clear-maze") == 0) {
@@ -239,6 +241,8 @@ int main(int argc, char *argv[]) {
                                     type = "perso";
                                 } else if (strcmp(argv[i + 1], "1") == 0) {
                                     type = "1";
+                                } else if (strcmp(argv[i + 1], "fractal") == 0) {
+                                    type = "fractal";
                                 } else {
                                     return help(MAZE_COMMAND_ERROR);
                                 }
