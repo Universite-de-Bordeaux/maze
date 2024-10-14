@@ -1,47 +1,74 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from "vue";
+
+const selectedOption = ref("file");
+const maze = ref([]);
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+    <div>
+        <h1>Maze</h1>
+        <div>
+            <!-- Selection entre ouvrir un fichier ou générer un labyrinthe -->
+            <select v-model="selectedOption">
+                <option value="file">Ouvrir un fichier</option>
+                <option value="generate">Générer un labyrinthe</option>
+            </select>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+            <!-- Bouton pour ouvrir un fichier de labyrinthe -->
+            <input
+                v-if="selectedOption === 'file'"
+                type="file"
+                @change="openFile"
+            />
+
+            <!-- Bouton pour générer un labyrinthe -->
+            <button v-if="selectedOption === 'generate'" @click="generateMaze">
+                Générer un labyrinthe
+            </button>
+
+            <!-- Bouton pour résoudre le labyrinthe -->
+            <button v-if="maze.length > 0" @click="solveMaze">
+                Résoudre le labyrinthe
+            </button>
+
+            <!-- Bouton pour sauvegarder le labyrinthe -->
+            <button v-if="maze.length > 0" @click="saveMaze">
+                Sauvegarder le labyrinthe
+            </button>
+
+            <!-- Bouton pour effacer le labyrinthe -->
+            <button v-if="maze.length > 0" @click="clearMaze">
+                Effacer le labyrinthe
+            </button>
+
+            <!-- Bouton pour afficher le labyrinthe -->
+            <button v-if="maze.length > 0" @click="displayMaze">
+                Afficher le labyrinthe
+            </button>
+
+            <!-- Bouton pour lancer le programme -->
+            <button @click="runProgram">Lancer le programme</button>
+        </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+h1 {
+    font-size: 1.5em;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+input {
+    margin: 10px;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+button {
+    margin: 10px;
 }
 </style>

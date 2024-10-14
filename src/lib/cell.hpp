@@ -2,6 +2,7 @@
 #define CELL_HPP
 
 #include "wall.hpp"
+#include "var.hpp"
 
 /**
 @class Cell
@@ -20,6 +21,7 @@ class Cell {
         @param y Coordonnée y de la cellule
         */
         Cell(int, int);
+        Cell(int, int, int, int);
         /**
         @brief Destructeur
         */
@@ -82,6 +84,12 @@ class Cell {
         @param neighbors Tableau de cellules dans lequel stocker les voisins
         */
         void getAbsoluteNeighborsNotVisited(Cell**);
+        /**
+        @brief Récupère le statut de la cellule
+        @return Le statut de la cellule
+        */
+        int getStatus();
+        bool isNeighbor(int);
 
         /**
         @brief Définit la coordonnée x de la cellule
@@ -126,17 +134,29 @@ class Cell {
         @param bool Vrai si la cellule a déjà été visitée
         */
         void setAlreadyVisited(bool);
+        /**
+        @brief Définit le statut de la cellule
+        @param int Nouveau statut de la cellule
+        */
+        void setStatus(int);
 
+        /**
+        @brief Supprime un mur de la cellule
+        @param int Mur à supprimer
+        */
+        void freeWall(int);
         /**
         @brief Supprime les murs de la cellule
         */
         void freeWalls();
 
     private:
-        int x, y; ///< Coordonnées de la cellule
-        Wall *walls[4]; ///< Murs de la cellule
-        Cell *neighbors[4]; ///< Voisins de la cellule
-        bool alreadyVisited = false;
+        int x_, y_; ///< Coordonnées de la cellule
+        int width_, height_; ///< Largeur et hauteur du labirynthe
+        Wall *walls_[4]; ///< Murs de la cellule
+        Cell *neighbors_[4]; ///< Voisins de la cellule
+        bool alreadyVisited_ = false;
+        int status_ = MAZE_STATUS_IDLE;
 };
 
 #endif // CELL_H

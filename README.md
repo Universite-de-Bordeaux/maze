@@ -13,16 +13,21 @@ Le but de ce projet est de générer des labyrinthes parfaits et imparfaits, de 
 
 ## Prérequis
 
-Pour compiler le projet, il est nécessaire d'avoir installé `g++`, `make` et `sfml` sur sa machine.
+Pour compiler le projet, il est nécessaire d'avoir installé `g++`, `cmake`, `make` et `sfml` sur sa machine.
 
 Pour installer ces outils, il suffit de lancer la commande suivante :
 ```bash
-sudo apt-get install g++ make libsfml-dev
+sudo apt-get install g++ cmake make libsfml-dev
 ```
 
 ## Compilation
 
-Pour compiler le projet, il suffit de lancer la commande `make`.
+Pour compiler le projet, il suffit de lancer la commande `cmake .` puis `make`.
+
+```bash
+cmake .
+make
+```
 
 ## Utilisation
 
@@ -41,18 +46,26 @@ L'utilisation de l'application est la suivante :
 * `-o` ou `--output` `<fichier>` : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)
 * `-i` ou `--input` `<fichier>` : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)
 * `-c` ou `--clear` : Efface le(s) labyrinthe(s) en mémoire
+  + `-cm` ou `--clear-maze` : Netttoie le labyrinthe en mémoire
 
 #### Génération de labyrinthe
 
 * `-g` ou `--generate` : Génère un labyrinthe
-	+ `-t` ou `--type` `<type>` : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, par défaut : cours)
+  + `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en mémoire)
+	+ `-t` ou `--type` `<type>` : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, 1, par défaut : cours)
 	+ `-d` ou `--dimension` `<x> <y>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
 	+ `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
 
 #### Résolution de labyrinthe
 
 * `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
-	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (aaa, bbb, par défaut : aaa)
+	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (1, 1r, par défaut : 1)
+
+#### Vérification de labyrinthe
+
+* `-v` ou `--verify` : Vérifie si un labyrinthe est parfait (nécessite un labyrinthe en mémoire)
+  + `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)
+  + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
 
 ### Codes d'erreur
 

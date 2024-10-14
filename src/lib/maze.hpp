@@ -20,6 +20,14 @@ class Maze {
         */
         Maze(int, int);
         /**
+        @brief Constructeur
+        @param width Largeur du labyrinthe
+        @param height Hauteur du labyrinthe
+        @param start Coordonnées de la cellule de départ
+        @param end Coordonnées de la cellule d'arrivée
+        */
+        Maze(int, int, int, int, int, int);
+        /**
         @brief Destructeur
         */
         ~Maze();
@@ -59,6 +67,36 @@ class Maze {
         @return Le mur
         */
         Wall* getWall(int, int, bool);
+        /**
+        @brief Retourne la coordonnée x de la cellule de départ
+        @return La coordonnée x de la cellule de départ
+        */
+        int getStartX();
+        /**
+        @brief Retourne la coordonnée y de la cellule de départ
+        @return La coordonnée y de la cellule de départ
+        */
+        int getStartY();
+        /**
+        @brief Retourne la coordonnée x de la cellule d'arrivée
+        @return La coordonnée x de la cellule d'arrivée
+        */
+        int getEndX();
+        /**
+        @brief Retourne la coordonnée y de la cellule d'arrivée
+        @return La coordonnée y de la cellule d'arrivée
+        */
+        int getEndY();
+        /**
+        @brief Retourne la cellule de départ
+        @return La cellule de départ
+        */
+        Cell* getStartCell();
+        /**
+        @brief Retourne la cellule d'arrivée
+        @return La cellule d'arrivée
+        */
+        Cell* getEndCell();
 
         /**
         @brief Modifie la largeur et la hauteur du labyrinthe
@@ -66,6 +104,16 @@ class Maze {
         @param height Nouvelle hauteur du labyrinthe
         */
         void setWidthHeight(int, int);
+        /**
+        @brief Modifie la largeur et la hauteur du labyrinthe
+        @param width Nouvelle largeur du labyrinthe
+        @param height Nouvelle hauteur du labyrinthe
+        @param start Coordonnées de la cellule de départ en x
+        @param start Coordonnées de la cellule de départ en y
+        @param end Coordonnées de la cellule d'arrivée en x
+        @param end Coordonnées de la cellule d'arrivée en y
+        */
+        void setWidthHeight(int, int, int, int, int, int);
         /**
         @brief Modifie les cellules du labyrinthe
         @param cells Nouvelles cellules du labyrinthe
@@ -98,6 +146,18 @@ class Maze {
         @brief Génère un labyrinthe
         */
         void generate();
+        /**
+        @brief Détermine les coordonnées de la cellule de départ
+        @param x Coordonnée x de la cellule de départ
+        @param y Coordonnée y de la cellule de départ
+        */
+        void setStart(int, int);
+        /**
+        @brief Détermine les coordonnées de la cellule d'arrivée
+        @param x Coordonnée x de la cellule d'arrivée
+        @param y Coordonnée y de la cellule d'arrivée
+        */
+        void setEnd(int, int);
 
         /**
         @brief Initialise les cellules du labyrinthe
@@ -108,12 +168,18 @@ class Maze {
         @brief Libère la mémoire allouée pour les cellules du labyrinthe
         */
         void freeMaze();
+        /**
+        @brief Nettoie le labyrinthe
+        */
+        void clearMaze();
 
 
     private:
-        int width; ///< Largeur du labyrinthe
-        int height; ///< Hauteur du labyrinthe
-        Cell **cells = nullptr; ///< Cellules du labyrinthe
+        int width_; ///< Largeur du labyrinthe
+        int height_; ///< Hauteur du labyrinthe
+        Cell **cells_ = nullptr; ///< Cellules du labyrinthe
+        int start_[2]; ///< Coordonnées de la cellule de départ
+        int end_[2]; ///< Coordonnées de la cellule d'arrivée
 };
 
 #endif // MAZE_HPP
