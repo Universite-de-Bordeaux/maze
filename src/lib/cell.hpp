@@ -48,6 +48,7 @@ class Cell {
         @return Le voisin de la cellule
         */
         Cell* getNeighbor(int);
+        Cell* getRelativeNeighbor(int);
         /**
         @brief Récupère les murs de la cellule
         @return Les murs de la cellule
@@ -85,11 +86,22 @@ class Cell {
         */
         void getAbsoluteNeighborsNotVisited(Cell**);
         /**
+        @brief Récupère le nombre de voisins relatifs de la cellule qui n'ont pas encore été visités
+        @return Le nombre de voisins de la cellule relativess qui n'ont pas encore été visités
+        */
+        int getRelativeNumberOfNeighborsNotVisited();
+        /**
+        @brief Récupère les voisins relatifs de la cellule qui n'ont pas encore été visités
+        @param neighbors Tableau de cellules relatives dans lequel stocker les voisins
+        */
+        void getRelativeNeighborsNotVisited(Cell**);
+        /**
         @brief Récupère le statut de la cellule
         @return Le statut de la cellule
         */
         int getStatus();
         bool isNeighbor(int);
+        bool isRelativeNeighbor(int);
 
         /**
         @brief Définit la coordonnée x de la cellule
@@ -118,6 +130,7 @@ class Cell {
         @param neighbor Nouveau voisin de la cellule
         */
         void setNeighbor(int, Cell*);
+        void setNeighbor(int, Cell*, bool);
         /**
         @brief Définit les murs de la cellule
         @param walls Nouveaux murs de la cellule
@@ -155,6 +168,7 @@ class Cell {
         int width_, height_; ///< Largeur et hauteur du labirynthe
         Wall *walls_[4]; ///< Murs de la cellule
         Cell *neighbors_[4]; ///< Voisins de la cellule
+        Cell *relativeNeighbors_[4]; ///< Voisins relatifs de la cellule
         bool alreadyVisited_ = false;
         int status_ = MAZE_STATUS_IDLE;
 };
