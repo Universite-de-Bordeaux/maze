@@ -167,14 +167,12 @@ bool Maze::addWall(Cell *cell1, Cell *cell2) {
         return false;
     }
     if (cell1->getX() == cell2->getX()) {
-        std::cout << "ok1" << std::endl;
         if (cell1->getY() == cell2->getY() + 1) {
             return addWall(cell2->getX(), cell2->getY(), true);
         } else if (cell1->getY() == cell2->getY() - 1) {
             return addWall(cell1->getX(), cell1->getY(), true);
         }
     } else if (cell1->getY() == cell2->getY()) {
-        std::cout << "ok" << std::endl;
         if (cell1->getX() == cell2->getX() + 1) {
             return addWall(cell2->getX(), cell2->getY(), false);
         } else if (cell1->getX() == cell2->getX() - 1) {

@@ -62,21 +62,36 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
 
         } else {
             int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-            bool isDeadEnd = true;
+            int numberOfNeighbors = 0;
             for (int i = 0; i < 4; i++) {
                 int x = currentX + directions[i][0];
                 int y = currentY + directions[i][1];
                 if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
-                    maze->removeWall(currentCell, maze->getCell(x, y));
-                    cellHistory[historyIndex].x = x;
-                    cellHistory[historyIndex].y = y;
-                    historyIndex++;
-                    updateShowLive(show, maze, false);
-                    isDeadEnd = false;
+                    numberOfNeighbors++;
                 }
             }
-            if (isDeadEnd) {
+            if (numberOfNeighbors <= 0) {
                 historyIndex--;
+
+            } else {
+                coordinate neighbors[numberOfNeighbors];
+                int index = 0;
+                for (int i = 0; i < 4; i++) {
+                    int x = currentX + directions[i][0];
+                    int y = currentY + directions[i][1];
+                    if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
+                        neighbors[index].x = x;
+                        neighbors[index].y = y;
+                        index++;
+                    }
+                }
+                int x = neighbors[0].x;
+                int y = neighbors[0].y;
+                maze->removeWall(currentCell, maze->getCell(x, y));
+                cellHistory[historyIndex].x = x;
+                cellHistory[historyIndex].y = y;
+                historyIndex++;
+                updateShowLive(show, maze, false);
             }
         }
         updateShowLive(show, maze, true);
