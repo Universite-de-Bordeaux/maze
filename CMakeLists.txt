@@ -16,6 +16,7 @@ set(SOURCE_FILES
     src/lib/writer.cpp
     src/lib/checker.cpp
     src/lib/solver_1.cpp
+    src/lib/algo_fractal.cpp
 )
 
 set(INCLUDE_DIRS
@@ -64,6 +65,13 @@ add_custom_target(run_algo_1
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-vs" "-c" "-gs" "-t" "1" "-vs"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_algo_fractal
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-d" "16" "10" "-o" "src/instances/tmp/maze1_algo_fractal.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-d" "64" "20" "-o" "src/instances/tmp/maze2_algo_fractal_1.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-vs" "-c" "-gs" "-t" "fractal" "-vs"
     DEPENDS ${PROJECT_NAME}
 )
 
