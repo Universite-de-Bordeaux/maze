@@ -1,4 +1,6 @@
 #include "algo_cours.hpp"
+#include "show.hpp"
+#include <iostream>
 
 struct coordinate{
     int x;
@@ -59,43 +61,21 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
             historyIndex++;
 
         } else {
-            if (currentCell->getX() > 0 && maze->getCell(currentX - 1, currentY)->isAlreadyVisited() == false) {
-                coordinate newCoord;
-                newCoord.x = currentX - 1;
-                newCoord.y = currentY;
-                maze->removeWall(newCoord.x, newCoord.y, false);
-                cellHistory[historyIndex] = newCoord;
-                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
-                historyIndex++;
-                updateShowLive(show, maze, false);
-            } else if (currentCell->getY() > 0 && maze->getCell(currentX, currentY - 1)->isAlreadyVisited() == false) {
-                coordinate newCoord;
-                newCoord.x = currentX;
-                newCoord.y = currentY - 1;
-                maze->removeWall(newCoord.x, newCoord.y, true);
-                cellHistory[historyIndex] = newCoord;
-                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
-                historyIndex++;
-                updateShowLive(show, maze, false);
-            } else if (currentCell->getX() < width - 1 && maze->getCell(currentX + 1, currentY)->isAlreadyVisited() == false) {
-                coordinate newCoord;
-                newCoord.x = currentX + 1;
-                newCoord.y = currentY;
-                maze->removeWall(currentX, currentY, false);
-                cellHistory[historyIndex] = newCoord;
-                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
-                historyIndex++;
-                updateShowLive(show, maze, false);
-            } else if (currentCell->getY() < height - 1 && maze->getCell(currentX, currentY + 1)->isAlreadyVisited() == false) {
-                coordinate newCoord;
-                newCoord.x = currentX;
-                newCoord.y = currentY + 1;
-                maze->removeWall(currentX, currentY, true);
-                cellHistory[historyIndex] = newCoord;
-                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
-                historyIndex++;
-                updateShowLive(show, maze, false);
-            } else {
+            int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+            bool isDeadEnd = true;
+            for (int i = 0; i < 4; i++) {
+                int x = currentX + directions[i][0];
+                int y = currentY + directions[i][1];
+                if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
+                    maze->removeWall(currentCell, maze->getCell(x, y));
+                    cellHistory[historyIndex].x = x;
+                    cellHistory[historyIndex].y = y;
+                    historyIndex++;
+                    updateShowLive(show, maze, false);
+                    isDeadEnd = false;
+                }
+            }
+            if (isDeadEnd) {
                 historyIndex--;
             }
         }
