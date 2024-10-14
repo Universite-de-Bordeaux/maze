@@ -1,5 +1,5 @@
 # include "algo_fractal.hpp"
-#include "cell.hpp"
+#include <cmath>
 #include <cstdlib>
 #include <ctime>
 
@@ -21,6 +21,7 @@ void quad_maze(Maze * maze) {
 void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
     Maze *new_maze = maze;
     int nb_murs_supp = 3;
+    n = std::pow(2, n);
 
     while (n) {
         int *p_1 = &nb_murs_supp;
