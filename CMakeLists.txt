@@ -69,8 +69,8 @@ add_custom_target(run_algo_1
 )
 
 add_custom_target(run_algo_fractal
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-d" "16" "10" "-o" "src/instances/tmp/maze1_algo_fractal.txt" "-vs"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-d" "64" "20" "-o" "src/instances/tmp/maze2_algo_fractal_1.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-d" "4" "10" "-o" "src/instances/tmp/maze1_algo_fractal.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-d" "6" "20" "-o" "src/instances/tmp/maze2_algo_fractal_1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "fractal" "-vs" "-c" "-gs" "-t" "fractal" "-vs"
     DEPENDS ${PROJECT_NAME}
 )
