@@ -37,6 +37,10 @@ Cell* Cell::getNeighbor(int i) {
     return neighbors_[i];
 }
 
+Cell* Cell::getRelativeNeighbor(int i) {
+    return relativeNeighbors_[i];
+}
+
 Wall** Cell::getWalls() {
     return walls_;
 }
@@ -94,6 +98,44 @@ void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
     }
 }
 
+int Cell::getRelativeNumberOfNeighborsNotVisited() {
+    int count = 4;
+    if (getX() <= 0) {
+        count--;
+    }
+    if (getY() <= 0) {
+        count--;
+    }
+    if (getX() >= width_ - 1) {
+        count--;
+    }
+    if (getY() >= height_ - 1) {
+        count--;
+    }
+    // std::cout << "count : " << count << std::endl;
+    return count;
+}
+
+void Cell::getRelativeNeighborsNotVisited(Cell** neighbors) {
+    int count = 0;
+    if (getX() > 0) {
+        neighbors[count] = relativeNeighbors_[MAZE_CELL_LEFT];
+        count++;
+    }
+    if (getY() > 0) {
+        neighbors[count] = relativeNeighbors_[MAZE_CELL_TOP];
+        count++;
+    }
+    if (getX() < width_ - 1) {
+        neighbors[count] = relativeNeighbors_[MAZE_CELL_RIGHT];
+        count++;
+    }
+    if (getY() < height_ - 1) {
+        neighbors[count] = relativeNeighbors_[MAZE_CELL_BOTTOM];
+        count++;
+    }
+}
+
 int Cell::getStatus() {
     return status_;
 }
@@ -102,6 +144,12 @@ bool Cell::isNeighbor(int i) {
     return !((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
             (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
     ) && neighbors_[i] != nullptr;
+}
+
+bool Cell::isRelativeNeighbor(int i) {
+    return !((getX() <= 0 && i == MAZE_CELL_LEFT) || (getY() <= 0 && i == MAZE_CELL_TOP) ||
+            (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) || (getY() >= height_ - 1 && i == MAZE_CELL_BOTTOM)
+    ) && relativeNeighbors_[i] != nullptr;
 }
 
 void Cell::setX(int x) {
@@ -120,11 +168,25 @@ void Cell::setXY(int x, int y) {
 void Cell::setNeighbors(Cell* neighbors[4]) {
     for (int i = 0; i < 4; i++) {
         neighbors_[i] = neighbors[i];
+        if (neighbors[i] != nullptr) {
+            relativeNeighbors_[i] = neighbors[i];
+        }
     }
 }
 
 void Cell::setNeighbor(int i, Cell* cell) {
+    setNeighbor(i, cell, false);
+}
+
+void Cell::setNeighbor(int i, Cell* cell, bool force) {
     neighbors_[i] = cell;
+    if (cell != nullptr) {
+        if (force) {
+            relativeNeighbors_[i] = cell;
+        } else {
+            relativeNeighbors_[i] = cell;
+        }
+    }
 }
 
 void Cell::setWalls(Wall* walls[4]) {
