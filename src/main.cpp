@@ -68,7 +68,10 @@ int help(std::string a, int b) {
 */
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show *show) {
     std::cout << "Generating..." << std::endl;
+    maze->setWidthHeight(0, 0);
+    std::cout << "Maze initialized" << std::endl;
     std::cout << "Params : type=" << type << ", x=" << x << ", y=" << y << ", perfect=" << perfect << std::endl;
+    srand(time(0));
     clock_t start = clock();
     if (type == "cours") algo_cours(maze, x, y, perfect, show);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
@@ -213,7 +216,6 @@ int main(int argc, char *argv[]) {
                     maze.clearMaze();
                 }
                 else {
-                    maze.setWidthHeight(0, 0);
                     mazeLoaded = false;
                     show.destroy();
                 }

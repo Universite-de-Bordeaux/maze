@@ -98,7 +98,67 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
             historyIndex++;
 
         } else {
-            historyIndex--;
+            if (currentCell->getX() > 0 && maze->getCell(currentX - 1, currentY)->isAlreadyVisited() == false) {
+                coordinate newCoord;
+                newCoord.x = currentX - 1;
+                newCoord.y = currentY;
+                maze->removeWall(newCoord.x, newCoord.y, false);
+                cellHistory[historyIndex] = newCoord;
+                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
+                historyIndex++;
+                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+                    if (show != nullptr && show->isOpen()) {
+                        show->update();
+                    }
+                }
+            } else if (currentCell->getY() > 0 && maze->getCell(currentX, currentY - 1)->isAlreadyVisited() == false) {
+                coordinate newCoord;
+                newCoord.x = currentX;
+                newCoord.y = currentY - 1;
+                maze->removeWall(newCoord.x, newCoord.y, true);
+                cellHistory[historyIndex] = newCoord;
+                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
+                historyIndex++;
+                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+                    if (show != nullptr && show->isOpen()) {
+                        show->update();
+                    }
+                }
+            } else if (currentCell->getX() < width - 1 && maze->getCell(currentX + 1, currentY)->isAlreadyVisited() == false) {
+                coordinate newCoord;
+                newCoord.x = currentX + 1;
+                newCoord.y = currentY;
+                maze->removeWall(currentX, currentY, false);
+                cellHistory[historyIndex] = newCoord;
+                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
+                historyIndex++;
+                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+                    if (show != nullptr && show->isOpen()) {
+                        show->update();
+                    }
+                }
+            } else if (currentCell->getY() < height - 1 && maze->getCell(currentX, currentY + 1)->isAlreadyVisited() == false) {
+                coordinate newCoord;
+                newCoord.x = currentX;
+                newCoord.y = currentY + 1;
+                maze->removeWall(currentX, currentY, true);
+                cellHistory[historyIndex] = newCoord;
+                maze->getCell(newCoord.x, newCoord.y)->setAlreadyVisited(true);
+                historyIndex++;
+                if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+                    if (show != nullptr && show->isOpen()) {
+                        show->update();
+                    }
+                }
+            } else {
+                historyIndex--;
+            }
+        }
+        if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
+            if (show != nullptr && show->isOpen()) {
+                show->update();
+            }
         }
     }
+    maze -> clearMaze();
 }

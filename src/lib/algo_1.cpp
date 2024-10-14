@@ -54,7 +54,6 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
 }
 
 void algo_1(Maze* maze, int width, int height, bool perfect, Show *show) {
-    srand(time(0));
     start whereStart = {(bool)(rand() % 2), (bool)(rand() % 2)};
     int x = whereStart.left ? 0 : width - 1;
     int y = whereStart.top ? 0 : height - 1;
