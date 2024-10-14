@@ -1,35 +1,9 @@
 #include "algo_cours.hpp"
-#include "var.hpp"
-#include <iostream>
 
 struct coordinate{
     int x;
     int y;
 } ;
-
-/*static Cell* nextNeighbor (Cell* current) {
-    int numberOfNeighbors = current->getAbsoluteNumberOfNeighborsNotVisited();
-    if (numberOfNeighbors == 0) {
-        return nullptr;
-    }
-    Cell* listCell[numberOfNeighbors];
-    current->getAbsoluteNeighborsNotVisited(listCell);
-    int random = rand() % numberOfNeighbors;
-    std::cout << "number of neighbors : " << numberOfNeighbors << std::endl;
-    std::cout << "random : " << random << std::endl;
-    return listCell[random];
-}
-
-void algo_cours(Maze* maze, int width, int height, bool perfect) {
-    struct coordinate cellHistory[width * height];
-    Cell *cellStart = maze->getCell(3, 2);
-    nextNeighbor(cellStart);
-    int numberOfNeighbors = cellStart->getAbsoluteNumberOfNeighbors();
-    Cell* currentNeighbor[numberOfNeighbors];
-    cellStart->getAbsoluteNeighbors(currentNeighbor);
-
-    }*/
-
 
 static Cell* nextNeighbor(Cell* current) {
     int numberOfNeighbors = current->getAbsoluteNumberOfNeighborsNotVisited();
@@ -45,8 +19,6 @@ static Cell* nextNeighbor(Cell* current) {
 
 // Fonction principale de l'algorithme (backtracking)
 void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
-    maze->setWidthHeight(width, height);
-
     struct coordinate cellHistory[width * height];
     int historyIndex = 0;
 
@@ -73,18 +45,7 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
 
             for (int i = 0; i < numberOfNeighbors; i++) {
                 if (!(listCell[i]->getX() == neighbor->getX() && listCell[i]->getY() == neighbor->getY())) {
-                    // std::cout << "currentX : " << currentX << " currentY : " << currentY << std::endl;
-                    // std::cout << "listCell[i]->getX() : " << listCell[i]->getX() << " listCell[i]->getY() : " << listCell[i]->getY() << std::endl;
-                    if (listCell[i]->getX() == currentX && listCell[i]->getY() == currentY - 1) {
-                        maze->addWall(currentX, listCell[i]->getY(), true);
-                    } else if (listCell[i]->getX() == currentX && listCell[i]->getY() == currentY + 1) {
-                        maze->addWall(currentX, currentY, true);
-                    } else if (listCell[i]->getX() == currentX - 1 && listCell[i]->getY() == currentY) {
-                        maze->addWall(listCell[i]->getX(), currentY, false);
-                    } else if (listCell[i]->getX() == currentX + 1 && listCell[i]->getY() == currentY) {
-                        maze->addWall(currentX, currentY, false);
-                    }
-                    // std::cout << "wall added" << std::endl;
+                    maze->addWall(currentCell, listCell[i]);
                 }
             }
 

@@ -1,5 +1,5 @@
-#ifndef ALGO_1_HPP
-#define ALGO_1_HPP
+#ifndef ALGO_DIAGONAL_HPP
+#define ALGO_DIAGONAL_HPP
 
 #include "maze.hpp"
 #include "show.hpp"
@@ -11,6 +11,6 @@
  * @param int hauteur du labyrinthe
  * @param bool  vrai si le labyrinthe est parfait
 */
-void algo_1(Maze*, int, int, bool, Show*);
+void algo_diagonal(Maze*, int, int, bool, Show*);
 
-#endif // ALGO_1_HPP
+#endif // ALGO_DIAGONAL_HPP
