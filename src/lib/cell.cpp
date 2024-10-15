@@ -49,6 +49,11 @@ Wall* Cell::getWall(int i) {
     return walls_[i];
 }
 
+bool Cell::isWall(int i) {
+    return walls_[i] != nullptr || (i == MAZE_CELL_TOP && y_ == 0) || (i == MAZE_CELL_LEFT && x_ == 0) ||
+            (i == MAZE_CELL_RIGHT && x_ == width_ - 1) || (i == MAZE_CELL_BOTTOM && y_ == height_ - 1);
+}
+
 bool Cell::isAlreadyVisited() {
     return alreadyVisited_;
 }

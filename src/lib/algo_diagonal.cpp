@@ -39,10 +39,14 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
                 }
             }
-            updateShowLive(show, maze, true);
+            Cell *showCell[1] = {maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb)};
+            updateShowLive(show, maze, 1, showCell);
+            // updateShowLive(show, maze, true);
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
-        updateShowLive(show, maze, false);
+        Cell *showCell[1] = {maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb)};
+        updateShowLive(show, maze, 1, showCell);
+        // updateShowLive(show, maze, false);
     }
 }
 
