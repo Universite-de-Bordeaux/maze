@@ -5,7 +5,23 @@
 struct coordinate{
     int x;
     int y;
-} ;
+};
+
+int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
+static int numberRelativeNeighbors(Maze* maze, int width, int height, int currentX, int currentY, int directions[4][2], Cell* currentCell) {
+    int numberOfNeighbors = 0;
+            for (int i = 0; i < 4; i++) {
+                int x = currentX + directions[i][0];
+                int y = currentY + directions[i][1];
+                if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
+                    numberOfNeighbors++;
+                    currentCell->setStatus(MAZE_STATUS_VISITED);
+                    maze->getCell(x, y)->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
+                }
+            }
+    return numberOfNeighbors;
+}
 
 static Cell* nextNeighbor(Cell* current) {
     int numberOfNeighbors = current->getAbsoluteNumberOfNeighborsNotVisited();
@@ -37,6 +53,7 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
         int currentX = cellHistory[historyIndex - 1].x;
         int currentY = cellHistory[historyIndex - 1].y;
         Cell* currentCell = maze->getCell(currentX, currentY);
+        currentCell->setStatus(MAZE_STATUS_CURRENT);
 
         Cell* neighbor = nextNeighbor(currentCell);
 
@@ -59,18 +76,12 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
             newCoord.y = neighbor->getY();
             cellHistory[historyIndex] = newCoord;
             historyIndex++;
-
+            currentCell->setStatus(MAZE_STATUS_VISITED);
+            neighbor->setStatus(MAZE_STATUS_CURRENT);
         } else {
-            int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-            int numberOfNeighbors = 0;
-            for (int i = 0; i < 4; i++) {
-                int x = currentX + directions[i][0];
-                int y = currentY + directions[i][1];
-                if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
-                    numberOfNeighbors++;
-                }
-            }
+            int numberOfNeighbors = numberRelativeNeighbors(maze, width, height, currentX, currentY, directions, currentCell);
             if (numberOfNeighbors <= 0) {
+                currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 historyIndex--;
 
             } else {
@@ -92,6 +103,8 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
                 cellHistory[historyIndex].y = y;
                 historyIndex++;
                 updateShowLive(show, maze, false);
+                currentCell->setStatus(MAZE_STATUS_VISITED);
+                maze->getCell(x, y)->setStatus(MAZE_STATUS_CURRENT);
             }
         }
         updateShowLive(show, maze, true);
