@@ -69,8 +69,8 @@ add_custom_target(run_checker
 )
 
 add_custom_target(run_algo_diagonal
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
+    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
+    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-vs" "-c" "-gs" "-t" "diagonal" "-vs"
     DEPENDS ${PROJECT_NAME}
 )
@@ -110,4 +110,8 @@ add_custom_target(run_web
 add_custom_target(run
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-s" "-c" "-i" "src/instances/maze2.txt" "-s" "-c" "-i" "src/instances/maze3.txt" "-s"
     DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(test
+    DEPENDS run_checker run_algo_diagonal run_solver_1 run_complex run_writer
 )

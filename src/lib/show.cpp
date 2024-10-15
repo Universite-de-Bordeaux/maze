@@ -9,6 +9,8 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 #include <iostream>
+#include <random>
+#include <ratio>
 #include <string>
 
 Show::Show(Maze* maze) {
@@ -178,16 +180,14 @@ void Show::drawFrontier_(Cell *cell, int orientation) {
 void Show::updateCell(Cell *cell) {
     int x = cell->getX();
     int y = cell->getY();
-
     drawCell_(cell);
-
     // Dessin des murs
-    drawWall_(cell, MAZE_CELL_TOP);
-    drawWall_(cell, MAZE_CELL_RIGHT);
-    if (y < maze_->getHeight() - 1) {
-        drawWall_(cell, MAZE_CELL_BOTTOM);
+    if (y > 0) {
+        drawWall_(cell, MAZE_CELL_TOP);
     }
-    if (x < maze_->getWidth() - 1) {
+    drawWall_(cell, MAZE_CELL_RIGHT);
+        drawWall_(cell, MAZE_CELL_BOTTOM);
+    if (x > 0) {
         drawWall_(cell, MAZE_CELL_LEFT);
     }
 
@@ -230,7 +230,9 @@ void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
     if (argc <= 0) return;
     show->eventHandler();
     for (int i = 0; i < argc; i++) {
-        show->updateCell(argv[i]);
+        if (argv[i] != nullptr) {
+            show->updateCell(argv[i]);
+        }
     }
     show->display();
 }
