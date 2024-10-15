@@ -57,31 +57,16 @@ void Show::draw() {
     }
 
     // Dessin des bordures
-    sf::RectangleShape border(sf::Vector2f(maze_->getWidth() * cellSize_, 1));
-    border.setPosition(0, 0);
-    border.setFillColor(sf::Color::White);
-    renderWindow_->draw(border);
-    border.setPosition(0, maze_->getHeight() * cellSize_ - 1);
-    renderWindow_->draw(border);
-    border.setSize(sf::Vector2f(1, maze_->getHeight() * cellSize_));
-    border.setPosition(0, 0);
-    renderWindow_->draw(border);
-    border.setPosition(maze_->getWidth() * cellSize_ - 1, 0);
-    renderWindow_->draw(border);
-
-    // border.setFillColor(sf::Color::Red);
-    // border.setSize(sf::Vector2f(1, cellSize_));
+    // sf::RectangleShape border(sf::Vector2f(maze_->getWidth() * cellSize_, 1));
+    // border.setPosition(0, 0);
+    // border.setFillColor(sf::Color::White);
+    // renderWindow_->draw(border);
+    // border.setPosition(0, maze_->getHeight() * cellSize_ - 1);
+    // renderWindow_->draw(border);
+    // border.setSize(sf::Vector2f(1, maze_->getHeight() * cellSize_));
     // border.setPosition(0, 0);
     // renderWindow_->draw(border);
-    // border.setSize(sf::Vector2f(cellSize_, 1));
-    // border.setPosition(0, 0);
-    // renderWindow_->draw(border);
-    // border.setFillColor(sf::Color::Green);
-    // border.setSize(sf::Vector2f(1, cellSize_));
-    // border.setPosition(maze_->getWidth() * cellSize_ - 1, maze_->getHeight() * cellSize_ - cellSize_);
-    // renderWindow_->draw(border);
-    // border.setSize(sf::Vector2f(cellSize_, 1));
-    // border.setPosition(maze_->getWidth() * cellSize_ - cellSize_, maze_->getHeight() * cellSize_ - 1);
+    // border.setPosition(maze_->getWidth() * cellSize_ - 1, 0);
     // renderWindow_->draw(border);
 }
 
@@ -150,16 +135,27 @@ void Show::updateCell(Cell *cell) {
     if (cell->getWall(MAZE_CELL_BOTTOM) || y == maze_->getHeight() - 1) {
         sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
         wall.setPosition(x * cellSize_, y * cellSize_ + cellSize_ - 1);
-        wall.setFillColor(sf::Color::White);
+        if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+            wall.setFillColor(sf::Color::Green);
+        } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+            wall.setFillColor(sf::Color::Red);
+        } else {
+            wall.setFillColor(sf::Color::White);
+        }
         renderWindow_->draw(wall);
     }
     if (cell->getWall(MAZE_CELL_RIGHT) || x == maze_->getWidth() - 1) {
         sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
         wall.setPosition(x * cellSize_ + cellSize_ - 1, y * cellSize_);
-        wall.setFillColor(sf::Color::White);
+        if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+            wall.setFillColor(sf::Color::Green);
+        } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+            wall.setFillColor(sf::Color::Red);
+        } else {
+            wall.setFillColor(sf::Color::White);
+        }
         renderWindow_->draw(wall);
     }
-
 
     if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
         sf::CircleShape start(2);
@@ -172,6 +168,55 @@ void Show::updateCell(Cell *cell) {
         end.setFillColor(sf::Color::Green);
         end.setPosition(cell->getX() * cellSize_ + cellSize_ / 2 - 2, cell->getY() * cellSize_ + cellSize_ / 2 - 2);
         renderWindow_->draw(end);
+    }
+
+    if (cell->getX() == 0) {
+        sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
+        wall.setPosition(0, y * cellSize_);
+        if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+            wall.setFillColor(sf::Color::Green);
+        } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+            wall.setFillColor(sf::Color::Red);
+        } else {
+            wall.setFillColor(sf::Color::White);
+        }
+        renderWindow_->draw(wall);
+    }
+    if (cell->getY() == 0) {
+        sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
+        wall.setPosition(x * cellSize_, 0);
+        if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+            wall.setFillColor(sf::Color::Green);
+        } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+            wall.setFillColor(sf::Color::Red);
+        } else {
+            wall.setFillColor(sf::Color::White);
+        }
+        renderWindow_->draw(wall);
+    }
+    if (cell->getX() == maze_->getWidth() - 1) {
+        sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
+        wall.setPosition((x + 1) * cellSize_, y * cellSize_);
+        if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+            wall.setFillColor(sf::Color::Green);
+        } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+            wall.setFillColor(sf::Color::Red);
+        } else {
+            wall.setFillColor(sf::Color::White);
+        }
+        renderWindow_->draw(wall);
+    }
+    if (cell->getY() == maze_->getHeight() - 1) {
+        sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
+        wall.setPosition(x * cellSize_, (y + 1) * cellSize_);
+        if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+            wall.setFillColor(sf::Color::Green);
+        } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+            wall.setFillColor(sf::Color::Red);
+        } else {
+            wall.setFillColor(sf::Color::White);
+        }
+        renderWindow_->draw(wall);
     }
 }
 

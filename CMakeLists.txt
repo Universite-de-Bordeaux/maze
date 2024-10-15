@@ -50,7 +50,7 @@ add_custom_target(run_test
 )
 
 add_custom_target(run_algo_cours
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "100" "100" "-s" "-vs" "-s" "-cm" "-rs" "-a" "1" "-o" "src/instances/tmp/maze1_algo_cours.txt" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "25" "25" "-s" "-vs" "-s" "-cm" "-rs" "-a" "1" "-o" "src/instances/tmp/maze1_algo_cours.txt" "-s"
     # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "30" "10"
     # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "20"
     # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "30" "10"

@@ -11,17 +11,16 @@ int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
 static int numberRelativeNeighbors(Maze* maze, int width, int height, int currentX, int currentY, int directions[4][2], Cell* currentCell, Show* show) {
     int numberOfNeighbors = 0;
-            for (int i = 0; i < 4; i++) {
-                int x = currentX + directions[i][0];
-                int y = currentY + directions[i][1];
-                if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
-                    numberOfNeighbors++;
-                    currentCell->setStatus(MAZE_STATUS_VISITED);
-                    maze->getCell(x, y)->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
-                    Cell* showCell[2] = {currentCell, maze->getCell(x, y)};
-                    updateShowLive(show, maze, 2, showCell);
-                }
-            }
+    for (int i = 0; i < 4; i++) {
+        int x = currentX + directions[i][0];
+        int y = currentY + directions[i][1];
+        if (x >= 0 && x < width && y >= 0 && y < height && maze->getCell(x, y)->isAlreadyVisited() == false) {
+            numberOfNeighbors++;
+            currentCell->setStatus(MAZE_STATUS_VISITED);
+            Cell* showCell[1] = {maze->getCell(x, y)};
+            updateShowLive(show, maze, 1, showCell);
+        }
+    }
     return numberOfNeighbors;
 }
 

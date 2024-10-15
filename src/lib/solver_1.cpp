@@ -1,25 +1,23 @@
 #include "solver_1.hpp"
+#include "show.hpp"
 #include "var.hpp"
 
 static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLeft) {
     // std::cout << "x: " << x << " y: " << y << " direction: " << direction << " toLeft: " << toLeft << std::endl;
-    updateShowLive(show, maze, true);
+    // updateShowLive(show, maze, true);
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_CURRENT);
-    Cell* showCell[1] = {cell};
-    updateShowLive(show, maze, 1, showCell);
+    // updateShowLive(show, maze, 1, &cell);
     if (x == maze->getEndX() && y == maze->getEndY()) {
         cell->setStatus(MAZE_STATUS_WAY_OUT);
-        Cell* showCell[1] = {cell};
-        updateShowLive(show, maze, 1, showCell);
+        updateShowLive(show, maze, 1, &cell);
         // updateShowLive(show, maze, false);
         return true;
     }
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        Cell* showCell[1] = {cell};
-        updateShowLive(show, maze, 1, showCell);
+        updateShowLive(show, maze, 1, &cell);
         // updateShowLive(show, maze, false);
         return false;
     }
@@ -37,17 +35,19 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLe
         if (cell->isNeighbor(index)) {
             Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
+                updateShowLive(show, maze, 1, &cell);
                 bool result = solve(maze, show, neighbor->getX(), neighbor->getY(), (index + 2) % 4, toLeft);
+                updateShowLive(show, maze, 1, &neighbor);
                 if (result) {
                     cell->setStatus(MAZE_STATUS_WAY_OUT);
-                    Cell* showCell[1] = {cell};
-                    updateShowLive(show, maze, 1, showCell);
+                    // updateShowLive(show, maze, 1, &cell);
                     return true;
                 }
             }
         }
-    }   
-    // cell->setStatus(MAZE_STATUS_VISITED);
+    }
+    cell->setStatus(MAZE_STATUS_VISITED);
+    updateShowLive(show, maze, 1, &cell);
     return false;
 }
 
