@@ -65,6 +65,9 @@ private:
      * @param event Référence vers un objet de type sf::Event
      */
     void eventHandler_(sf::Event&);
+    void drawCell_(Cell*);
+    void drawWall_(Cell*, int);
+    void drawFrontier_(Cell*, int);
 };
 
 void updateShowLive(Show*, Maze*, bool);
