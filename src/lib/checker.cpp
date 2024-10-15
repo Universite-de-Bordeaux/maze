@@ -13,7 +13,6 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
     Cell *showCell[1] = {cell};
-    updateShowLive(show, maze, 1, showCell);
     // updateShowLive(show, maze, true);
     if (cell == nullptr) {
         return;
@@ -26,6 +25,7 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
         // updateShowLive(show, maze, false);
         return;
     }
+    updateShowLive(show, maze, 1, showCell);
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {

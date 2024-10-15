@@ -31,7 +31,7 @@
 #define MAZE_STATUS_CURRENT 5 //> Current cell
 #define MAZE_STATUS_CURRENT_COLOR 255, 0, 0 //> Current cell color
 
-#define MAZE_REFRESH_SIZE 200 //> Refresh size
+#define MAZE_REFRESH_SIZE 50 //> Refresh size
 #define MAZE_MAX_WINDOW_RATIO .9 //> Max window ratio
 
 #endif // MAZE_VAR_HPP

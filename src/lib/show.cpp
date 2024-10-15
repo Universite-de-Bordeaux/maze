@@ -52,7 +52,6 @@ void Show::draw() {
     for (int y = 0; y < maze_->getHeight(); y++) {
         for (int x = 0; x < maze_->getWidth(); x++) {
             Cell* cell = maze_->getCell(x, y);
-
             updateCell(cell);
         }
     }
@@ -69,17 +68,6 @@ void Show::draw() {
     renderWindow_->draw(border);
     border.setPosition(maze_->getWidth() * cellSize_ - 1, 0);
     renderWindow_->draw(border);
-
-    int circleSize = 2;
-    sf::CircleShape start(circleSize);
-    start.setFillColor(sf::Color::Red);
-    start.setPosition(maze_->getStartX() * cellSize_ + cellSize_ / 2 - circleSize, maze_->getStartY() * cellSize_ + cellSize_ / 2 - circleSize);
-    renderWindow_->draw(start);
-
-    sf::CircleShape end(circleSize);
-    end.setFillColor(sf::Color::Green);
-    end.setPosition(maze_->getEndX() * cellSize_ + cellSize_ / 2 - circleSize, maze_->getEndY() * cellSize_ + cellSize_ / 2 - circleSize);
-    renderWindow_->draw(end);
 
     // border.setFillColor(sf::Color::Red);
     // border.setSize(sf::Vector2f(1, cellSize_));
@@ -153,6 +141,8 @@ void Show::updateCell(Cell *cell) {
         visited.setFillColor(sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255));
     } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
         visited.setFillColor(sf::Color(MAZE_STATUS_CURRENT_COLOR, 255));
+    } else {
+        visited.setFillColor(sf::Color::Black);
     }
     renderWindow_->draw(visited);
 
@@ -169,18 +159,20 @@ void Show::updateCell(Cell *cell) {
         wall.setFillColor(sf::Color::White);
         renderWindow_->draw(wall);
     }
-    // if (cell->isWall(MAZE_CELL_TOP) || y == 0) {
-    //     sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
-    //     wall.setPosition(x * cellSize_, y * cellSize_ - 1);
-    //     wall.setFillColor(sf::Color::White);
-    //     renderWindow_->draw(wall);
-    // }
-    // if (cell->isWall(MAZE_CELL_LEFT) || x == 0) {
-    //     sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
-    //     wall.setPosition(x * cellSize_ - 1, y * cellSize_);
-    //     wall.setFillColor(sf::Color::White);
-    //     renderWindow_->draw(wall);
-    // }
+
+
+    if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+        sf::CircleShape start(2);
+        start.setFillColor(sf::Color::Red);
+        start.setPosition(cell->getX() * cellSize_ + cellSize_ / 2 - 2, cell->getY() * cellSize_ + cellSize_ / 2 - 2);
+        renderWindow_->draw(start);
+    }
+    if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
+        sf::CircleShape end(2);
+        end.setFillColor(sf::Color::Green);
+        end.setPosition(cell->getX() * cellSize_ + cellSize_ / 2 - 2, cell->getY() * cellSize_ + cellSize_ / 2 - 2);
+        renderWindow_->draw(end);
+    }
 }
 
 void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
