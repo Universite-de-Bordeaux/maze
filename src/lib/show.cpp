@@ -53,37 +53,7 @@ void Show::draw() {
         for (int x = 0; x < maze_->getWidth(); x++) {
             Cell* cell = maze_->getCell(x, y);
 
-            // Dessin de la case
-            sf::RectangleShape visited(sf::Vector2f(cellSize_, cellSize_));
-            visited.setPosition(x * cellSize_, y * cellSize_);
-            if (cell->getStatus() == MAZE_STATUS_IDLE) {
-                visited.setFillColor(sf::Color(MAZE_STATUS_IDLE_COLOR, 255));
-            } else if (cell->getStatus() == MAZE_STATUS_VISITED) {
-                visited.setFillColor(sf::Color(MAZE_STATUS_VISITED_COLOR, 255));
-            } else if (cell->getStatus() == MAZE_STATUS_HOPELESS) {
-                visited.setFillColor(sf::Color(MAZE_STATUS_HOPELESS_COLOR, 255));
-            } else if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                visited.setFillColor(sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255));
-            } else if (cell->getStatus() == MAZE_STATUS_WAY_OUT) {
-                visited.setFillColor(sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255));
-            } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
-                visited.setFillColor(sf::Color(MAZE_STATUS_CURRENT_COLOR, 255));
-            }
-            renderWindow_->draw(visited);
-
-            // Dessin des murs
-            if (cell->getWall(MAZE_CELL_BOTTOM)) {
-                sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
-                wall.setPosition(x * cellSize_, y * cellSize_ + cellSize_ - 1);
-                wall.setFillColor(sf::Color::White);
-                renderWindow_->draw(wall);
-            }
-            if (cell->getWall(MAZE_CELL_RIGHT)) {
-                sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
-                wall.setPosition(x * cellSize_ + cellSize_ - 1, y * cellSize_);
-                wall.setFillColor(sf::Color::White);
-                renderWindow_->draw(wall);
-            }
+            updateCell(cell);
         }
     }
 
@@ -154,9 +124,63 @@ void Show::display() {
 
 void Show::update() {
     eventHandler();
-    clear();
+    // clear();
     draw();
     display();
+}
+
+void Show::updateCell(Cell *cell) {
+    int x = cell->getX();
+    int y = cell->getY();
+    // fait un rectangle noir de taille cellSize_ x cellSize_
+    sf::RectangleShape rectangle(sf::Vector2f(cellSize_ - 1, cellSize_ - 1));
+    rectangle.setPosition(x * cellSize_, y * cellSize_);
+    rectangle.setFillColor(sf::Color::Black);
+    renderWindow_->draw(rectangle);
+
+
+    sf::RectangleShape visited(sf::Vector2f(cellSize_, cellSize_));
+    visited.setPosition(x * cellSize_, y * cellSize_);
+    if (cell->getStatus() == MAZE_STATUS_IDLE) {
+        visited.setFillColor(sf::Color(MAZE_STATUS_IDLE_COLOR, 255));
+    } else if (cell->getStatus() == MAZE_STATUS_VISITED) {
+        visited.setFillColor(sf::Color(MAZE_STATUS_VISITED_COLOR, 255));
+    } else if (cell->getStatus() == MAZE_STATUS_HOPELESS) {
+        visited.setFillColor(sf::Color(MAZE_STATUS_HOPELESS_COLOR, 255));
+    } else if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+        visited.setFillColor(sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255));
+    } else if (cell->getStatus() == MAZE_STATUS_WAY_OUT) {
+        visited.setFillColor(sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255));
+    } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
+        visited.setFillColor(sf::Color(MAZE_STATUS_CURRENT_COLOR, 255));
+    }
+    renderWindow_->draw(visited);
+
+    // Dessin des murs
+    if (cell->getWall(MAZE_CELL_BOTTOM)) {
+        sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
+        wall.setPosition(x * cellSize_, y * cellSize_ + cellSize_ - 1);
+        wall.setFillColor(sf::Color::White);
+        renderWindow_->draw(wall);
+    }
+    if (cell->getWall(MAZE_CELL_RIGHT)) {
+        sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
+        wall.setPosition(x * cellSize_ + cellSize_ - 1, y * cellSize_);
+        wall.setFillColor(sf::Color::White);
+        renderWindow_->draw(wall);
+    }
+    if (cell->getWall(MAZE_CELL_TOP)) {
+        sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
+        wall.setPosition(x * cellSize_, y * cellSize_ - 1);
+        wall.setFillColor(sf::Color::White);
+        renderWindow_->draw(wall);
+    }
+    if (cell->getWall(MAZE_CELL_LEFT)) {
+        sf::RectangleShape wall(sf::Vector2f(1, cellSize_));
+        wall.setPosition(x * cellSize_ - 1, y * cellSize_);
+        wall.setFillColor(sf::Color::White);
+        renderWindow_->draw(wall);
+    }        
 }
 
 void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
@@ -171,4 +195,20 @@ void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
             show->update();
         }
     }
+}
+
+void updateShowLive(Show* show, Maze* maze) {
+    updateShowLive(show, maze, false);
+    updateShowLive(show, maze, true);
+}
+
+void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
+    if (show == nullptr || maze == nullptr) return;
+    if (!show->isOpen()) return;
+    if (argc <= 0) return;
+    show->eventHandler();
+    for (int i = 0; i < argc; i++) {
+        show->updateCell(argv[i]);
+    }
+    show->display();
 }

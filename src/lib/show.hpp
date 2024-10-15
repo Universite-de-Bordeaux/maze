@@ -52,6 +52,7 @@ public:
      * @brief Met à jour la fenêtre de rendu
      */
     void update();
+    void updateCell(Cell*);
 
 private:
     Maze* maze_; //> Pointeur vers un objet de type Maze
@@ -67,5 +68,7 @@ private:
 };
 
 void updateShowLive(Show*, Maze*, bool);
+void updateShowLive(Show*, Maze*);
+void updateShowLive(Show*, Maze*, int, Cell**);
 
 #endif  // SHOW_HPP

@@ -9,7 +9,7 @@ struct coordinate{
 
 int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
-static int numberRelativeNeighbors(Maze* maze, int width, int height, int currentX, int currentY, int directions[4][2], Cell* currentCell) {
+static int numberRelativeNeighbors(Maze* maze, int width, int height, int currentX, int currentY, int directions[4][2], Cell* currentCell, Show* show) {
     int numberOfNeighbors = 0;
             for (int i = 0; i < 4; i++) {
                 int x = currentX + directions[i][0];
@@ -18,6 +18,8 @@ static int numberRelativeNeighbors(Maze* maze, int width, int height, int curren
                     numberOfNeighbors++;
                     currentCell->setStatus(MAZE_STATUS_VISITED);
                     maze->getCell(x, y)->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
+                    Cell* showCell[2] = {currentCell, maze->getCell(x, y)};
+                    updateShowLive(show, maze, 2, showCell);
                 }
             }
     return numberOfNeighbors;
@@ -54,6 +56,8 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
         int currentY = cellHistory[historyIndex - 1].y;
         Cell* currentCell = maze->getCell(currentX, currentY);
         currentCell->setStatus(MAZE_STATUS_CURRENT);
+        Cell* showCell[1] = {currentCell};
+        updateShowLive(show, maze, 1, showCell);
 
         Cell* neighbor = nextNeighbor(currentCell);
 
@@ -78,12 +82,17 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
             historyIndex++;
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
+            // updateShowLive(show, maze, true);
+            Cell* showCell[2] = {currentCell, neighbor};
+            updateShowLive(show, maze, 2, showCell);
         } else {
-            int numberOfNeighbors = numberRelativeNeighbors(maze, width, height, currentX, currentY, directions, currentCell);
+            int numberOfNeighbors = numberRelativeNeighbors(maze, width, height, currentX, currentY, directions, currentCell, show);
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
+                Cell* showCell[1] = {currentCell};
+                updateShowLive(show, maze, 1, showCell);
                 historyIndex--;
-
+                // updateShowLive(show, maze, true);
             } else {
                 coordinate neighbors[numberOfNeighbors];
                 int index = 0;
@@ -96,18 +105,17 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
                         index++;
                     }
                 }
-                int x = neighbors[0].x;
-                int y = neighbors[0].y;
-                maze->removeWall(currentCell, maze->getCell(x, y));
-                cellHistory[historyIndex].x = x;
-                cellHistory[historyIndex].y = y;
+                maze->removeWall(currentCell, maze->getCell(neighbors[0].x, neighbors[0].y));
+                cellHistory[historyIndex] = neighbors[0];
                 historyIndex++;
-                updateShowLive(show, maze, false);
                 currentCell->setStatus(MAZE_STATUS_VISITED);
-                maze->getCell(x, y)->setStatus(MAZE_STATUS_CURRENT);
+                maze->getCell(neighbors[0].x, neighbors[0].y)->setStatus(MAZE_STATUS_CURRENT);
+                // updateShowLive(show, maze);
+                Cell* showCell[2] = {currentCell, maze->getCell(neighbors[0].x, neighbors[0].y)};
+                updateShowLive(show, maze, 2, showCell);
             }
         }
-        updateShowLive(show, maze, true);
+        updateShowLive(show, maze, 1, &currentCell);
     }
     maze -> clearMaze();
 }
