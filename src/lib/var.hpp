@@ -31,6 +31,12 @@
 #define MAZE_STATUS_CURRENT 5 //> Current cell
 #define MAZE_STATUS_CURRENT_COLOR 255, 0, 0 //> Current cell color
 
+#define NORTH 0 //> North direction
+#define EAST 1 //> East direction
+#define SOUTH 2 //> South direction
+#define WEST 3 //> West direction
+#define ALL 4 //> All directions
+
 #define MAZE_REFRESH_SIZE 200 //> Refresh size
 #define MAZE_MAX_WINDOW_RATIO .9 //> Max window ratio
 
