@@ -18,6 +18,7 @@ static int numberRelativeNeighbors(Maze* maze, int width, int height, int curren
             numberOfNeighbors++;
             currentCell->setStatus(MAZE_STATUS_VISITED);
             Cell* showCell[1] = {maze->getCell(x, y)};
+            showCell[0]->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
             updateShowLive(show, maze, 1, showCell);
         }
     }
