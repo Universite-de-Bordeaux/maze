@@ -2,6 +2,7 @@
 #include "show.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 struct start {
     bool left;
@@ -45,7 +46,7 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
         Cell *showCell[1] = {maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb)};
-        updateShowLive(show, maze, 1, showCell);
+        // updateShowLive(show, maze, 1, showCell);
         // updateShowLive(show, maze, false);
     }
 }
