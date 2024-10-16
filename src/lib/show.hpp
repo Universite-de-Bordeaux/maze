@@ -73,6 +73,6 @@ private:
 void updateShowLive(Show*, Maze*, bool);
 void updateShowLive(Show*, Maze*);
 void updateShowLive(Show*, Maze*, int, Cell**);
-void refreshShow(Show*, Maze*);
+void refreshShow(Show*);
 
 #endif  // SHOW_HPP

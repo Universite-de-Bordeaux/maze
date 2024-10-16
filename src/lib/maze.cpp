@@ -9,10 +9,10 @@
 static int defaultStartX = 0;
 static int defaultStartY = 0;
 static int defaultEndX(int width) {
-    return width / 2;
+    return width - 1;
 }
 static int defaultEndY(int height) {
-    return height / 2;
+    return height - 1;
 }
 
 Maze::Maze() {
