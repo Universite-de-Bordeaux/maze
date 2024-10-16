@@ -9,6 +9,7 @@
  * @param show Affichage du labyrinthe
  */
 static void checkCell(Maze *maze, int x, int y, Show *show) {
+    refreshShow(show, maze);
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);

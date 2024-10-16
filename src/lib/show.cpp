@@ -225,11 +225,18 @@ void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
     if (argc <= 0) return;
-    show->eventHandler();
+    // show->eventHandler();
     for (int i = 0; i < argc; i++) {
         if (argv[i] != nullptr) {
             show->updateCell(argv[i]);
         }
     }
+    // show->display();
+}
+
+void refreshShow(Show *show, Maze *maze) {
+    if (show == nullptr || maze == nullptr) return;
+    if (!show->isOpen()) return;
+    show->eventHandler();
     show->display();
 }
