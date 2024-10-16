@@ -1,7 +1,26 @@
 # include "algo_fractal.hpp"
+#include "maze.hpp"
 #include <cmath>
 #include <cstdlib>
-#include <ctime>
+#include <iostream>
+
+void add_vertical(Maze *maze, int height, int column) {
+    for (int i = 0; i < maze->getHeight(); i++) {
+        maze->addWall(column, i, false);
+    }
+    return;
+}
+
+void add_horizontal(Maze *maze, int line, int width) {
+
+    for (int i = 0; i < width; i++) {
+        std::cout << i << ' ' << line << std::endl;
+        std::cout << maze->addWall(i, line, true) << std::endl;
+    }
+    return;
+}
+
+// void remove(Maze * maze, int direction, );
 
 void quad_maze(Maze * maze) {
     int old_width = maze->getWidth();
@@ -19,43 +38,28 @@ void quad_maze(Maze * maze) {
 }
 
 void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
-    Maze *new_maze = maze;
     int nb_murs_supp = 3;
     n = std::pow(2, n);
-
+    maze->setWidthHeight(2, 2);
     while (n) {
+        quad_maze(maze);
         int *p_1 = &nb_murs_supp;
         int width = maze->getWidth();
         int height = maze->getHeight();
-        int line = height / 2;
-        int column = width / 2;
+        std::cout << "taille : " << width << ' ' << height << std::endl;
         int r = rand() % 4;
-
         if (!perfect) {
             *p_1 = 3 + r % 2;
         }
 
-        for (int i = 0; i < nb_murs_supp; i++) {
-            if (r == 0) {
-                int r_line = rand() % line;
-                new_maze->addWall(column, r_line, false);
-            }
-            else if (r == 1) {
-                int r_column = column + rand() % column;
-                new_maze->addWall(r_column, line, true);
-            }
-            else if (r == 2) {
-                int r_line = line + rand() % line;
-                new_maze->addWall(column, r_line, false);
-            }
-            else {
-                int r_column = rand() % column;
-                new_maze->addWall(r_column, line, true);
-            }
-        }
-        quad_maze(new_maze);
+        int line = height / 2;
+        int column = width / 2;
+        // std::cout << "test 1" << std::endl;
+        add_horizontal(maze, line, width);
+        // std::cout << "test 2" << std::endl;
+        add_vertical(maze, height, column);
+
         n /= 2;
     }
-    // delete new_maze;
     return;
 }
