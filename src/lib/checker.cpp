@@ -12,24 +12,20 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
-    if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-        if (show != nullptr && show->isOpen()) {
-            show->update();
-        }
-    }
+    Cell *showCell[1] = {cell};
+    // updateShowLive(show, maze, true);
     if (cell == nullptr) {
         return;
     }
     int numberOfNeighborsNotVisited = cell->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighborsNotVisited <= 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        Cell *showCell[1] = {cell};
+        updateShowLive(show, maze, 1, showCell);
+        // updateShowLive(show, maze, false);
         return;
     }
+    updateShowLive(show, maze, 1, showCell);
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {
@@ -50,24 +46,22 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
-    if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-        if (show != nullptr && show->isOpen()) {
-            show->update();
-        }
-    }
+    Cell *showCell[1] = {cell};
+    updateShowLive(show, maze, 1, showCell);
+    // updateShowLive(show, maze, true);
     if (cell->getAbsoluteNumberOfNeighbors() - cell->getAbsoluteNumberOfNeighborsNotVisited() >= 2) {
         cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
+        Cell *showCell[1] = {cell};
+        updateShowLive(show, maze, 1, showCell);
         *unperfect = true;
     }
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
         if (!(cell->getAbsoluteNumberOfNeighbors() - cell->getAbsoluteNumberOfNeighborsNotVisited() >= 2)) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
+            Cell *showCell[1] = {cell};
+            updateShowLive(show, maze, 1, showCell);
         }
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        // updateShowLive(show, maze, false);
         return;
     }
     int numberOfNeighborsNotVisited = cell->getAbsoluteNumberOfNeighborsNotVisited();
@@ -82,6 +76,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
 
 void checker(Maze *maze, bool perfect, Show *show) {
     bool unperfect = false;
+    updateShowLive(show, maze);
     if (perfect) {
         checkCellPerfect(maze, 0, 0, 0, 0, &unperfect, show);
     } else {

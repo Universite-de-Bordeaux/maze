@@ -135,6 +135,13 @@ class Maze {
         */
         bool addWall(int, int, bool);
         /**
+        @brief Ajoute un mur entre deux cellules
+        @param cell1 Cellule 1
+        @param cell2 Cellule 2
+        @return Vrai si le mur a été ajouté ou supprimé, faux sinon
+        */
+        bool addWall(Cell*, Cell*);
+        /**
         @brief Supprime un mur
         @param x Coordonnée x du mur
         @param y Coordonnée y du mur
@@ -142,6 +149,13 @@ class Maze {
         @return Vrai si le mur a été supprimé, faux sinon
         */
         bool removeWall(int, int, bool);
+        /**
+        @brief Supprime un mur entre deux cellules
+        @param cell1 Cellule 1
+        @param cell2 Cellule 2
+        @return Vrai si le mur a été supprimé, faux sinon
+        */
+        bool removeWall(Cell*, Cell*);
         /**
         @brief Génère un labyrinthe
         */

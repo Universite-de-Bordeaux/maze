@@ -7,7 +7,7 @@
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
 #include "lib/algo_cours.hpp"
-#include "lib/algo_1.hpp"
+#include "lib/algo_diagonal.hpp"
 #include "lib/writer.hpp"
 #include "lib/checker.hpp"
 #include "lib/solver_1.hpp"
@@ -28,7 +28,7 @@ void help() {
     std::cout << "  -cm ou --clear-maze : Netttoie le labyrinthe en mémoire" << std::endl;
     std::cout << "-g ou --generate : Génère un labyrinthe" << std::endl;
     std::cout << "  -gs ou --generate-show : Génère un labyrinthe et l'affiche pendant la génération" << std::endl;
-    std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, 1, par défaut : cours)" << std::endl;
+    std::cout << "  -t ou --type <type> : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, diagonal, fractal, par défaut : cours)" << std::endl;
     std::cout << "  -d ou --dimension <x> <y> : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)" << std::endl;
     std::cout << "  -u ou --unperfect : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)" << std::endl;
     std::cout << "-r ou --resolve : Résout un labyrinthe (nécessite un labyrinthe en mémoire)" << std::endl;
@@ -68,14 +68,14 @@ int help(std::string a, int b) {
 */
 void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show *show) {
     std::cout << "Generating..." << std::endl;
-    maze->setWidthHeight(0, 0);
+    maze->setWidthHeight(x, y);
     std::cout << "Maze initialized" << std::endl;
     std::cout << "Params : type=" << type << ", x=" << x << ", y=" << y << ", perfect=" << perfect << std::endl;
     srand(time(0));
     clock_t start = clock();
     if (type == "cours") algo_cours(maze, x, y, perfect, show);
     else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
-    else if ((type == "1")) algo_1(maze, x, y, perfect, show);
+    else if ((type == "diagonal")) algo_diagonal(maze, x, y, perfect, show);
     else if ((type == "fractal")) algo_fractal(maze, x, perfect, show);
     else exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
@@ -241,8 +241,8 @@ int main(int argc, char *argv[]) {
                                     type = "cours";
                                 } else if (strcmp(argv[i + 1], "perso") == 0) {
                                     type = "perso";
-                                } else if (strcmp(argv[i + 1], "1") == 0) {
-                                    type = "1";
+                                } else if (strcmp(argv[i + 1], "diagonal") == 0) {
+                                    type = "diagonal";
                                 } else if (strcmp(argv[i + 1], "fractal") == 0) {
                                     type = "fractal";
                                 } else {

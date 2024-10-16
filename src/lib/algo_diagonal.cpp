@@ -1,4 +1,5 @@
-#include "algo_1.hpp"
+#include "algo_diagonal.hpp"
+#include "show.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -38,22 +39,18 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
                 }
             }
-            if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
-                if (show != nullptr && show->isOpen()) {
-                    show->update();
-                }
-            }
+            Cell *showCell[1] = {maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb)};
+            updateShowLive(show, maze, 1, showCell);
+            // updateShowLive(show, maze, true);
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
-            if (show != nullptr && show->isOpen()) {
-                show->update();
-            }
-        }
+        Cell *showCell[1] = {maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb)};
+        updateShowLive(show, maze, 1, showCell);
+        // updateShowLive(show, maze, false);
     }
 }
 
-void algo_1(Maze* maze, int width, int height, bool perfect, Show *show) {
+void algo_diagonal(Maze* maze, int width, int height, bool perfect, Show *show) {
     start whereStart = {(bool)(rand() % 2), (bool)(rand() % 2)};
     int x = whereStart.left ? 0 : width - 1;
     int y = whereStart.top ? 0 : height - 1;

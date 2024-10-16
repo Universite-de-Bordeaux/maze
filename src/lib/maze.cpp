@@ -162,6 +162,26 @@ bool Maze::addWall(int x, int y, bool isHorizontal) {
     return true;
 }
 
+bool Maze::addWall(Cell *cell1, Cell *cell2) {
+    if (cell1 == nullptr || cell2 == nullptr) {
+        return false;
+    }
+    if (cell1->getX() == cell2->getX()) {
+        if (cell1->getY() == cell2->getY() + 1) {
+            return addWall(cell2->getX(), cell2->getY(), true);
+        } else if (cell1->getY() == cell2->getY() - 1) {
+            return addWall(cell1->getX(), cell1->getY(), true);
+        }
+    } else if (cell1->getY() == cell2->getY()) {
+        if (cell1->getX() == cell2->getX() + 1) {
+            return addWall(cell2->getX(), cell2->getY(), false);
+        } else if (cell1->getX() == cell2->getX() - 1) {
+            return addWall(cell1->getX(), cell1->getY(), false);
+        }
+    }
+    return false;
+}
+
 bool Maze::removeWall(int x, int y, bool isHorizontal) {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return false;
@@ -185,6 +205,26 @@ bool Maze::removeWall(int x, int y, bool isHorizontal) {
     }
     delete wall;
     return true;
+}
+
+bool Maze::removeWall(Cell *cell1, Cell *cell2) {
+    if (cell1 == nullptr || cell2 == nullptr) {
+        return false;
+    }
+    if (cell1->getX() == cell2->getX()) {
+        if (cell1->getY() == cell2->getY() + 1) {
+            return removeWall(cell2->getX(), cell2->getY(), true);
+        } else if (cell1->getY() == cell2->getY() - 1) {
+            return removeWall(cell1->getX(), cell1->getY(), true);
+        }
+    } else if (cell1->getY() == cell2->getY()) {
+        if (cell1->getX() == cell2->getX() + 1) {
+            return removeWall(cell2->getX(), cell2->getY(), false);
+        } else if (cell1->getX() == cell2->getX() - 1) {
+            return removeWall(cell1->getX(), cell1->getY(), false);
+        }
+    }
+    return false;
 }
 
 void Maze::initNeighborsCells() {

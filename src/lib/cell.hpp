@@ -60,6 +60,7 @@ class Cell {
         @return Le mur de la cellule
         */
         Wall* getWall(int);
+        bool isWall(int);
         /**
         @brief Récupère si la cellule a déjà été visitée
         @return Vrai si la cellule a déjà été visitée

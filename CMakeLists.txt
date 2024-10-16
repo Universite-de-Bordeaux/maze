@@ -12,7 +12,7 @@ set(SOURCE_FILES
     src/lib/wall.cpp
     src/lib/show.cpp
     src/lib/algo_cours.cpp
-    src/lib/algo_1.cpp
+    src/lib/algo_diagonal.cpp
     src/lib/writer.cpp
     src/lib/checker.cpp
     src/lib/solver_1.cpp
@@ -50,7 +50,7 @@ add_custom_target(run_test
 )
 
 add_custom_target(run_algo_cours
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "100" "100" "-v" "-cm" "-rs" "-a" "1"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "25" "25" "-s" "-vs" "-s" "-cm" "-rs" "-a" "1" "-o" "src/instances/tmp/maze1_algo_cours.txt" "-s"
     # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "30" "10"
     # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "20"
     # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "30" "10"
@@ -62,16 +62,16 @@ add_custom_target(run_algo_cours
 )
 
 add_custom_target(run_checker
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-vs" "-p"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "diagonal" "-vs" "-p"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-vs"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-vs" "-p"
     DEPENDS ${PROJECT_NAME}
 )
 
-add_custom_target(run_algo_1
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-vs" "-c" "-gs" "-t" "1" "-vs"
+add_custom_target(run_algo_diagonal
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "10" "-o" "src/instances/tmp/maze1_algo1.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "20" "-o" "src/instances/tmp/maze2_algo1.txt" "-vs"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-vs" "-c" "-gs" "-t" "diagonal" "-vs"
     DEPENDS ${PROJECT_NAME}
 )
 
@@ -83,18 +83,18 @@ add_custom_target(run_algo_fractal
 )
 
 add_custom_target(run_solver_1
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "100" "100" "-r" "-a" "1" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "100" "100" "-r" "-a" "1" "-s"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-s" "-rs" "-a" "1"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-d" "20" "20" "-rs" "-a" "1"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "1" "-rs" "-a" "1" "-c" "-gs" "-t" "1" "-rs" "-a" "1"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "20" "-rs" "-a" "1"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-rs" "-a" "1" "-c" "-gs" "-t" "diagonal" "-rs" "-a" "1"
     DEPENDS ${PROJECT_NAME}
 )
 
 add_custom_target(run_complex
-    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "250" "250" "-r" "-a" "1" "-o" "src/instances/tmp/maze_complex_algo1.txt" "-cm" "-v"
-    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "250" "250" "-r" "-a" "1r" "-o" "src/instances/tmp/maze_complex_algo2.txt" "-cm" "-v"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "1" "-d" "400" "400" "-o" "src/instances/tmp/maze_complex_algo3.txt" "-r" "-a" "1" "-cm" "-v"
+    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "diagonal" "-d" "250" "250" "-r" "-a" "1" "-o" "src/instances/tmp/maze_complex_algo1.txt" "-cm" "-v"
+    # COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "diagonal" "-d" "250" "250" "-r" "-a" "1r" "-o" "src/instances/tmp/maze_complex_algo2.txt" "-cm" "-v"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "diagonal" "-d" "400" "400" "-o" "src/instances/tmp/maze_complex_algo3.txt" "-r" "-a" "1" "-cm" "-v"
     DEPENDS ${PROJECT_NAME}
 )
 
