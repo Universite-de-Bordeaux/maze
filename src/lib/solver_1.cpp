@@ -3,7 +3,10 @@
 #include "var.hpp"
 
 static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLeft) {
-    refreshShow(show);
+    
+        if (show != nullptr) {
+            refreshShow(show);
+        }
     // std::cout << "x: " << x << " y: " << y << " direction: " << direction << " toLeft: " << toLeft << std::endl;
     // updateShowLive(show, maze, true);
     Cell *cell = maze->getCell(x, y);

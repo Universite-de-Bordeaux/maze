@@ -21,7 +21,10 @@ struct start {
  * @param show L'objet pour afficher le labyrinthe
  */
 static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool isHorizontal, start *whereStart, Show *show) {
-    refreshShow(show);
+    
+        if (show != nullptr) {
+            refreshShow(show);
+        }
     if((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
         int startB = (isHorizontal ? (whereStart->left ? *b : 0) : (whereStart->top ? *b : 0));
