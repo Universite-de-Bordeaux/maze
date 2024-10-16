@@ -51,7 +51,8 @@ void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
 
     while (historyIndex > 0) {
         if (show != nullptr) {
-            refreshShow(show);
+            show->eventHandler();
+            show->display();
         }
         //cellule curent a patire de cellHistory
         int currentX = cellHistory[historyIndex - 1].x;
