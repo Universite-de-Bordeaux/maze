@@ -235,6 +235,8 @@ void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
 }
 
 void refreshShow(Show *show) {
-    show->eventHandler();
-    show->display();
+    if (show == nullptr) return;
+    if (!show->isOpen()) return;
+    // show->eventHandler();
+    show->update();
 }
