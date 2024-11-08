@@ -21,7 +21,7 @@ static void add_line(Maze *maze, int line) {
     return;
 }
 
-
+// void remove(Maze * maze, int direction, );
 
 static void quad_maze(Maze * maze) {
     int old_width = maze->getWidth();
