@@ -7,6 +7,7 @@
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
 #include "lib/algo_cours.hpp"
+#include "lib/algo_perso.hpp"
 #include "lib/algo_diagonal.hpp"
 #include "lib/writer.hpp"
 #include "lib/checker.hpp"
@@ -74,7 +75,7 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
     srand(time(0));
     clock_t start = clock();
     if (type == "cours") algo_cours(maze, x, y, perfect, show);
-    else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
+    else if ((type == "perso")) algo_perso(maze, x, y, perfect, show);
     else if ((type == "diagonal")) algo_diagonal(maze, x, y, perfect, show);
     else if ((type == "fractal")) algo_fractal(maze, x, perfect, show);
     else exit(MAZE_COMMAND_ERROR);

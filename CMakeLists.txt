@@ -12,6 +12,7 @@ set(SOURCE_FILES
     src/lib/wall.cpp
     src/lib/show.cpp
     src/lib/algo_cours.cpp
+    src/lib/algo_perso.cpp
     src/lib/algo_diagonal.cpp
     src/lib/writer.cpp
     src/lib/checker.cpp
