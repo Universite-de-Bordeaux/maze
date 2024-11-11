@@ -83,6 +83,11 @@ add_custom_target(run_algo_fractal
     DEPENDS ${PROJECT_NAME}
 )
 
+add_custom_target(run_algo_perso
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "perso" "-d" "5" "5" "-s" # "-vs" "-s" "-rs" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
+
 add_custom_target(run_solver_1
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "100" "100" "-r" "-a" "1" "-s"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-rs" "-a" "1"
