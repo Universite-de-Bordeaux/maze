@@ -1,27 +1,57 @@
 #include "algo_fractal.hpp"
 #include "maze.hpp"
+#include "show.hpp"
+#include "var.hpp"
+#include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <thread>
 
-static void add_column(Maze *maze, int column) {
-    for (int i = 0; i < maze->getHeight(); i++) {
-        std::cout << column << ' ' << i << " vertical" << std::endl;
-        maze->addWall(column, i, false);
+static bool add_wall(Maze *maze, int mid, int direction) {
+  	for (int i = 0; i < mid; i++) {
+    	maze->addWall(mid-1, i, false);
+    	maze->addWall(mid + i, mid-1, true);
+    	maze->addWall(mid-1, mid + i, false);
+    	maze->addWall(i, mid-1, true);
+  	}
+ 	if (direction == NORTH) {
+		int remove = rand() % mid;
+        maze->removeWall(mid + remove, mid-1, true);
+		remove = rand() % mid;
+        maze->removeWall(mid-1, mid + remove, false);
+        remove = rand() % mid;
+        maze->removeWall(remove, mid-1, true);
     }
-    return;
-}
-
-static void add_line(Maze *maze, int line) {
-
-    for (int i = 0; i < maze->getWidth(); i++) {
-        std::cout << i << ' ' << line << " horizontal" << std::endl;
-        maze->addWall(i, line, true);
+    else if (direction == EAST) {
+      	int remove = rand() % mid;
+        maze->removeWall(mid-1, mid + remove, false);
+        remove = rand() % mid;
+        maze->removeWall(remove, mid-1, true);
+        remove = rand() % mid;
+        maze->removeWall(mid-1, remove, false);
     }
-    return;
+    else if (direction == SOUTH) {
+    	int remove = rand() % mid;
+        maze->removeWall(remove, mid-1, true);
+        remove = rand() % mid;
+        maze->removeWall(mid-1, remove, false);
+        remove = rand() % mid;
+        maze->removeWall(mid + remove, mid-1, true);
+    }
+    else if (direction == WEST) {
+        int remove = rand() % mid;
+        maze->removeWall(mid-1, remove, false);
+        remove = rand() % mid;
+        maze->removeWall(mid + remove, mid-1, true);
+		remove = rand() % mid;
+        maze->removeWall(mid-1, mid + remove, false);
+    }
+    else {
+        return false;
+    }
+    return true;
 }
-
-// void remove(Maze * maze, int direction, );
 
 static void quad_maze(Maze * maze) {
     int old_width = maze->getWidth();
@@ -39,12 +69,10 @@ static void quad_maze(Maze * maze) {
         }
     }
     maze->setWidthHeight(2*maze->getWidth(), 2*maze->getHeight());
-    std::cout << maze->getWall(0, 0, false) << std::endl;
     for (int i = 0; i < old_height; i++) {
         for (int j = 0; j < old_width; j++) {
-            Cell *cell = new_maze.getCell(i, j);
             for (int k = 0; k < 2; k++) {
-                if (maze->getWall(i, j, k)) {
+                if (new_maze.getWall(i, j, k)) {
                     maze->addWall(i, j, k);
                     maze->addWall(i+old_width, j, k);
                     maze->addWall(i+old_width, j+old_height, k);
@@ -58,25 +86,37 @@ static void quad_maze(Maze * maze) {
 
 void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
     int nb_murs_supp = 3;
-    n = std::pow(2, n);
     maze->setWidthHeight(1, 1);
-    while (n > 1) {
-        std::cout << "MAZE ACTUEL : " << maze->getWidth() << ' ' << maze->getHeight() << std::endl;
-        quad_maze(maze);
-        int width = maze->getWidth();
-        int height = maze->getHeight();
-        int r = rand() % 4;
-        // if (!perfect) {
-        //     *p_1 = 3 + r % 2;
-        // }
+    if (show) {
+        show->destroy();
+        show->create();
+    }
+    refreshShow(show);
+    while (n > 0) {
+        // attend 1s
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        int line = height / 2 - 1;
-        int column = width / 2 - 1;
-        add_line(maze, line);
-        add_column(maze, column);
-        // FIXME
-        n /= 2;
-        std::cout << "n: " << n << std::endl;
+        // duplication du labyrinthe
+        quad_maze(maze);
+
+        // ajout des murs
+        int direction = rand() % 4;
+        // if (!perfect) {
+        //     *p_1 = 3 + direction % 2;
+        // }
+        if (!add_wall(maze, maze->getHeight() / 2, direction)) {
+            std::cerr << "Error: add_wall" << std::endl;
+            return;
+        }
+
+        // affichage
+        if (show) {
+            show->destroy();
+            show->create();
+        }
+        refreshShow(show);
+
+        n -= 1;
     }
     return;
 }
