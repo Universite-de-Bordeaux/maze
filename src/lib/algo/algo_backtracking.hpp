@@ -1,8 +1,8 @@
-#ifndef ALGO_DIAGONAL_HPP
-#define ALGO_DIAGONAL_HPP
+#ifndef ALGO_BACKTRACKING_HPP
+#define ALGO_BACKTRACKING_HPP
 
-#include "maze.hpp"
-#include "show.hpp"
+#include "../maze.hpp"
+#include "../show.hpp"
 
 /**
  * Crée un labyrinthe
@@ -11,6 +11,6 @@
  * @param int hauteur du labyrinthe
  * @param bool  vrai si le labyrinthe est parfait
 */
-void algo_diagonal(Maze*, int, int, bool, Show*);
+void algo_backtracking(Maze*, int, int, bool, Show*);
 
-#endif // ALGO_DIAGONAL_HPP
+#endif // ALGO_BACKTRACKING_HPP

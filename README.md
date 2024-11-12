@@ -55,22 +55,22 @@ L'utilisation de l'application est la suivante :
 
 * `-g` ou `--generate` : Génère un labyrinthe (écrase le labyrinthe en mémoire)
   + `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en mémoire)
-  + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (backtracking (bt), wallmaker (wm), diagonal (d), fractal (f), par défaut : bt)
-  + `-d` ou `--dimension` `<x> <y>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
+  + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (backtracking (bt), wallmaker (wm), diagonal (d), fractal (f), par défaut : backtracking)
+  + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
   + `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
 
 #### Résolution de labyrinthe
 
 * `-r` ou `--resolve` : Résout le labyrinthe en mémoire
   + `-rs` ou `--resolve-show` : Résout le labyrinthe en mémoire et l'affiche pendant la résolution
-	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bfs), par défaut : dfl)
+  + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
 
 #### Vérification de labyrinthe
 
 * `-v` ou `--verify` : Vérifie si un labyrinthe est parfait (nécessite un labyrinthe en mémoire)
   + `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)
-    + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bfs), par défaut : dfl)
+  + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
+  + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
 
 ### Codes d'erreur
 
@@ -134,7 +134,7 @@ Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstright
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a bfs
+./main.out -i labyrinthe.txt -v -a bf
 ```
 
 ### Afficher un labyrinthe

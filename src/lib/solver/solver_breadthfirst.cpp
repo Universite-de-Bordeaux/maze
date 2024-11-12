@@ -1,9 +1,9 @@
-#include "show.hpp"
-#include "maze.hpp"
-#include "cell.hpp"
-#include "var.hpp"
 #include <queue>
 #include <iostream>
+
+#include "solver_breadthfirst.hpp"
+#include "../show.hpp"
+#include "../var.hpp"
 
 struct Position {
     int x, y, direction;
@@ -53,8 +53,8 @@ static bool solver_bfs(Maze *maze, Show *show, bool toLeft) {
     return false;
 }
 
-bool solver_width(Maze *maze, Show *show, bool toLeft) {
+bool solver_breadthfirst(Maze *maze, Show *show) {
     updateShowLive(show, maze);
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
-    return solver_bfs(maze, show, toLeft);
+    return solver_bfs(maze, show, true);
 }

@@ -6,19 +6,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE_FILES
     src/main.cpp
-    src/lib/reader.cpp
-    src/lib/maze.cpp
     src/lib/cell.cpp
-    src/lib/wall.cpp
+    src/lib/maze.cpp
+    src/lib/reader.cpp
     src/lib/show.cpp
-    src/lib/algo_cours.cpp
-    src/lib/algo_perso.cpp
-    src/lib/algo_diagonal.cpp
+    src/lib/wall.cpp
     src/lib/writer.cpp
-    src/lib/checker.cpp
-    src/lib/solver_1.cpp
-    src/lib/solver_width.cpp
-    src/lib/algo_fractal.cpp
+    src/lib/algo/algo_backtracking.cpp
+    src/lib/algo/algo_diagonal.cpp
+    src/lib/algo/algo_fractal.cpp
+    src/lib/algo/algo_wallmaker.cpp
+    src/lib/checker/checker_depthfirst.cpp
+    src/lib/solver/solver_breadthfirst.cpp
+    src/lib/solver/solver_depthfirst.cpp
 )
 
 set(INCLUDE_DIRS
@@ -43,11 +43,19 @@ target_link_directories(${PROJECT_NAME} PUBLIC ${LINK_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${LINK_LIBS})
 
 add_custom_target(run_test
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} ""
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "test"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-i" "src/instances/maze1.txt"
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-i" "src/instances/maze1.txt" "-s" "-c" "-r" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-s" "-c" "-i" "src/instances/maze2.txt" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-rs" "-a" "dfl" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-rs" "-a" "dfr" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze1.txt" "-rs" "-a" "bf" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "10" "-s" "-rs" "-a" "dfl" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "10" "-a" "bt" "-s"
+#    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "10" "-a" "wm" "-s" "-rs" "-a" "dfl" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "10" "-a" "d" "-s" "-rs" "-a" "dfr" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "4" "4" "-a" "f" "-s" "-rs" "-a" "bf" "-s"
+#    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "10" "-a" "wm" "-s" "-vs" "-a" "dfl" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "10" "10" "-a" "d" "-s" "-vs" "-a" "dfr" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "4" "4" "-a" "f" "-s" "-vs" "-a" "dfr" "-s"
     DEPENDS ${PROJECT_NAME}
 )
 

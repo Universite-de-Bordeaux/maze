@@ -1,8 +1,8 @@
 #ifndef ALGO_FRACTAL_HPP
 #define ALGO_FRACTAL_HPP
 
-#include "maze.hpp"
-#include "show.hpp"
+#include "../maze.hpp"
+#include "../show.hpp"
 
 /**
  * Crée un labyrinthe

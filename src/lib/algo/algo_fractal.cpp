@@ -1,12 +1,13 @@
-#include "algo_fractal.hpp"
-#include "maze.hpp"
-#include "show.hpp"
-#include "var.hpp"
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <thread>
+
+#include "algo_fractal.hpp"
+#include "../maze.hpp"
+#include "../show.hpp"
+#include "../var.hpp"
 
 static bool add_wall(Maze *maze, int mid, int direction) {
   	for (int i = 0; i < mid; i++) {
@@ -85,8 +86,8 @@ static void quad_maze(Maze * maze) {
 }
 
 void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
-    int nb_murs_supp = 3;
     maze->setWidthHeight(1, 1);
+    int nb_murs_supp = 3;
     if (show) {
         show->destroy();
         show->create();

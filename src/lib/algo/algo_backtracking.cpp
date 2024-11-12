@@ -1,6 +1,7 @@
-#include "algo_cours.hpp"
-#include "show.hpp"
 #include <iostream>
+
+#include "algo_backtracking.hpp"
+#include "../show.hpp"
 
 struct coordinate{
     int x;
@@ -38,7 +39,8 @@ static Cell* nextNeighbor(Cell* current) {
 }
 
 // Fonction principale de l'algorithme (backtracking)
-void algo_cours(Maze* maze, int width, int height, bool perfect, Show* show) {
+void algo_backtracking(Maze* maze, int width, int height, bool perfect, Show* show) {
+    maze->setWidthHeight(width, height);
     struct coordinate cellHistory[width * height];
     int historyIndex = 0;
 

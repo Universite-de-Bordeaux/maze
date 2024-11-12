@@ -1,6 +1,7 @@
-#include "algo_perso.hpp"
-#include "show.hpp"
 #include <iostream>
+
+#include "algo_wallmaker.hpp"
+#include "../show.hpp"
 
 static int numberBorders(int width, int height, Wall* wall) {
     std::cout << "numberBorders" << std::endl;
@@ -30,7 +31,8 @@ static int numberBorders(int width, int height, Wall* wall) {
     return number;
 }
 
-void algo_perso(Maze* maze, int width, int height, bool perfect, Show* show) {
+void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show) {
+    maze->setWidthHeight(width, height);
     int wallsPossible[width * height * 2][3];
     int wallsPossibleSize = 0;
     for (int x = 0; x < width; x++) {
