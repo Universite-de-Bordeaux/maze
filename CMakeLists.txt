@@ -12,10 +12,12 @@ set(SOURCE_FILES
     src/lib/wall.cpp
     src/lib/show.cpp
     src/lib/algo_cours.cpp
+    src/lib/algo_perso.cpp
     src/lib/algo_diagonal.cpp
     src/lib/writer.cpp
     src/lib/checker.cpp
     src/lib/solver_1.cpp
+    src/lib/solver_width.cpp
     src/lib/algo_fractal.cpp
 )
 
@@ -82,12 +84,26 @@ add_custom_target(run_algo_fractal
     DEPENDS ${PROJECT_NAME}
 )
 
+add_custom_target(run_algo_perso
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "perso" "-d" "5" "5" "-s" # "-vs" "-s" "-rs" "-s"
+    DEPENDS ${PROJECT_NAME}
+)
+
 add_custom_target(run_solver_1
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "100" "100" "-r" "-a" "1" "-s"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-s" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "20" "-rs" "-a" "1"
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-rs" "-a" "1" "-c" "-gs" "-t" "diagonal" "-rs" "-a" "1"
+    DEPENDS ${PROJECT_NAME}
+)
+
+add_custom_target(run_solver_width
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-t" "cours" "-d" "25" "25" "-s" "-rs" "-a" "w" "-s"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notvalid1.txt" "-rs" "-a" "w"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-i" "src/instances/maze_notperfect1.txt" "-s" "-rs" "-a" "w"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-d" "20" "20" "-rs" "-a" "w"
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-t" "diagonal" "-rs" "-a" "1" "-c" "-gs" "-t" "diagonal" "-rs" "-a" "w"
     DEPENDS ${PROJECT_NAME}
 )
 

@@ -7,10 +7,12 @@
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
 #include "lib/algo_cours.hpp"
+#include "lib/algo_perso.hpp"
 #include "lib/algo_diagonal.hpp"
 #include "lib/writer.hpp"
 #include "lib/checker.hpp"
 #include "lib/solver_1.hpp"
+#include "lib/solver_width.hpp"
 #include "lib/algo_fractal.hpp"
 #include <ctime>
 
@@ -74,7 +76,7 @@ void generateMaze(Maze *maze, std::string type, int x, int y, bool perfect, Show
     srand(time(0));
     clock_t start = clock();
     if (type == "cours") algo_cours(maze, x, y, perfect, show);
-    else if ((type == "perso")) std::cout << "PERSOOO" << std::endl;
+    else if ((type == "perso")) algo_perso(maze, x, y, perfect, show);
     else if ((type == "diagonal")) algo_diagonal(maze, x, y, perfect, show);
     else if ((type == "fractal")) algo_fractal(maze, x, perfect, show);
     else exit(MAZE_COMMAND_ERROR);
@@ -94,6 +96,8 @@ void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
     clock_t start = clock();
     if (algorithm == "1r") solver_1(maze, show, false);
     else if (algorithm == "1") solver_1(maze, show, true);
+    else if (algorithm == "wr") solver_width(maze, show, false);
+    else if (algorithm == "w") solver_width(maze, show, true);
     else exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
     std::cout << "Resolved in " << (double)(end - start) / CLOCKS_PER_SEC * 1000 << "ms" << std::endl;
@@ -303,6 +307,10 @@ int main(int argc, char *argv[]) {
                             algorithm = "1r";
                         } else if (strcmp(argv[i + 1], "1") == 0) {
                             algorithm = "1";
+                        } else if (strcmp(argv[i + 1], "wr") == 0) {
+                            algorithm = "wr";
+                        } else if (strcmp(argv[i + 1], "w") == 0) {
+                            algorithm = "w";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }

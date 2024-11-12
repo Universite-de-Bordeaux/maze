@@ -70,9 +70,35 @@ private:
     void drawFrontier_(Cell*, int);
 };
 
+/*
+ * @brief Met à jour la fenêtre de rendu
+ * @param show Pointeur vers un objet de type Show
+ * @param maze Pointeur vers un objet de type Maze
+ * @param fastCooling Refroidissement rapide
+ * @return void
+ */
 void updateShowLive(Show*, Maze*, bool);
+/*
+ * @brief Met à jour la fenêtre de rendu
+ * @param show Pointeur vers un objet de type Show
+ * @param maze Pointeur vers un objet de type Maze
+ * @return void
+ */
 void updateShowLive(Show*, Maze*);
+/*
+ * @brief Met à jour la fenêtre de rendu
+ * @param show Pointeur vers un objet de type Show
+ * @param maze Pointeur vers un objet de type Maze
+ * @param argc Nombre d'arguments
+ * @param argv Tableau de pointeurs vers des objets de type Cell
+ * @return void
+ */
 void updateShowLive(Show*, Maze*, int, Cell**);
+/*
+ * @brief Rafraîchit la fenêtre de rendu
+ * @param show Pointeur vers un objet de type Show
+ * @return void
+ */
 void refreshShow(Show*);
 
 #endif  // SHOW_HPP
