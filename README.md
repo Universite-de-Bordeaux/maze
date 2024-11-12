@@ -17,7 +17,10 @@ Pour compiler le projet, il est nécessaire d'avoir installé `g++`, `cmake`, `m
 
 Pour installer ces outils, il suffit de lancer la commande suivante :
 ```bash
+# Pour Debian et dérivés
 sudo apt-get install g++ cmake make libsfml-dev
+# Pour Arch Linux et dérivés
+sudo pacman -S g++ cmake make sfml
 ```
 
 ## Compilation
@@ -34,7 +37,7 @@ make
 L'utilisation de l'application est la suivante :
 
 ```bash
-./main.out [-option] <instance_file>
+./main.out [-option] [argument]
 ```
 
 ### Options
@@ -42,30 +45,32 @@ L'utilisation de l'application est la suivante :
 #### Générales
 
 * `-h` ou `--help` : Affiche cette aide
-* `-s` ou `--show` : Affiche un labyrinthe (nécessite un labyrinthe en mémoire)
-* `-o` ou `--output` `<fichier>` : Spécifie le fichier de sortie (nécessaire pour sauvegarder un labyrinthe, nécessite un labyrinthe en mémoire)
-* `-i` ou `--input` `<fichier>` : Spécifie le fichier d'entrée (nécessaire pour utiliser un labyrinthe se trouvant dans un fichier texte)
-* `-c` ou `--clear` : Efface le(s) labyrinthe(s) en mémoire
-  + `-cm` ou `--clear-maze` : Netttoie le labyrinthe en mémoire
+* `-i` ou `--input` `<fichier>` : Spécifie le fichier d'un labyrinthe à charger en mémoire
+* `-s` ou `--show` : Affiche le labyrinthe en mémoire
+* `-o` ou `--output` `<fichier>` : Spécifie le fichier où sauvegarder le labyrinthe en mémoire
+* `-c` ou `--clear` : Efface le labyrinthe en mémoire
+  + `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire
 
 #### Génération de labyrinthe
 
-* `-g` ou `--generate` : Génère un labyrinthe
+* `-g` ou `--generate` : Génère un labyrinthe (écrase le labyrinthe en mémoire)
   + `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en mémoire)
-	+ `-t` ou `--type` `<type>` : Spécifie le type d'algorithme à utiliser pour la génération (cours, perso, diagonal, fractal, par défaut : cours)
-	+ `-d` ou `--dimension` `<x> <y>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
-	+ `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
+  + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (backtracking (bt), wallmaker (wm), diagonal (d), fractal (f), par défaut : bt)
+  + `-d` ou `--dimension` `<x> <y>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
+  + `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
 
 #### Résolution de labyrinthe
 
-* `-r` ou `--resolve` : Résout un labyrinthe (nécessite un labyrinthe en mémoire)
-	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (1, 1r, par défaut : 1)
+* `-r` ou `--resolve` : Résout le labyrinthe en mémoire
+  + `-rs` ou `--resolve-show` : Résout le labyrinthe en mémoire et l'affiche pendant la résolution
+	+ `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bfs), par défaut : dfl)
 
 #### Vérification de labyrinthe
 
 * `-v` ou `--verify` : Vérifie si un labyrinthe est parfait (nécessite un labyrinthe en mémoire)
   + `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)
-  + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
+    + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bfs), par défaut : dfl)
 
 ### Codes d'erreur
 
@@ -76,11 +81,79 @@ L'utilisation de l'application est la suivante :
 
 ## Exemples
 
-- Générer un labyrinthe parfait avec l'algorithme perso de dimensions 10x10 et l'afficher puis l'enregistrer dans un fichier :
-  ```bash
-  ./main.out -g -t perso -d 10 10 -s -o labyrinthe.txt
-  ```
-- Résoudre un labyrinthe avec l'algorithme de aaa et l'afficher :
-  ```bash
-  ./main.out -i labyrinthe.txt -r -a aaa -s
-  ```
+### Générer un labyrinthe
+
+Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de backtracking, il suffit de lancer la commande suivante :
+```bash
+./main.out -g -d 20 20 -a bt
+```
+
+Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wallmaker, il suffit de lancer la commande suivante :
+```bash
+./main.out -g -d 20 20 -a wm -u
+```
+
+Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de diagonal, il suffit de lancer la commande suivante :
+```bash
+./main.out -g -d 20 20 -a d
+```
+
+Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de fractal, il suffit de lancer la commande suivante :
+```bash
+./main.out -g -d 20 20 -a f
+```
+
+### Résoudre un labyrinthe
+
+Pour résoudre un labyrinthe avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -r -a dfl
+```
+
+Pour résoudre un labyrinthe avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -r -a dfr
+```
+
+Pour résoudre un labyrinthe avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -r -a bfs
+```
+
+### Vérifier un labyrinthe
+
+Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -v -a dfl
+```
+
+Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -v -a dfr
+```
+
+Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -v -a bfs
+```
+
+### Afficher un labyrinthe
+
+Pour afficher un labyrinthe, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -s
+```
+
+### Sauvegarder un labyrinthe
+
+Pour sauvegarder un labyrinthe, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -o labyrinthe2.txt
+```
+
+### Nettoyer un labyrinthe
+
+Pour nettoyer un labyrinthe, et manipuler deux labyrinthes, il suffit de lancer la commande suivante :
+```bash
+./main.out -i labyrinthe.txt -r -a dfl -c -i labyrinthe2.txt -g -d 20 20 -a bt
+```
