@@ -9,13 +9,13 @@
 #include <thread>
 
 static bool add_wall(Maze *maze, int mid, int direction) {
-  	for (int i = 0; i < mid; i++) {
+    for (int i = 0; i < mid; i++) {
     	maze->addWall(mid-1, i, false);
     	maze->addWall(mid + i, mid-1, true);
     	maze->addWall(mid-1, mid + i, false);
     	maze->addWall(i, mid-1, true);
-  	}
- 	if (direction == NORTH) {
+    }
+    if (direction == NORTH) {
 		int remove = rand() % mid;
         maze->removeWall(mid + remove, mid-1, true);
 		remove = rand() % mid;
