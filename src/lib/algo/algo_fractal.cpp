@@ -10,16 +10,29 @@
 #include "../var.hpp"
 
 static bool add_wall_imperfect(Maze *maze, int mid) {
-    return false;
+    for (int i = 0; i < maze->getHeight(); i++) {
+        maze->addWall(mid-1, i, false);
+        maze->addWall(i, mid-1, true);
+    }
+    int remove = rand() % mid;
+    maze->removeWall(mid-1, remove, false);
+    remove = rand() % mid;
+    maze->removeWall(remove, mid-1, true);
+    remove = rand() % mid;
+    maze->removeWall(mid-1, mid + remove, false);
+    remove = rand() % mid;
+    maze->removeWall(mid + remove, mid-1, true);
+    return true;
 }
 
-static bool add_wall_perfect(Maze *maze, int mid, int direction) {
+static bool add_wall_perfect(Maze *maze, int mid) {
     for (int i = 0; i < mid; i++) {
     	maze->addWall(mid-1, i, false);
     	maze->addWall(mid + i, mid-1, true);
     	maze->addWall(mid-1, mid + i, false);
     	maze->addWall(i, mid-1, true);
     }
+    int direction = rand() % 4;
     if (direction == NORTH) {
 		int remove = rand() % mid;
         maze->removeWall(mid + remove, mid-1, true);
@@ -103,21 +116,21 @@ void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
     while (n > 0) {
         // attend 10ms
         if (show && show->isOpen()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
 
         // duplication du labyrinthe
         quad_maze(maze);
 
         // ajout des murs
-        int direction = rand() % 4;
         if (!perfect) {
             if (!add_wall_imperfect(maze, maze->getHeight() / 2)) {
-                direction = add_wall_perfect(maze, maze->getHeight() / 2, direction);
+                std::cerr << "Error: add_wall" << std::endl;
+                return;
             }
         }
         else {
-            if (!add_wall_perfect(maze, maze->getHeight() / 2, direction)) {
+            if (!add_wall_perfect(maze, maze->getHeight() / 2)) {
                 std::cerr << "Error: add_wall" << std::endl;
                 return;
             }
