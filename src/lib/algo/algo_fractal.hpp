@@ -7,7 +7,7 @@
 /**
  * Crée un labyrinthe
  * @param Maze* pointeur vers le labyrinthe à genérer
- * @param n la taille du tableau (doit être une puissance de 2)
+ * @param n donne la taille du labyrinthe qui sera de 2^n
  * @param bool vrai si le labyrinthe est parfait
 */
 void algo_fractal(Maze*, int, bool, Show*);
