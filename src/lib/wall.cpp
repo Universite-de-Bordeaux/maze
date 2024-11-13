@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "wall.hpp"
 
 Wall::Wall() {
@@ -6,6 +8,7 @@ Wall::Wall() {
 
 Wall::Wall(bool isHorizontal) {
     isHorizontal_ = isHorizontal;
+    alreadyVisited_ = false;
 }
 
 Wall::~Wall() {
@@ -21,7 +24,16 @@ Wall** Wall::getNeighbors() {
 }
 
 Wall* Wall::getNeighbor(int i) {
+    if (i < 0 || i > 5) return nullptr;
     return neighbors_[i];
+}
+
+bool Wall::isAlreadyVisited() {
+    return alreadyVisited_;
+}
+
+bool Wall::isBorder() {
+    return isBorder_;
 }
 
 void Wall::setIsHorizontal(bool isHorizontal) {
@@ -35,5 +47,14 @@ void Wall::setNeighbors(Wall* neighbors[6]) {
 }
 
 void Wall::setNeighbor(int i, Wall* wall) {
+    if (i < 0 || i > 5) return;
     neighbors_[i] = wall;
+}
+
+void Wall::setAlreadyVisited(bool alreadyVisited) {
+    alreadyVisited_ = alreadyVisited;
+}
+
+void Wall::setBorder(bool isBorder) {
+    isBorder_ = isBorder;
 }

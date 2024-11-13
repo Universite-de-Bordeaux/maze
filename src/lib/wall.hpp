@@ -42,6 +42,8 @@ class Wall {
         @return pointeur sur le voisin demandé
         */
         Wall* getNeighbor(int);
+        bool isAlreadyVisited();
+        bool isBorder();
 
         /**
         @brief Définit si le mur est horizontal
@@ -59,10 +61,14 @@ class Wall {
         @param pointeur sur le voisin à définir
         */
         void setNeighbor(int, Wall*);
+        void setAlreadyVisited(bool);
+        void setBorder(bool);
 
     private:
         bool isHorizontal_; ///< Booléen indiquant si le mur est horizontal
-        Wall* neighbors_[6]; ///< Tableau de pointeurs sur les voisins du mur
+        Wall* neighbors_[6] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}; ///< Tableau de pointeurs sur les voisins du mur
+        bool alreadyVisited_ = false;
+        bool isBorder_ = false;
 };
 
 #endif

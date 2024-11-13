@@ -2,6 +2,7 @@
 # define READER_HPP
 
 #include <string>
+
 #include "maze.hpp"
 
 /**

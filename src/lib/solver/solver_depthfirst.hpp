@@ -1,8 +1,8 @@
-#ifndef SOLVER_WIDTH_HPP
-#define SOLVER_WIDTH_HPP
+#ifndef SOLVER_DEPTHFIRST_HPP
+#define SOLVER_DEPTHFIRST_HPP
 
-#include "maze.hpp"
-#include "show.hpp"
+#include "../maze.hpp"
+#include "../show.hpp"
 
 /**
  * @brief Résoud le labyrinthe en utilisant la méthode de la main gauche (ou de la main droite)
@@ -11,6 +11,6 @@
  * @param left true pour la méthode de la main gauche, false pour la méthode de la main droite
  * @return true si le labyrinthe a été résolu, false sinon
  */
-bool solver_width(Maze*, Show*, bool);
+bool solver_depthfirst(Maze*, Show*, bool);
 
-#endif // SOLVER_WIDTH_HPP
+#endif // SOLVER_DEPTHFIRST_HPP

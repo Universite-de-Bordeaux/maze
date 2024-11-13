@@ -1,8 +1,8 @@
-#ifndef ALGO_PERSO_HPP
-#define ALGO_PERSO_HPP
+#ifndef ALGO_WALLMAKER_HPP
+#define ALGO_WALLMAKER_HPP
 
-#include "maze.hpp"
-#include "show.hpp"
+#include "../maze.hpp"
+#include "../show.hpp"
 
 /**
  * Crée un labyrinthe
@@ -11,6 +11,6 @@
  * @param int hauteur du labyrinthe
  * @param bool  vrai si le labyrinthe est parfait
  */
-void algo_perso(Maze*, int, int, bool, Show*);
+void algo_wallmaker(Maze*, int, int, bool, Show*);
 
-#endif // ALGO_PERSO_HPP
+#endif // ALGO_WALLMAKER_HPP

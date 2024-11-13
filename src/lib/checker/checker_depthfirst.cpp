@@ -1,7 +1,8 @@
-#include "checker.hpp"
-#include "cell.hpp"
-#include "maze.hpp"
 #include <iostream>
+
+#include "checker_depthfirst.hpp"
+#include "../cell.hpp"
+#include "../maze.hpp"
 
 /**
  * @brief Vérifie la validité du labyrinthe
@@ -75,7 +76,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
     return;
 }
 
-void checker(Maze *maze, bool perfect, Show *show) {
+void checker_depthfirst(Maze *maze, bool perfect, Show *show) {
     bool unperfect = false;
     updateShowLive(show, maze);
     if (perfect) {
