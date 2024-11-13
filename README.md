@@ -37,7 +37,7 @@ make
 L'utilisation de l'application est la suivante :
 
 ```bash
-./main.out [-option] [argument]
+./maze.out [-option] [argument]
 ```
 
 ### Options
@@ -85,75 +85,75 @@ L'utilisation de l'application est la suivante :
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de backtracking, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a bt
+./maze.out -g -d 20 20 -a bt
 ```
 
 Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wallmaker, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a wm -u
+./maze.out -g -d 20 20 -a wm -u
 ```
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de diagonal, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a d
+./maze.out -g -d 20 20 -a d
 ```
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de fractal, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a f
+./maze.out -g -d 20 20 -a f
 ```
 
 ### Résoudre un labyrinthe
 
 Pour résoudre un labyrinthe avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a dfl
+./maze.out -i labyrinthe.txt -r -a dfl
 ```
 
 Pour résoudre un labyrinthe avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a dfr
+./maze.out -i labyrinthe.txt -r -a dfr
 ```
 
 Pour résoudre un labyrinthe avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a bfs
+./maze.out -i labyrinthe.txt -r -a bfs
 ```
 
 ### Vérifier un labyrinthe
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a dfl
+./maze.out -i labyrinthe.txt -v -a dfl
 ```
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a dfr
+./maze.out -i labyrinthe.txt -v -a dfr
 ```
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a bf
+./maze.out -i labyrinthe.txt -v -a bf
 ```
 
 ### Afficher un labyrinthe
 
 Pour afficher un labyrinthe, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -s
+./maze.out -i labyrinthe.txt -s
 ```
 
 ### Sauvegarder un labyrinthe
 
 Pour sauvegarder un labyrinthe, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -o labyrinthe2.txt
+./maze.out -i labyrinthe.txt -o labyrinthe2.txt
 ```
 
 ### Nettoyer un labyrinthe
 
 Pour nettoyer un labyrinthe, et manipuler deux labyrinthes, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a dfl -c -i labyrinthe2.txt -g -d 20 20 -a bt
+./maze.out -i labyrinthe.txt -r -a dfl -c -i labyrinthe2.txt -g -d 20 20 -a bt
 ```
