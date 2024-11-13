@@ -5,20 +5,20 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE_FILES
-        src/main.cpp
-        src/lib/cell.cpp
-        src/lib/maze.cpp
-        src/lib/reader.cpp
-        src/lib/show.cpp
-        src/lib/wall.cpp
-        src/lib/writer.cpp
-        src/lib/algo/algo_backtracking.cpp
-        src/lib/algo/algo_diagonal.cpp
-        src/lib/algo/algo_fractal.cpp
-        src/lib/algo/algo_wallmaker.cpp
-        src/lib/checker/checker_depthfirst.cpp
-        src/lib/solver/solver_breadthfirst.cpp
-        src/lib/solver/solver_depthfirst.cpp
+    src/main.cpp
+    src/lib/cell.cpp
+    src/lib/maze.cpp
+    src/lib/reader.cpp
+    src/lib/show.cpp
+    src/lib/wall.cpp
+    src/lib/writer.cpp
+    src/lib/algo/algo_backtracking.cpp
+    src/lib/algo/algo_diagonal.cpp
+    src/lib/algo/algo_fractal.cpp
+    src/lib/algo/algo_wallmaker.cpp
+    src/lib/checker/checker_depthfirst.cpp
+    src/lib/solver/solver_breadthfirst.cpp
+    src/lib/solver/solver_depthfirst.cpp
 )
 
 set(INCLUDE_DIRS
