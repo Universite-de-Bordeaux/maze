@@ -10,10 +10,10 @@ static int numberBorders(int width, int height, Wall* wall) {
         return 0;
     }
     wall->setAlreadyVisited(true);
-    if (wall->isBorder()) {
-        return 1 + numberBorders(width, height, wall->getNeighbor(MAZE_WALL_START)) + numberBorders(width, height, wall->getNeighbor(MAZE_WALL_END));
-    }
     int number = 0;
+    if (wall->isBorder()) {
+        number++;
+    }
     for (int i = 0; i < 6; i++) {
         Wall* neighbor = wall->getNeighbor(i);
         if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
@@ -75,16 +75,11 @@ void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show)
         } else {
             maze->addWall(x, y, true, true);
         }
-//        numberBorders(width, height, maze->getWall(x, y, direction));
         std::cout << "numberBorders=" << numberBorders(width, height, maze->getWall(x, y, direction)) << std::endl;
         resetAlreadyVisited(maze);
+        std::cout << "x=" << x << " y=" << y << " direction=" << direction << std::endl;
         if (numberBorders(width, height, maze->getWall(x, y, direction)) > 1) {
-          std::cout << "x=" << x << " y=" << y << " direction=" << direction << std::endl;
-            if (direction == 0) {
-                maze->removeWall(x, y, false, true);
-            } else {
-                maze->removeWall(x, y, true, true);
-            }
+          maze->removeWall(x, y, direction, true);
         }
         resetAlreadyVisited(maze);
         Cell* showCell[1] = {maze->getCell(x, y)};

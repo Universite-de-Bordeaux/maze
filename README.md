@@ -5,7 +5,7 @@
 Le projet Maze est un projet de programmation en C++ réalisé dans le cadre de la formation CMI OPTIM.
 Le but de ce projet est de générer des labyrinthes parfaits et imparfaits, de les résoudre et de les afficher en utilisant plusieurs algorithmes de générations et de résolutions.
 
-La description des générateur peut être trouvé dans [doc/README.md](doc/README/md)
+La description des générateurs peut être trouvé dans la [documentation](doc/)
 
 ## Auteurs
 
