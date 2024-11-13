@@ -60,6 +60,11 @@ class Cell {
         @return Le mur de la cellule
         */
         Wall* getWall(int);
+        /**
+        * @brief Récupère si la cellule a un mur
+        * @param int Emplacement du mur à vérifier
+        * @return Vrai si la cellule a un mur à l'emplacement donné
+        */
         bool isWall(int);
         /**
         @brief Récupère si la cellule a déjà été visitée
@@ -167,9 +172,9 @@ class Cell {
     private:
         int x_, y_; ///< Coordonnées de la cellule
         int width_, height_; ///< Largeur et hauteur du labirynthe
-        Wall *walls_[4]; ///< Murs de la cellule
-        Cell *neighbors_[4]; ///< Voisins de la cellule
-        Cell *relativeNeighbors_[4]; ///< Voisins relatifs de la cellule
+        Wall *walls_[4] = {nullptr, nullptr, nullptr, nullptr}; ///< Murs de la cellule
+        Cell *neighbors_[4] = {nullptr, nullptr, nullptr, nullptr}; ///< Voisins de la cellule
+        Cell *relativeNeighbors_[4] = {nullptr, nullptr, nullptr, nullptr}; ///< Voisins relatifs de la cellule
         bool alreadyVisited_ = false;
         int status_ = MAZE_STATUS_IDLE;
 };

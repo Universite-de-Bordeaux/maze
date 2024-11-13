@@ -1,7 +1,8 @@
-#include "writer.hpp"
 #include <ios>
 #include <ostream>
 #include <iostream>
+
+#include "writer.hpp"
 
 void write(Maze * maze, char *file) {
     // ouverture du fichier

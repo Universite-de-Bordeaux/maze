@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
+
 #include "maze.hpp"
 
 class Show {

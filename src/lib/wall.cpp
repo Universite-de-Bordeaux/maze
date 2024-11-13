@@ -1,5 +1,6 @@
-#include "wall.hpp"
 #include <iostream>
+
+#include "wall.hpp"
 
 Wall::Wall() {
     Wall(true);
@@ -23,6 +24,7 @@ Wall** Wall::getNeighbors() {
 }
 
 Wall* Wall::getNeighbor(int i) {
+    if (i < 0 || i > 5) return nullptr;
     return neighbors_[i];
 }
 
@@ -45,11 +47,11 @@ void Wall::setNeighbors(Wall* neighbors[6]) {
 }
 
 void Wall::setNeighbor(int i, Wall* wall) {
+    if (i < 0 || i > 5) return;
     neighbors_[i] = wall;
 }
 
 void Wall::setAlreadyVisited(bool alreadyVisited) {
-    std::cout << "setAlreadyVisited : " << alreadyVisited << std::endl;
     alreadyVisited_ = alreadyVisited;
 }
 

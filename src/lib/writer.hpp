@@ -1,7 +1,8 @@
-# include "maze.hpp"
 #include <fstream>
 #include <iterator>
 #include <ostream>
+
+# include "maze.hpp"
 # include "var.hpp"
 
 /**

@@ -1,6 +1,6 @@
-#include "solver_1.hpp"
-#include "show.hpp"
-#include "var.hpp"
+#include "solver_depthfirst.hpp"
+#include "../show.hpp"
+#include "../var.hpp"
 
 static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLeft) {
     refreshShow(show);
@@ -52,7 +52,7 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLe
     return false;
 }
 
-bool solver_1(Maze *maze, Show *show, bool toLeft) {
+bool solver_depthfirst(Maze *maze, Show *show, bool toLeft) {
     updateShowLive(show, maze);
     return solve(maze, show, maze->getStartX(), maze->getStartY(), 0, toLeft);
 }

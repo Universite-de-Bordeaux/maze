@@ -1,5 +1,3 @@
-#include "show.hpp"
-#include "var.hpp"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -12,6 +10,9 @@
 #include <random>
 #include <ratio>
 #include <string>
+
+#include "show.hpp"
+#include "var.hpp"
 
 Show::Show(Maze* maze) {
     maze_ = maze;
