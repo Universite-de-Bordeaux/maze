@@ -5,6 +5,8 @@
 Le projet Maze est un projet de programmation en C++ réalisé dans le cadre de la formation CMI OPTIM.
 Le but de ce projet est de générer des labyrinthes parfaits et imparfaits, de les résoudre et de les afficher en utilisant plusieurs algorithmes de générations et de résolutions.
 
+La description des générateur peut être trouvé dans [doc/README.md](doc/README/md)
+
 ## Auteurs
 
 - [**Arnaud Aloyse**](https://github.com/aloyse33)
@@ -71,6 +73,49 @@ L'utilisation de l'application est la suivante :
   + `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)
   + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
   + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
+
+## Lancement automatisé
+
+### Lancement d'algorithmes
+
+On peut lancer automatiquement nos algorithme en utilisant la commande
+```bash
+make run_[algo/solver/checker]_[nom de l'algorithme à utiliser]
+```
+Par exemple pour générer un labyrinthe avec l'algorithme fractal :
+```bash
+make run_algo_fractal
+```
+Pour résoudre un labyrinthe avec l'algorithme breadthfirst :
+```bash
+make run_solver_breadthfirst
+```
+
+### Lancement de tests
+
+On peut ajouter _test à la fin de la commande pour lancer les tests. Il est possibles
+que cela fasse crasher le programme car les tests vont dépasse les limites du programme
+
+Par exemple pour tester les algorithmes de vérification de labyrinthe depthfirstleft et depthfirstright :
+```bash
+make run_checker_depthfirst_test
+```
+### lancement particulier
+
+On a 3 lancement particulier
+```bash
+make run_all
+```
+Cette commande lance tout les algorithmes \
+Nous avon une version équivalente pour les tests
+```bash
+make run_all_test
+```
+Enfin la dernière commande est
+```bash
+make run_test
+```
+Celle-ci lance un programme de test mannuel qui test toute l'implémentations
 
 ### Codes d'erreur
 
