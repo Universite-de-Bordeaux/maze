@@ -3,59 +3,53 @@
 #include "queue.hpp"
 #include <stdexcept>
 
-Queue::Queue() : size_array(10), left(0), right(0), empty(true) {
-    array = new Cell*[size_array];
+Queue::Queue() {
+    size_ = 0;
+    capacity_ = 1;
+    position = new Position[1];
 }
 
 Queue::~Queue() {
-    delete[] array;
+    delete[] position;
 }
 
-bool Queue::is_empty() const {
-    return empty;
-}
-
-int Queue::get_size() const {
-    if (empty) return 0;
-    if (right >= left) return right - left;
-    return size_array - left + right;
-}
-
-void Queue::grow_queue() {
-    int new_size = size_array * 2;
-    Cell** new_array = new Cell*[new_size];
-
-    int j = 0;
-    for (int i = left; i != right; i = (i + 1) % size_array) {
-        new_array[j++] = array[i];
+void Queue::push(int x, int y) {
+    if (size_ == capacity_) {
+        Position *newPosition = new Position[capacity_*2];
+        for (int i = 0; i < size_; i++) {
+            newPosition[i] = position[i];
+        }
+        delete[] position;
+        position = newPosition;
+        capacity_ *= 2;
     }
-
-    left = 0;
-    right = j;
-    size_array = new_size;
-
-    delete[] array;
-    array = new_array;
+    position[size_].x = x;
+    position[size_].y = y;
+    size_++;
 }
 
-void Queue::enqueue(Cell* val) {
-    if (!empty && left == right) {
-        grow_queue();
+void Queue::pop() {
+    if (size_ < capacity_/4) {
+        Position *newPosition = new Position[capacity_/2];
+        for (int i = 0; i < size_; i++) {
+            newPosition[i] = position[i];
+        }
+        delete[] position;
+        position = newPosition;
+        capacity_ /= 2;
     }
-
-    array[right] = val;
-    right = (right + 1) % size_array;
-    empty = false;
+    if (size_ > 0) {
+        for (int i = 0; i < size_-1; i++) {
+            position[i] = position[i+1];
+        }
+        size_--;
+    }
 }
 
-Cell* Queue::dequeue() {
-    if (is_empty()) {
-        throw std::runtime_error("Attempting to dequeue from an empty queue");
-    }
+Position Queue::front() {
+    return position[0];
+}
 
-    Cell* val = array[left];
-    left = (left + 1) % size_array;
-    empty = (left == right);
-
-    return val;
+bool Queue::empty() {
+    return size_ == 0;
 }
