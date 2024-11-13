@@ -226,3 +226,11 @@ void Cell::freeWalls() {
         this->freeWall(i);
     }
 }
+
+Cell* Cell::getParent() const {
+    return parent_;
+}
+
+void Cell::setParent(Cell* parent) {
+    parent_ = parent;
+}

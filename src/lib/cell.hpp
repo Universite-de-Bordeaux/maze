@@ -163,6 +163,15 @@ class Cell {
         @brief Supprime les murs de la cellule
         */
         void freeWalls();
+        /**
+        @brief donne le parent de la cellule
+        */
+        Cell* getParent() const;
+        /**
+        @brief Défini le parent de la cellule
+        @param parent Nouveau parent de la cellule
+        */
+        void setParent(Cell* parent);
 
     private:
         int x_, y_; ///< Coordonnées de la cellule
@@ -172,6 +181,7 @@ class Cell {
         Cell *relativeNeighbors_[4]; ///< Voisins relatifs de la cellule
         bool alreadyVisited_ = false;
         int status_ = MAZE_STATUS_IDLE;
+        Cell* parent_ = nullptr;
 };
 
 #endif // CELL_H

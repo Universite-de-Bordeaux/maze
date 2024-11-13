@@ -19,6 +19,7 @@ set(SOURCE_FILES
     src/lib/solver_1.cpp
     src/lib/solver_width.cpp
     src/lib/algo_fractal.cpp
+    src/lib/queue.cpp
 )
 
 set(INCLUDE_DIRS
