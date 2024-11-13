@@ -10,8 +10,6 @@
 struct Position {
     int x;
     int y;
-    int parentX;
-    int parentY;
 };
 Position *position;
 
@@ -28,7 +26,7 @@ class QueuePosition {
         ~QueuePosition() {
             delete[] position;
         }
-        void push(int x, int y, int parentX, int parentY) {
+        void push(int x, int y) {
             if (size_ == capacity_) {
                 Position *newPosition = new Position[capacity_*2];
                 for (int i = 0; i < size_; i++) {
@@ -40,8 +38,6 @@ class QueuePosition {
             }
             position[size_].x = x;
             position[size_].y = y;
-            position[size_].parentX = parentX;
-            position[size_].parentY = parentY;
             size_++;
         }
         void pop() {
@@ -73,7 +69,7 @@ bool solver_bfs(Maze *maze, Show *show, QueuePosition &queue) {
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return false;
     }
-    queue.push(maze->getStartX(), maze->getStartY(), -1, -1);
+    queue.push(maze->getStartX(), maze->getStartY());
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     while (!queue.empty()) {
         Position current = queue.front();
@@ -90,7 +86,7 @@ bool solver_bfs(Maze *maze, Show *show, QueuePosition &queue) {
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && neighbor->getStatus() == MAZE_STATUS_IDLE) {
-                queue.push(neighbor->getX(), neighbor->getY(), x, y);
+                queue.push(neighbor->getX(), neighbor->getY());
                 neighbor->setStatus(MAZE_STATUS_VISITED);
             }
         }
