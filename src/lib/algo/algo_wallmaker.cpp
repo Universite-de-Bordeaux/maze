@@ -9,6 +9,9 @@ static int numberBorders(int width, int height, Wall* wall) {
     if (wall == nullptr) {
         return 0;
     }
+    if (wall->isAlreadyVisited()) {
+        return 0;
+    }
     wall->setAlreadyVisited(true);
     int number = 0;
     if (wall->isBorder()) {
@@ -75,9 +78,8 @@ void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show)
         } else {
             maze->addWall(x, y, true, true);
         }
-        std::cout << "numberBorders=" << numberBorders(width, height, maze->getWall(x, y, direction)) << std::endl;
+        std::cout << "x=" << x << " y=" << y << " direction=" << direction<< " numberBorders=" << numberBorders(width, height, maze->getWall(x, y, direction)) << std::endl;
         resetAlreadyVisited(maze);
-        std::cout << "x=" << x << " y=" << y << " direction=" << direction << std::endl;
         if (numberBorders(width, height, maze->getWall(x, y, direction)) > 1) {
           maze->removeWall(x, y, direction, true);
         }
