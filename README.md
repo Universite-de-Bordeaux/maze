@@ -37,7 +37,7 @@ make
 L'utilisation de l'application est la suivante :
 
 ```bash
-./main.out [-option] [argument]
+./maze.out [-option] [argument]
 ```
 
 ### Options
@@ -72,6 +72,49 @@ L'utilisation de l'application est la suivante :
   + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
   + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
 
+## Lancement automatisé
+
+### Lancement d'algorithmes
+
+On peut lancer automatiquement nos algorithme en utilisant la commande
+```bash
+make run_[algo/solver/checker]_[nom de l'algorithme à utiliser]
+```
+Par exemple pour générer un labyrinthe avec l'algorithme fractal :
+```bash
+make run_algo_fractal
+```
+Pour résoudre un labyrinthe avec l'algorithme breadthfirst :
+```bash
+make run_solver_breadthfirst
+```
+
+### Lancement de tests
+
+On peut ajouter _test à la fin de la commande pour lancer les tests. Il est possibles
+que cela fasse crasher le programme car les tests vont dépasse les limites du programme
+
+Par exemple pour tester les algorithmes de vérification de labyrinthe depthfirstleft et depthfirstright :
+```bash
+make run_checker_depthfirst_test
+```
+### lancement particulier
+
+On a 3 lancement particulier
+```bash
+make run_all
+```
+Cette commande lance tout les algorithmes \
+Nous avon une version équivalente pour les tests
+```bash
+make run_all_test
+```
+Enfin la dernière commande est
+```bash
+make run_test
+```
+Celle-ci lance un programme de test mannuel qui test toute l'implémentations
+
 ### Codes d'erreur
 
 - 0 : Aucune erreur
@@ -85,75 +128,75 @@ L'utilisation de l'application est la suivante :
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de backtracking, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a bt
+./maze.out -g -d 20 20 -a bt
 ```
 
 Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wallmaker, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a wm -u
+./maze.out -g -d 20 20 -a wm -u
 ```
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de diagonal, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a d
+./maze.out -g -d 20 20 -a d
 ```
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de fractal, il suffit de lancer la commande suivante :
 ```bash
-./main.out -g -d 20 20 -a f
+./maze.out -g -d 20 20 -a f
 ```
 
 ### Résoudre un labyrinthe
 
 Pour résoudre un labyrinthe avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a dfl
+./maze.out -i labyrinthe.txt -r -a dfl
 ```
 
 Pour résoudre un labyrinthe avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a dfr
+./maze.out -i labyrinthe.txt -r -a dfr
 ```
 
 Pour résoudre un labyrinthe avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a bfs
+./maze.out -i labyrinthe.txt -r -a bfs
 ```
 
 ### Vérifier un labyrinthe
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a dfl
+./maze.out -i labyrinthe.txt -v -a dfl
 ```
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a dfr
+./maze.out -i labyrinthe.txt -v -a dfr
 ```
 
 Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -v -a bf
+./maze.out -i labyrinthe.txt -v -a bf
 ```
 
 ### Afficher un labyrinthe
 
 Pour afficher un labyrinthe, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -s
+./maze.out -i labyrinthe.txt -s
 ```
 
 ### Sauvegarder un labyrinthe
 
 Pour sauvegarder un labyrinthe, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -o labyrinthe2.txt
+./maze.out -i labyrinthe.txt -o labyrinthe2.txt
 ```
 
 ### Nettoyer un labyrinthe
 
 Pour nettoyer un labyrinthe, et manipuler deux labyrinthes, il suffit de lancer la commande suivante :
 ```bash
-./main.out -i labyrinthe.txt -r -a dfl -c -i labyrinthe2.txt -g -d 20 20 -a bt
+./maze.out -i labyrinthe.txt -r -a dfl -c -i labyrinthe2.txt -g -d 20 20 -a bt
 ```

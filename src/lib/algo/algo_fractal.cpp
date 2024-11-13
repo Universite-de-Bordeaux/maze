@@ -9,7 +9,11 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-static bool add_wall(Maze *maze, int mid, int direction) {
+static bool add_wall_imperfect(Maze *maze, int mid) {
+    return false;
+}
+
+static bool add_wall_perfect(Maze *maze, int mid, int direction) {
     for (int i = 0; i < mid; i++) {
     	maze->addWall(mid-1, i, false);
     	maze->addWall(mid + i, mid-1, true);
@@ -107,12 +111,16 @@ void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
 
         // ajout des murs
         int direction = rand() % 4;
-        // if (!perfect) {
-        //     *p_1 = 3 + direction % 2;
-        // }
-        if (!add_wall(maze, maze->getHeight() / 2, direction)) {
-            std::cerr << "Error: add_wall" << std::endl;
-            return;
+        if (!perfect) {
+            if (!add_wall_imperfect(maze, maze->getHeight() / 2)) {
+                direction = add_wall_perfect(maze, maze->getHeight() / 2, direction);
+            }
+        }
+        else {
+            if (!add_wall_perfect(maze, maze->getHeight() / 2, direction)) {
+                std::cerr << "Error: add_wall" << std::endl;
+                return;
+            }
         }
 
         // affichage
