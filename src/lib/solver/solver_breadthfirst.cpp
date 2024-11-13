@@ -135,6 +135,7 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
     queue.push(maze->getStartX(), maze->getStartY());
     stack.push(maze->getStartX(), maze->getStartY(), -1, -1);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
+    maze->getStartCell()->setAlreadyVisited(true);
     while (!queue.empty()) {
         Position current = queue.front();
         queue.pop();
@@ -144,10 +145,11 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
         updateShowLive(show, maze);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
-            if (neighbor != nullptr && neighbor->getStatus() == MAZE_STATUS_IDLE) {
+            if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
                 queue.push(neighbor->getX(), neighbor->getY());
                 stack.push(neighbor->getX(), neighbor->getY(), x, y);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
+                neighbor->setAlreadyVisited(true);
                 if (neighbor->getX() == maze->getEndX() && neighbor->getY() == maze->getEndY()) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
                     updateShowLive(show, maze);
