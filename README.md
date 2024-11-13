@@ -72,6 +72,33 @@ L'utilisation de l'application est la suivante :
   + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
   + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
 
+## Lancement automatisé
+
+### Lancement d'algorithmes
+
+On peut lancer automatiquement nos algorithme en utilisant la commande
+```bash
+make run_[algo/solver/checker]_[nom de l'algorithme à utiliser]
+```
+Par exemple pour générer un labyrinthe avec l'algorithme fractal :
+```bash
+make run_algo_fractal
+```
+Pour résoudre un labyrinthe avec l'algorithme breadthfirst :
+```bash
+make run_solver_breadthfirst
+```
+
+### Lancement de tests
+
+On peut ajouter _test à la fin de la commande pour lancer les tests. Il est possibles
+que cela fasse crasher le programme car les tests vont dépasse les limites du programme
+
+Par exemple pour tester les algorithmes de vérification de labyrinthe depthfirstleft et depthfirstright :
+```bash
+make run_checker_depthfirst_test
+```
+
 ### Codes d'erreur
 
 - 0 : Aucune erreur
