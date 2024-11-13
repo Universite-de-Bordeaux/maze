@@ -25,7 +25,7 @@
 #define MAZE_STATUS_HOPELESS 2 //> Hopeless cell
 #define MAZE_STATUS_HOPELESS_COLOR 0, 0, 255 //> Hopeless cell color
 #define MAZE_STATUS_TOO_MANY_NEIGHBORS 3 //> Too many neighbors cell
-#define MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR 255, 255, 0 //> Too many neighbors cell color
+#define MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR 128, 128, 0 //> Too many neighbors cell color
 #define MAZE_STATUS_WAY_OUT 4 //> Way out cell
 #define MAZE_STATUS_WAY_OUT_COLOR 0, 255, 0 //> Way out cell color
 #define MAZE_STATUS_CURRENT 5 //> Current cell

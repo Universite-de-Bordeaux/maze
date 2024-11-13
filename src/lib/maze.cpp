@@ -51,7 +51,7 @@ int Maze::getSize() const {
     return width_*height_;
 }
 
-Cell **Maze::getCells() const {
+Cell ***Maze::getCells() const {
     return cells_;
 }
 
@@ -59,7 +59,7 @@ Cell *Maze::getCell(int x, int y) const {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return nullptr;
     }
-    return cells_[y*width_+x];
+    return cells_[x][y];
 }
 
 Wall *Maze::getWall(int x, int y, bool isHorizontal) {
@@ -110,23 +110,28 @@ void Maze::setWidthHeight(int width, int height, int startX, int startY, int end
     end_[0] = endX, end_[1] = endY;
 }
 
-void Maze::setCells(Cell **cells) {
+void Maze::setCells(Cell ***cells) {
     cells_ = cells;
 }
 
 void Maze::setCell(int x, int y, Cell *cell) {
-    cells_[y*width_+x] = cell;
+    cells_[x][y] = cell;
 }
 
 void Maze::generate() {
+
     if (cells_ != nullptr) {
         freeMaze();
     }
-    cells_ = new Cell*[width_*height_];
+    cells_ = new Cell**[width_];
+    for(int i = 0; i < width_; i++) {
+        cells_[i] = new Cell*[height_];
+    }
+
     for(int x = 0; x < width_; x++) {
         for(int y = 0; y < height_; y++) {
             Cell *cell = new Cell(x, y, width_, height_);
-            cells_[y*width_+x] = cell;
+            cells_[x][y] = cell;
         }
     }
     initNeighborsCells_();
@@ -156,7 +161,7 @@ bool Maze::addWall(int x, int y, bool isHorizontal, bool neighborsConnection) {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return false;
     }
-    Cell *cell = cells_[y*width_+x];
+    Cell *cell = cells_[x][y];
     Wall *wall = new Wall(isHorizontal);
     if (isHorizontal) {
         cell->setWall(MAZE_CELL_BOTTOM, wall);
@@ -294,7 +299,7 @@ bool Maze::removeWall(int x, int y, bool isHorizontal, bool neighborsConnection)
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return false;
     }
-    Cell *cell = cells_[y*width_+x];
+    Cell *cell = cells_[x][y];
     Wall *wall;
     if (isHorizontal) {
         wall = cell->getWall(MAZE_CELL_BOTTOM);
@@ -406,25 +411,25 @@ bool Maze::removeWall(Cell *cell1, Cell *cell2) {
 void Maze::initNeighborsCells_() {
     for(int x = 0; x < width_; x++) {
         for(int y = 0; y < height_; y++) {
-            Cell *cell = cells_[y*width_+x];
+            Cell *cell = cells_[x][y];
             Cell **cellNeighbors = cell->getNeighbors();
             if (x > 0) {
-                cell -> setNeighbor(MAZE_CELL_LEFT, cells_[y*width_+x-1], true);
+                cell -> setNeighbor(MAZE_CELL_LEFT, cells_[x-1][y], true);
             } else {
                 cell -> setNeighbor(MAZE_CELL_LEFT, nullptr, true);
             }
             if (x < width_-1) {
-                cell -> setNeighbor(MAZE_CELL_RIGHT, cells_[y*width_+x+1], true);
+                cell -> setNeighbor(MAZE_CELL_RIGHT, cells_[x+1][y], true);
             } else {
                 cell -> setNeighbor(MAZE_CELL_RIGHT, nullptr, true);
             }
             if (y > 0) {
-                cell -> setNeighbor(MAZE_CELL_TOP, cells_[(y-1)*width_+x], true);
+                cell -> setNeighbor(MAZE_CELL_TOP, cells_[x][y-1], true);
             } else {
                 cell -> setNeighbor(MAZE_CELL_TOP, nullptr, true);
             }
             if (y < height_-1) {
-                cell -> setNeighbor(MAZE_CELL_BOTTOM, cells_[(y+1)*width_+x], true);
+                cell -> setNeighbor(MAZE_CELL_BOTTOM, cells_[x][y+1], true);
             } else {
                 cell -> setNeighbor(MAZE_CELL_BOTTOM, nullptr, true);
             }
@@ -436,17 +441,16 @@ void Maze::initNeighborsCells_() {
 
 void Maze::freeMaze() {
     if (cells_ != nullptr) {
-        for(int x = 0; x < width_; x++) {
-            for(int y = 0; y < height_; y++) {
-                Cell *cell = cells_[y*width_+x];
-                // if (cell->getWall(MAZE_CELL_RIGHT) != nullptr) {
-                //     delete (cell->getWall(MAZE_CELL_RIGHT));
-                // }
-                // if (cell->getWall(MAZE_CELL_BOTTOM) != nullptr) {
-                //     delete (cell->getWall(MAZE_CELL_BOTTOM));
-                // }
-            }
-        }
+        // for(int x = 0; x < width_; x++) {
+        //     for (int y = 0; y < height_; y++) {
+        //         if (cells_[x][y] != nullptr) {
+        //             delete cells_[x][y];
+        //         }
+        //     }
+        //     if (cells_[x] != nullptr) {
+        //         delete[] cells_[x];
+        //     }
+        // }
         delete[] cells_;
     }
     start_[0] = defaultStartX(width_), start_[1] = defaultStartY(height_);
@@ -456,7 +460,7 @@ void Maze::freeMaze() {
 void Maze::clearMaze() {
     for(int x = 0; x < width_; x++) {
         for(int y = 0; y < height_; y++) {
-            Cell *cell = cells_[y*width_+x];
+            Cell *cell = cells_[x][y];
             cell->setAlreadyVisited(false);
             cell->setStatus(MAZE_STATUS_IDLE);
         }

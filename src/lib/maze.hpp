@@ -53,7 +53,7 @@ class Maze {
         @brief Retourne les cellules du labyrinthe
         @return Les cellules du labyrinthe
         */
-        Cell ** getCells() const;
+        Cell *** getCells() const;
         /**
         @brief Retourne une cellule du labyrinthe
         @param x Coordonnée x de la cellule
@@ -120,7 +120,7 @@ class Maze {
         @brief Modifie les cellules du labyrinthe
         @param cells Nouvelles cellules du labyrinthe
         */
-        void setCells(Cell **);
+        void setCells(Cell ***);
         /**
         @brief Modifie une cellule du labyrinthe
         @param x Coordonnée x de la cellule
@@ -205,7 +205,7 @@ class Maze {
     private:
         int width_; ///< Largeur du labyrinthe
         int height_; ///< Hauteur du labyrinthe
-        Cell **cells_ = nullptr; ///< Cellules du labyrinthe
+        Cell ***cells_ = nullptr; ///< Cellules du labyrinthe
         int start_[2] = {0, 0}; ///< Coordonnées de la cellule de départ
         int end_[2] = {0, 0}; ///< Coordonnées de la cellule d'arrivée
 
