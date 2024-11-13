@@ -134,7 +134,7 @@ add_custom_target(run_algo_fractal_test
 )
 
 add_custom_target(run_algo_wallmaker
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "4" "4" "-a" "wm"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "3" "3" "-a" "wm"
         DEPENDS ${PROJECT_NAME}
 )
 
