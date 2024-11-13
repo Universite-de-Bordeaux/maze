@@ -66,7 +66,7 @@ class Wall {
 
     private:
         bool isHorizontal_; ///< Booléen indiquant si le mur est horizontal
-        Wall* neighbors_[6]; ///< Tableau de pointeurs sur les voisins du mur
+        Wall* neighbors_[6] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}; ///< Tableau de pointeurs sur les voisins du mur
         bool alreadyVisited_ = false;
         bool isBorder_ = false;
 };

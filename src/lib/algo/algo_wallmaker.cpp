@@ -1,38 +1,46 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include "algo_wallmaker.hpp"
 #include "../show.hpp"
 
 static int numberBorders(int width, int height, Wall* wall) {
-    std::cout << "numberBorders" << std::endl;
     if (wall == nullptr) {
         return 0;
     }
-    std::cout << "aaa" << std::endl;
-    std::cout << "wall->isAlreadyVisited() = " << wall->isAlreadyVisited() << std::endl;
-    std::cout << "bbb" << std::endl;
     wall->setAlreadyVisited(true);
-    std::cout << "ccc" << std::endl;
+    if (wall->isBorder()) {
+        return 1 + numberBorders(width, height, wall->getNeighbor(MAZE_WALL_START)) + numberBorders(width, height, wall->getNeighbor(MAZE_WALL_END));
+    }
     int number = 0;
     for (int i = 0; i < 6; i++) {
-        std::cout << "ddd" << std::endl;
         Wall* neighbor = wall->getNeighbor(i);
-        std::cout << "eee" << std::endl;
         if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
             number += numberBorders(width, height, neighbor);
         }
-        std::cout << "fff" << std::endl;
     }
-    std::cout << "ggg" << std::endl;
-    if (wall->isBorder()) {
-        number++;
-    }
-    wall->setAlreadyVisited(false);
     return number;
+}
+
+static void resetAlreadyVisited(Maze* maze) {
+    for (int x = 0; x < maze->getWidth(); x++) {
+        for (int y = 0; y < maze->getHeight(); y++) {
+            for (int i = 0; i < 2; i++) {
+                Wall* wall = maze->getWall(x, y, i);
+                if (wall != nullptr) {
+                    wall->setAlreadyVisited(false);
+                }
+            }
+        }
+    }
 }
 
 void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show) {
     maze->setWidthHeight(width, height);
+    if (show) {
+        show->create();
+    }
     int wallsPossible[width * height * 2][3];
     int wallsPossibleSize = 0;
     for (int x = 0; x < width; x++) {
@@ -52,10 +60,8 @@ void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show)
             }
         }
     }
-    for (int i = 0; i < wallsPossibleSize; i++) {
-        std::cout << "x=" << wallsPossible[i][0] << ", y=" << wallsPossible[i][1] << ", direction=" << wallsPossible[i][2] << std::endl;
-    }
     while (wallsPossibleSize > 0) {
+        refreshShow(show);
         int random = rand() % wallsPossibleSize;
         int x = wallsPossible[random][0];
         int y = wallsPossible[random][1];
@@ -69,15 +75,22 @@ void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show)
         } else {
             maze->addWall(x, y, true, true);
         }
-        numberBorders(width, height, maze->getWall(x, y, direction));
-        std::cout << "numberBorders(width, height, maze->getWall(0, 0, 0)) = " << numberBorders(width, height, maze->getWall(0, 0, 0)) << std::endl;
-//        if (numberBorders(width, height, maze->getCell(0, 0)->getWall(0)) > 1) {
-//            if (direction == 0) {
-//                maze->removeWall(x, y, false, true);
-//            } else {
-//                maze->removeWall(x, y, true, true);
-//            }
-//        }
-        std::cout << "x=" << x << ", y=" << y << ", direction=" << direction << std::endl;
+//        numberBorders(width, height, maze->getWall(x, y, direction));
+        std::cout << "numberBorders=" << numberBorders(width, height, maze->getWall(x, y, direction)) << std::endl;
+        resetAlreadyVisited(maze);
+        if (numberBorders(width, height, maze->getWall(x, y, direction)) > 1) {
+          std::cout << "x=" << x << " y=" << y << " direction=" << direction << std::endl;
+            if (direction == 0) {
+                maze->removeWall(x, y, false, true);
+            } else {
+                maze->removeWall(x, y, true, true);
+            }
+        }
+        resetAlreadyVisited(maze);
+        Cell* showCell[1] = {maze->getCell(x, y)};
+        updateShowLive(show, maze, 1, showCell);
+        if (show && show->isOpen()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 }

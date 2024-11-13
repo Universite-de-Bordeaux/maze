@@ -83,9 +83,7 @@ int help(int error, std::string command) {
  * @param perfect Parfait
 */
 void generateMaze(Maze *maze, std::string algorithm, int width, int height, bool isPerfect, Show *show) {
-    std::cout << "Generating..." << std::endl;
-    std::cout << "Maze initialized" << std::endl;
-    std::cout << "Params : algorithm=" << algorithm << ", width=" << width << ", height=" << height << ", isPerfect=" << isPerfect << std::endl;
+    std::cout << "Parameters of generation : algorithm=" << algorithm << ", width=" << width << ", height=" << height << ", isPerfect=" << isPerfect << std::endl;
     srand(time(0));
     clock_t start = clock();
     if (algorithm == "backtracking" || algorithm == "bt") algo_backtracking(maze, width, height, isPerfect, show);
@@ -103,8 +101,7 @@ void generateMaze(Maze *maze, std::string algorithm, int width, int height, bool
  * @param algorithm Algorithme
  */
 void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
-    std::cout << "Resolving..." << std::endl;
-    std::cout << "Params : algorithm=" << algorithm << std::endl;
+    std::cout << "Parameters of resolution : algorithm=" << algorithm << std::endl;
     clock_t start = clock();
     if (algorithm == "depthfirstright" || algorithm == "dfr") solver_depthfirst(maze, show, false);
     else if (algorithm == "depthfirstleft" || algorithm == "dfl") solver_depthfirst(maze, show, true);
@@ -115,7 +112,7 @@ void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
 }
 
 void checkMaze(Maze *maze, std::string algorithm, bool perfect, Show *show) {
-    std::cout << "Checking..." << std::endl;
+    std::cout << "Parameters of checking : algorithm=" << algorithm << ", perfect=" << perfect << std::endl;
     clock_t start = clock();
     if (algorithm == "depthfirstright" || algorithm == "dfr") checker_depthfirst(maze, perfect, show);
     else if (algorithm == "depthfirstleft" || algorithm == "dfl") checker_depthfirst(maze, perfect, show);
@@ -249,11 +246,12 @@ int main(int argc, char *argv[]) {
                     std::cout << "No maze loaded" << std::endl;
                     return 1;
                 }
-                std::cout << "Clear" << std::endl;
                 if (strcmp(argv[i], "-cm") == 0 || strcmp(argv[i], "--clear-maze") == 0) {
+                  	std::cout << "Clear cells" << std::endl;
                     maze.clearMaze();
                 }
                 else {
+                  	std::cout << "Clear all" << std::endl;
                     mazeLoaded = false;
                     show.destroy();
                 }
@@ -309,9 +307,9 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
-                maze.setWidthHeight(width, height);
+//                maze.setWidthHeight(width, height);
                 if (isShow) {
-                    show.create();
+//                    show.create();
                     generateMaze(&maze, algorithm, width, height, perfect, &show);
                     while (show.isOpen()) {
                         show.update();
@@ -333,22 +331,24 @@ int main(int argc, char *argv[]) {
                 }
                 std::string algorithm = "depthfirstleft";
                 // Si l'utilisateur a spécifié l'algorithme
-                if (strcmp(argv[i + 1], "-a") == 0 || strcmp(argv[i + 1], "--algorithm") == 0) {
-                    i++;
-                    if (i + 1 < argc) {
-                        if (strcmp(argv[i + 1], "depthfirstright") == 0 || strcmp(argv[i + 1], "dfr") == 0) {
-                            algorithm = "depthfirstright";
-                        } else if (strcmp(argv[i + 1], "depthfirstleft") == 0 || strcmp(argv[i + 1], "dfl") == 0) {
-                            algorithm = "depthfirstleft";
-                        } else if (strcmp(argv[i + 1], "breadthfirst") == 0 || strcmp(argv[i + 1], "bf") == 0) {
-                            algorithm = "breadthfirst";
-                        } else {
-                            return help(MAZE_COMMAND_ERROR);
-                        }
-                        i++;
-                    } else {
-                        return help(MAZE_COMMAND_ERROR);
-                    }
+                if (i + 1 < argc) {
+                	if (strcmp(argv[i + 1], "-a") == 0 || strcmp(argv[i + 1], "--algorithm") == 0) {
+                	    i++;
+                    	if (i + 1 < argc) {
+                    	    if (strcmp(argv[i + 1], "depthfirstright") == 0 || strcmp(argv[i + 1], "dfr") == 0) {
+                        		algorithm = "depthfirstright";
+                        	} else if (strcmp(argv[i + 1], "depthfirstleft") == 0 || strcmp(argv[i + 1], "dfl") == 0) {
+                            	algorithm = "depthfirstleft";
+                        	} else if (strcmp(argv[i + 1], "breadthfirst") == 0 || strcmp(argv[i + 1], "bf") == 0) {
+                        	    algorithm = "breadthfirst";
+                        	} else {
+                        	    return help(MAZE_COMMAND_ERROR);
+                        	}
+                        	i++;
+                    	} else {
+                    	    return help(MAZE_COMMAND_ERROR);
+                    	}
+                	}
                 }
                 if (isShow) {
                     show.create();

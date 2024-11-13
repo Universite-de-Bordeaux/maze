@@ -23,8 +23,10 @@ class Maze {
         @brief Constructeur
         @param width Largeur du labyrinthe
         @param height Hauteur du labyrinthe
-        @param start Coordonnées de la cellule de départ
-        @param end Coordonnées de la cellule d'arrivée
+        @param startX Coordonnée x de la cellule de départ
+        @param startY Coordonnée y de la cellule de départ
+        @param endX Coordonnée x de la cellule d'arrivée
+        @param endY Coordonnée y de la cellule d'arrivée
         */
         Maze(int, int, int, int, int, int);
         /**
@@ -191,11 +193,6 @@ class Maze {
         void setEnd(int, int);
 
         /**
-        @brief Initialise les cellules du labyrinthe
-        */
-        void initNeighborsCells();
-
-        /**
         @brief Libère la mémoire allouée pour les cellules du labyrinthe
         */
         void freeMaze();
@@ -209,8 +206,13 @@ class Maze {
         int width_; ///< Largeur du labyrinthe
         int height_; ///< Hauteur du labyrinthe
         Cell **cells_ = nullptr; ///< Cellules du labyrinthe
-        int start_[2]; ///< Coordonnées de la cellule de départ
-        int end_[2]; ///< Coordonnées de la cellule d'arrivée
+        int start_[2] = {0, 0}; ///< Coordonnées de la cellule de départ
+        int end_[2] = {0, 0}; ///< Coordonnées de la cellule d'arrivée
+
+        /**
+        @brief Initialise les cellules du labyrinthe
+        */
+        void initNeighborsCells_();
 };
 
 #endif // MAZE_HPP

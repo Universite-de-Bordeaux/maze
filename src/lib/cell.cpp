@@ -1,8 +1,9 @@
+#include <iostream>
+#include <stdlib.h>
+
 #include "cell.hpp"
 #include "var.hpp"
 #include "wall.hpp"
-#include <iostream>
-#include <stdlib.h>
 
 Cell::Cell() {
     Cell(0, 0);
@@ -18,7 +19,7 @@ Cell::Cell(int x, int y, int width, int height) {
 }
 
 Cell::~Cell() {
-    this->freeWalls();
+    freeWalls();
 }
 
 int Cell::getX() const {
@@ -69,6 +70,7 @@ int Cell::getAbsoluteNumberOfNeighbors() {
 }
 
 void Cell::getAbsoluteNeighbors(Cell** neighbors) {
+    if (neighbors == nullptr) return;
     int count = 0;
     for (int i = 0; i < 4; i++) {
         if (neighbors_[i] != nullptr) {
@@ -81,9 +83,8 @@ void Cell::getAbsoluteNeighbors(Cell** neighbors) {
 int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (isNeighbor(i)) {
-            Cell* neighbor = neighbors_[i];
-            if (!(neighbor->isAlreadyVisited())) {
+        if (neighbors_[i] != nullptr) {
+            if (!(neighbors_[i]->isAlreadyVisited())) {
                 count++;
             }
         }
@@ -94,7 +95,7 @@ int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
 void Cell::getAbsoluteNeighborsNotVisited(Cell** neighbors) {
     int count = 0;
     for (int i = 0; i < 4; i++) {
-        if (isNeighbor(i)) {
+        if (neighbors_[i] != nullptr) {
             if (!neighbors_[i]->isAlreadyVisited()) {
                 neighbors[count] = neighbors_[i];
                 count++;
@@ -117,7 +118,6 @@ int Cell::getRelativeNumberOfNeighborsNotVisited() {
     if (getY() >= height_ - 1) {
         count--;
     }
-    // std::cout << "count : " << count << std::endl;
     return count;
 }
 
@@ -216,13 +216,13 @@ void Cell::freeWall(int i) {
     if (i < 0 || i > 3) {
         return;
     }
-    if (this->getWall(i) != nullptr) {
+    if (getWall(i) != nullptr) {
         delete (walls_[i]);
     }
 }
 
 void Cell::freeWalls() {
     for (int i = 0; i < 4; i++) {
-        this->freeWall(i);
+        freeWall(i);
     }
 }

@@ -41,6 +41,9 @@ static Cell* nextNeighbor(Cell* current) {
 // Fonction principale de l'algorithme (backtracking)
 void algo_backtracking(Maze* maze, int width, int height, bool perfect, Show* show) {
     maze->setWidthHeight(width, height);
+    if (show) {
+        show->create();
+    }
     struct coordinate cellHistory[width * height];
     int historyIndex = 0;
 

@@ -35,7 +35,7 @@ static bool solver_bfs(Maze *maze, Show *show, bool toLeft) {
             if (index < 0) {
                 index += 4;
             }
-            if (cell->isNeighbor(index)) {
+            if (cell->getWall(index)) {
                 Cell *neighbor = cell->getNeighbor(index);
                 if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
                     neighbor->setAlreadyVisited(true);

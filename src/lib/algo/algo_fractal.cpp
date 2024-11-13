@@ -87,6 +87,9 @@ static void quad_maze(Maze * maze) {
 
 void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
     maze->setWidthHeight(1, 1);
+    if (show) {
+        show->create();
+    }
     int nb_murs_supp = 3;
     if (show) {
         show->destroy();
@@ -94,8 +97,10 @@ void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
     }
     refreshShow(show);
     while (n > 0) {
-        // attend 1s
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        // attend 10ms
+        if (show && show->isOpen()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
 
         // duplication du labyrinthe
         quad_maze(maze);
