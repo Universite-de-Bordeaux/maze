@@ -98,6 +98,22 @@ Par exemple pour tester les algorithmes de vérification de labyrinthe depthfirs
 ```bash
 make run_checker_depthfirst_test
 ```
+### lancement particulier
+
+On a 3 lancement particulier
+```bash
+make run_all
+```
+Cette commande lance tout les algorithmes \
+Nous avon une version équivalente pour les tests
+```bash
+make run_all_test
+```
+Enfin la dernière commande est
+```bash
+make run_test
+```
+Celle-ci lance un programme de test mannuel qui test toute l'implémentations
 
 ### Codes d'erreur
 
