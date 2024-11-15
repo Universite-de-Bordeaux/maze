@@ -38,6 +38,6 @@
 #define ALL 4 //> All directions
 
 #define MAZE_REFRESH_SIZE 200 //> Refresh size
-#define MAZE_MAX_WINDOW_RATIO .9 //> Max window ratio
+#define MAZE_MAX_WINDOW_RATIO 1 //> Max window ratio
 
 #endif // MAZE_VAR_HPP

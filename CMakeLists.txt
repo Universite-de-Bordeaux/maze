@@ -113,8 +113,8 @@ add_custom_target(run_algo_diagonal_test
 )
 
 add_custom_target(run_algo_fractal
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-d" "4" "4" "-a" "f" "-vs"
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-g" "-u" "-d" "4" "4" "-a" "f" "-vs" "-p"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-d" "4" "4" "-a" "f" "-vs"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "-gs" "-u" "-d" "4" "4" "-a" "f" "-vs" "-p"
         DEPENDS ${PROJECT_NAME}
 )
 

@@ -49,6 +49,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY, boo
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
     Cell *showCell[1] = {cell};
+    refreshShow(show);
     updateShowLive(show, maze, 1, showCell);
     // updateShowLive(show, maze, true);
     if (cell->getAbsoluteNumberOfNeighbors() - cell->getAbsoluteNumberOfNeighborsNotVisited() >= 2) {
