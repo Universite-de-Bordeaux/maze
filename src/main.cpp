@@ -9,10 +9,6 @@
 #include "lib/maze.hpp"
 #include "lib/var.hpp"
 #include "lib/writer.hpp"
-#include "lib/algo/algo_backtracking.hpp"
-#include "lib/algo/algo_diagonal.hpp"
-#include "lib/algo/algo_fractal.hpp"
-#include "lib/algo/algo_wallmaker.hpp"
 #include "lib/checker/checker_depthfirst.hpp"
 #include "lib/solver/solver_breadthfirst.hpp"
 #include "lib/solver/solver_depthfirst.hpp"
@@ -32,14 +28,6 @@ void help() {
     std::cout << "  -o ou --output <fichier> : Spécifie le fichier où sauvegarder le labyrinthe en mémoire" << std::endl;
     std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire" << std::endl;
     std::cout << "    -cm ou --clear-maze : Nettoie les cellules du labyrinthe en mémoire" << std::endl;
-
-    std::cout << "\nGénération de labyrinthe" << std::endl;
-    std::cout << "-----------------------" << std::endl;
-    std::cout << "  -g ou --generate : Génère un labyrinthe (écrase le labyrinthe en mémoire)" << std::endl;
-    std::cout << "    -gs ou --generate-show : Génère un labyrinthe et l'affiche pendant la génération" << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la génération" << std::endl;
-    std::cout << "    -d ou --dimension <largeur> <hauteur> : Spécifie les dimensions du labyrinthe à générer" << std::endl;
-    std::cout << "    -u ou --unperfect : Génère un labyrinthe imparfait" << std::endl;
 
     std::cout << "\nRésolution de labyrinthe" << std::endl;
     std::cout << "------------------------" << std::endl;
@@ -73,26 +61,6 @@ int help(int error) {
 int help(int error, std::string command) {
     std::cout << "Error : " << command << std::endl;
     return help(error);
-}
-
-/**
- * Commande -g
- * @param type Type d'algorithme
- * @param width Dimension en largeur
- * @param height Dimension en hauteur
- * @param perfect Parfait
-*/
-void generateMaze(Maze *maze, std::string algorithm, int width, int height, bool isPerfect, Show *show) {
-    std::cout << "Parameters of generation : algorithm=" << algorithm << ", width=" << width << ", height=" << height << ", isPerfect=" << isPerfect << std::endl;
-    srand(time(0));
-    clock_t start = clock();
-    if (algorithm == "backtracking" || algorithm == "bt") algo_backtracking(maze, width, height, isPerfect, show);
-    else if (algorithm == "wallmaker" || algorithm == "wm") algo_wallmaker(maze, width, height, isPerfect, show);
-    else if (algorithm == "diagonal" || algorithm == "d") algo_diagonal(maze, width, height, isPerfect, show);
-    else if (algorithm == "fractal" || algorithm == "f") algo_fractal(maze, width, isPerfect, show);
-    else exit(MAZE_COMMAND_ERROR);
-    clock_t end = clock();
-    std::cout << "Generated in " << (double)(end - start) / CLOCKS_PER_SEC * 1000 << "ms" << std::endl;
 }
 
 /**
@@ -255,70 +223,6 @@ int main(int argc, char *argv[]) {
                     mazeLoaded = false;
                     show.destroy();
                 }
-            }
-            // Si l'utilisateur veut générer un labyrinthe
-            else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generate") == 0 ||
-                strcmp(argv[i], "-gs") == 0 || strcmp(argv[i], "--generate-show") == 0) {
-                bool isShow = (strcmp(argv[i], "-gs") == 0 || strcmp(argv[i], "--generate-show") == 0);
-                std::string algorithm = "backtracking";
-                int width = 10, height = 10;
-                bool perfect = true;
-                // Si l'utilisateur a spécifié des options
-                while (i + 1 < argc && argv[i + 1][0] == '-' &&
-                    ((strcmp(argv[i + 1], "-a") == 0 || strcmp(argv[i + 1], "--algorithm") == 0) ||
-                        (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) ||
-                        (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0))) {
-                    if (i + 1 < argc) {
-                        // Si l'utilisateur a spécifié le type d'algorithme
-                        if (strcmp(argv[i + 1], "-a") == 0 || strcmp(argv[i + 1], "--algorithm") == 0) {
-                            i++;
-                            if (i + 1 < argc) {
-                                if (strcmp(argv[i + 1], "backtracking") == 0 || strcmp(argv[i + 1], "bt") == 0) {
-                                    algorithm = "backtracking";
-                                } else if (strcmp(argv[i + 1], "wallmaker") == 0 || strcmp(argv[i + 1], "wm") == 0) {
-                                    algorithm = "wallmaker";
-                                } else if (strcmp(argv[i + 1], "diagonal") == 0 || strcmp(argv[i + 1], "d") == 0) {
-                                    algorithm = "diagonal";
-                                } else if (strcmp(argv[i + 1], "fractal") == 0 || strcmp(argv[i + 1], "f") == 0) {
-                                    algorithm = "fractal";
-                                } else {
-                                    return help(MAZE_COMMAND_ERROR);
-                                }
-                                i++;
-                            }
-                        }
-                    }
-                    if (i + 1 < argc) {
-                        // Si l'utilisateur a spécifié les dimensions du labyrinthe
-                        if (strcmp(argv[i + 1], "-d") == 0 || strcmp(argv[i + 1], "--dimension") == 0) {
-                            i++;
-                            if (i + 2 < argc) {
-                                width = atoi(argv[i + 1]);
-                                height = atoi(argv[i + 2]);
-                                i += 2;
-                            }
-                        }
-                    }
-                    if (i + 1 < argc) {
-                        // Si l'utilisateur a spécifié que le labyrinthe n'est pas parfait
-                        if (strcmp(argv[i + 1], "-u") == 0 || strcmp(argv[i + 1], "--unperfect") == 0) {
-                            perfect = false;
-                            i++;
-                        }
-                    }
-                }
-//                maze.setWidthHeight(width, height);
-                if (isShow) {
-//                    show.create();
-                    generateMaze(&maze, algorithm, width, height, perfect, &show);
-                    while (show.isOpen()) {
-                        show.update();
-                    }
-                }
-                else {
-                    generateMaze(&maze, algorithm, width, height, perfect, nullptr);
-                }
-                mazeLoaded = true;
             }
             // Si l'utilisateur veut résoudre un labyrinthe
             else if (strcmp(argv[i], "-r") == 0 || strcmp(argv[i], "--resolve") == 0 ||
