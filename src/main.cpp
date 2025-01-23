@@ -21,7 +21,7 @@ void help() {
     std::cout << "-------------------" << std::endl;
 
     std::cout << "Générales" << std::endl;
-    std::cout << "-----------" << std::endl;
+    std::cout << "---------" << std::endl;
     std::cout << "  -h ou --help : Affiche cette aide" << std::endl;
     std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un "
                  "labyrinthe à charger en mémoire"
@@ -45,7 +45,8 @@ void help() {
                  "et l'affiche pendant la résolution"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la résolution"
+                 "utiliser pour la résolution (dfr/drepthfirstright, dfl/"
+                 "depthfirstleft, bf/breadthfirst)"
               << std::endl;
 
     std::cout << "\nVérification de labyrinthe" << std::endl;
@@ -58,7 +59,17 @@ void help() {
     std::cout << "    -p ou --perfect : Vérifie si un labyrinthe est parfait"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la vérification"
+                 "utiliser pour la vérification (dfr/drepthfirstright, dfl/"
+                    "depthfirstleft, bf/breadthfirst)"
+              << std::endl;
+    
+    std::cout << "\nJeux de labyrinthe" << std::endl;
+    std::cout << "------------------" << std::endl;
+    std::cout << "  -g ou --game : Joue à un jeu de labyrinthe" << std::endl;
+    std::cout << "    -gs ou --game-show : Joue à un jeu de labyrinthe et "
+                 "l'affiche pendant le jeu"
+              << std::endl;
+    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer"
               << std::endl;
 }
 

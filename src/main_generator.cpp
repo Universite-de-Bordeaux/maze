@@ -44,7 +44,8 @@ void help() {
                  "l'affiche pendant la génération"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la génération"
+                 "utiliser pour la génération (bt/breadthfirst, wm/wallmaker, "
+                 "d/diagonal, f/fractal)"
               << std::endl;
     std::cout << "    -d ou --dimension <largeur> <hauteur> : Spécifie les "
                  "dimensions du labyrinthe à générer"
