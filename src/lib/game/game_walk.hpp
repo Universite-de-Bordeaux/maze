@@ -10,6 +10,6 @@
  * @param show L'affichage du labyrinthe
  * @return true si le labyrinthe a été résolu, false sinon
  */
-bool game_walk(Maze*, Show*);
+bool game_walk(Maze*, Show*, bool);
 
 #endif  // GAME_WALK_HPP

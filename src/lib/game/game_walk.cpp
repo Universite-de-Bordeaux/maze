@@ -5,7 +5,11 @@
 
 #include <iostream>
 
-bool game_walk(Maze *maze, Show *show) {
+bool game_walk(Maze *maze, Show *show, bool clear) {
+    if (show == nullptr) {
+        std::cout << "No show" << std::endl;
+        return false;
+    }
     updateShowLive(show, maze);
     refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());

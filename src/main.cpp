@@ -150,7 +150,7 @@ void gameMaze(Maze *maze, std::string type, Show *show) {
     } else if (type == "fogleft" || type == "fl") {
         game_fog_hand(maze, show, true);
     } else if (type == "walk" || type == "w") {
-        game_walk(maze, show);
+        game_walk(maze, show, false);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
