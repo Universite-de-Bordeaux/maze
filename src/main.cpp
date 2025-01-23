@@ -6,6 +6,7 @@
 
 #include "lib/checker/checker_depthfirst.hpp"
 #include "lib/game/game_fog.hpp"
+#include "lib/game/game_fog_hand.hpp"
 #include "lib/maze.hpp"
 #include "lib/reader.hpp"
 #include "lib/show.hpp"
@@ -70,7 +71,7 @@ void help() {
     std::cout << "    -gs ou --game-show : Joue à un jeu de labyrinthe et "
                  "l'affiche pendant le jeu"
               << std::endl;
-    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer"
+    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer (f/fog, fr/fogright, fl/fogleft)"
               << std::endl;
 }
 
@@ -141,8 +142,12 @@ void checkMaze(Maze *maze, std::string algorithm, bool perfect, Show *show) {
 void gameMaze(Maze *maze, std::string type, Show *show) {
     std::cout << "Parameters of game : type=" << type << std::endl;
     clock_t start = clock();
-    if (type == "fog") {
+    if (type == "fog" || type == "f") {
         game_fog(maze, show);
+    } else if (type == "fogright" || type == "fr") {
+        game_fog_hand(maze, show, false);
+    } else if (type == "fogleft" || type == "fl") {
+        game_fog_hand(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -365,8 +370,15 @@ int main(int argc, char *argv[]) {
                     strcmp(argv[i + 1], "--type") == 0) {
                     i++;
                     if (i + 1 < argc) {
-                        if (strcmp(argv[i + 1], "fog") == 0) {
+                        if (strcmp(argv[i + 1], "fog") == 0 ||
+                            strcmp(argv[i + 1], "f") == 0) {
                             type = "fog";
+                        } else if (strcmp(argv[i + 1], "fogright") == 0 ||
+                                   strcmp(argv[i + 1], "fr") == 0) {
+                            type = "fogright";
+                        } else if (strcmp(argv[i + 1], "fogleft") == 0 ||
+                                   strcmp(argv[i + 1], "fl") == 0) {
+                            type = "fogleft";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }

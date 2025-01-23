@@ -88,6 +88,14 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
     + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (
       dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
 
+#### Jeu de labyrinthe (maze)
+
+* `-g` ou `--game` : Lance le jeu de labyrinthe (nécessite un labyrinthe en mémoire)
+    + `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
+      mémoire)
+    + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), par défaut :
+      fog)
+
 ## Lancement automatisé
 
 ### Lancement d'algorithmes

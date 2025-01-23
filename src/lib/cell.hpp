@@ -176,12 +176,9 @@ class Cell {
    private:
     int x_, y_;           ///< Coordonnées de la cellule
     int width_, height_;  ///< Largeur et hauteur du labirynthe
-    Wall *walls_[4] = {nullptr, nullptr, nullptr,
-                       nullptr};  ///< Murs de la cellule
-    Cell *neighbors_[4] = {nullptr, nullptr, nullptr,
-                           nullptr};  ///< Voisins de la cellule
+    Wall *walls_[4] = {nullptr};  ///< Murs de la cellule
+    Cell *neighbors_[4] = {nullptr};  ///< Voisins de la cellule
     Cell *relativeNeighbors_[4] = {
-        nullptr, nullptr, nullptr,
         nullptr};  ///< Voisins relatifs de la cellule
     bool alreadyVisited_ = false;
     int status_ = MAZE_STATUS_IDLE;
