@@ -5,6 +5,7 @@
 #include <string>
 
 #include "lib/checker/checker_depthfirst.hpp"
+#include "lib/game/game_fog.hpp"
 #include "lib/maze.hpp"
 #include "lib/reader.hpp"
 #include "lib/show.hpp"
@@ -129,6 +130,24 @@ void checkMaze(Maze *maze, std::string algorithm, bool perfect, Show *show) {
         exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
     std::cout << "Checked in " << (double)(end - start) / CLOCKS_PER_SEC * 1000
+              << "ms" << std::endl;
+}
+
+/**
+ * Commande -g
+ * @param maze Labyrinthe
+ * @param type Type du jeu
+ */
+void gameMaze(Maze *maze, std::string type, Show *show) {
+    std::cout << "Parameters of game : type=" << type << std::endl;
+    clock_t start = clock();
+    if (type == "fog") {
+        game_fog(maze, show);
+    } else {
+        exit(MAZE_COMMAND_ERROR);
+    }
+    clock_t end = clock();
+    std::cout << "Game in " << (double)(end - start) / CLOCKS_PER_SEC * 1000
               << "ms" << std::endl;
 }
 
@@ -326,6 +345,45 @@ int main(int argc, char *argv[]) {
                 }
             } else {
                 resolveMaze(&maze, algorithm, nullptr);
+            }
+        }
+        // Si l'utilisateur veut jouer à un jeu de labyrinthe
+        else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--game") == 0 ||
+                 strcmp(argv[i], "-gs") == 0 ||
+                 strcmp(argv[i], "--game-show") == 0) {
+            bool isShow = (strcmp(argv[i], "-gs") == 0 ||
+                           strcmp(argv[i], "--game-show") == 0);
+            // Si aucun labyrinthe n'est chargé
+            if (!mazeLoaded) {
+                std::cout << "No maze loaded" << std::endl;
+                return 1;
+            }
+            std::string type = "fog";
+            // Si l'utilisateur a spécifié le type de jeu
+            if (i + 1 < argc) {
+                if (strcmp(argv[i + 1], "-t") == 0 ||
+                    strcmp(argv[i + 1], "--type") == 0) {
+                    i++;
+                    if (i + 1 < argc) {
+                        if (strcmp(argv[i + 1], "fog") == 0) {
+                            type = "fog";
+                        } else {
+                            return help(MAZE_COMMAND_ERROR);
+                        }
+                        i++;
+                    } else {
+                        return help(MAZE_COMMAND_ERROR);
+                    }
+                }
+            }
+            if (isShow) {
+                show.create();
+                gameMaze(&maze, type, &show);
+                while (show.isOpen()) {
+                    show.update();
+                }
+            } else {
+                gameMaze(&maze, type, nullptr);
             }
         }
         // Si l'utilisateur a spécifié une commande inconnue
