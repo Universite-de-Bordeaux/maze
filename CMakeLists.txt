@@ -17,6 +17,7 @@ set(SOURCE_FILES
         src/lib/solver/solver_depthfirst.cpp
         src/lib/game/game_fog.cpp
         src/lib/game/game_fog_hand.cpp
+        src/lib/game/game_walk.cpp
 )
 
 set(SOURCE_FILES_GENERATOR

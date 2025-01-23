@@ -216,6 +216,26 @@ void Show::updateCell(Cell *cell) {
     }
 }
 
+bool Show::keyPress() {
+    sf::Event event;
+    while (renderWindow_->pollEvent(event)) {
+        if (event.type == sf::Event::KeyPressed) {
+            lastKeyPressed_ = event.key;
+            return true;
+        }
+    }
+    return false;
+}
+
+sf::Event::KeyEvent Show::getLastKeyPressed() { return lastKeyPressed_; }
+
+void Show::close() {
+    if (renderWindow_ == nullptr) {
+        return;
+    }
+    renderWindow_->close();
+}
+
 void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;

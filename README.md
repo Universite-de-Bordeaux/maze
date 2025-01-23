@@ -93,8 +93,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-g` ou `--game` : Lance le jeu de labyrinthe (nécessite un labyrinthe en mémoire)
     + `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
       mémoire)
-    + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), par défaut :
-      fog)
+        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), walk (w),
+          par défaut : fog)
 
 ## Lancement automatisé
 
@@ -116,6 +116,12 @@ Pour résoudre un labyrinthe avec l'algorithme breadthfirst :
 
 ```bash
 make run_solver_breadthfirst
+```
+
+Pour jouer à un labyrinthe avec l'algorithme fog :
+
+```bash
+make run_game_fog
 ```
 
 ### Lancement de tests

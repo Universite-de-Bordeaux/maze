@@ -3,8 +3,6 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-#include <iostream>
-
 bool game_fog_hand(Maze *maze, Show *show, bool toLeft) {
     updateShowLive(show, maze);
     refreshShow(show);
