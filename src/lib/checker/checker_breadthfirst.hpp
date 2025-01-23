@@ -2,14 +2,14 @@
 #define CHECKER_BREADTHFIRST_HPP
 
 #include "../maze.hpp"
-#include "../show.hpp"
 #include "../queue.hpp"
+#include "../show.hpp"
 
 /**
  * @brief checker - Vérifie si le labyrinthe est valide
  * @param maze - Labyrinthe à vérifier
  * @param perfect - Vérifie si le labyrinthe est parfait
-*/
-void checker_breadthfirst(Maze *, bool, Show*);
+ */
+void checker_breadthfirst(Maze *, bool, Show *);
 
-#endif // CHECKER_BREADTHFIRST_HPP
+#endif  // CHECKER_BREADTHFIRST_HPP

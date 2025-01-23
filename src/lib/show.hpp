@@ -7,12 +7,12 @@
 #include "maze.hpp"
 
 class Show {
-public:
+   public:
     /**
      * @brief Constructeur de la classe Show
      * @param maze Pointeur vers un objet de type Maze
      */
-    Show(Maze* maze);
+    Show(Maze *maze);
     /**
      * @brief Crée une fenêtre de rendu
      */
@@ -35,7 +35,7 @@ public:
      * @param event Référence vers un objet de type sf::Event
      * @return true si un événement a été récupéré, false sinon
      */
-    bool pollEvent(sf::Event&);
+    bool pollEvent(sf::Event &);
     /**
      * @brief Récupère l'événement de fermeture de la fenêtre
      * @return true si l'événement de fermeture a été récupéré, false sinon
@@ -53,22 +53,23 @@ public:
      * @brief Met à jour la fenêtre de rendu
      */
     void update();
-    void updateCell(Cell*);
+    void updateCell(Cell *);
 
-private:
-    Maze* maze_; //> Pointeur vers un objet de type Maze
-    sf::RenderWindow* renderWindow_ = nullptr; //> Pointeur vers un objet de type sf::RenderWindow
-    int cellSize_; //> Taille d'une cellule
-    sf::Font font_; //> Police d'écriture
+   private:
+    Maze *maze_;  //> Pointeur vers un objet de type Maze
+    sf::RenderWindow *renderWindow_ =
+        nullptr;     //> Pointeur vers un objet de type sf::RenderWindow
+    int cellSize_;   //> Taille d'une cellule
+    sf::Font font_;  //> Police d'écriture
 
     /**
      * @brief Gère les événements de la fenêtre de rendu
      * @param event Référence vers un objet de type sf::Event
      */
-    void eventHandler_(sf::Event&);
-    void drawCell_(Cell*);
-    void drawWall_(Cell*, int);
-    void drawFrontier_(Cell*, int);
+    void eventHandler_(sf::Event &);
+    void drawCell_(Cell *);
+    void drawWall_(Cell *, int);
+    void drawFrontier_(Cell *, int);
 };
 
 /*
@@ -78,14 +79,14 @@ private:
  * @param fastCooling Refroidissement rapide
  * @return void
  */
-void updateShowLive(Show*, Maze*, bool);
+void updateShowLive(Show *, Maze *, bool);
 /*
  * @brief Met à jour la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
  * @param maze Pointeur vers un objet de type Maze
  * @return void
  */
-void updateShowLive(Show*, Maze*);
+void updateShowLive(Show *, Maze *);
 /*
  * @brief Met à jour la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
@@ -94,12 +95,12 @@ void updateShowLive(Show*, Maze*);
  * @param argv Tableau de pointeurs vers des objets de type Cell
  * @return void
  */
-void updateShowLive(Show*, Maze*, int, Cell**);
+void updateShowLive(Show *, Maze *, int, Cell **);
 /*
  * @brief Rafraîchit la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
  * @return void
  */
-void refreshShow(Show*);
+void refreshShow(Show *);
 
 #endif  // SHOW_HPP

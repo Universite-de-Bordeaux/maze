@@ -1,3 +1,5 @@
+#include "show.hpp"
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -11,10 +13,9 @@
 #include <ratio>
 #include <string>
 
-#include "show.hpp"
 #include "var.hpp"
 
-Show::Show(Maze* maze) {
+Show::Show(Maze *maze) {
     maze_ = maze;
     renderWindow_ = nullptr;
     cellSize_ = 50;
@@ -26,14 +27,24 @@ Show::Show(Maze* maze) {
 void Show::create() {
     cellSize_ = 50;
     sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
-    if (maze_->getWidth() * cellSize_ > desktopSize.width * MAZE_MAX_WINDOW_RATIO || maze_->getHeight() * cellSize_ > desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
-        cellSize_ = std::min(desktopSize.width / maze_->getWidth(), desktopSize.height / maze_->getHeight()) * MAZE_MAX_WINDOW_RATIO;
+    if (maze_->getWidth() * cellSize_ >
+            desktopSize.width * MAZE_MAX_WINDOW_RATIO ||
+        maze_->getHeight() * cellSize_ >
+            desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
+        cellSize_ = std::min(desktopSize.width / maze_->getWidth(),
+                             desktopSize.height / maze_->getHeight()) *
+                    MAZE_MAX_WINDOW_RATIO;
     }
-    renderWindow_ = new sf::RenderWindow(sf::VideoMode(maze_->getWidth() * cellSize_, maze_->getHeight() * cellSize_), "Maze");
+    renderWindow_ =
+        new sf::RenderWindow(sf::VideoMode(maze_->getWidth() * cellSize_,
+                                           maze_->getHeight() * cellSize_),
+                             "Maze");
     renderWindow_->setVerticalSyncEnabled(true);
 
     sf::Vector2i screenCenter(desktopSize.width / 2, desktopSize.height / 2);
-    renderWindow_->setPosition(screenCenter - sf::Vector2i(renderWindow_->getSize().x / 2, renderWindow_->getSize().y / 2));
+    renderWindow_->setPosition(screenCenter -
+                               sf::Vector2i(renderWindow_->getSize().x / 2,
+                                            renderWindow_->getSize().y / 2));
 }
 
 void Show::destroy() {
@@ -55,7 +66,7 @@ void Show::draw() {
     // Dessin du labyrinthe
     for (int y = 0; y < maze_->getHeight(); y++) {
         for (int x = 0; x < maze_->getWidth(); x++) {
-            Cell* cell = maze_->getCell(x, y);
+            Cell *cell = maze_->getCell(x, y);
             updateCell(cell);
         }
     }
@@ -78,13 +89,9 @@ bool Show::pollEvent(sf::Event &event) {
     return renderWindow_->pollEvent(event);
 }
 
-void Show::clear() {
-    renderWindow_->clear(sf::Color::Black);
-}
+void Show::clear() { renderWindow_->clear(sf::Color::Black); }
 
-void Show::display() {
-    renderWindow_->display();
-}
+void Show::display() { renderWindow_->display(); }
 
 void Show::update() {
     eventHandler();
@@ -103,7 +110,8 @@ void Show::drawCell_(Cell *cell) {
     } else if (cell->getStatus() == MAZE_STATUS_HOPELESS) {
         visited.setFillColor(sf::Color(MAZE_STATUS_HOPELESS_COLOR, 255));
     } else if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-        visited.setFillColor(sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255));
+        visited.setFillColor(
+            sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255));
     } else if (cell->getStatus() == MAZE_STATUS_WAY_OUT) {
         visited.setFillColor(sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255));
     } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
@@ -119,7 +127,7 @@ void Show::drawWall_(Cell *cell, int orientation) {
     int y = cell->getY();
     if (cell->getWall(orientation)) {
         sf::RectangleShape wall(sf::Vector2f(cellSize_, 1));
-            wall.setFillColor(sf::Color::White);
+        wall.setFillColor(sf::Color::White);
         if (x == maze_->getEndX() && y == maze_->getEndY()) {
             wall.setFillColor(sf::Color::Green);
         } else if (x == maze_->getStartX() && y == maze_->getStartY()) {
@@ -143,9 +151,11 @@ void Show::drawWall_(Cell *cell, int orientation) {
             wall.setSize(sf::Vector2f(1, cellSize_));
             wall.setPosition(x * cellSize_ + cellSize_, y * cellSize_);
         }
-        if (neighbor->getX() == maze_->getEndX() && neighbor->getY() == maze_->getEndY()) {
+        if (neighbor->getX() == maze_->getEndX() &&
+            neighbor->getY() == maze_->getEndY()) {
             wall.setFillColor(sf::Color::Green);
-        } else if (neighbor->getX() == maze_->getStartX() && neighbor->getY() == maze_->getStartY()) {
+        } else if (neighbor->getX() == maze_->getStartX() &&
+                   neighbor->getY() == maze_->getStartY()) {
             wall.setFillColor(sf::Color::Red);
         }
         renderWindow_->draw(wall);
@@ -158,16 +168,19 @@ void Show::drawFrontier_(Cell *cell, int orientation) {
         frontier.setPosition(cell->getX() * cellSize_, 0);
     } else if (orientation == MAZE_CELL_RIGHT) {
         frontier.setSize(sf::Vector2f(1, cellSize_));
-        frontier.setPosition(maze_->getWidth() * cellSize_ - 1, cell->getY() * cellSize_);
+        frontier.setPosition(maze_->getWidth() * cellSize_ - 1,
+                             cell->getY() * cellSize_);
     } else if (orientation == MAZE_CELL_BOTTOM) {
-        frontier.setPosition(cell->getX() * cellSize_, maze_->getHeight() * cellSize_ - 1);
+        frontier.setPosition(cell->getX() * cellSize_,
+                             maze_->getHeight() * cellSize_ - 1);
     } else if (orientation == MAZE_CELL_LEFT) {
         frontier.setSize(sf::Vector2f(1, cellSize_));
         frontier.setPosition(0, cell->getY() * cellSize_);
     }
     if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
         frontier.setFillColor(sf::Color::Green);
-    } else if (cell->getX() == maze_->getStartX() && cell->getY() == maze_->getStartY()) {
+    } else if (cell->getX() == maze_->getStartX() &&
+               cell->getY() == maze_->getStartY()) {
         frontier.setFillColor(sf::Color::Red);
     } else {
         frontier.setFillColor(sf::Color::White);
@@ -184,7 +197,7 @@ void Show::updateCell(Cell *cell) {
         drawWall_(cell, MAZE_CELL_TOP);
     }
     drawWall_(cell, MAZE_CELL_RIGHT);
-        drawWall_(cell, MAZE_CELL_BOTTOM);
+    drawWall_(cell, MAZE_CELL_BOTTOM);
     if (x > 0) {
         drawWall_(cell, MAZE_CELL_LEFT);
     }
@@ -207,17 +220,19 @@ void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
     if (fastCooling) {
-        if (maze -> getWidth() <= MAZE_REFRESH_SIZE && maze -> getHeight() <= MAZE_REFRESH_SIZE) {
+        if (maze->getWidth() <= MAZE_REFRESH_SIZE &&
+            maze->getHeight() <= MAZE_REFRESH_SIZE) {
             show->update();
         }
     } else {
-        if (maze -> getWidth() > MAZE_REFRESH_SIZE || maze -> getHeight() > MAZE_REFRESH_SIZE) {
+        if (maze->getWidth() > MAZE_REFRESH_SIZE ||
+            maze->getHeight() > MAZE_REFRESH_SIZE) {
             show->update();
         }
     }
 }
 
-void updateShowLive(Show* show, Maze* maze) {
+void updateShowLive(Show *show, Maze *maze) {
     updateShowLive(show, maze, false);
     updateShowLive(show, maze, true);
 }

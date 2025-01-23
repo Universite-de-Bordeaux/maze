@@ -9,7 +9,7 @@
  * @param Maze* pointeur vers le labyrinthe à genérer
  * @param n donne la taille du labyrinthe qui sera de 2^n
  * @param bool vrai si le labyrinthe est parfait
-*/
+ */
 void algo_fractal(Maze*, int, bool, Show*);
 
-#endif // ALGO_FRACTAL_HPP
+#endif  // ALGO_FRACTAL_HPP

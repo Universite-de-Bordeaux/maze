@@ -1,31 +1,23 @@
+#include "maze.hpp"
+
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
 
-#include "maze.hpp"
 #include "cell.hpp"
 #include "stdlib.h"
 #include "var.hpp"
 
-static int defaultStartX(int width) {
-    return 0;
-}
-static int defaultStartY(int height) {
-    return 0;
-}
-static int defaultEndX(int width) {
-    return width - 1;
-}
-static int defaultEndY(int height) {
-    return height - 1;
-}
+static int defaultStartX(int width) { return 0; }
+static int defaultStartY(int height) { return 0; }
+static int defaultEndX(int width) { return width - 1; }
+static int defaultEndY(int height) { return height - 1; }
 
-Maze::Maze() {
-    Maze(0, 0, 0, 0, 0, 0);
-}
+Maze::Maze() { Maze(0, 0, 0, 0, 0, 0); }
 
 Maze::Maze(int width, int height) {
-    Maze(width, height, defaultStartX(width), defaultStartY(height), defaultEndX(width), defaultEndY(height));
+    Maze(width, height, defaultStartX(width), defaultStartY(height),
+         defaultEndX(width), defaultEndY(height));
 }
 
 Maze::Maze(int width, int height, int startX, int startY, int endX, int endY) {
@@ -35,25 +27,15 @@ Maze::Maze(int width, int height, int startX, int startY, int endX, int endY) {
     end_[0] = endX, end_[1] = endY;
 }
 
-Maze::~Maze() {
-    freeMaze();
-}
+Maze::~Maze() { freeMaze(); }
 
-int Maze::getWidth() const {
-    return width_;
-}
+int Maze::getWidth() const { return width_; }
 
-int Maze::getHeight() const {
-    return height_;
-}
+int Maze::getHeight() const { return height_; }
 
-int Maze::getSize() const {
-    return width_*height_;
-}
+int Maze::getSize() const { return width_ * height_; }
 
-Cell ***Maze::getCells() const {
-    return cells_;
-}
+Cell ***Maze::getCells() const { return cells_; }
 
 Cell *Maze::getCell(int x, int y) const {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
@@ -75,61 +57,46 @@ Wall *Maze::getWall(int x, int y, bool isHorizontal) {
     }
 }
 
-int Maze::getStartX() {
-    return start_[0];
-}
+int Maze::getStartX() { return start_[0]; }
 
-int Maze::getStartY() {
-    return start_[1];
-}
+int Maze::getStartY() { return start_[1]; }
 
-int Maze::getEndX() {
-    return end_[0];
-}
+int Maze::getEndX() { return end_[0]; }
 
-int Maze::getEndY() {
-    return end_[1];
-}
+int Maze::getEndY() { return end_[1]; }
 
-Cell* Maze::getStartCell() {
-    return getCell(start_[0], start_[1]);
-}
+Cell *Maze::getStartCell() { return getCell(start_[0], start_[1]); }
 
-Cell* Maze::getEndCell() {
-    return getCell(end_[0], end_[1]);
-}
+Cell *Maze::getEndCell() { return getCell(end_[0], end_[1]); }
 
 void Maze::setWidthHeight(int width, int height) {
-    setWidthHeight(width, height, defaultStartX(width), defaultStartY(height), defaultEndX(width), defaultEndY(height));
+    setWidthHeight(width, height, defaultStartX(width), defaultStartY(height),
+                   defaultEndX(width), defaultEndY(height));
 }
 
-void Maze::setWidthHeight(int width, int height, int startX, int startY, int endX, int endY) {
+void Maze::setWidthHeight(int width, int height, int startX, int startY,
+                          int endX, int endY) {
     width_ = width, height_ = height;
     generate();
     start_[0] = startX, start_[1] = startY;
     end_[0] = endX, end_[1] = endY;
 }
 
-void Maze::setCells(Cell ***cells) {
-    cells_ = cells;
-}
+void Maze::setCells(Cell ***cells) { cells_ = cells; }
 
-void Maze::setCell(int x, int y, Cell *cell) {
-    cells_[x][y] = cell;
-}
+void Maze::setCell(int x, int y, Cell *cell) { cells_[x][y] = cell; }
 
 void Maze::generate() {
-
     if (cells_ != nullptr) {
         freeMaze();
     }
-    cells_ = new Cell**[width_];
-    for(int i = 0; i < width_; i++) {
-        cells_[i] = new Cell*[height_];
+    cells_ = new Cell **[width_];
+    for (int i = 0; i < width_; i++) {
+        cells_[i] = new Cell *[height_];
     }
 
-    for(int x = 0; x < width_; x++) {
-        for(int y = 0; y < height_; y++) {
+    for (int x = 0; x < width_; x++) {
+        for (int y = 0; y < height_; y++) {
             Cell *cell = new Cell(x, y, width_, height_);
             cells_[x][y] = cell;
         }
@@ -166,104 +133,163 @@ bool Maze::addWall(int x, int y, bool isHorizontal, bool neighborsConnection) {
     if (isHorizontal) {
         cell->setWall(MAZE_CELL_BOTTOM, wall);
         cell->getNeighbor(MAZE_CELL_BOTTOM)->setWall(MAZE_CELL_TOP, wall);
-        cell->getNeighbor(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_CELL_TOP, nullptr);
+        cell->getNeighbor(MAZE_CELL_BOTTOM)
+            ->setNeighbor(MAZE_CELL_TOP, nullptr);
         cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr);
         if (neighborsConnection) {
             if (x > 0) {
-                std::cout << "horizontal wall: " << x << ", " << y << " with x > 0" << std::endl;
-                if (getWall(x-1, y, MAZE_CELL_RIGHT) != nullptr) {
-                    std::cout << "horizontal wall: " << x << ", " << y << " to vertical wall: " << x-1 << ", " << y << std::endl;
-                    wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP, getWall(x-1, y, MAZE_CELL_RIGHT));
-                    getWall(x-1, y, MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_END_RIGHT_TOP, wall);
+                std::cout << "horizontal wall: " << x << ", " << y
+                          << " with x > 0" << std::endl;
+                if (getWall(x - 1, y, MAZE_CELL_RIGHT) != nullptr) {
+                    std::cout << "horizontal wall: " << x << ", " << y
+                              << " to vertical wall: " << x - 1 << ", " << y
+                              << std::endl;
+                    wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP,
+                                      getWall(x - 1, y, MAZE_CELL_RIGHT));
+                    getWall(x - 1, y, MAZE_CELL_RIGHT)
+                        ->setNeighbor(MAZE_WALL_END_RIGHT_TOP, wall);
                 }
-                if (y < height_-1) {
-                    std::cout << "horizontal wall: " << x << ", " << y << " with y < height_-1" << std::endl;
-                    if (getWall(x-1, y+1, MAZE_CELL_RIGHT) != nullptr) {
-                        std::cout << "horizontal wall: " << x << ", " << y << " to vertical wall: " << x-1 << ", " << y+1 << std::endl;
-                        wall->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, getWall(x, y+1, MAZE_CELL_RIGHT));
-                        getWall(x-1, y+1, MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_START_RIGHT_TOP, wall);
+                if (y < height_ - 1) {
+                    std::cout << "horizontal wall: " << x << ", " << y
+                              << " with y < height_-1" << std::endl;
+                    if (getWall(x - 1, y + 1, MAZE_CELL_RIGHT) != nullptr) {
+                        std::cout << "horizontal wall: " << x << ", " << y
+                                  << " to vertical wall: " << x - 1 << ", "
+                                  << y + 1 << std::endl;
+                        wall->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM,
+                                          getWall(x, y + 1, MAZE_CELL_RIGHT));
+                        getWall(x - 1, y + 1, MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_START_RIGHT_TOP, wall);
                     }
-                    if (getWall(x-1, y, MAZE_CELL_BOTTOM) != nullptr) {
-                        std::cout << "horizontal wall: " << x << ", " << y << " to horizontal wall: " << x << ", " << y+1 << std::endl;
-                        wall->setNeighbor(MAZE_WALL_START, getWall(x, y+1, MAZE_CELL_BOTTOM));
-                        getWall(x-1, y, MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_END, wall);
+                    if (getWall(x - 1, y, MAZE_CELL_BOTTOM) != nullptr) {
+                        std::cout << "horizontal wall: " << x << ", " << y
+                                  << " to horizontal wall: " << x << ", "
+                                  << y + 1 << std::endl;
+                        wall->setNeighbor(MAZE_WALL_START,
+                                          getWall(x, y + 1, MAZE_CELL_BOTTOM));
+                        getWall(x - 1, y, MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_END, wall);
                     }
                 }
             }
-            if (x < width_-1) {
-                std::cout << "horizontal wall: " << x << ", " << y << " with x < width_-1" << std::endl;
+            if (x < width_ - 1) {
+                std::cout << "horizontal wall: " << x << ", " << y
+                          << " with x < width_-1" << std::endl;
                 if (getWall(x, y, MAZE_CELL_RIGHT) != nullptr) {
-                    std::cout << "horizontal wall: " << x << ", " << y << " to vertical wall: " << x+1 << ", " << y+1 << std::endl;
-                    wall->setNeighbor(MAZE_WALL_END_RIGHT_TOP, getWall(x, y, MAZE_CELL_RIGHT));
-                    getWall(x, y, MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, wall);
+                    std::cout << "horizontal wall: " << x << ", " << y
+                              << " to vertical wall: " << x + 1 << ", " << y + 1
+                              << std::endl;
+                    wall->setNeighbor(MAZE_WALL_END_RIGHT_TOP,
+                                      getWall(x, y, MAZE_CELL_RIGHT));
+                    getWall(x, y, MAZE_CELL_RIGHT)
+                        ->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, wall);
                 }
-                if (y < height_-1) {
-                    std::cout << "horizontal wall: " << x << ", " << y << " with y < height_-1" << std::endl;
-                    if (getWall(x, y+1, MAZE_CELL_RIGHT) != nullptr) {
-                        std::cout << "horizontal wall: " << x << ", " << y << " to vertical wall: " << x+1 << ", " << y << std::endl;
-                        wall->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, getWall(x, y+1, MAZE_CELL_RIGHT));
-                        getWall(x, y+1, MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, wall);
+                if (y < height_ - 1) {
+                    std::cout << "horizontal wall: " << x << ", " << y
+                              << " with y < height_-1" << std::endl;
+                    if (getWall(x, y + 1, MAZE_CELL_RIGHT) != nullptr) {
+                        std::cout << "horizontal wall: " << x << ", " << y
+                                  << " to vertical wall: " << x + 1 << ", " << y
+                                  << std::endl;
+                        wall->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM,
+                                          getWall(x, y + 1, MAZE_CELL_RIGHT));
+                        getWall(x, y + 1, MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, wall);
                     }
-                    if (getWall(x+1, y, MAZE_CELL_BOTTOM) != nullptr) {
-                        std::cout << "horizontal wall: " << x << ", " << y << " to horizontal wall: " << x << ", " << y+1 << std::endl;
-                        wall->setNeighbor(MAZE_WALL_END, getWall(x, y+1, MAZE_CELL_BOTTOM));
-                        getWall(x+1, y, MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_START, wall);
+                    if (getWall(x + 1, y, MAZE_CELL_BOTTOM) != nullptr) {
+                        std::cout << "horizontal wall: " << x << ", " << y
+                                  << " to horizontal wall: " << x << ", "
+                                  << y + 1 << std::endl;
+                        wall->setNeighbor(MAZE_WALL_END,
+                                          getWall(x, y + 1, MAZE_CELL_BOTTOM));
+                        getWall(x + 1, y, MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_START, wall);
                     }
                 }
             }
-            if (x == 0 || x == width_-1) {
+            if (x == 0 || x == width_ - 1) {
                 wall->setBorder(true);
             }
         }
     } else {
         cell->setWall(MAZE_CELL_RIGHT, wall);
         cell->getNeighbor(MAZE_CELL_RIGHT)->setWall(MAZE_CELL_LEFT, wall);
-        cell->getNeighbor(MAZE_CELL_RIGHT)->setNeighbor(MAZE_CELL_LEFT, nullptr);
+        cell->getNeighbor(MAZE_CELL_RIGHT)
+            ->setNeighbor(MAZE_CELL_LEFT, nullptr);
         cell->setNeighbor(MAZE_CELL_RIGHT, nullptr);
         if (neighborsConnection) {
             if (y > 0) {
-                std::cout << "vertical wall: " << x << ", " << y << " with y > 0" << std::endl;
-                if (getWall(x, y-1, MAZE_CELL_BOTTOM) != nullptr) {
-                    std::cout << "vertical wall: " << x << ", " << y << " to horizontal wall: " << x << ", " << y << std::endl;
-                    wall->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, getWall(x, y-1, MAZE_CELL_BOTTOM));
-                    getWall(x, y-1, MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, wall);
+                std::cout << "vertical wall: " << x << ", " << y
+                          << " with y > 0" << std::endl;
+                if (getWall(x, y - 1, MAZE_CELL_BOTTOM) != nullptr) {
+                    std::cout << "vertical wall: " << x << ", " << y
+                              << " to horizontal wall: " << x << ", " << y
+                              << std::endl;
+                    wall->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM,
+                                      getWall(x, y - 1, MAZE_CELL_BOTTOM));
+                    getWall(x, y - 1, MAZE_CELL_BOTTOM)
+                        ->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, wall);
                 }
-                if (x < width_-1) {
-                    std::cout << "vertical wall: " << x << ", " << y << " with x < width_-1" << std::endl;
-                    if (getWall(x+1, y-1, MAZE_CELL_BOTTOM) != nullptr) {
-                        std::cout << "vertical wall: " << x << ", " << y << " to horizontal wall: " << x+1 << ", " << y << std::endl;
-                        wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP, getWall(x+1, y-1, MAZE_CELL_BOTTOM));
-                        getWall(x+1, y-1, MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, wall);
+                if (x < width_ - 1) {
+                    std::cout << "vertical wall: " << x << ", " << y
+                              << " with x < width_-1" << std::endl;
+                    if (getWall(x + 1, y - 1, MAZE_CELL_BOTTOM) != nullptr) {
+                        std::cout << "vertical wall: " << x << ", " << y
+                                  << " to horizontal wall: " << x + 1 << ", "
+                                  << y << std::endl;
+                        wall->setNeighbor(
+                            MAZE_WALL_START_RIGHT_TOP,
+                            getWall(x + 1, y - 1, MAZE_CELL_BOTTOM));
+                        getWall(x + 1, y - 1, MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, wall);
                     }
-                    if (getWall(x, y-1, MAZE_CELL_RIGHT) != nullptr) {
-                        std::cout << "vertical wall: " << x << ", " << y << " to vertical wall: " << x+1 << ", " << y << std::endl;
-                        wall->setNeighbor(MAZE_WALL_START, getWall(x+1, y, MAZE_CELL_RIGHT));
-                        getWall(x, y-1, MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_END, wall);
+                    if (getWall(x, y - 1, MAZE_CELL_RIGHT) != nullptr) {
+                        std::cout << "vertical wall: " << x << ", " << y
+                                  << " to vertical wall: " << x + 1 << ", " << y
+                                  << std::endl;
+                        wall->setNeighbor(MAZE_WALL_START,
+                                          getWall(x + 1, y, MAZE_CELL_RIGHT));
+                        getWall(x, y - 1, MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_END, wall);
                     }
                 }
             }
-            if (y < height_-1) {
-                std::cout << "vertical wall: " << x << ", " << y << " with y < height_-1" << std::endl;
+            if (y < height_ - 1) {
+                std::cout << "vertical wall: " << x << ", " << y
+                          << " with y < height_-1" << std::endl;
                 if (getWall(x, y, MAZE_CELL_BOTTOM) != nullptr) {
-                    std::cout << "vertical wall: " << x << ", " << y << " to horizontal wall: " << x << ", " << y+1 << std::endl;
-                    wall->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, getWall(x, y, MAZE_CELL_BOTTOM));
-                    getWall(x, y, MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_END_RIGHT_TOP, wall);
+                    std::cout << "vertical wall: " << x << ", " << y
+                              << " to horizontal wall: " << x << ", " << y + 1
+                              << std::endl;
+                    wall->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM,
+                                      getWall(x, y, MAZE_CELL_BOTTOM));
+                    getWall(x, y, MAZE_CELL_BOTTOM)
+                        ->setNeighbor(MAZE_WALL_END_RIGHT_TOP, wall);
                 }
-                if (x < width_-1) {
-                    std::cout << "vertical wall: " << x << ", " << y << " with x < width_-1" << std::endl;
-                    if (getWall(x+1, y, MAZE_CELL_BOTTOM) != nullptr) {
-                        std::cout << "vertical wall: " << x << ", " << y << " to horizontal wall: " << x+1 << ", " << y+1 << std::endl;
-                        wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP, getWall(x+1, y, MAZE_CELL_BOTTOM));
-                        getWall(x+1, y, MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_START_RIGHT_TOP, wall);
+                if (x < width_ - 1) {
+                    std::cout << "vertical wall: " << x << ", " << y
+                              << " with x < width_-1" << std::endl;
+                    if (getWall(x + 1, y, MAZE_CELL_BOTTOM) != nullptr) {
+                        std::cout << "vertical wall: " << x << ", " << y
+                                  << " to horizontal wall: " << x + 1 << ", "
+                                  << y + 1 << std::endl;
+                        wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP,
+                                          getWall(x + 1, y, MAZE_CELL_BOTTOM));
+                        getWall(x + 1, y, MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_START_RIGHT_TOP, wall);
                     }
-                    if (getWall(x, y+1, MAZE_CELL_RIGHT) != nullptr) {
-                        std::cout << "vertical wall: " << x << ", " << y << " to vertical wall: " << x+1 << ", " << y << std::endl;
-                        wall->setNeighbor(MAZE_WALL_END, getWall(x, y, MAZE_CELL_RIGHT));
-                        getWall(x, y+1, MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_START, wall);
+                    if (getWall(x, y + 1, MAZE_CELL_RIGHT) != nullptr) {
+                        std::cout << "vertical wall: " << x << ", " << y
+                                  << " to vertical wall: " << x + 1 << ", " << y
+                                  << std::endl;
+                        wall->setNeighbor(MAZE_WALL_END,
+                                          getWall(x, y, MAZE_CELL_RIGHT));
+                        getWall(x, y + 1, MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_START, wall);
                     }
                 }
             }
-            if (y == 0 || y == height_-1) {
+            if (y == 0 || y == height_ - 1) {
                 wall->setBorder(true);
             }
         }
@@ -295,7 +321,8 @@ bool Maze::removeWall(int x, int y, bool isHorizontal) {
     return removeWall(x, y, isHorizontal, false);
 }
 
-bool Maze::removeWall(int x, int y, bool isHorizontal, bool neighborsConnection) {
+bool Maze::removeWall(int x, int y, bool isHorizontal,
+                      bool neighborsConnection) {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return false;
     }
@@ -304,40 +331,58 @@ bool Maze::removeWall(int x, int y, bool isHorizontal, bool neighborsConnection)
     if (isHorizontal) {
         wall = cell->getWall(MAZE_CELL_BOTTOM);
         cell->setWall(MAZE_CELL_BOTTOM, nullptr);
-        cell->setNeighbor(MAZE_CELL_BOTTOM, cell->getRelativeNeighbor(MAZE_CELL_BOTTOM));
+        cell->setNeighbor(MAZE_CELL_BOTTOM,
+                          cell->getRelativeNeighbor(MAZE_CELL_BOTTOM));
         cell->getNeighbor(MAZE_CELL_BOTTOM)->setWall(MAZE_CELL_TOP, nullptr);
         cell->getNeighbor(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_CELL_TOP, cell);
-        cell->setNeighbor(MAZE_CELL_BOTTOM, cell->getNeighbor(MAZE_CELL_BOTTOM));
+        cell->setNeighbor(MAZE_CELL_BOTTOM,
+                          cell->getNeighbor(MAZE_CELL_BOTTOM));
         if (neighborsConnection) {
             if (x > 0) {
-                if (getCell(x-1, y)->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                if (getCell(x - 1, y)->getWall(MAZE_CELL_RIGHT) != nullptr) {
                     wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
-                    getCell(x-1, y)->getWall(MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_END_RIGHT_TOP, nullptr);
+                    getCell(x - 1, y)
+                        ->getWall(MAZE_CELL_RIGHT)
+                        ->setNeighbor(MAZE_WALL_END_RIGHT_TOP, nullptr);
                 }
-                if (y < height_-1) {
-                    if (getCell(x-1, y+1)->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                if (y < height_ - 1) {
+                    if (getCell(x - 1, y + 1)->getWall(MAZE_CELL_RIGHT) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, nullptr);
-                        getCell(x-1, y+1)->getWall(MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
+                        getCell(x - 1, y + 1)
+                            ->getWall(MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
                     }
-                    if (getCell(x-1, y)->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                    if (getCell(x - 1, y)->getWall(MAZE_CELL_BOTTOM) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_START, nullptr);
-                        getCell(x-1, y)->getWall(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_END, nullptr);
+                        getCell(x - 1, y)
+                            ->getWall(MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_END, nullptr);
                     }
                 }
             }
-            if (x < width_-1) {
+            if (x < width_ - 1) {
                 if (cell->getWall(MAZE_CELL_RIGHT) != nullptr) {
                     wall->setNeighbor(MAZE_WALL_END_RIGHT_TOP, nullptr);
-                    getCell(x, y)->getWall(MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, nullptr);
+                    getCell(x, y)
+                        ->getWall(MAZE_CELL_RIGHT)
+                        ->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, nullptr);
                 }
-                if (y < height_-1) {
-                    if (getCell(x, y+1)->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                if (y < height_ - 1) {
+                    if (getCell(x, y + 1)->getWall(MAZE_CELL_RIGHT) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, nullptr);
-                        getCell(x, y+1)->getWall(MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, nullptr);
+                        getCell(x, y + 1)
+                            ->getWall(MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, nullptr);
                     }
-                    if (getCell(x+1, y)->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                    if (getCell(x + 1, y)->getWall(MAZE_CELL_BOTTOM) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_END, nullptr);
-                        getCell(x+1, y)->getWall(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_START, nullptr);
+                        getCell(x + 1, y)
+                            ->getWall(MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_START, nullptr);
                     }
                 }
             }
@@ -345,40 +390,57 @@ bool Maze::removeWall(int x, int y, bool isHorizontal, bool neighborsConnection)
     } else {
         wall = cell->getWall(MAZE_CELL_RIGHT);
         cell->setWall(MAZE_CELL_RIGHT, nullptr);
-        cell->setNeighbor(MAZE_CELL_RIGHT, cell->getRelativeNeighbor(MAZE_CELL_RIGHT));
+        cell->setNeighbor(MAZE_CELL_RIGHT,
+                          cell->getRelativeNeighbor(MAZE_CELL_RIGHT));
         cell->getNeighbor(MAZE_CELL_RIGHT)->setWall(MAZE_CELL_LEFT, nullptr);
         cell->getNeighbor(MAZE_CELL_RIGHT)->setNeighbor(MAZE_CELL_LEFT, cell);
         cell->setNeighbor(MAZE_CELL_RIGHT, cell->getNeighbor(MAZE_CELL_RIGHT));
         if (neighborsConnection) {
             if (y > 0) {
-                if (getCell(x, y-1)->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                if (getCell(x, y - 1)->getWall(MAZE_CELL_BOTTOM) != nullptr) {
                     wall->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, nullptr);
-                    getCell(x, y-1)->getWall(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, nullptr);
+                    getCell(x, y - 1)
+                        ->getWall(MAZE_CELL_BOTTOM)
+                        ->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, nullptr);
                 }
-                if (x < width_-1) {
-                    if (getCell(x+1, y-1)->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                if (x < width_ - 1) {
+                    if (getCell(x + 1, y - 1)->getWall(MAZE_CELL_BOTTOM) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
-                        getCell(x+1, y-1)->getWall(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, nullptr);
+                        getCell(x + 1, y - 1)
+                            ->getWall(MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_START_LEFT_BOTTOM, nullptr);
                     }
-                    if (getCell(x, y-1)->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                    if (getCell(x, y - 1)->getWall(MAZE_CELL_RIGHT) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_START, nullptr);
-                        getCell(x, y-1)->getWall(MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_END, nullptr);
+                        getCell(x, y - 1)
+                            ->getWall(MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_END, nullptr);
                     }
                 }
             }
-            if (y < height_-1) {
+            if (y < height_ - 1) {
                 if (cell->getWall(MAZE_CELL_BOTTOM) != nullptr) {
                     wall->setNeighbor(MAZE_WALL_END_LEFT_BOTTOM, nullptr);
-                    getCell(x, y)->getWall(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_END_RIGHT_TOP, nullptr);
+                    getCell(x, y)
+                        ->getWall(MAZE_CELL_BOTTOM)
+                        ->setNeighbor(MAZE_WALL_END_RIGHT_TOP, nullptr);
                 }
-                if (x < width_-1) {
-                    if (getCell(x+1, y)->getWall(MAZE_CELL_BOTTOM) != nullptr) {
+                if (x < width_ - 1) {
+                    if (getCell(x + 1, y)->getWall(MAZE_CELL_BOTTOM) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
-                        getCell(x+1, y)->getWall(MAZE_CELL_BOTTOM)->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
+                        getCell(x + 1, y)
+                            ->getWall(MAZE_CELL_BOTTOM)
+                            ->setNeighbor(MAZE_WALL_START_RIGHT_TOP, nullptr);
                     }
-                    if (getCell(x, y+1)->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                    if (getCell(x, y + 1)->getWall(MAZE_CELL_RIGHT) !=
+                        nullptr) {
                         wall->setNeighbor(MAZE_WALL_END, nullptr);
-                        getCell(x, y+1)->getWall(MAZE_CELL_RIGHT)->setNeighbor(MAZE_WALL_START, nullptr);
+                        getCell(x, y + 1)
+                            ->getWall(MAZE_CELL_RIGHT)
+                            ->setNeighbor(MAZE_WALL_START, nullptr);
                     }
                 }
             }
@@ -409,29 +471,29 @@ bool Maze::removeWall(Cell *cell1, Cell *cell2) {
 }
 
 void Maze::initNeighborsCells_() {
-    for(int x = 0; x < width_; x++) {
-        for(int y = 0; y < height_; y++) {
+    for (int x = 0; x < width_; x++) {
+        for (int y = 0; y < height_; y++) {
             Cell *cell = cells_[x][y];
             Cell **cellNeighbors = cell->getNeighbors();
             if (x > 0) {
-                cell -> setNeighbor(MAZE_CELL_LEFT, cells_[x-1][y], true);
+                cell->setNeighbor(MAZE_CELL_LEFT, cells_[x - 1][y], true);
             } else {
-                cell -> setNeighbor(MAZE_CELL_LEFT, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_LEFT, nullptr, true);
             }
-            if (x < width_-1) {
-                cell -> setNeighbor(MAZE_CELL_RIGHT, cells_[x+1][y], true);
+            if (x < width_ - 1) {
+                cell->setNeighbor(MAZE_CELL_RIGHT, cells_[x + 1][y], true);
             } else {
-                cell -> setNeighbor(MAZE_CELL_RIGHT, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_RIGHT, nullptr, true);
             }
             if (y > 0) {
-                cell -> setNeighbor(MAZE_CELL_TOP, cells_[x][y-1], true);
+                cell->setNeighbor(MAZE_CELL_TOP, cells_[x][y - 1], true);
             } else {
-                cell -> setNeighbor(MAZE_CELL_TOP, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_TOP, nullptr, true);
             }
-            if (y < height_-1) {
-                cell -> setNeighbor(MAZE_CELL_BOTTOM, cells_[x][y+1], true);
+            if (y < height_ - 1) {
+                cell->setNeighbor(MAZE_CELL_BOTTOM, cells_[x][y + 1], true);
             } else {
-                cell -> setNeighbor(MAZE_CELL_BOTTOM, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr, true);
             }
             cell->setWall(MAZE_CELL_RIGHT, nullptr);
             cell->setWall(MAZE_CELL_BOTTOM, nullptr);
@@ -458,8 +520,8 @@ void Maze::freeMaze() {
 }
 
 void Maze::clearMaze() {
-    for(int x = 0; x < width_; x++) {
-        for(int y = 0; y < height_; y++) {
+    for (int x = 0; x < width_; x++) {
+        for (int y = 0; y < height_; y++) {
             Cell *cell = cells_[x][y];
             cell->setAlreadyVisited(false);
             cell->setStatus(MAZE_STATUS_IDLE);

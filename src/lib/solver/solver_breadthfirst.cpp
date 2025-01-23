@@ -1,9 +1,10 @@
-#include <queue>
-#include <iostream>
-#include <thread>
-#include <chrono>
-
 #include "solver_breadthfirst.hpp"
+
+#include <chrono>
+#include <iostream>
+#include <queue>
+#include <thread>
+
 #include "../show.hpp"
 #include "../var.hpp"
 
@@ -22,106 +23,98 @@ struct PositionHistory {
 PositionHistory *positionHistory;
 
 class QueuePosition {
-    private:
-        int size_;
-        int capacity_;
-    public:
-        QueuePosition() {
-            size_ = 0;
-            capacity_ = 1;
-            position = new Position[1];
-        }
-        ~QueuePosition() {
+   private:
+    int size_;
+    int capacity_;
+
+   public:
+    QueuePosition() {
+        size_ = 0;
+        capacity_ = 1;
+        position = new Position[1];
+    }
+    ~QueuePosition() { delete[] position; }
+    void push(int x, int y) {
+        if (size_ == capacity_) {
+            Position *newPosition = new Position[capacity_ * 2];
+            for (int i = 0; i < size_; i++) {
+                newPosition[i] = position[i];
+            }
             delete[] position;
+            position = newPosition;
+            capacity_ *= 2;
         }
-        void push(int x, int y) {
-            if (size_ == capacity_) {
-                Position *newPosition = new Position[capacity_*2];
-                for (int i = 0; i < size_; i++) {
-                    newPosition[i] = position[i];
-                }
-                delete[] position;
-                position = newPosition;
-                capacity_ *= 2;
+        position[size_].x = x;
+        position[size_].y = y;
+        size_++;
+    }
+    void pop() {
+        if (size_ < capacity_ / 4) {
+            Position *newPosition = new Position[capacity_ / 2];
+            for (int i = 0; i < size_; i++) {
+                newPosition[i] = position[i];
             }
-            position[size_].x = x;
-            position[size_].y = y;
-            size_++;
+            delete[] position;
+            position = newPosition;
+            capacity_ /= 2;
         }
-        void pop() {
-            if (size_ < capacity_/4) {
-                Position *newPosition = new Position[capacity_/2];
-                for (int i = 0; i < size_; i++) {
-                    newPosition[i] = position[i];
-                }
-                delete[] position;
-                position = newPosition;
-                capacity_ /= 2;
+        if (size_ > 0) {
+            for (int i = 0; i < size_ - 1; i++) {
+                position[i] = position[i + 1];
             }
-            if (size_ > 0) {
-                for (int i = 0; i < size_-1; i++) {
-                    position[i] = position[i+1];
-                }
-                size_--;
-            }
+            size_--;
         }
-        Position front() {
-            return position[0];
-        }
-        bool empty() {
-            return size_ == 0;
-        }
+    }
+    Position front() { return position[0]; }
+    bool empty() { return size_ == 0; }
 };
 
 class stackPosition {
-    private:
-        int size_;
-        int capacity_;
-    public:
-        stackPosition() {
-            size_ = 0;
-            capacity_ = 1;
-            positionHistory = new PositionHistory[1];
-        }
-        ~stackPosition() {
+   private:
+    int size_;
+    int capacity_;
+
+   public:
+    stackPosition() {
+        size_ = 0;
+        capacity_ = 1;
+        positionHistory = new PositionHistory[1];
+    }
+    ~stackPosition() { delete[] positionHistory; }
+    void push(int x, int y, int parent_x, int parent_y) {
+        if (size_ == capacity_) {
+            PositionHistory *newPositionHistory =
+                new PositionHistory[capacity_ * 2];
+            for (int i = 0; i < size_; i++) {
+                newPositionHistory[i] = positionHistory[i];
+            }
             delete[] positionHistory;
+            positionHistory = newPositionHistory;
+            capacity_ *= 2;
         }
-        void push(int x, int y, int parent_x, int parent_y) {
-            if (size_ == capacity_) {
-                PositionHistory *newPositionHistory = new PositionHistory[capacity_*2];
-                for (int i = 0; i < size_; i++) {
-                    newPositionHistory[i] = positionHistory[i];
-                }
-                delete[] positionHistory;
-                positionHistory = newPositionHistory;
-                capacity_ *= 2;
+        positionHistory[size_].x = x;
+        positionHistory[size_].y = y;
+        positionHistory[size_].parent_x = parent_x;
+        positionHistory[size_].parent_y = parent_y;
+        size_++;
+    }
+    void pop() {
+        if (size_ < capacity_ / 4) {
+            PositionHistory *newPositionHistory =
+                new PositionHistory[capacity_ / 2];
+            for (int i = 0; i < size_; i++) {
+                newPositionHistory[i] = positionHistory[i];
             }
-            positionHistory[size_].x = x;
-            positionHistory[size_].y = y;
-            positionHistory[size_].parent_x = parent_x;
-            positionHistory[size_].parent_y = parent_y;
-            size_++;
+            delete[] positionHistory;
+            positionHistory = newPositionHistory;
+            capacity_ /= 2;
         }
-        void pop() {
-            if (size_ < capacity_/4) {
-                PositionHistory *newPositionHistory = new PositionHistory[capacity_/2];
-                for (int i = 0; i < size_; i++) {
-                    newPositionHistory[i] = positionHistory[i];
-                }
-                delete[] positionHistory;
-                positionHistory = newPositionHistory;
-                capacity_ /= 2;
-            }
-            if (size_ > 0) {
-                size_--;
-            }
+        if (size_ > 0) {
+            size_--;
         }
-        PositionHistory top() {
-            return positionHistory[size_-1];
-        }
-        bool empty() {
-            return size_ == 0;
-        }
+    }
+    PositionHistory top() { return positionHistory[size_ - 1]; }
+    bool empty() { return size_ == 0; }
 };
 
 bool solver_breadthfirst(Maze *maze, Show *show) {
@@ -150,13 +143,16 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
                 stack.push(neighbor->getX(), neighbor->getY(), x, y);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
-                if (neighbor->getX() == maze->getEndX() && neighbor->getY() == maze->getEndY()) {
+                if (neighbor->getX() == maze->getEndX() &&
+                    neighbor->getY() == maze->getEndY()) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
                     updateShowLive(show, maze);
                     while (!stack.empty()) {
                         PositionHistory currentCell = stack.top();
                         PositionHistory cellTop = stack.top();
-                        while (!stack.empty() && (cellTop.x != currentCell.parent_x || cellTop.y != currentCell.parent_y)) {
+                        while (!stack.empty() &&
+                               (cellTop.x != currentCell.parent_x ||
+                                cellTop.y != currentCell.parent_y)) {
                             stack.pop();
                             cellTop = stack.top();
                         }

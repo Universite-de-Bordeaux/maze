@@ -1,77 +1,74 @@
+#include "algo_fractal.hpp"
+
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <thread>
 
-#include "algo_fractal.hpp"
 #include "../maze.hpp"
 #include "../show.hpp"
 #include "../var.hpp"
 
 static bool add_wall_imperfect(Maze *maze, int mid) {
     for (int i = 0; i < maze->getHeight(); i++) {
-        maze->addWall(mid-1, i, false);
-        maze->addWall(i, mid-1, true);
+        maze->addWall(mid - 1, i, false);
+        maze->addWall(i, mid - 1, true);
     }
     int remove = rand() % mid;
-    maze->removeWall(mid-1, remove, false);
+    maze->removeWall(mid - 1, remove, false);
     remove = rand() % mid;
-    maze->removeWall(remove, mid-1, true);
+    maze->removeWall(remove, mid - 1, true);
     remove = rand() % mid;
-    maze->removeWall(mid-1, mid + remove, false);
+    maze->removeWall(mid - 1, mid + remove, false);
     remove = rand() % mid;
-    maze->removeWall(mid + remove, mid-1, true);
+    maze->removeWall(mid + remove, mid - 1, true);
     return true;
 }
 
 static bool add_wall_perfect(Maze *maze, int mid) {
     for (int i = 0; i < mid; i++) {
-    	maze->addWall(mid-1, i, false);
-    	maze->addWall(mid + i, mid-1, true);
-    	maze->addWall(mid-1, mid + i, false);
-    	maze->addWall(i, mid-1, true);
+        maze->addWall(mid - 1, i, false);
+        maze->addWall(mid + i, mid - 1, true);
+        maze->addWall(mid - 1, mid + i, false);
+        maze->addWall(i, mid - 1, true);
     }
     int direction = rand() % 4;
     if (direction == NORTH) {
-		int remove = rand() % mid;
-        maze->removeWall(mid + remove, mid-1, true);
-		remove = rand() % mid;
-        maze->removeWall(mid-1, mid + remove, false);
-        remove = rand() % mid;
-        maze->removeWall(remove, mid-1, true);
-    }
-    else if (direction == EAST) {
-      	int remove = rand() % mid;
-        maze->removeWall(mid-1, mid + remove, false);
-        remove = rand() % mid;
-        maze->removeWall(remove, mid-1, true);
-        remove = rand() % mid;
-        maze->removeWall(mid-1, remove, false);
-    }
-    else if (direction == SOUTH) {
-    	int remove = rand() % mid;
-        maze->removeWall(remove, mid-1, true);
-        remove = rand() % mid;
-        maze->removeWall(mid-1, remove, false);
-        remove = rand() % mid;
-        maze->removeWall(mid + remove, mid-1, true);
-    }
-    else if (direction == WEST) {
         int remove = rand() % mid;
-        maze->removeWall(mid-1, remove, false);
+        maze->removeWall(mid + remove, mid - 1, true);
         remove = rand() % mid;
-        maze->removeWall(mid + remove, mid-1, true);
-		remove = rand() % mid;
-        maze->removeWall(mid-1, mid + remove, false);
-    }
-    else {
+        maze->removeWall(mid - 1, mid + remove, false);
+        remove = rand() % mid;
+        maze->removeWall(remove, mid - 1, true);
+    } else if (direction == EAST) {
+        int remove = rand() % mid;
+        maze->removeWall(mid - 1, mid + remove, false);
+        remove = rand() % mid;
+        maze->removeWall(remove, mid - 1, true);
+        remove = rand() % mid;
+        maze->removeWall(mid - 1, remove, false);
+    } else if (direction == SOUTH) {
+        int remove = rand() % mid;
+        maze->removeWall(remove, mid - 1, true);
+        remove = rand() % mid;
+        maze->removeWall(mid - 1, remove, false);
+        remove = rand() % mid;
+        maze->removeWall(mid + remove, mid - 1, true);
+    } else if (direction == WEST) {
+        int remove = rand() % mid;
+        maze->removeWall(mid - 1, remove, false);
+        remove = rand() % mid;
+        maze->removeWall(mid + remove, mid - 1, true);
+        remove = rand() % mid;
+        maze->removeWall(mid - 1, mid + remove, false);
+    } else {
         return false;
     }
     return true;
 }
 
-static void quad_maze(Maze * maze) {
+static void quad_maze(Maze *maze) {
     int old_width = maze->getWidth();
     int old_height = maze->getHeight();
     Maze new_maze = Maze();
@@ -86,15 +83,15 @@ static void quad_maze(Maze * maze) {
             }
         }
     }
-    maze->setWidthHeight(2*maze->getWidth(), 2*maze->getHeight());
+    maze->setWidthHeight(2 * maze->getWidth(), 2 * maze->getHeight());
     for (int i = 0; i < old_height; i++) {
         for (int j = 0; j < old_width; j++) {
             for (int k = 0; k < 2; k++) {
                 if (new_maze.getWall(i, j, k)) {
                     maze->addWall(i, j, k);
-                    maze->addWall(i+old_width, j, k);
-                    maze->addWall(i+old_width, j+old_height, k);
-                    maze->addWall(i, j+old_height, k);
+                    maze->addWall(i + old_width, j, k);
+                    maze->addWall(i + old_width, j + old_height, k);
+                    maze->addWall(i, j + old_height, k);
                 }
             }
         }
@@ -102,7 +99,7 @@ static void quad_maze(Maze * maze) {
     new_maze.clearMaze();
 }
 
-void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
+void algo_fractal(Maze *maze, int n, bool perfect, Show *show) {
     maze->setWidthHeight(1, 1);
     if (show) {
         show->create();
@@ -128,8 +125,7 @@ void algo_fractal(Maze* maze, int n, bool perfect, Show *show) {
                 std::cerr << "Error: add_wall" << std::endl;
                 return;
             }
-        }
-        else {
+        } else {
             if (!add_wall_perfect(maze, maze->getHeight() / 2)) {
                 std::cerr << "Error: add_wall" << std::endl;
                 return;

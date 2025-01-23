@@ -1,8 +1,9 @@
+#include "algo_wallmaker.hpp"
+
+#include <chrono>
 #include <iostream>
 #include <thread>
-#include <chrono>
 
-#include "algo_wallmaker.hpp"
 #include "../show.hpp"
 
 static int numberBorders(int width, int height, Wall* wall) {
@@ -39,7 +40,8 @@ static void resetAlreadyVisited(Maze* maze) {
     }
 }
 
-void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show) {
+void algo_wallmaker(Maze* maze, int width, int height, bool perfect,
+                    Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
@@ -78,10 +80,14 @@ void algo_wallmaker(Maze* maze, int width, int height, bool perfect, Show* show)
         } else {
             maze->addWall(x, y, true, true);
         }
-        std::cout << "x=" << x << " y=" << y << " direction=" << direction<< " numberBorders=" << numberBorders(width, height, maze->getWall(x, y, direction)) << std::endl;
+        std::cout << "x=" << x << " y=" << y << " direction=" << direction
+                  << " numberBorders="
+                  << numberBorders(width, height,
+                                   maze->getWall(x, y, direction))
+                  << std::endl;
         resetAlreadyVisited(maze);
         if (numberBorders(width, height, maze->getWall(x, y, direction)) > 1) {
-          maze->removeWall(x, y, direction, true);
+            maze->removeWall(x, y, direction, true);
         }
         resetAlreadyVisited(maze);
         Cell* showCell[1] = {maze->getCell(x, y)};

@@ -13,4 +13,4 @@
  */
 void algo_wallmaker(Maze*, int, int, bool, Show*);
 
-#endif // ALGO_WALLMAKER_HPP
+#endif  // ALGO_WALLMAKER_HPP

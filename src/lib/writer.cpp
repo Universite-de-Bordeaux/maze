@@ -1,10 +1,10 @@
-#include <ios>
-#include <ostream>
-#include <iostream>
-
 #include "writer.hpp"
 
-void write(Maze * maze, char *file) {
+#include <ios>
+#include <iostream>
+#include <ostream>
+
+void write(Maze *maze, char *file) {
     // ouverture du fichier
     std::cout << "Writing maze to file " << file << std::endl;
     std::ofstream new_file;

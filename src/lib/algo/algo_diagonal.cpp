@@ -1,8 +1,9 @@
+#include "algo_diagonal.hpp"
+
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-#include "algo_diagonal.hpp"
 #include "../show.hpp"
 
 struct start {
@@ -21,20 +22,22 @@ struct start {
  * @param whereStart La position de départ
  * @param show L'objet pour afficher le labyrinthe
  */
-static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool isHorizontal, start *whereStart, Show *show) {
+static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
+                        bool isHorizontal, start *whereStart, Show *show) {
     refreshShow(show);
-    if((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
+    if ((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
-        int startB = (isHorizontal ? (whereStart->left ? *b : 0) : (whereStart->top ? *b : 0));
-        int endB = (isHorizontal ? (whereStart->left ? *maxB : *b) : (whereStart->top ? *maxB : *b));
+        int startB = (isHorizontal ? (whereStart->left ? *b : 0)
+                                   : (whereStart->top ? *b : 0));
+        int endB = (isHorizontal ? (whereStart->left ? *maxB : *b)
+                                 : (whereStart->top ? *maxB : *b));
         if (startB == endB) {
-            (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
+            (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
+                                 : (whereStart->left ? 1 : -1);
             return;
         }
         int rb = (int)(rand() % (endB - startB)) + startB;
-        for (int bb = startB;
-            bb <= endB;
-            bb++) {
+        for (int bb = startB; bb <= endB; bb++) {
             if (bb != rb) {
                 if (isHorizontal) {
                     maze->addWall(bb, *a - !whereStart->top, isHorizontal);
@@ -42,18 +45,22 @@ static void create_exit(int *a, int *maxA, int* b, int*maxB, Maze *maze, bool is
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
                 }
             }
-            Cell *showCell[1] = {maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb)};
+            Cell *showCell[1] = {
+                maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb)};
             updateShowLive(show, maze, 1, showCell);
             // updateShowLive(show, maze, true);
         }
-        (*a) += isHorizontal ? (whereStart->top ? 1 : -1) : (whereStart->left ? 1 : -1);
-        Cell *showCell[1] = {maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb)};
+        (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
+                             : (whereStart->left ? 1 : -1);
+        Cell *showCell[1] = {
+            maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb)};
         // updateShowLive(show, maze, 1, showCell);
         // updateShowLive(show, maze, false);
     }
 }
 
-void algo_diagonal(Maze* maze, int width, int height, bool perfect, Show *show) {
+void algo_diagonal(Maze *maze, int width, int height, bool perfect,
+                   Show *show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
@@ -62,13 +69,15 @@ void algo_diagonal(Maze* maze, int width, int height, bool perfect, Show *show) 
     int x = whereStart.left ? 0 : width - 1;
     int y = whereStart.top ? 0 : height - 1;
     while ((!whereStart.left <= x && x < width - whereStart.left) ||
-        (!whereStart.top <= y && y < height - whereStart.top)) {
+           (!whereStart.top <= y && y < height - whereStart.top)) {
         if (rand() % 2 == 0) {
-            create_exit(&x, &width, &y, &height, maze, false, &whereStart, show);
+            create_exit(&x, &width, &y, &height, maze, false, &whereStart,
+                        show);
             create_exit(&y, &height, &x, &width, maze, true, &whereStart, show);
         } else {
             create_exit(&y, &height, &x, &width, maze, true, &whereStart, show);
-            create_exit(&x, &width, &y, &height, maze, false, &whereStart, show);
+            create_exit(&x, &width, &y, &height, maze, false, &whereStart,
+                        show);
         }
     }
 }

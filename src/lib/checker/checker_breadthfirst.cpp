@@ -1,12 +1,12 @@
+#include "checker_breadthfirst.hpp"
+
+#include <chrono>
 #include <iostream>
 #include <thread>
-#include <chrono>
 
-#include "checker_breadthfirst.hpp"
+#include "../queue.hpp"
 #include "../show.hpp"
 #include "../var.hpp"
-#include "../queue.hpp"
-
 
 bool checker_breadthfirst(Maze *maze, Show *show) {
     updateShowLive(show, maze);
@@ -35,20 +35,18 @@ bool checker_breadthfirst(Maze *maze, Show *show) {
                 neighbor->setAlreadyVisited(true);
                 cont++;
             }
-            if (neighbor != nullptr && neighbor->isAlreadyVisited()){
+            if (neighbor != nullptr && neighbor->isAlreadyVisited()) {
                 parfaite = false;
             }
+        }
+        if (parfaite) {
+            std::cout << "Le labirynthe n'est pas parfait" << std::endl;
+        } else {
+            std::cout << "Le labirynthe n'est parfait" << std::endl;
+        }
+        if (cont == maze->getSize()) {
+            std::cout << "Le labirynthe est valide" << std::endl;
+        } else {
+            std::cout << "Le labirynthe n'est pas valide" << std::endl;
+        }
     }
-    if (parfaite){
-        std::cout << "Le labirynthe n'est pas parfait" << std::endl;
-    }
-    else{
-        std::cout << "Le labirynthe n'est parfait" << std::endl;
-    }
-    if ( cont == maze->getSize()){
-        std::cout << "Le labirynthe est valide" << std::endl;
-    }
-    else {
-        std::cout << "Le labirynthe n'est pas valide" << std::endl;
-    }
-}

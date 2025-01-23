@@ -1,11 +1,13 @@
 #include "solver_depthfirst.hpp"
+
 #include "../show.hpp"
 #include "../var.hpp"
 
-static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLeft) {
+static bool solve(Maze *maze, Show *show, int x, int y, int direction,
+                  bool toLeft) {
     refreshShow(show);
-    // std::cout << "x: " << x << " y: " << y << " direction: " << direction << " toLeft: " << toLeft << std::endl;
-    // updateShowLive(show, maze, true);
+    // std::cout << "x: " << x << " y: " << y << " direction: " << direction <<
+    // " toLeft: " << toLeft << std::endl; updateShowLive(show, maze, true);
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_CURRENT);
@@ -32,12 +34,14 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction, bool toLe
         if (index < 0) {
             index += 4;
         }
-        // std::cout << "index: " << index << " direction: " << direction << " i: " << i << std::endl;
+        // std::cout << "index: " << index << " direction: " << direction << "
+        // i: " << i << std::endl;
         if (cell->isNeighbor(index)) {
             Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
                 updateShowLive(show, maze, 1, &cell);
-                bool result = solve(maze, show, neighbor->getX(), neighbor->getY(), (index + 2) % 4, toLeft);
+                bool result = solve(maze, show, neighbor->getX(),
+                                    neighbor->getY(), (index + 2) % 4, toLeft);
                 updateShowLive(show, maze, 1, &neighbor);
                 if (result) {
                     cell->setStatus(MAZE_STATUS_WAY_OUT);

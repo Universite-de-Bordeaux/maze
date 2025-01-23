@@ -1,5 +1,5 @@
 #ifndef READER_HPP
-# define READER_HPP
+#define READER_HPP
 
 #include <string>
 
@@ -12,4 +12,4 @@
  */
 void read(std::string filename, Maze *maze);
 
-#endif // MAZE_HPP
+#endif  // MAZE_HPP
