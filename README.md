@@ -93,7 +93,7 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-g` ou `--game` : Lance le jeu de labyrinthe (nécessite un labyrinthe en mémoire)
     + `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
       mémoire)
-        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), walk (w),
+        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), walk (w), walghost (wg),
           par défaut : fog)
 
 ## Lancement automatisé

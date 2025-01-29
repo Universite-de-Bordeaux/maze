@@ -202,3 +202,4 @@ src/instances/tmp/*
 !src/instances/tmp/.gitkeep
 .fleet
 default.nix
+.cmake

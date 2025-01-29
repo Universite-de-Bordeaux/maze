@@ -72,7 +72,7 @@ void help() {
     std::cout << "    -gs ou --game-show : Joue à un jeu de labyrinthe et "
                  "l'affiche pendant le jeu"
               << std::endl;
-    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer (f/fog, fr/fogright, fl/fogleft, w/walk)"
+    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer (f/fog, fr/fogright, fl/fogleft, w/walk, wg/walkghost)"
               << std::endl;
 }
 
@@ -151,6 +151,8 @@ void gameMaze(Maze *maze, std::string type, Show *show) {
         game_fog_hand(maze, show, true);
     } else if (type == "walk" || type == "w") {
         game_walk(maze, show, false);
+    } else if (type == "walkghost" || type == "wg") {
+        game_walk(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -385,6 +387,9 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "walk") == 0 ||
                                    strcmp(argv[i + 1], "w") == 0) {
                             type = "walk";
+                        } else if (strcmp(argv[i + 1], "walkghost") == 0 ||
+                                   strcmp(argv[i + 1], "wg") == 0) {
+                            type = "walkghost";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }

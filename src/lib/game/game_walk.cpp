@@ -10,12 +10,15 @@ bool game_walk(Maze *maze, Show *show, bool clear) {
         std::cout << "No show" << std::endl;
         return false;
     }
-    updateShowLive(show, maze);
-    refreshShow(show);
+    if (!clear) refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
-    updateShowLive(show, maze, 1, &cell);
-    refreshShow(show);
+    
+    if (clear) {
+        show->eventHandler();
+        show->clear();
+        show->display();
+    }
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()){
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
@@ -56,13 +59,17 @@ bool game_walk(Maze *maze, Show *show, bool clear) {
             }
         }
         if (neighbor != nullptr) {
-            neighbor->setStatus(MAZE_STATUS_CURRENT);
-            updateShowLive(show, maze, 1, &neighbor);
             cell->setStatus(MAZE_STATUS_VISITED);
-            updateShowLive(show, maze, 1, &cell);
+            if (clear)updateShowLive(show, maze, 1, &cell);
+            neighbor->setStatus(MAZE_STATUS_CURRENT);
+            if (clear)updateShowLive(show, maze, 1, &neighbor);
             cell = neighbor;
         }
-        refreshShow(show);
+        if (!clear) refreshShow(show);
+        else {
+            show->eventHandler();
+            show->display();
+        }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     return true;
