@@ -14,7 +14,7 @@ void write(Maze *maze, char *file) {
     int width = maze->getWidth();
     // écriture de la première ligne
     new_file << width << ' ' << height << std::endl;
-    //écriture des lignes suivantes
+    // écriture des lignes suivantes
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             Cell *cell = maze->getCell(x, y);

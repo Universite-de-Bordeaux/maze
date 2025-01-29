@@ -10,7 +10,7 @@ bool game_fog_hand(Maze *maze, Show *show, bool toLeft) {
     cell->setStatus(MAZE_STATUS_CURRENT);
     int direction = 0;
     int move = toLeft ? 1 : 3;
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()){
+    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);

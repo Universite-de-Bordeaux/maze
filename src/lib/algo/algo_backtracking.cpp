@@ -39,7 +39,7 @@ static Cell* nextNeighbor(Cell* current) {
 
     Cell* listCell[numberOfNeighbors];
     current->getAbsoluteNeighborsNotVisited(
-        listCell);  // Récupérer les voisins non visités
+        listCell);            // Récupérer les voisins non visités
     int random = rand() % numberOfNeighbors;
     return listCell[random];  // Retourner un voisin non visité au hasard
 }

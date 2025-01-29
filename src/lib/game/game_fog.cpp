@@ -8,7 +8,7 @@ bool game_fog(Maze *maze, Show *show) {
     refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()){
+    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);

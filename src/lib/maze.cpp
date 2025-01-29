@@ -8,8 +8,8 @@
 #include "stdlib.h"
 #include "var.hpp"
 
-static int defaultStartX(int width) { return width / 2;}
-static int defaultStartY(int height) { return height / 2;}
+static int defaultStartX(int width) { return width / 2; }
+static int defaultStartY(int height) { return height / 2; }
 static int defaultEndX(int width) { return width - 1; }
 static int defaultEndY(int height) { return height - 1; }
 

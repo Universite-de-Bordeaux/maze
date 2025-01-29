@@ -13,8 +13,8 @@ class Queue {
     int capacity_;
 
    public:
-    Queue();   // Constructeur par défaut
-    ~Queue();  // Destructeur
+    Queue();                  // Constructeur par défaut
+    ~Queue();                 // Destructeur
 
     void push(int x, int y);  // Ajoute un élément à la file
     void pop();               // Retire un élément de la file

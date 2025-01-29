@@ -63,16 +63,17 @@ void help() {
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
                  "utiliser pour la vérification (dfr/drepthfirstright, dfl/"
-                    "depthfirstleft, bf/breadthfirst)"
+                 "depthfirstleft, bf/breadthfirst)"
               << std::endl;
-    
+
     std::cout << "\nJeux de labyrinthe" << std::endl;
     std::cout << "------------------" << std::endl;
     std::cout << "  -g ou --game : Joue à un jeu de labyrinthe" << std::endl;
     std::cout << "    -gs ou --game-show : Joue à un jeu de labyrinthe et "
                  "l'affiche pendant le jeu"
               << std::endl;
-    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer (f/fog, fr/fogright, fl/fogleft, w/walk, wg/walkghost)"
+    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer "
+                 "(f/fog, fr/fogright, fl/fogleft, w/walk, wg/walkghost)"
               << std::endl;
 }
 

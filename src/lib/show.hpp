@@ -54,19 +54,19 @@ class Show {
      */
     void update();
     void updateCell(Cell *);
-    
+
     bool keyPress();
     sf::Event::KeyEvent getLastKeyPressed();
-    
+
     void close();
 
    private:
-    Maze *maze_;  //> Pointeur vers un objet de type Maze
+    Maze *maze_;     //> Pointeur vers un objet de type Maze
     sf::RenderWindow *renderWindow_ =
         nullptr;     //> Pointeur vers un objet de type sf::RenderWindow
     int cellSize_;   //> Taille d'une cellule
     sf::Font font_;  //> Police d'écriture
-    sf::Event::KeyEvent lastKeyPressed_; //> Dernière touche pressée
+    sf::Event::KeyEvent lastKeyPressed_;  //> Dernière touche pressée
 
     /**
      * @brief Gère les événements de la fenêtre de rendu
