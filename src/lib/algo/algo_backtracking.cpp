@@ -3,22 +3,16 @@
 #include <iostream>
 
 #include "../show.hpp"
-
-struct coordinate {
-    int x;
-    int y;
-};
-
-int directions[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+#include "../queue.hpp"
 
 static int numberRelativeNeighbors(Maze* maze, int width, int height,
                                    int currentX, int currentY,
-                                   int directions[4][2], Cell* currentCell,
+                                   const int DIRECTIONS[4][2], Cell* currentCell,
                                    Show* show) {
     int numberOfNeighbors = 0;
     for (int i = 0; i < 4; i++) {
-        int x = currentX + directions[i][0];
-        int y = currentY + directions[i][1];
+        int x = currentX + DIRECTIONS[i][0];
+        int y = currentY + DIRECTIONS[i][1];
         Cell* cell = maze->getCell(x, y);
         if (x >= 0 && x < width && y >= 0 && y < height &&
             cell->isAlreadyVisited() == false) {
@@ -98,7 +92,7 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
         } else {
             int numberOfNeighbors =
                 numberRelativeNeighbors(maze, width, height, currentX, currentY,
-                                        directions, currentCell, show);
+                                        DIRECTIONS, currentCell, show);
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 historyIndex--;
@@ -106,8 +100,8 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
                 coordinate neighbors[numberOfNeighbors];
                 int index = 0;
                 for (int i = 0; i < 4; i++) {
-                    int x = currentX + directions[i][0];
-                    int y = currentY + directions[i][1];
+                    int x = currentX + DIRECTIONS[i][0];
+                    int y = currentY + DIRECTIONS[i][1];
                     if (x >= 0 && x < width && y >= 0 && y < height &&
                         maze->getCell(x, y)->isAlreadyVisited() == false) {
                         neighbors[index].x = x;

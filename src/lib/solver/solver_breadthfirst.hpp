@@ -4,12 +4,12 @@
 #include "../maze.hpp"
 #include "../show.hpp"
 
-struct Position {
+struct position {
     int x;
     int y;
 };
 
-struct PositionHistory {
+struct positionHistory {
     int x;
     int y;
     int parent_x;

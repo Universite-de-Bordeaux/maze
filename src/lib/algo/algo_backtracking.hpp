@@ -4,6 +4,13 @@
 #include "../maze.hpp"
 #include "../show.hpp"
 
+struct coordinate {
+    int x;
+    int y;
+};
+
+const int DIRECTIONS[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
 /**
  * Crée un labyrinthe
  * @param Maze* pointeur vers le labyrinthe à genérer

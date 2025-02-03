@@ -18,14 +18,14 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
         return false;
     }
     refreshShow(show);
-    Position start = {maze->getStartX(), maze->getStartY()};
+    position start = {maze->getStartX(), maze->getStartY()};
     queue.push(&start);
-    PositionHistory startHistory = {maze->getStartX(), maze->getStartY(), -1, -1};
+    positionHistory startHistory = {maze->getStartX(), maze->getStartY(), -1, -1};
     stack.push(&startHistory);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
     while (!queue.empty()) {
-        Position *current = (Position *)queue.front();
+        position *current = (position *)queue.front();
         queue.pop();
         int x = current->x;
         int y = current->y;
@@ -34,11 +34,11 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                Position *neighborPosition = new Position;
+                position *neighborPosition = new position;
                 neighborPosition->x = neighbor->getX();
                 neighborPosition->y = neighbor->getY();
                 queue.push(neighborPosition);
-                PositionHistory *neighborHistory = new PositionHistory;
+                positionHistory *neighborHistory = new positionHistory;
                 neighborHistory->x = neighbor->getX();
                 neighborHistory->y = neighbor->getY();
                 neighborHistory->parent_x = x;
@@ -51,13 +51,13 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
                     updateShowLive(show, maze, 1, &neighbor);
                     while (!stack.empty()) {
-                        PositionHistory *currentCell = (PositionHistory*)stack.top();
-                        PositionHistory *cellTop = (PositionHistory*)stack.top();
+                        positionHistory *currentCell = (positionHistory*)stack.top();
+                        positionHistory *cellTop = (positionHistory*)stack.top();
                         while (!stack.empty() &&
                                (cellTop->x != currentCell->parent_x ||
                                 cellTop->y != currentCell->parent_y)) {
                             stack.pop();
-                            cellTop = (PositionHistory*)stack.top();
+                            cellTop = (positionHistory*)stack.top();
                         }
                         if (stack.empty()) {
                             break;
