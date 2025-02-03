@@ -31,6 +31,10 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
             cell = neighbor;
         }
         steps++;
+        if (steps % (maze->getWidth() * maze->getHeight()) == 0) {
+            toLeft = !toLeft;
+            move = toLeft ? 1 : 3;
+        }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     return steps;
