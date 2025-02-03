@@ -9,13 +9,13 @@ bool game_walk(Maze *maze, Show *show, bool ghost) {
         std::cout << "No show" << std::endl;
         return false;
     }
-    if (!ghost) refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
-
-    if (ghost) {
+    if (!ghost)
+        refreshShow(show);
+    else {
         show->eventHandler();
-        show->clear();
+        updateShowLive(show, maze, 1, &cell);
         show->display();
     }
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
@@ -59,16 +59,16 @@ bool game_walk(Maze *maze, Show *show, bool ghost) {
         }
         if (neighbor != nullptr) {
             cell->setStatus(MAZE_STATUS_VISITED);
-            if (ghost) updateShowLive(show, maze, 1, &cell);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
-            if (ghost) updateShowLive(show, maze, 1, &neighbor);
+            if (!ghost)
+                refreshShow(show);
+            else {
+                show->eventHandler();
+                updateShowLive(show, maze, 1, &cell);
+                updateShowLive(show, maze, 1, &neighbor);
+                show->display();
+            }
             cell = neighbor;
-        }
-        if (!ghost)
-            refreshShow(show);
-        else {
-            show->eventHandler();
-            show->display();
         }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
