@@ -7,140 +7,43 @@
 
 #include "../show.hpp"
 #include "../var.hpp"
-
-struct Position {
-    int x;
-    int y;
-};
-Position *position;
-
-struct PositionHistory {
-    int x;
-    int y;
-    int parent_x;
-    int parent_y;
-};
-PositionHistory *positionHistory;
-
-class QueuePosition {
-   private:
-    int size_;
-    int capacity_;
-
-   public:
-    QueuePosition() {
-        size_ = 0;
-        capacity_ = 1;
-        position = new Position[1];
-    }
-    ~QueuePosition() { delete[] position; }
-    void push(int x, int y) {
-        if (size_ == capacity_) {
-            Position *newPosition = new Position[capacity_ * 2];
-            for (int i = 0; i < size_; i++) {
-                newPosition[i] = position[i];
-            }
-            delete[] position;
-            position = newPosition;
-            capacity_ *= 2;
-        }
-        position[size_].x = x;
-        position[size_].y = y;
-        size_++;
-    }
-    void pop() {
-        if (size_ < capacity_ / 4) {
-            Position *newPosition = new Position[capacity_ / 2];
-            for (int i = 0; i < size_; i++) {
-                newPosition[i] = position[i];
-            }
-            delete[] position;
-            position = newPosition;
-            capacity_ /= 2;
-        }
-        if (size_ > 0) {
-            for (int i = 0; i < size_ - 1; i++) {
-                position[i] = position[i + 1];
-            }
-            size_--;
-        }
-    }
-    Position front() { return position[0]; }
-    bool empty() { return size_ == 0; }
-};
-
-class stackPosition {
-   private:
-    int size_;
-    int capacity_;
-
-   public:
-    stackPosition() {
-        size_ = 0;
-        capacity_ = 1;
-        positionHistory = new PositionHistory[1];
-    }
-    ~stackPosition() { delete[] positionHistory; }
-    void push(int x, int y, int parent_x, int parent_y) {
-        if (size_ == capacity_) {
-            PositionHistory *newPositionHistory =
-                new PositionHistory[capacity_ * 2];
-            for (int i = 0; i < size_; i++) {
-                newPositionHistory[i] = positionHistory[i];
-            }
-            delete[] positionHistory;
-            positionHistory = newPositionHistory;
-            capacity_ *= 2;
-        }
-        positionHistory[size_].x = x;
-        positionHistory[size_].y = y;
-        positionHistory[size_].parent_x = parent_x;
-        positionHistory[size_].parent_y = parent_y;
-        size_++;
-    }
-    void pop() {
-        if (size_ < capacity_ / 4) {
-            PositionHistory *newPositionHistory =
-                new PositionHistory[capacity_ / 2];
-            for (int i = 0; i < size_; i++) {
-                newPositionHistory[i] = positionHistory[i];
-            }
-            delete[] positionHistory;
-            positionHistory = newPositionHistory;
-            capacity_ /= 2;
-        }
-        if (size_ > 0) {
-            size_--;
-        }
-    }
-    PositionHistory top() { return positionHistory[size_ - 1]; }
-    bool empty() { return size_ == 0; }
-};
+#include "../queue.hpp"
+#include "../stack.hpp"
 
 bool solver_breadthfirst(Maze *maze, Show *show) {
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
-    QueuePosition queue;
-    stackPosition stack;
+    Queue queue;
+    Stack stack;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return false;
     }
     refreshShow(show);
-    queue.push(maze->getStartX(), maze->getStartY());
-    stack.push(maze->getStartX(), maze->getStartY(), -1, -1);
+    Position start = {maze->getStartX(), maze->getStartY()};
+    queue.push(&start);
+    PositionHistory startHistory = {maze->getStartX(), maze->getStartY(), -1, -1};
+    stack.push(&startHistory);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
     while (!queue.empty()) {
-        Position current = queue.front();
+        Position *current = (Position *)queue.front();
         queue.pop();
-        int x = current.x;
-        int y = current.y;
+        int x = current->x;
+        int y = current->y;
         Cell *cell = maze->getCell(x, y);
         updateShowLive(show, maze, 1, &cell);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                queue.push(neighbor->getX(), neighbor->getY());
-                stack.push(neighbor->getX(), neighbor->getY(), x, y);
+                Position *neighborPosition = new Position;
+                neighborPosition->x = neighbor->getX();
+                neighborPosition->y = neighbor->getY();
+                queue.push(neighborPosition);
+                PositionHistory *neighborHistory = new PositionHistory;
+                neighborHistory->x = neighbor->getX();
+                neighborHistory->y = neighbor->getY();
+                neighborHistory->parent_x = x;
+                neighborHistory->parent_y = y;
+                stack.push(neighborHistory);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
                 if (neighbor->getX() == maze->getEndX() &&
@@ -148,18 +51,18 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
                     updateShowLive(show, maze, 1, &neighbor);
                     while (!stack.empty()) {
-                        PositionHistory currentCell = stack.top();
-                        PositionHistory cellTop = stack.top();
+                        PositionHistory *currentCell = (PositionHistory*)stack.top();
+                        PositionHistory *cellTop = (PositionHistory*)stack.top();
                         while (!stack.empty() &&
-                               (cellTop.x != currentCell.parent_x ||
-                                cellTop.y != currentCell.parent_y)) {
+                               (cellTop->x != currentCell->parent_x ||
+                                cellTop->y != currentCell->parent_y)) {
                             stack.pop();
-                            cellTop = stack.top();
+                            cellTop = (PositionHistory*)stack.top();
                         }
                         if (stack.empty()) {
                             break;
                         }
-                        cell = maze->getCell(cellTop.x, cellTop.y);
+                        cell = maze->getCell(cellTop->x, cellTop->y);
                         if (cell != nullptr) {
                             cell->setStatus(MAZE_STATUS_WAY_OUT);
                             updateShowLive(show, maze, 1, &cell);

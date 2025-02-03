@@ -10,6 +10,8 @@ set(SOURCE_FILES
         src/lib/maze.cpp
         src/lib/reader.cpp
         src/lib/show.cpp
+        src/lib/stack.cpp
+        src/lib/queue.cpp
         src/lib/wall.cpp
         src/lib/writer.cpp
         src/lib/checker/checker_depthfirst.cpp
@@ -26,6 +28,8 @@ set(SOURCE_FILES_GENERATOR
         src/lib/maze.cpp
         src/lib/reader.cpp
         src/lib/show.cpp
+        src/lib/stack.cpp
+        src/lib/queue.cpp
         src/lib/wall.cpp
         src/lib/writer.cpp
         src/lib/algo/algo_backtracking.cpp

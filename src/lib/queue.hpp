@@ -1,24 +1,19 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-struct Position {
-    int x;
-    int y;
-};
-Position *position;
-
 class Queue {
    private:
     int size_;
     int capacity_;
+    void **data;
 
    public:
     Queue();   // Constructeur par défaut
     ~Queue();  // Destructeur
 
-    void push(int x, int y);  // Ajoute un élément à la file
+    void push(void *data);  // Ajoute un élément à la file
     void pop();               // Retire un élément de la file
-    Position front();         // Retourne le premier élément de la file
+    void *front();            // Retourne le premier élément de la file
     bool empty();             // Retourne vrai si la file est vide
 };
 
