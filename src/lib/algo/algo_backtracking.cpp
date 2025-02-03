@@ -63,14 +63,14 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
     historyIndex++;
 
     while (historyIndex > 0) {
-        refreshShow(show);
+        // refreshShow(show);
         // cellule curent a patire de cellHistory
         int currentX = cellHistory[historyIndex - 1].x;
         int currentY = cellHistory[historyIndex - 1].y;
         Cell* currentCell = maze->getCell(currentX, currentY);
         currentCell->setStatus(MAZE_STATUS_CURRENT);
-        Cell* showCell[1] = {currentCell};
-        updateShowLive(show, maze, 1, showCell);
+        // Cell* showCell[1] = {currentCell};
+        updateShowLive(show, maze, 1, &currentCell);
 
         Cell* neighbor = nextNeighbor(currentCell);
 
@@ -106,8 +106,7 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
                                         directions, currentCell, show);
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
-                Cell* showCell[1] = {currentCell};
-                updateShowLive(show, maze, 1, showCell);
+                updateShowLive(show, maze, 1, &currentCell);
                 historyIndex--;
                 // updateShowLive(show, maze, true);
             } else {

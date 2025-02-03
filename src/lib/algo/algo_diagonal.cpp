@@ -24,7 +24,7 @@ struct start {
  */
 static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
                         bool isHorizontal, start *whereStart, Show *show) {
-    refreshShow(show);
+    // refreshShow(show);
     if ((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
         int startB = (isHorizontal ? (whereStart->left ? *b : 0)
