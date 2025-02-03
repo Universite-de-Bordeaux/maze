@@ -4,7 +4,6 @@
 #include "../var.hpp"
 
 bool game_fog(Maze *maze, Show *show) {
-    updateShowLive(show, maze);
     refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
@@ -22,12 +21,11 @@ bool game_fog(Maze *maze, Show *show) {
         delete[] neighbors;
         if (neighbor != nullptr) {
             neighbor->setStatus(MAZE_STATUS_CURRENT);
-            updateShowLive(show, maze, 1, &neighbor);
             cell->setStatus(MAZE_STATUS_VISITED);
-            updateShowLive(show, maze, 1, &cell);
+            Cell *showCell[2] = {cell, neighbor};
+            updateShowLive(show, maze, 2, showCell);
             cell = neighbor;
         }
-        refreshShow(show);
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     return true;

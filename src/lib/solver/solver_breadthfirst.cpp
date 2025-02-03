@@ -118,13 +118,13 @@ class stackPosition {
 };
 
 bool solver_breadthfirst(Maze *maze, Show *show) {
-    updateShowLive(show, maze);
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
     QueuePosition queue;
     stackPosition stack;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return false;
     }
+    refreshShow(show);
     queue.push(maze->getStartX(), maze->getStartY());
     stack.push(maze->getStartX(), maze->getStartY(), -1, -1);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
@@ -135,7 +135,7 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
         int x = current.x;
         int y = current.y;
         Cell *cell = maze->getCell(x, y);
-        updateShowLive(show, maze);
+        updateShowLive(show, maze, 1, &cell);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
@@ -146,7 +146,7 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
                 if (neighbor->getX() == maze->getEndX() &&
                     neighbor->getY() == maze->getEndY()) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
-                    updateShowLive(show, maze);
+                    updateShowLive(show, maze, 1, &neighbor);
                     while (!stack.empty()) {
                         PositionHistory currentCell = stack.top();
                         PositionHistory cellTop = stack.top();
@@ -162,7 +162,7 @@ bool solver_breadthfirst(Maze *maze, Show *show) {
                         cell = maze->getCell(cellTop.x, cellTop.y);
                         if (cell != nullptr) {
                             cell->setStatus(MAZE_STATUS_WAY_OUT);
-                            updateShowLive(show, maze);
+                            updateShowLive(show, maze, 1, &cell);
                         }
                     }
                     return true;

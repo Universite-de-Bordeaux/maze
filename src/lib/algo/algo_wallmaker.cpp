@@ -66,7 +66,6 @@ void algo_wallmaker(Maze* maze, int width, int height, bool perfect,
         }
     }
     while (wallsPossibleSize > 0) {
-        refreshShow(show);
         int random = rand() % wallsPossibleSize;
         int x = wallsPossible[random][0];
         int y = wallsPossible[random][1];

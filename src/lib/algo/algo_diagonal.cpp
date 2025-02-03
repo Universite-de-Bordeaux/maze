@@ -24,7 +24,6 @@ struct start {
  */
 static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
                         bool isHorizontal, start *whereStart, Show *show) {
-    // refreshShow(show);
     if ((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
         int startB = (isHorizontal ? (whereStart->left ? *b : 0)
@@ -45,17 +44,15 @@ static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
                 }
             }
-            Cell *showCell[1] = {
-                maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb)};
-            updateShowLive(show, maze, 1, showCell);
-            // updateShowLive(show, maze, true);
+            Cell *cell = 
+                maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb);
+            updateShowLive(show, maze, 1, &cell);
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
                              : (whereStart->left ? 1 : -1);
-        Cell *showCell[1] = {
-            maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb)};
-        // updateShowLive(show, maze, 1, showCell);
-        // updateShowLive(show, maze, false);
+        Cell *cell = 
+            maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb);
+         updateShowLive(show, maze, 1, &cell);
     }
 }
 

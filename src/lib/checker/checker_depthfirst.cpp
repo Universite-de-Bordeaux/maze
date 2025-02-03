@@ -11,12 +11,9 @@
  * @param show Affichage du labyrinthe
  */
 static void checkCell(Maze *maze, int x, int y, Show *show) {
-    refreshShow(show);
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
-    Cell *showCell[1] = {cell};
-    // updateShowLive(show, maze, true);
     if (cell == nullptr) {
         return;
     }
@@ -24,12 +21,10 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
         cell->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighborsNotVisited <= 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        Cell *showCell[1] = {cell};
-        updateShowLive(show, maze, 1, showCell);
-        // updateShowLive(show, maze, false);
+        updateShowLive(show, maze, 1, &cell);
         return;
     }
-    updateShowLive(show, maze, 1, showCell);
+    updateShowLive(show, maze, 1, &cell);
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {
@@ -51,16 +46,10 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
-    Cell *showCell[1] = {cell};
-    refreshShow(show);
-    updateShowLive(show, maze, 1, showCell);
-    // updateShowLive(show, maze, true);
     if (cell->getAbsoluteNumberOfNeighbors() -
             cell->getAbsoluteNumberOfNeighborsNotVisited() >=
         2) {
         cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
-        Cell *showCell[1] = {cell};
-        updateShowLive(show, maze, 1, showCell);
         *unperfect = true;
     }
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
@@ -68,12 +57,10 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
                   cell->getAbsoluteNumberOfNeighborsNotVisited() >=
               2)) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
-            Cell *showCell[1] = {cell};
-            updateShowLive(show, maze, 1, showCell);
         }
-        // updateShowLive(show, maze, false);
         return;
     }
+    updateShowLive(show, maze, 1, &cell);
     int numberOfNeighborsNotVisited =
         cell->getAbsoluteNumberOfNeighborsNotVisited();
     Cell *neighbors[numberOfNeighborsNotVisited];
@@ -88,7 +75,6 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
 
 void checker_depthfirst(Maze *maze, bool perfect, Show *show) {
     bool unperfect = false;
-    updateShowLive(show, maze);
     if (perfect) {
         checkCellPerfect(maze, 0, 0, 0, 0, &unperfect, show);
     } else {
