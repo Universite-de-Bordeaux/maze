@@ -14,9 +14,9 @@ bool game_walk(Maze *maze, Show *show, bool ghost) {
     if (!ghost)
         refreshShow(show);
     else {
-        show->eventHandler();
+        // show->eventHandler();
         updateShowLive(show, maze, 1, &cell);
-        show->display();
+        // show->display();
     }
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
@@ -63,10 +63,10 @@ bool game_walk(Maze *maze, Show *show, bool ghost) {
             if (!ghost)
                 refreshShow(show);
             else {
-                show->eventHandler();
-                updateShowLive(show, maze, 1, &cell);
-                updateShowLive(show, maze, 1, &neighbor);
-                show->display();
+                Cell** showCell = new Cell*[2];
+                showCell[0] = cell;
+                showCell[1] = neighbor;
+                updateShowLive(show, maze, 2, showCell);
             }
             cell = neighbor;
         }

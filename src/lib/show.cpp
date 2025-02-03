@@ -239,6 +239,7 @@ void Show::close() {
 void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
+    show->eventHandler();
     if (fastCooling) {
         if (maze->getWidth() <= MAZE_REFRESH_SIZE &&
             maze->getHeight() <= MAZE_REFRESH_SIZE) {
@@ -250,24 +251,29 @@ void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
             show->update();
         }
     }
+    show->display();
 }
 
 void updateShowLive(Show *show, Maze *maze) {
+    if (show == nullptr || maze == nullptr) return;
+    if (!show->isOpen()) return;
+    show->eventHandler();
     updateShowLive(show, maze, false);
     updateShowLive(show, maze, true);
+    show->display();
 }
 
 void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
     if (argc <= 0) return;
-    // show->eventHandler();
+    show->eventHandler();
     for (int i = 0; i < argc; i++) {
         if (argv[i] != nullptr) {
             show->updateCell(argv[i]);
         }
     }
-    // show->display();
+    show->display();
 }
 
 void refreshShow(Show *show) {
