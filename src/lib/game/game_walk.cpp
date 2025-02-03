@@ -59,10 +59,10 @@ int game_walk(Maze *maze, Show *show, bool ghost) {
         if (neighbor != nullptr) {
             cell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
-                Cell* showCell[2] = {cell, neighbor};
-                updateShowLive(show, maze, 2, showCell);
+            Cell *showCell[2] = {cell, neighbor};
+            updateShowLive(show, maze, 2, showCell);
             cell = neighbor;
-            steps++;    
+            steps++;
         }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);

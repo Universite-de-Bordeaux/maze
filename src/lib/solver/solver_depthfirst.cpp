@@ -32,8 +32,8 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction,
         if (cell->isNeighbor(index)) {
             Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                if (solve(maze, show, neighbor->getX(),
-                                    neighbor->getY(), (index + 2) % 4, toLeft)) {
+                if (solve(maze, show, neighbor->getX(), neighbor->getY(),
+                          (index + 2) % 4, toLeft)) {
                     cell->setStatus(MAZE_STATUS_WAY_OUT);
                     updateShowLive(show, maze, 1, &cell);
                     return true;

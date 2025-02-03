@@ -179,7 +179,7 @@ class Cell {
     Wall *walls_[4] = {nullptr};      ///< Murs de la cellule
     Cell *neighbors_[4] = {nullptr};  ///< Voisins de la cellule
     Cell *relativeNeighbors_[4] = {
-        nullptr};                     ///< Voisins relatifs de la cellule
+        nullptr};  ///< Voisins relatifs de la cellule
     bool alreadyVisited_ = false;
     int status_ = MAZE_STATUS_IDLE;
 };

@@ -61,7 +61,7 @@ class Show {
     void close();
 
    private:
-    Maze *maze_;     //> Pointeur vers un objet de type Maze
+    Maze *maze_;  //> Pointeur vers un objet de type Maze
     sf::RenderWindow *renderWindow_ =
         nullptr;     //> Pointeur vers un objet de type sf::RenderWindow
     int cellSize_;   //> Taille d'une cellule
