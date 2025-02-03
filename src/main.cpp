@@ -144,22 +144,23 @@ void checkMaze(Maze *maze, std::string algorithm, bool perfect, Show *show) {
 void gameMaze(Maze *maze, std::string type, Show *show) {
     std::cout << "Parameters of game : type=" << type << std::endl;
     clock_t start = clock();
+    int steps = 0;
     if (type == "fog" || type == "f") {
-        game_fog(maze, show);
+        steps = game_fog(maze, show);
     } else if (type == "fogright" || type == "fr") {
-        game_fog_hand(maze, show, false);
+        steps = game_fog_hand(maze, show, false);
     } else if (type == "fogleft" || type == "fl") {
-        game_fog_hand(maze, show, true);
+        steps = game_fog_hand(maze, show, true);
     } else if (type == "walk" || type == "w") {
-        game_walk(maze, show, false);
+        steps = game_walk(maze, show, false);
     } else if (type == "walkghost" || type == "wg") {
-        game_walk(maze, show, true);
+        steps = game_walk(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
     clock_t end = clock();
     std::cout << "Game in " << (double)(end - start) / CLOCKS_PER_SEC * 1000
-              << "ms" << std::endl;
+              << "ms" << " with " << steps << " steps" << std::endl;
 }
 
 /**

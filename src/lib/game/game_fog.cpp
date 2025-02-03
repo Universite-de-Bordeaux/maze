@@ -3,16 +3,17 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-bool game_fog(Maze *maze, Show *show) {
+int game_fog(Maze *maze, Show *show) {
     refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
+    int steps = 0;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
             updateShowLive(show, maze, 1, &cell);
-            return false;
+            return -1;
         }
         int direction = rand() % nbNeighbors;
         Cell **neighbors = new Cell *[nbNeighbors];
@@ -26,7 +27,8 @@ bool game_fog(Maze *maze, Show *show) {
             updateShowLive(show, maze, 2, showCell);
             cell = neighbor;
         }
+        steps++;
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
-    return true;
+    return steps;
 }

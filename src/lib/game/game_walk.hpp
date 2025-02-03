@@ -9,8 +9,8 @@
  * baladant aléatoirement
  * @param maze Le labyrinthe à résoudre
  * @param show L'affichage du labyrinthe
- * @return true si le labyrinthe a été résolu, false sinon
+ * @return int Le nombre de pas effectués pour résoudre le labyrinthe
  */
-bool game_walk(Maze*, Show*, bool);
+int game_walk(Maze*, Show*, bool);
 
 #endif  // GAME_WALK_HPP

@@ -9,8 +9,8 @@
  * baladant aléatoirement
  * @param maze Le labyrinthe à résoudre
  * @param show L'affichage du labyrinthe
- * @return true si le labyrinthe a été résolu, false sinon
+ * @return int Le nombre de pas effectués pour résoudre le labyrinthe
  */
-bool game_fog(Maze*, Show*);
+int game_fog(Maze*, Show*);
 
 #endif  // GAME_FOG_HPP
