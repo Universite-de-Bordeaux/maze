@@ -160,7 +160,8 @@ void gameMaze(Maze *maze, std::string type, Show *show) {
     }
     clock_t end = clock();
     std::cout << "Game in " << (double)(end - start) / CLOCKS_PER_SEC * 1000
-              << "ms" << " with " << steps << " steps" << std::endl;
+              << "ms"
+              << " with " << steps << " steps" << std::endl;
 }
 
 /**
