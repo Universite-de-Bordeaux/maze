@@ -11,6 +11,6 @@
  * @param int hauteur du labyrinthe
  * @param bool  vrai si le labyrinthe est parfait
  */
-void algo_diagonal(Maze*, int, int, bool, Show*);
+void algo_diagonal(Maze*, int, int, bool, double, Show*);
 
 #endif  // ALGO_DIAGONAL_HPP

@@ -71,6 +71,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
     + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10
         10)
     + `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
+        + `-p` ou `--probability` `<probabilité>` : Spécifie la probabilité de suppression d'un mur pour un labyrinthe
+          imparfait (par défaut : 0.1)
 
 #### Résolution de labyrinthe (maze)
 
@@ -93,7 +95,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-g` ou `--game` : Lance le jeu de labyrinthe (nécessite un labyrinthe en mémoire)
     + `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
       mémoire)
-        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), walk (w), walghost (wg),
+        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), walk (w),
+          walghost (wg),
           par défaut : fog)
 
 ## Lancement automatisé

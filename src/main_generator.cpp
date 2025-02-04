@@ -52,6 +52,9 @@ void help() {
               << std::endl;
     std::cout << "    -u ou --unperfect : Génère un labyrinthe imparfait"
               << std::endl;
+    std::cout << "      -p ou --probability <probabilité> : Spécifie la "
+                 "probabilité de mur pour un labyrinthe imparfait (0.0-1.0) (nécessite -u)"
+              << std::endl;
 }
 
 /**
@@ -82,18 +85,19 @@ int help(int error, std::string command) {
  * @param perfect Parfait
  */
 void generateMaze(Maze *maze, std::string algorithm, int width, int height,
-                  bool isPerfect, Show *show) {
+                  bool isPerfect, double probability, Show *show) {
     std::cout << "Parameters of generation : algorithm=" << algorithm
               << ", width=" << width << ", height=" << height
-              << ", isPerfect=" << isPerfect << std::endl;
+              << ", isPerfect=" << isPerfect << ", probability=" << probability
+                  << std::endl;
     srand(time(0));
     clock_t start = clock();
     if (algorithm == "backtracking" || algorithm == "bt")
-        algo_backtracking(maze, width, height, isPerfect, show);
+        algo_backtracking(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "wallmaker" || algorithm == "wm")
         algo_wallmaker(maze, width, height, isPerfect, show);
     else if (algorithm == "diagonal" || algorithm == "d")
-        algo_diagonal(maze, width, height, isPerfect, show);
+        algo_diagonal(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "fractal" || algorithm == "f")
         algo_fractal(maze, width, isPerfect, show);
     else
@@ -189,6 +193,7 @@ int main(const int argc, char *argv[]) {
                 std::string algorithm = "backtracking";
                 int width = 10, height = 10;
                 bool perfect = true;
+                double probability = 0.01;
                 // Si l'utilisateur a spécifié des options
                 while (i + 1 < argc && argv[i + 1][0] == '-' &&
                        ((strcmp(argv[i + 1], "-a") == 0 ||
@@ -247,17 +252,33 @@ int main(const int argc, char *argv[]) {
                             i++;
                         }
                     }
+                    if (i + 1 < argc) {
+                        // Si l'utilisateur a spécifié la probabilité de mur
+                        if (strcmp(argv[i + 1], "-p") == 0 ||
+                            strcmp(argv[i + 1], "--probability") == 0) {
+                            i++;
+                            if (i + 1 < argc) {
+                                probability = atof(argv[i + 1]);
+                                if (probability <= 0.0 || probability > 1.0) {
+                                    return help(MAZE_COMMAND_ERROR);
+                                }
+                                i++;
+                            } else {
+                                return help(MAZE_COMMAND_ERROR);
+                            }
+                        }
+                    }
                 }
                 //                maze.setWidthHeight(width, height);
                 if (isShow) {
                     //                    show.create();
-                    generateMaze(&maze, algorithm, width, height, perfect,
+                    generateMaze(&maze, algorithm, width, height, perfect, probability,
                                  &show);
                     while (show.isOpen()) {
                         show.update();
                     }
                 } else {
-                    generateMaze(&maze, algorithm, width, height, perfect,
+                    generateMaze(&maze, algorithm, width, height, perfect, probability,
                                  nullptr);
                 }
                 mazeLoaded = true;

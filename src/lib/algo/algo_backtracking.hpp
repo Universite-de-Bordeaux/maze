@@ -18,6 +18,6 @@ const int DIRECTIONS[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
  * @param int hauteur du labyrinthe
  * @param bool  vrai si le labyrinthe est parfait
  */
-void algo_backtracking(Maze*, int, int, bool, Show*);
+void algo_backtracking(Maze*, int, int, bool, double, Show*);
 
 #endif  // ALGO_BACKTRACKING_HPP

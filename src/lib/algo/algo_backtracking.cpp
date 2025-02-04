@@ -39,7 +39,7 @@ static Cell* nextNeighbor(Cell* current) {
 }
 
 // Fonction principale de l'algorithme (backtracking)
-void algo_backtracking(Maze* maze, int width, int height, bool perfect,
+void algo_backtracking(Maze* maze, int width, int height, bool perfect, double probability,
                        Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
@@ -97,7 +97,7 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 stack.pop();
-                if (!perfect && rand() % 100 == 0) {
+                if (!perfect && (double)(rand() % 10000) < probability * (double)10000) {
                     for (int i = 0; i < 4; i++) {
                         int x = currentX + DIRECTIONS[i][0];
                         int y = currentY + DIRECTIONS[i][1];
