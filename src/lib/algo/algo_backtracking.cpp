@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "../show.hpp"
-#include "../queue.hpp"
+#include "../stack.hpp"
 
 static int numberRelativeNeighbors(Maze* maze, int width, int height,
                                    int currentX, int currentY,
@@ -45,21 +45,20 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
     if (show) {
         show->create();
     }
-    struct coordinate cellHistory[width * height];
-    int historyIndex = 0;
+    Stack stack = Stack();
 
     Cell* cellStart = maze->getCell(0, 0);
     cellStart->setAlreadyVisited(true);
 
     // cellule depart
-    cellHistory[historyIndex].x = 0;
-    cellHistory[historyIndex].y = 0;
-    historyIndex++;
+    coordinate startCoord = {0, 0};
+    stack.push(&startCoord);
 
-    while (historyIndex > 0) {
+    while (!stack.empty()) {
         // cellule curent a patire de cellHistory
-        int currentX = cellHistory[historyIndex - 1].x;
-        int currentY = cellHistory[historyIndex - 1].y;
+        coordinate* currentCoord = (coordinate*)stack.top();
+        int currentX = currentCoord->x;
+        int currentY = currentCoord->y;
         Cell* currentCell = maze->getCell(currentX, currentY);
         currentCell->setStatus(MAZE_STATUS_CURRENT);
 
@@ -84,8 +83,10 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
             coordinate newCoord;
             newCoord.x = neighbor->getX();
             newCoord.y = neighbor->getY();
-            cellHistory[historyIndex] = newCoord;
-            historyIndex++;
+            coordinate* newCoordPtr = new coordinate;
+                newCoordPtr->x = newCoord.x;
+                newCoordPtr->y = newCoord.y;
+                stack.push(newCoordPtr);
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
             updateShowLive(show, maze, 1, &neighbor);
@@ -95,7 +96,7 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
                                         DIRECTIONS, currentCell, show);
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
-                historyIndex--;
+                stack.pop();
             } else {
                 coordinate neighbors[numberOfNeighbors];
                 int index = 0;
@@ -111,8 +112,10 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
                 }
                 maze->removeWall(currentCell,
                                  maze->getCell(neighbors[0].x, neighbors[0].y));
-                cellHistory[historyIndex] = neighbors[0];
-                historyIndex++;
+                coordinate* newCoordPtr = new coordinate;
+                newCoordPtr->x = neighbors[0].x;
+                newCoordPtr->y = neighbors[0].y;
+                stack.push(newCoordPtr);
                 currentCell->setStatus(MAZE_STATUS_VISITED);
                 maze->getCell(neighbors[0].x, neighbors[0].y)
                     ->setStatus(MAZE_STATUS_CURRENT);
