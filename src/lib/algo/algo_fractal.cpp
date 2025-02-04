@@ -10,19 +10,35 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-static bool add_wall_imperfect(Maze *maze, int mid) {
+static bool add_wall_imperfect(Maze *maze, int mid, double probability) {
     for (int i = 0; i < maze->getHeight(); i++) {
         maze->addWall(mid - 1, i, false);
         maze->addWall(i, mid - 1, true);
     }
-    int remove = rand() % mid;
-    maze->removeWall(mid - 1, remove, false);
-    remove = rand() % mid;
-    maze->removeWall(remove, mid - 1, true);
-    remove = rand() % mid;
-    maze->removeWall(mid - 1, mid + remove, false);
-    remove = rand() % mid;
-    maze->removeWall(mid + remove, mid - 1, true);
+    int remove[4];
+    remove[0]= rand() % mid;
+    maze->removeWall(mid - 1, remove[0], false);
+    remove[1] = rand() % mid;
+    maze->removeWall(remove[1], mid - 1, true);
+    remove[2] = rand() % mid;
+    maze->removeWall(mid - 1, mid + remove[2], false);
+    remove[3] = rand() % mid;
+    maze->removeWall(mid + remove[3], mid - 1, true);
+    if ((double)(rand() % 10000) > probability * (double)10000) {
+        int r = rand() % 4;
+        if (r == 0) {
+            maze->addWall(mid - 1, remove[0], false);
+        }
+        else if (r == 1) {
+            maze->addWall(remove[1], mid - 1, true);
+        }
+        else if (r == 2) {
+            maze->addWall(mid - 1, mid + remove[2], false);
+        }
+        else if (r == 3) {
+            maze->addWall(mid + remove[3], mid - 1, true);
+        }
+    }
     return true;
 }
 
@@ -121,7 +137,7 @@ void algo_fractal(Maze *maze, int n, bool perfect, double probability, Show *sho
 
         // ajout des murs
         if (!perfect) {
-            if (!add_wall_imperfect(maze, maze->getHeight() / 2)) {
+            if (!add_wall_imperfect(maze, maze->getHeight() / 2, probability)) {
                 std::cerr << "Error: add_wall" << std::endl;
                 return;
             }
