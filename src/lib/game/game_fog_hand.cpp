@@ -10,6 +10,7 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
     int direction = 0;
     int move = toLeft ? 1 : 3;
     int steps = 0;
+    bool tmpChangeDirection = false;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
@@ -19,6 +20,16 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
         }
         for (int i = 0; i < 3 && cell->getNeighbor(direction) == nullptr; i++) {
             direction = (direction + move) % 4;
+        }
+        if (tmpChangeDirection) {
+            int tmpDirection = (direction + 2) % 4;
+            for (int i = 0; i < 3 && cell->getNeighbor(tmpDirection) == nullptr; i++) {
+                tmpDirection = (tmpDirection + move + 2) % 4;
+            }
+            if (tmpDirection != direction) {
+                direction = tmpDirection;
+                tmpChangeDirection = false;
+            }
         }
         Cell *neighbor = cell->getNeighbor(direction);
         direction = (direction - move) % 4;
@@ -32,8 +43,7 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
         }
         steps++;
         if (steps % (maze->getWidth() * maze->getHeight()) == 0) {
-            toLeft = !toLeft;
-            move = toLeft ? 1 : 3;
+            tmpChangeDirection = true;
         }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
