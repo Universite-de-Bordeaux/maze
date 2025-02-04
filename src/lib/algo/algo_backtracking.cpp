@@ -98,9 +98,11 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect, double p
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 stack.pop();
                 if (!perfect && (double)(rand() % 10000) < probability * (double)10000) {
+                    int randomIndex = rand() % 4;
                     for (int i = 0; i < 4; i++) {
-                        int x = currentX + DIRECTIONS[i][0];
-                        int y = currentY + DIRECTIONS[i][1];
+                        int index = (randomIndex + i) % 4;
+                        int x = currentX + DIRECTIONS[index][0];
+                        int y = currentY + DIRECTIONS[index][1];
                         if (x >= 0 && x < width && y >= 0 && y < height) {
                             Cell* neighborCell = maze->getCell(x, y);
                             if (neighborCell->isAlreadyVisited()) {
