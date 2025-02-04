@@ -99,7 +99,7 @@ static void quad_maze(Maze *maze) {
     new_maze.clearMaze();
 }
 
-void algo_fractal(Maze *maze, int n, bool perfect, Show *show) {
+void algo_fractal(Maze *maze, int n, bool perfect, double probability, Show *show) {
     maze->setWidthHeight(1, 1);
     if (show) {
         show->create();

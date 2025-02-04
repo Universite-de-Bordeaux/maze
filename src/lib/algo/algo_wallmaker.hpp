@@ -11,6 +11,6 @@
  * @param int hauteur du labyrinthe
  * @param bool  vrai si le labyrinthe est parfait
  */
-void algo_wallmaker(Maze*, int, int, bool, Show*);
+void algo_wallmaker(Maze*, int, int, bool, double, Show*);
 
 #endif  // ALGO_WALLMAKER_HPP

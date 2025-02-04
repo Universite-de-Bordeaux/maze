@@ -95,11 +95,11 @@ void generateMaze(Maze *maze, std::string algorithm, int width, int height,
     if (algorithm == "backtracking" || algorithm == "bt")
         algo_backtracking(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "wallmaker" || algorithm == "wm")
-        algo_wallmaker(maze, width, height, isPerfect, show);
+        algo_wallmaker(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "diagonal" || algorithm == "d")
         algo_diagonal(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "fractal" || algorithm == "f")
-        algo_fractal(maze, width, isPerfect, show);
+        algo_fractal(maze, width, isPerfect, probability, show);
     else
         exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
