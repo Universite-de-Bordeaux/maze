@@ -97,6 +97,19 @@ void algo_backtracking(Maze* maze, int width, int height, bool perfect,
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 stack.pop();
+                if (!perfect && rand() % 100 == 0) {
+                    for (int i = 0; i < 4; i++) {
+                        int x = currentX + DIRECTIONS[i][0];
+                        int y = currentY + DIRECTIONS[i][1];
+                        if (x >= 0 && x < width && y >= 0 && y < height) {
+                            Cell* neighborCell = maze->getCell(x, y);
+                            if (neighborCell->isAlreadyVisited()) {
+                                maze->removeWall(currentCell, neighborCell);
+                                break;
+                            }
+                        }
+                    }
+                }
             } else {
                 coordinate neighbors[numberOfNeighbors];
                 int index = 0;
