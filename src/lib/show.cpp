@@ -196,8 +196,12 @@ void Show::updateCell(Cell *cell) {
     if (y > 0) {
         drawWall_(cell, MAZE_CELL_TOP);
     }
-    drawWall_(cell, MAZE_CELL_RIGHT);
-    drawWall_(cell, MAZE_CELL_BOTTOM);
+    if (x < maze_->getWidth() - 1) {
+        drawWall_(cell, MAZE_CELL_RIGHT);
+    }
+    if (y < maze_->getHeight() - 1) {
+        drawWall_(cell, MAZE_CELL_BOTTOM);
+    }
     if (x > 0) {
         drawWall_(cell, MAZE_CELL_LEFT);
     }
@@ -268,9 +272,13 @@ void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
     if (!show->isOpen()) return;
     if (argc <= 0) return;
     show->eventHandler();
-    for (int i = 0; i < argc; i++) {
-        if (argv[i] != nullptr) {
-            show->updateCell(argv[i]);
+    for (int y = 0; y < maze->getHeight(); y++) {
+        for (int x = 0; x < maze->getWidth(); x++) {
+            for (int i = 0; i < argc; i++) {
+                if (argv[i]->getX() == x && argv[i]->getY() == y) {
+                    show->updateCell(maze->getCell(x, y));
+                }
+            }
         }
     }
     show->display();
