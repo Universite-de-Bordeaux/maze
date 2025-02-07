@@ -73,7 +73,7 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en mémoire)
     + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (back_tracking (bt), wall_maker (wm), diagonal (d), fractal (f), par défaut : back_tracking)
     + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
-    + `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
+    + `-i` ou `--imperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
         + `-p` ou `--probability` `<probabilité>` : Spécifie la probabilité de suppression d'un mur pour un labyrinthe imparfait (par défaut : 0.1 soit 10%)
 
 #### Résolution de labyrinthe (maze)
@@ -179,7 +179,7 @@ Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de 
 commande suivante :
 
 ```bash
-./maze_generator.out -g -d 20 20 -a wm -u
+./maze_generator.out -g -d 20 20 -a wm -i
 ```
 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de diagonal, il suffit de lancer la commande suivante :

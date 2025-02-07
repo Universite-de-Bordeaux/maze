@@ -1,8 +1,8 @@
+#include <chrono>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <chrono>
 
 #include "lib/checker/depth_first.hpp"
 #include "lib/game/fog.hpp"
@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
     // Vérifie que le premier argument est une commande
     if (argv[1][0] != '-') {
         std::cout << "Usage:./main [-option] [args]" << std::endl;
-        return 1;
+        return MAZE_COMMAND_ERROR;
     }
     bool mazeLoaded = false;
     auto maze = Maze();
@@ -280,7 +280,7 @@ int main(int argc, char *argv[]) {
             // Si le fichier n'existe pas
             if (!file) {
                 std::cout << "File not found : " << argv[i + 1] << std::endl;
-                return 1;
+                return MAZE_FILE_ERROR;
             }
             maze = Maze();
             read(argv[i + 1], &maze);

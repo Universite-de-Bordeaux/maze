@@ -44,7 +44,7 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
  * @param show Affichage du labyrinthe
  */
 static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
-                             bool *unperfect, Show *show) {
+                             bool *imperfect, Show *show) {
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
@@ -52,7 +52,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
             cell->getAbsoluteNumberOfNeighborsNotVisited() >=
         2) {
         cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
-        *unperfect = true;
+        *imperfect = true;
     }
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
         if (!(cell->getAbsoluteNumberOfNeighbors() -
@@ -71,15 +71,15 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {
         Cell *neighbor = neighbors[i];
         checkCellPerfect(maze, neighbor->getX(), neighbor->getY(), x, y,
-                         unperfect, show);
+                         imperfect, show);
     }
     return;
 }
 
 void checker_depth_first(Maze *maze, bool perfect, Show *show) {
-    bool unperfect = false;
+    bool imperfect = false;
     if (perfect) {
-        checkCellPerfect(maze, 0, 0, 0, 0, &unperfect, show);
+        checkCellPerfect(maze, 0, 0, 0, 0, &imperfect, show);
     } else {
         checkCell(maze, 0, 0, show);
     }
@@ -94,7 +94,7 @@ void checker_depth_first(Maze *maze, bool perfect, Show *show) {
     }
     std::cout << "Maze is valid!" << std::endl;
     if (perfect) {
-        if (!unperfect) {
+        if (!imperfect) {
             std::cout << "Maze is perfect!" << std::endl;
         } else {
             std::cout << "Maze is not perfect!" << std::endl;
