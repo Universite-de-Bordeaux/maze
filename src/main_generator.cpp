@@ -4,10 +4,10 @@
 #include <iostream>
 #include <string>
 
-#include "lib/algo/algo_backtracking.hpp"
-#include "lib/algo/algo_diagonal.hpp"
-#include "lib/algo/algo_fractal.hpp"
-#include "lib/algo/algo_wallmaker.hpp"
+#include "lib/algo/back_tracking.hpp"
+#include "lib/algo/diagonal.hpp"
+#include "lib/algo/fractal.hpp"
+#include "lib/algo/wall_maker.hpp"
 #include "lib/maze.hpp"
 #include "lib/reader.hpp"
 #include "lib/show.hpp"

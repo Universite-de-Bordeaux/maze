@@ -2,7 +2,7 @@
 
 #include "../show.hpp"
 #include "../var.hpp"
-#include "game_fog.hpp"
+#include "fog.hpp"
 
 int game_walk(Maze *maze, Show *show, bool ghost) {
     if (show == nullptr) {

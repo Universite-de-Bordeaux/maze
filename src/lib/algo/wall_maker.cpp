@@ -1,4 +1,4 @@
-#include "algo_wallmaker.hpp"
+#include "wall_maker.hpp"
 
 #include <chrono>
 #include <iostream>

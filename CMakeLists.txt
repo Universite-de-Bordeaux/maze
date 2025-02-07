@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.25)
 project(maze)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -14,12 +14,12 @@ set(SOURCE_FILES
         src/lib/queue.cpp
         src/lib/wall.cpp
         src/lib/writer.cpp
-        src/lib/checker/checker_depthfirst.cpp
-        src/lib/solver/solver_breadthfirst.cpp
-        src/lib/solver/solver_depthfirst.cpp
-        src/lib/game/game_fog.cpp
-        src/lib/game/game_fog_hand.cpp
-        src/lib/game/game_walk.cpp
+        src/lib/checker/depth_first.cpp
+        src/lib/solver/breadth_first.cpp
+        src/lib/solver/depth_first.cpp
+        src/lib/game/fog.cpp
+        src/lib/game/fog_hand.cpp
+        src/lib/game/walk.cpp
 )
 
 set(SOURCE_FILES_GENERATOR
@@ -32,10 +32,10 @@ set(SOURCE_FILES_GENERATOR
         src/lib/queue.cpp
         src/lib/wall.cpp
         src/lib/writer.cpp
-        src/lib/algo/algo_backtracking.cpp
-        src/lib/algo/algo_diagonal.cpp
-        src/lib/algo/algo_fractal.cpp
-        src/lib/algo/algo_wallmaker.cpp
+        src/lib/algo/back_tracking.cpp
+        src/lib/algo/diagonal.cpp
+        src/lib/algo/fractal.cpp
+        src/lib/algo/wall_maker.cpp
 )
 
 set(INCLUDE_DIRS

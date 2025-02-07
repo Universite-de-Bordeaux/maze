@@ -4,15 +4,15 @@
 #include <iostream>
 #include <string>
 
-#include "lib/checker/checker_depthfirst.hpp"
-#include "lib/game/game_fog.hpp"
-#include "lib/game/game_fog_hand.hpp"
-#include "lib/game/game_walk.hpp"
+#include "lib/checker/depth_first.hpp"
+#include "lib/game/fog.hpp"
+#include "lib/game/fog_hand.hpp"
+#include "lib/game/walk.hpp"
 #include "lib/maze.hpp"
 #include "lib/reader.hpp"
 #include "lib/show.hpp"
-#include "lib/solver/solver_breadthfirst.hpp"
-#include "lib/solver/solver_depthfirst.hpp"
+#include "lib/solver/breadth_first.hpp"
+#include "lib/solver/depth_first.hpp"
 #include "lib/var.hpp"
 #include "lib/writer.hpp"
 

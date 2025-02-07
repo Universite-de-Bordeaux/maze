@@ -1,4 +1,4 @@
-#include "game_fog_hand.hpp"
+#include "fog_hand.hpp"
 
 #include "../show.hpp"
 #include "../var.hpp"

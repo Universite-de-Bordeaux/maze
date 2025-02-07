@@ -1,4 +1,4 @@
-#include "game_fog.hpp"
+#include "fog.hpp"
 
 #include "../show.hpp"
 #include "../var.hpp"

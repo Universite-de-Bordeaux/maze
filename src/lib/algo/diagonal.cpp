@@ -1,4 +1,4 @@
-#include "algo_diagonal.hpp"
+#include "diagonal.hpp"
 
 #include <cstdlib>
 #include <ctime>

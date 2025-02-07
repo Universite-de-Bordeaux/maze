@@ -1,4 +1,4 @@
-#include "checker_breadthfirst.hpp"
+#include "breadth_first.hpp"
 
 #include <chrono>
 #include <iostream>

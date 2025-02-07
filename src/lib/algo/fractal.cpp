@@ -1,4 +1,4 @@
-#include "algo_fractal.hpp"
+#include "fractal.hpp"
 
 #include <chrono>
 #include <cmath>
