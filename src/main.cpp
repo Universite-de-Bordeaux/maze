@@ -111,7 +111,7 @@ void checkMaze(Maze *maze, const std::string& algorithm, const bool perfect, Sho
               << ", perfect=" << perfect << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
     if (algorithm == "depth_first_right" || algorithm == "dfr")
-        checker_depth_first(maze, perfect, show);
+        checker_depth_first(maze, perfect, show); // TODO
     else if (algorithm == "depth_first_left" || algorithm == "dfl")
         checker_depth_first(maze, perfect, show);
     //    else if (algorithm == "breadth_first" || algorithm == "bf") // TODO
