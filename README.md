@@ -66,8 +66,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-g` ou `--generate` : Génère un labyrinthe (écrase le labyrinthe en mémoire)
     + `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en
       mémoire)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (backtracking (bt),
-      wallmaker (wm), diagonal (d), fractal (f), par défaut : backtracking)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (back_tracking (bt),
+      wall_maker (wm), diagonal (d), fractal (f), par défaut : back_tracking)
     + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10
         10)
     + `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
@@ -78,8 +78,9 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 
 * `-r` ou `--resolve` : Résout le labyrinthe en mémoire
     + `-rs` ou `--resolve-show` : Résout le labyrinthe en mémoire et l'affiche pendant la résolution
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depthfirstleft (dfl),
-      depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depth_first_left (
+      dfl),
+      depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
 
 #### Vérification de labyrinthe (maze)
 
@@ -87,8 +88,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
     + `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un
       labyrinthe en mémoire)
     + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depthfirstleft (
-      dfl), depthfirstright (dfr), breadthfirst (bf), par défaut : depthfirstleft)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depth_first_left (
+      dfl), depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
 
 #### Jeu de labyrinthe (maze)
 
@@ -132,10 +133,10 @@ make run_game_fog
 On peut ajouter _test à la fin de la commande pour lancer les tests. Il est possibles
 que cela fasse crasher le programme car les tests vont dépasse les limites du programme
 
-Par exemple pour tester les algorithmes de vérification de labyrinthe depthfirstleft et depthfirstright :
+Par exemple pour tester les algorithmes de vérification de labyrinthe depth_first_left et depth_first_right :
 
 ```bash
-make run_checker_depthfirst_test
+make run_checker_depth_first_test
 ```
 
 ### lancement particulier
@@ -172,14 +173,15 @@ Celle-ci lance un programme de test manuel qui test toutes les implémentations
 
 ### Générer un labyrinthe
 
-Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de backtracking, il suffit de lancer la commande
+Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de back_tracking, il suffit de lancer la commande
 suivante :
 
 ```bash
 ./maze_generator.out -g -d 20 20 -a bt
 ```
 
-Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wallmaker, il suffit de lancer la commande
+Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wall_maker, il suffit de lancer la
+commande
 suivante :
 
 ```bash
@@ -200,13 +202,13 @@ Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de fractal, i
 
 ### Résoudre un labyrinthe
 
-Pour résoudre un labyrinthe avec l'algorithme de depthfirstleft, il suffit de lancer la commande suivante :
+Pour résoudre un labyrinthe avec l'algorithme de depth_first_left, il suffit de lancer la commande suivante :
 
 ```bash
 ./maze.out -i labyrinthe.txt -r -a dfl
 ```
 
-Pour résoudre un labyrinthe avec l'algorithme de depthfirstright, il suffit de lancer la commande suivante :
+Pour résoudre un labyrinthe avec l'algorithme de depth_first_right, il suffit de lancer la commande suivante :
 
 ```bash
 ./maze.out -i labyrinthe.txt -r -a dfr
@@ -220,14 +222,14 @@ Pour résoudre un labyrinthe avec l'algorithme de breadthfirst, il suffit de lan
 
 ### Vérifier un labyrinthe
 
-Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstleft, il suffit de lancer la commande
+Pour vérifier si un labyrinthe est parfait avec l'algorithme de depth_first_left, il suffit de lancer la commande
 suivante :
 
 ```bash
 ./maze.out -i labyrinthe.txt -v -a dfl
 ```
 
-Pour vérifier si un labyrinthe est parfait avec l'algorithme de depthfirstright, il suffit de lancer la commande
+Pour vérifier si un labyrinthe est parfait avec l'algorithme de depth_first_right, il suffit de lancer la commande
 suivante :
 
 ```bash

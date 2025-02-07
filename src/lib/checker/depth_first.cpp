@@ -76,7 +76,7 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
     return;
 }
 
-void checker_depthfirst(Maze *maze, bool perfect, Show *show) {
+void checker_depth_first(Maze *maze, bool perfect, Show *show) {
     bool unperfect = false;
     if (perfect) {
         checkCellPerfect(maze, 0, 0, 0, 0, &unperfect, show);

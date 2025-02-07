@@ -9,6 +9,6 @@
  * @param maze - Labyrinthe à vérifier
  * @param perfect - Vérifie si le labyrinthe est parfait
  */
-void checker_depthfirst(Maze *, bool, Show *);
+void checker_depth_first(Maze *, bool, Show *);
 
 #endif  // CHECKER_DEPTHFIRST_HPP

@@ -44,7 +44,7 @@ void help() {
                  "l'affiche pendant la génération"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la génération (bt/breadthfirst, wm/wallmaker, "
+                 "utiliser pour la génération (bt/breadthfirst, wm/wall_maker, "
                  "d/diagonal, f/fractal)"
               << std::endl;
     std::cout << "    -d ou --dimension <largeur> <hauteur> : Spécifie les "
@@ -92,10 +92,10 @@ void generateMaze(Maze *maze, std::string algorithm, int width, int height,
                   << std::endl;
     srand(time(0));
     clock_t start = clock();
-    if (algorithm == "backtracking" || algorithm == "bt")
-        algo_backtracking(maze, width, height, isPerfect, probability, show);
-    else if (algorithm == "wallmaker" || algorithm == "wm")
-        algo_wallmaker(maze, width, height, isPerfect, probability, show);
+    if (algorithm == "back_tracking" || algorithm == "bt")
+        algo_back_tracking(maze, width, height, isPerfect, probability, show);
+    else if (algorithm == "wall_maker" || algorithm == "wm")
+        algo_wall_maker(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "diagonal" || algorithm == "d")
         algo_diagonal(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "fractal" || algorithm == "f")
@@ -190,7 +190,7 @@ int main(const int argc, char *argv[]) {
                      strcmp(argv[i], "--generate-show") == 0) {
                 const bool isShow = (strcmp(argv[i], "-gs") == 0 ||
                                      strcmp(argv[i], "--generate-show") == 0);
-                std::string algorithm = "backtracking";
+                std::string algorithm = "back_tracking";
                 int width = 10, height = 10;
                 bool perfect = true;
                 double probability = 0.01;
@@ -208,13 +208,13 @@ int main(const int argc, char *argv[]) {
                             strcmp(argv[i + 1], "--algorithm") == 0) {
                             i++;
                             if (i + 1 < argc) {
-                                if (strcmp(argv[i + 1], "backtracking") == 0 ||
+                                if (strcmp(argv[i + 1], "back_tracking") == 0 ||
                                     strcmp(argv[i + 1], "bt") == 0) {
-                                    algorithm = "backtracking";
-                                } else if (strcmp(argv[i + 1], "wallmaker") ==
+                                    algorithm = "back_tracking";
+                                } else if (strcmp(argv[i + 1], "wall_maker") ==
                                                0 ||
                                            strcmp(argv[i + 1], "wm") == 0) {
-                                    algorithm = "wallmaker";
+                                    algorithm = "wall_maker";
                                 } else if (strcmp(argv[i + 1], "diagonal") ==
                                                0 ||
                                            strcmp(argv[i + 1], "d") == 0) {

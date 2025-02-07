@@ -48,8 +48,8 @@ void help() {
                  "et l'affiche pendant la résolution"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la résolution (dfr/drepthfirstright, dfl/"
-                 "depthfirstleft, bf/breadthfirst)"
+                 "utiliser pour la résolution (dfr/drepth_first_right, dfl/"
+                 "depth_first_left, bf/breadth_first)"
               << std::endl;
 
     std::cout << "\nVérification de labyrinthe" << std::endl;
@@ -62,8 +62,8 @@ void help() {
     std::cout << "    -p ou --perfect : Vérifie si un labyrinthe est parfait"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la vérification (dfr/drepthfirstright, dfl/"
-                 "depthfirstleft, bf/breadthfirst)"
+                 "utiliser pour la vérification (dfr/drepth_first_right, dfl/"
+                 "depth_first_left, bf/breadth_first)"
               << std::endl;
 
     std::cout << "\nJeux de labyrinthe" << std::endl;
@@ -106,12 +106,12 @@ void resolveMaze(Maze *maze, std::string algorithm, Show *show) {
     std::cout << "Parameters of resolution : algorithm=" << algorithm
               << std::endl;
     clock_t start = clock();
-    if (algorithm == "depthfirstright" || algorithm == "dfr")
-        solver_depthfirst(maze, show, false);
-    else if (algorithm == "depthfirstleft" || algorithm == "dfl")
-        solver_depthfirst(maze, show, true);
-    else if (algorithm == "breadthfirst" || algorithm == "bf")
-        solver_breadthfirst(maze, show);
+    if (algorithm == "depth_first_right" || algorithm == "dfr")
+        solver_depth_first(maze, show, false);
+    else if (algorithm == "depth_first_left" || algorithm == "dfl")
+        solver_depth_first(maze, show, true);
+    else if (algorithm == "breadth_first" || algorithm == "bf")
+        solver_breadth_first(maze, show);
     else
         exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
@@ -123,12 +123,12 @@ void checkMaze(Maze *maze, std::string algorithm, bool perfect, Show *show) {
     std::cout << "Parameters of checking : algorithm=" << algorithm
               << ", perfect=" << perfect << std::endl;
     clock_t start = clock();
-    if (algorithm == "depthfirstright" || algorithm == "dfr")
-        checker_depthfirst(maze, perfect, show);
-    else if (algorithm == "depthfirstleft" || algorithm == "dfl")
-        checker_depthfirst(maze, perfect, show);
-    //    else if (algorithm == "breadthfirst" || algorithm == "bf")
-    //    checker_breadthfirst(maze, perfect, show); // TODO
+    if (algorithm == "depth_first_right" || algorithm == "dfr")
+        checker_depth_first(maze, perfect, show);
+    else if (algorithm == "depth_first_left" || algorithm == "dfl")
+        checker_depth_first(maze, perfect, show);
+    //    else if (algorithm == "breadth_first" || algorithm == "bf")
+    //    checker_breadth_first(maze, perfect, show); // TODO
     else
         exit(MAZE_COMMAND_ERROR);
     clock_t end = clock();
@@ -229,17 +229,17 @@ int main(int argc, char *argv[]) {
                              strcmp(argv[i + 1], "--algorithm") == 0) {
                         i++;
                         if (i + 1 < argc) {
-                            if (strcmp(argv[i + 1], "depthfirstright") == 0 ||
+                            if (strcmp(argv[i + 1], "depth_first_right") == 0 ||
                                 strcmp(argv[i + 1], "dfr") == 0) {
-                                algorithm = "depthfirstright";
-                            } else if (strcmp(argv[i + 1], "depthfirstleft") ==
+                                algorithm = "depth_first_right";
+                            } else if (strcmp(argv[i + 1], "depth_first_left") ==
                                            0 ||
                                        strcmp(argv[i + 1], "dfl") == 0) {
-                                algorithm = "depthfirstleft";
-                            } else if (strcmp(argv[i + 1], "breadthfirst") ==
+                                algorithm = "depth_first_left";
+                            } else if (strcmp(argv[i + 1], "breadth_first") ==
                                            0 ||
                                        strcmp(argv[i + 1], "bf") == 0) {
-                                algorithm = "breadthfirst";
+                                algorithm = "breadth_first";
                             } else {
                                 return help(MAZE_COMMAND_ERROR);
                             }
@@ -325,22 +325,22 @@ int main(int argc, char *argv[]) {
                 std::cout << "No maze loaded" << std::endl;
                 return 1;
             }
-            std::string algorithm = "depthfirstleft";
+            std::string algorithm = "depth_first_left";
             // Si l'utilisateur a spécifié l'algorithme
             if (i + 1 < argc) {
                 if (strcmp(argv[i + 1], "-a") == 0 ||
                     strcmp(argv[i + 1], "--algorithm") == 0) {
                     i++;
                     if (i + 1 < argc) {
-                        if (strcmp(argv[i + 1], "depthfirstright") == 0 ||
+                        if (strcmp(argv[i + 1], "depth_first_right") == 0 ||
                             strcmp(argv[i + 1], "dfr") == 0) {
-                            algorithm = "depthfirstright";
-                        } else if (strcmp(argv[i + 1], "depthfirstleft") == 0 ||
+                            algorithm = "depth_first_right";
+                        } else if (strcmp(argv[i + 1], "depth_first_left") == 0 ||
                                    strcmp(argv[i + 1], "dfl") == 0) {
-                            algorithm = "depthfirstleft";
-                        } else if (strcmp(argv[i + 1], "breadthfirst") == 0 ||
+                            algorithm = "depth_first_left";
+                        } else if (strcmp(argv[i + 1], "breadth_first") == 0 ||
                                    strcmp(argv[i + 1], "bf") == 0) {
-                            algorithm = "breadthfirst";
+                            algorithm = "breadth_first";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }

@@ -13,6 +13,6 @@
  * la main droite
  * @return true si le labyrinthe a été résolu, false sinon
  */
-bool solver_depthfirst(Maze*, Show*, bool);
+bool solver_depth_first(Maze*, Show*, bool);
 
 #endif  // SOLVER_DEPTHFIRST_HPP

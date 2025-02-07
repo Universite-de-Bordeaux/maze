@@ -46,7 +46,7 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction,
     return false;
 }
 
-bool solver_depthfirst(Maze *maze, Show *show, bool toLeft) {
+bool solver_depth_first(Maze *maze, Show *show, bool toLeft) {
     refreshShow(show);
     return solve(maze, show, maze->getStartX(), maze->getStartY(), 0, toLeft);
 }

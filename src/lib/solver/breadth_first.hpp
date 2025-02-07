@@ -23,6 +23,6 @@ struct positionHistory {
  * @param show L'affichage du labyrinthe
  * @return true si le labyrinthe a été résolu, false sinon
  */
-bool solver_breadthfirst(Maze*, Show*);
+bool solver_breadth_first(Maze*, Show*);
 
 #endif  // SOLVER_BREADTHFIRST_HPP

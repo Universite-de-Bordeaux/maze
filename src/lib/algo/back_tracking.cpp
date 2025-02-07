@@ -38,8 +38,8 @@ static Cell* nextNeighbor(Cell* current) {
     return listCell[random];  // Retourner un voisin non visité au hasard
 }
 
-// Fonction principale de l'algorithme (backtracking)
-void algo_backtracking(Maze* maze, int width, int height, bool perfect, double probability,
+// Fonction principale de l'algorithme (back_tracking)
+void algo_back_tracking(Maze* maze, int width, int height, bool perfect, double probability,
                        Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {

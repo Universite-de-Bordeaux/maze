@@ -10,7 +10,7 @@
 #include "../queue.hpp"
 #include "../stack.hpp"
 
-bool solver_breadthfirst(Maze *maze, Show *show) {
+bool solver_breadth_first(Maze *maze, Show *show) {
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
     Queue queue;
     Stack stack;
