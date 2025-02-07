@@ -91,7 +91,7 @@ void Show::clear() { renderWindow_->clear(sf::Color::Black); }
 
 void Show::display() {
     renderWindow_->display();
-    sf::sleep(sf::milliseconds(1000 / 60 * 2));
+    sf::sleep(sf::milliseconds(1000 / 60 + 1));
 }
 
 void Show::update() {
