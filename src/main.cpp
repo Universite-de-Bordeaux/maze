@@ -26,30 +26,55 @@ void help() {
     std::cout << "Générales" << std::endl;
     std::cout << "---------" << std::endl;
     std::cout << "  -h ou --help : Affiche cette aide" << std::endl;
-    std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un labyrinthe à charger en mémoire" << std::endl;
-    std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -o ou --output <fichier> : Spécifie le fichier où sauvegarder le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe en mémoire" << std::endl;
-    
+    std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un "
+                 "labyrinthe à charger en mémoire"
+              << std::endl;
+    std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
+                 "sauvegarder le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe "
+                 "en mémoire"
+              << std::endl;
+
     std::cout << "\nRésolution de labyrinthe" << std::endl;
     std::cout << "------------------------" << std::endl;
-    std::cout << "  -r ou --resolve : Résout le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -rs ou --resolve-show : Résout le labyrinthe en mémoire et l'affiche pendant la résolution" << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la résolution (dfr/depth_first_right, dfl/depth_first_left, bf/breadth_first)" << std::endl;
+    std::cout << "  -r ou --resolve : Résout le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -rs ou --resolve-show : Résout le labyrinthe en mémoire et "
+                 "l'affiche pendant la résolution"
+              << std::endl;
+    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
+                 "utiliser pour la résolution (dfr/depth_first_right, "
+                 "dfl/depth_first_left, bf/breadth_first)"
+              << std::endl;
 
     std::cout << "\nVérification de labyrinthe" << std::endl;
     std::cout << "-------------------------" << std::endl;
-    std::cout << "  -v ou --verify : Vérifie si un labyrinthe est parfait" << std::endl;
-    std::cout << "  -vs ou --verify-show : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification" << std::endl;
-    std::cout << "    -p ou --perfect : Vérifie si un labyrinthe est parfait" << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la vérification (dfr/depth_first_right, dfl/depth_first_left, bf/breadth_first)" << std::endl;
+    std::cout << "  -v ou --verify : Vérifie si un labyrinthe est parfait"
+              << std::endl;
+    std::cout << "  -vs ou --verify-show : Vérifie si un labyrinthe est valide "
+                 "et l'affiche pendant la vérification"
+              << std::endl;
+    std::cout << "    -p ou --perfect : Vérifie si un labyrinthe est parfait"
+              << std::endl;
+    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
+                 "utiliser pour la vérification (dfr/depth_first_right, "
+                 "dfl/depth_first_left, bf/breadth_first)"
+              << std::endl;
 
     std::cout << "\nJeux de labyrinthe" << std::endl;
     std::cout << "------------------" << std::endl;
     std::cout << "  -g ou --game : Joue à un jeu de labyrinthe" << std::endl;
-    std::cout << "  -gs ou --game-show : Joue à un jeu de labyrinthe et l'affiche pendant le jeu" << std::endl;
-    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer (f/fog, fr/fog_right, fl/fog_left, w/walk, wg/walk_ghost)" << std::endl;
+    std::cout << "  -gs ou --game-show : Joue à un jeu de labyrinthe et "
+                 "l'affiche pendant le jeu"
+              << std::endl;
+    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer "
+                 "(f/fog, fr/fog_right, fl/fog_left, w/walk, wg/walk_ghost)"
+              << std::endl;
 }
 
 /**
@@ -68,7 +93,7 @@ int help(const int error) {
  * @param command Commande
  * @return Code d'erreur
  */
-int help(const int error, const std::string& command) {
+int help(const int error, const std::string &command) {
     std::cout << "Error : " << command << std::endl;
     return help(error);
 }
@@ -79,7 +104,7 @@ int help(const int error, const std::string& command) {
  * @param algorithm Algorithme
  * @param show Affichage
  */
-void resolveMaze(Maze *maze, const std::string& algorithm, Show *show) {
+void resolveMaze(Maze *maze, const std::string &algorithm, Show *show) {
     std::cout << "Parameters of resolution : algorithm=" << algorithm
               << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
@@ -92,10 +117,13 @@ void resolveMaze(Maze *maze, const std::string& algorithm, Show *show) {
     else
         exit(MAZE_COMMAND_ERROR);
     const auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "Resolved in " 
+    std::cout
+        << "Resolved in "
         << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
         << "."
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() % 1000
+        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                   .count() %
+               1000
         << "s" << std::endl;
 }
 
@@ -106,12 +134,13 @@ void resolveMaze(Maze *maze, const std::string& algorithm, Show *show) {
  * @param perfect Parfait
  * @param show Affichage
  */
-void checkMaze(Maze *maze, const std::string& algorithm, const bool perfect, Show *show) {
+void checkMaze(Maze *maze, const std::string &algorithm, const bool perfect,
+               Show *show) {
     std::cout << "Parameters of checking : algorithm=" << algorithm
               << ", perfect=" << perfect << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
     if (algorithm == "depth_first_right" || algorithm == "dfr")
-        checker_depth_first(maze, perfect, show); // TODO
+        checker_depth_first(maze, perfect, show);  // TODO
     else if (algorithm == "depth_first_left" || algorithm == "dfl")
         checker_depth_first(maze, perfect, show);
     //    else if (algorithm == "breadth_first" || algorithm == "bf") // TODO
@@ -119,11 +148,14 @@ void checkMaze(Maze *maze, const std::string& algorithm, const bool perfect, Sho
     else
         exit(MAZE_COMMAND_ERROR);
     const auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "Resolved in " 
-              << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
-              << "."
-              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() % 1000
-              << "s" << std::endl;
+    std::cout
+        << "Resolved in "
+        << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
+        << "."
+        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                   .count() %
+               1000
+        << "s" << std::endl;
 }
 
 /**
@@ -132,7 +164,7 @@ void checkMaze(Maze *maze, const std::string& algorithm, const bool perfect, Sho
  * @param type Type de jeu
  * @param show Affichage
  */
-void gameMaze(Maze *maze, const std::string& type, Show *show) {
+void gameMaze(Maze *maze, const std::string &type, Show *show) {
     std::cout << "Parameters of game : type=" << type << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
     int steps = 0;
@@ -150,10 +182,13 @@ void gameMaze(Maze *maze, const std::string& type, Show *show) {
         exit(MAZE_COMMAND_ERROR);
     }
     const auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "Resolved in " 
+    std::cout
+        << "Resolved in "
         << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
         << "."
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() % 1000
+        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                   .count() %
+               1000
         << "s with " << steps << " steps" << std::endl;
 }
 
@@ -202,7 +237,7 @@ int main(int argc, char *argv[]) {
                 return MAZE_COMMAND_ERROR;
             }
             bool isShow = strcmp(argv[i], "-vs") == 0 ||
-                           strcmp(argv[i], "--verify-show") == 0;
+                          strcmp(argv[i], "--verify-show") == 0;
             bool perfect = false;
             std::string algorithm = "dfl";
             while (i + 1 < argc && argv[i + 1][0] == '-' &&
@@ -225,8 +260,8 @@ int main(int argc, char *argv[]) {
                             if (strcmp(argv[i + 1], "depth_first_right") == 0 ||
                                 strcmp(argv[i + 1], "dfr") == 0) {
                                 algorithm = "depth_first_right";
-                            } else if (strcmp(argv[i + 1], "depth_first_left") ==
-                                           0 ||
+                            } else if (strcmp(argv[i + 1],
+                                              "depth_first_left") == 0 ||
                                        strcmp(argv[i + 1], "dfl") == 0) {
                                 algorithm = "depth_first_left";
                             } else if (strcmp(argv[i + 1], "breadth_first") ==
@@ -328,7 +363,8 @@ int main(int argc, char *argv[]) {
                         if (strcmp(argv[i + 1], "depth_first_right") == 0 ||
                             strcmp(argv[i + 1], "dfr") == 0) {
                             algorithm = "depth_first_right";
-                        } else if (strcmp(argv[i + 1], "depth_first_left") == 0 ||
+                        } else if (strcmp(argv[i + 1], "depth_first_left") ==
+                                       0 ||
                                    strcmp(argv[i + 1], "dfl") == 0) {
                             algorithm = "depth_first_left";
                         } else if (strcmp(argv[i + 1], "breadth_first") == 0 ||

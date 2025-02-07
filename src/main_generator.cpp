@@ -23,20 +23,40 @@ void help() {
     std::cout << "Générales" << std::endl;
     std::cout << "-----------" << std::endl;
     std::cout << "  -h ou --help : Affiche cette aide" << std::endl;
-    std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un labyrinthe à charger en mémoire" << std::endl;
-    std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -o ou --output <fichier> : Spécifie le fichier où sauvegarder le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire" << std::endl;
-    std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe en mémoire" << std::endl;
+    std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un "
+                 "labyrinthe à charger en mémoire"
+              << std::endl;
+    std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
+                 "sauvegarder le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire"
+              << std::endl;
+    std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe "
+                 "en mémoire"
+              << std::endl;
 
     std::cout << "\nGénération de labyrinthe" << std::endl;
     std::cout << "-----------------------" << std::endl;
-    std::cout << "  -g ou --generate : Génère un labyrinthe (écrase le labyrinthe en mémoire)" << std::endl;
-    std::cout << "  -gs ou --generate-show : Génère un labyrinthe et l'affiche pendant la génération" << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à utiliser pour la génération (bt, wm, d, f)" << std::endl;
-    std::cout << "    -d ou --dimension <largeur> <hauteur> : Spécifie les dimensions du labyrinthe à générer" << std::endl;
-    std::cout << "    -i ou --imperfect : Génère un labyrinthe imparfait" << std::endl;
-    std::cout << "      -p ou --probability <probabilité> : Spécifie la probabilité de suppression d'un mur pour un labyrinthe imparfait (0.0-1.0)" << std::endl;
+    std::cout << "  -g ou --generate : Génère un labyrinthe (écrase le "
+                 "labyrinthe en mémoire)"
+              << std::endl;
+    std::cout << "  -gs ou --generate-show : Génère un labyrinthe et l'affiche "
+                 "pendant la génération"
+              << std::endl;
+    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
+                 "utiliser pour la génération (bt, wm, d, f)"
+              << std::endl;
+    std::cout << "    -d ou --dimension <largeur> <hauteur> : Spécifie les "
+                 "dimensions du labyrinthe à générer"
+              << std::endl;
+    std::cout << "    -i ou --imperfect : Génère un labyrinthe imparfait"
+              << std::endl;
+    std::cout
+        << "      -p ou --probability <probabilité> : Spécifie la probabilité "
+           "de suppression d'un mur pour un labyrinthe imparfait (0.0-1.0)"
+        << std::endl;
 }
 
 /**
@@ -55,7 +75,7 @@ int help(const int error) {
  * @param command Commande
  * @return Code d'erreur
  */
-int help(const int error, const std::string& command) {
+int help(const int error, const std::string &command) {
     std::cout << "Error : " << command << std::endl;
     return help(error);
 }
@@ -70,8 +90,9 @@ int help(const int error, const std::string& command) {
  * @param probability Probabilité
  * @param show Affichage
  */
-void generateMaze(Maze *maze, const std::string& algorithm, const int width, const int height,
-                  const bool isPerfect, const double probability, Show *show) {
+void generateMaze(Maze *maze, const std::string &algorithm, const int width,
+                  const int height, const bool isPerfect,
+                  const double probability, Show *show) {
     std::cout << "Parameters of generation : algorithm=" << algorithm
               << ", width=" << width << ", height=" << height
               << ", isPerfect=" << isPerfect;
@@ -89,10 +110,13 @@ void generateMaze(Maze *maze, const std::string& algorithm, const int width, con
     else
         exit(MAZE_COMMAND_ERROR);
     const auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "Generated in "
+    std::cout
+        << "Generated in "
         << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
         << "."
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() % 1000
+        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                   .count() %
+               1000
         << "s" << std::endl;
 }
 
@@ -144,8 +168,7 @@ int main(const int argc, char *argv[]) {
             std::ofstream file(argv[i + 1]);
             // Si le fichier n'existe pas
             if (!file) {
-                std::cout << "File not found : " << argv[i + 1]
-                          << std::endl;
+                std::cout << "File not found : " << argv[i + 1] << std::endl;
                 return MAZE_FILE_ERROR;
             }
             write(&maze, argv[i + 1]);
@@ -198,16 +221,13 @@ int main(const int argc, char *argv[]) {
                             if (strcmp(argv[i + 1], "back_tracking") == 0 ||
                                 strcmp(argv[i + 1], "bt") == 0) {
                                 algorithm = "back_tracking";
-                            } else if (strcmp(argv[i + 1], "wall_maker") ==
-                                           0 ||
+                            } else if (strcmp(argv[i + 1], "wall_maker") == 0 ||
                                        strcmp(argv[i + 1], "wm") == 0) {
                                 algorithm = "wall_maker";
-                            } else if (strcmp(argv[i + 1], "diagonal") ==
-                                           0 ||
+                            } else if (strcmp(argv[i + 1], "diagonal") == 0 ||
                                        strcmp(argv[i + 1], "d") == 0) {
                                 algorithm = "diagonal";
-                            } else if (strcmp(argv[i + 1], "fractal") ==
-                                           0 ||
+                            } else if (strcmp(argv[i + 1], "fractal") == 0 ||
                                        strcmp(argv[i + 1], "f") == 0) {
                                 algorithm = "fractal";
                             } else {
@@ -257,14 +277,14 @@ int main(const int argc, char *argv[]) {
                 }
             }
             if (isShow) {
-                generateMaze(&maze, algorithm, width, height, perfect, probability,
-                             &show);
+                generateMaze(&maze, algorithm, width, height, perfect,
+                             probability, &show);
                 while (show.isOpen()) {
                     show.update();
                 }
             } else {
-                generateMaze(&maze, algorithm, width, height, perfect, probability,
-                             nullptr);
+                generateMaze(&maze, algorithm, width, height, perfect,
+                             probability, nullptr);
             }
             mazeLoaded = true;
         }
