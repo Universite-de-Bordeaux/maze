@@ -22,7 +22,9 @@ Cell **Cell::getNeighbors() { return neighbors_; }
 
 Cell *Cell::getNeighbor(const int i) const { return neighbors_[i]; }
 
-Cell *Cell::getRelativeNeighbor(const int i) const { return relativeNeighbors_[i]; }
+Cell *Cell::getRelativeNeighbor(const int i) const {
+    return relativeNeighbors_[i];
+}
 
 Wall **Cell::getWalls() { return walls_; }
 
@@ -154,7 +156,7 @@ void Cell::setNeighbors(Cell *neighbors[4]) {
     }
 }
 
-void Cell::setNeighbor(const int i, Cell *neighbor) { 
+void Cell::setNeighbor(const int i, Cell *neighbor) {
     neighbors_[i] = neighbor;
     if (neighbor != nullptr) {
         relativeNeighbors_[i] = neighbor;
