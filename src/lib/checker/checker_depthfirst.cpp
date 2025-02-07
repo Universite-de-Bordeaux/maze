@@ -21,12 +21,12 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
         cell->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighborsNotVisited <= 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        // updateShowLive(show, maze, 1, &cell);
-        refreshShow(show);
+        updateShowLive(show, maze, 1, &cell);
+        // refreshShow(show);
         return;
     }
-    // updateShowLive(show, maze, 1, &cell);
-    refreshShow(show);
+    updateShowLive(show, maze, 1, &cell);
+    // refreshShow(show);
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {

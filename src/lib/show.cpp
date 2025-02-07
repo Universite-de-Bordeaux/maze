@@ -10,8 +10,6 @@
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <random>
-#include <ratio>
-#include <string>
 
 #include "var.hpp"
 
@@ -91,7 +89,10 @@ bool Show::pollEvent(sf::Event &event) {
 
 void Show::clear() { renderWindow_->clear(sf::Color::Black); }
 
-void Show::display() { renderWindow_->display(); }
+void Show::display() {
+    renderWindow_->display();
+    sf::sleep(sf::milliseconds(1000 / 60 * 2));
+}
 
 void Show::update() {
     eventHandler();
