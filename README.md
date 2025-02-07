@@ -6,13 +6,15 @@ Le projet Maze est un projet de programmation en C++ réalisé dans le cadre de 
 Le but de ce projet est de générer des labyrinthes parfaits et imparfaits, de les résoudre et de les afficher en
 utilisant plusieurs algorithmes de générations et de résolutions.
 
-La description des générateurs peut être trouvé dans la [documentation](doc/)
+La description de la structure du projet peut être trouvé dans la [documentation](doc/README.md)
+
+La description complète du projet peut être trouvé dans la [documentation](doc/documentation.pdf)
 
 ## Auteurs
 
 - [**Arnaud Aloyse**](https://github.com/aloyse33)
-- [**Glasson Lucien**](https://github.com/lulu-froid)
 - [**Facca Ethan**](https://github.com/untypequicode)
+- [**Glasson Lucien**](https://github.com/lulu-froid)
 
 ## Prérequis
 
@@ -25,6 +27,10 @@ Pour installer ces outils, il suffit de lancer la commande suivante :
 sudo apt-get install g++ cmake make libsfml-dev
 # Pour Arch Linux et dérivés
 sudo pacman -S g++ cmake make sfml
+# Pour Fedora et dérivés
+sudo dnf install g++ cmake make SFML
+# Pour NixOS
+nix-env -i g++ cmake make sfml
 ```
 
 ## Compilation
@@ -59,46 +65,36 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-s` ou `--show` : Affiche le labyrinthe en mémoire
 * `-o` ou `--output` `<fichier>` : Spécifie le fichier où sauvegarder le labyrinthe en mémoire
 * `-c` ou `--clear` : Efface le labyrinthe en mémoire
-    + `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire
+* `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire
 
 #### Génération de labyrinthe (maze_generator)
 
 * `-g` ou `--generate` : Génère un labyrinthe (écrase le labyrinthe en mémoire)
-    + `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en
-      mémoire)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (back_tracking (bt),
-      wall_maker (wm), diagonal (d), fractal (f), par défaut : back_tracking)
-    + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10
-        10)
+* `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en mémoire)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (back_tracking (bt), wall_maker (wm), diagonal (d), fractal (f), par défaut : back_tracking)
+    + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
     + `-u` ou `--unperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
-        + `-p` ou `--probability` `<probabilité>` : Spécifie la probabilité de suppression d'un mur pour un labyrinthe
-          imparfait (par défaut : 0.1)
+        + `-p` ou `--probability` `<probabilité>` : Spécifie la probabilité de suppression d'un mur pour un labyrinthe imparfait (par défaut : 0.1 soit 10%)
 
 #### Résolution de labyrinthe (maze)
 
-* `-r` ou `--resolve` : Résout le labyrinthe en mémoire
-    + `-rs` ou `--resolve-show` : Résout le labyrinthe en mémoire et l'affiche pendant la résolution
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depth_first_left (
-      dfl),
-      depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
+* `-r` ou `--resolve` : Résout le labyrinthe en mémoire (nécessite un labyrinthe en mémoire)
+* `-rs` ou `--resolve-show` : Résout le labyrinthe en mémoire et l'affiche pendant la résolution (nécessite un labyrinthe en mémoire)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depth_first_left (dfl), depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
 
 #### Vérification de labyrinthe (maze)
 
 * `-v` ou `--verify` : Vérifie si un labyrinthe est parfait (nécessite un labyrinthe en mémoire)
-    + `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un
-      labyrinthe en mémoire)
+* `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)
     + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depth_first_left (
-      dfl), depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
+    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depth_first_left (dfl), depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
 
 #### Jeu de labyrinthe (maze)
 
 * `-g` ou `--game` : Lance le jeu de labyrinthe (nécessite un labyrinthe en mémoire)
-    + `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
+* `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
       mémoire)
-        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fogright (fr), fogleft (fl), walk (w),
-          walghost (wg),
-          par défaut : fog)
+        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fog_right (fr), fog_left (fl), walk (w), walk_ghost (wg), par défaut : fog)
 
 ## Lancement automatisé
 
@@ -116,10 +112,10 @@ Par exemple pour générer un labyrinthe avec l'algorithme fractal :
 make run_algo_fractal
 ```
 
-Pour résoudre un labyrinthe avec l'algorithme breadthfirst :
+Pour résoudre un labyrinthe avec l'algorithme breadth_first :
 
 ```bash
-make run_solver_breadthfirst
+make run_solver_breadth_first
 ```
 
 Pour jouer à un labyrinthe avec l'algorithme fog :
@@ -131,7 +127,7 @@ make run_game_fog
 ### Lancement de tests
 
 On peut ajouter _test à la fin de la commande pour lancer les tests. Il est possibles
-que cela fasse crasher le programme car les tests vont dépasse les limites du programme
+que cela fasse crasher le programme, car les tests vont dépasser les limites du programme
 
 Par exemple pour tester les algorithmes de vérification de labyrinthe depth_first_left et depth_first_right :
 
@@ -139,28 +135,27 @@ Par exemple pour tester les algorithmes de vérification de labyrinthe depth_fir
 make run_checker_depth_first_test
 ```
 
-### lancement particulier
+### Lancement particulier
 
-On a 3 lancement particulier
+Il existe 3 lancements particuliers
+
+#### Lancement de tous les algorithmes
 
 ```bash
 make run_all
 ```
 
-Cette commande lance tout les algorithmes \
-Nous avon une version équivalente pour les tests
+#### Lancement de tous les tests
 
 ```bash
 make run_all_test
 ```
 
-Enfin la dernière commande est
+#### Lancement d'un test manuel
 
 ```bash
 make run_test
 ```
-
-Celle-ci lance un programme de test manuel qui test toutes les implémentations
 
 ### Codes d'erreur
 
@@ -181,8 +176,7 @@ suivante :
 ```
 
 Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wall_maker, il suffit de lancer la
-commande
-suivante :
+commande suivante :
 
 ```bash
 ./maze_generator.out -g -d 20 20 -a wm -u
@@ -197,7 +191,7 @@ Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de diagonal, 
 Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de fractal, il suffit de lancer la commande suivante :
 
 ```bash
-./maze_generator.out -g -d 20 20 -a f
+./maze_generator.out -g -d 10 10 -a f
 ```
 
 ### Résoudre un labyrinthe
@@ -214,10 +208,10 @@ Pour résoudre un labyrinthe avec l'algorithme de depth_first_right, il suffit d
 ./maze.out -i labyrinthe.txt -r -a dfr
 ```
 
-Pour résoudre un labyrinthe avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
+Pour résoudre un labyrinthe avec l'algorithme de breadth_first, il suffit de lancer la commande suivante :
 
 ```bash
-./maze.out -i labyrinthe.txt -r -a bfs
+./maze.out -i labyrinthe.txt -r -a bf
 ```
 
 ### Vérifier un labyrinthe
@@ -236,10 +230,24 @@ suivante :
 ./maze.out -i labyrinthe.txt -v -a dfr
 ```
 
-Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadthfirst, il suffit de lancer la commande suivante :
+Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadth_first, il suffit de lancer la commande suivante :
 
 ```bash
 ./maze.out -i labyrinthe.txt -v -a bf
+```
+
+### Jouer à un labyrinthe
+
+Pour jouer à un labyrinthe avec l'algorithme de fog, il suffit de lancer la commande suivante :
+
+```bash
+./maze.out -i labyrinthe.txt -g -t f
+```
+
+Pour jouer à un labyrinthe avec l'algorithme de fog_right, il suffit de lancer la commande suivante :
+
+```bash
+./maze.out -i labyrinthe.txt -g -t fr
 ```
 
 ### Afficher un labyrinthe

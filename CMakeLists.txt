@@ -7,39 +7,38 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCE_FILES
         src/main.cpp
         src/lib/cell.cpp
-        src/lib/maze.cpp
-        src/lib/reader.cpp
-        src/lib/show.cpp
-        src/lib/stack.cpp
-        src/lib/queue.cpp
-        src/lib/wall.cpp
-        src/lib/writer.cpp
         src/lib/checker/depth_first.cpp
-        src/lib/solver/breadth_first.cpp
-        src/lib/solver/depth_first.cpp
         src/lib/game/fog.cpp
         src/lib/game/fog_hand.cpp
         src/lib/game/walk.cpp
+        src/lib/maze.cpp
+        src/lib/reader.cpp
+        src/lib/queue.cpp
+        src/lib/show.cpp
+        src/lib/solver/breadth_first.cpp
+        src/lib/solver/depth_first.cpp
+        src/lib/stack.cpp
+        src/lib/wall.cpp
+        src/lib/writer.cpp
 )
 
 set(SOURCE_FILES_GENERATOR
         src/main_generator.cpp
-        src/lib/cell.cpp
-        src/lib/maze.cpp
-        src/lib/reader.cpp
-        src/lib/show.cpp
-        src/lib/stack.cpp
-        src/lib/queue.cpp
-        src/lib/wall.cpp
-        src/lib/writer.cpp
         src/lib/algo/back_tracking.cpp
         src/lib/algo/diagonal.cpp
         src/lib/algo/fractal.cpp
         src/lib/algo/wall_maker.cpp
+        src/lib/cell.cpp
+        src/lib/maze.cpp
+        src/lib/queue.cpp
+        src/lib/reader.cpp
+        src/lib/show.cpp
+        src/lib/stack.cpp
+        src/lib/wall.cpp
+        src/lib/writer.cpp
 )
 
 set(INCLUDE_DIRS
-        src/lib
         SFML-2.5.1/include
 )
 
@@ -53,10 +52,10 @@ set(LINK_LIBS
         sfml-system
 )
 
-add_executable(${PROJECT_NAME}.out ${SOURCE_FILES})
 set(EXECUTABLE_PROJECT ${PROJECT_NAME}.out)
-add_executable(${PROJECT_NAME}_generator.out ${SOURCE_FILES_GENERATOR})
+add_executable(${EXECUTABLE_PROJECT} ${SOURCE_FILES})
 set(EXECUTABLE_PROJECT_GENERATOR ${PROJECT_NAME}_generator.out)
+add_executable(${EXECUTABLE_PROJECT_GENERATOR} ${SOURCE_FILES_GENERATOR})
 
 target_include_directories(${EXECUTABLE_PROJECT} PUBLIC ${INCLUDE_DIRS})
 target_include_directories(${EXECUTABLE_PROJECT_GENERATOR} PUBLIC ${INCLUDE_DIRS})

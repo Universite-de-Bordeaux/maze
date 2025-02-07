@@ -62,7 +62,7 @@ void help() {
     std::cout << "    -p ou --perfect : Vérifie si un labyrinthe est parfait"
               << std::endl;
     std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la vérification (dfr/drepth_first_right, dfl/"
+                 "utiliser pour la vérification (dfr/depth_first_right, dfl/"
                  "depth_first_left, bf/breadth_first)"
               << std::endl;
 
@@ -73,7 +73,7 @@ void help() {
                  "l'affiche pendant le jeu"
               << std::endl;
     std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer "
-                 "(f/fog, fr/fogright, fl/fogleft, w/walk, wg/walkghost)"
+                 "(f/fog, fr/fog_right, fl/fog_left, w/walk, wg/walk_ghost)"
               << std::endl;
 }
 
@@ -147,13 +147,13 @@ void gameMaze(Maze *maze, std::string type, Show *show) {
     int steps = 0;
     if (type == "fog" || type == "f") {
         steps = game_fog(maze, show);
-    } else if (type == "fogright" || type == "fr") {
+    } else if (type == "fog_right" || type == "fr") {
         steps = game_fog_hand(maze, show, false);
-    } else if (type == "fogleft" || type == "fl") {
+    } else if (type == "fog_left" || type == "fl") {
         steps = game_fog_hand(maze, show, true);
     } else if (type == "walk" || type == "w") {
         steps = game_walk(maze, show, false);
-    } else if (type == "walkghost" || type == "wg") {
+    } else if (type == "walk_ghost" || type == "wg") {
         steps = game_walk(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
@@ -381,18 +381,18 @@ int main(int argc, char *argv[]) {
                         if (strcmp(argv[i + 1], "fog") == 0 ||
                             strcmp(argv[i + 1], "f") == 0) {
                             type = "fog";
-                        } else if (strcmp(argv[i + 1], "fogright") == 0 ||
+                        } else if (strcmp(argv[i + 1], "fog_right") == 0 ||
                                    strcmp(argv[i + 1], "fr") == 0) {
-                            type = "fogright";
-                        } else if (strcmp(argv[i + 1], "fogleft") == 0 ||
+                            type = "fog_right";
+                        } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
                                    strcmp(argv[i + 1], "fl") == 0) {
-                            type = "fogleft";
+                            type = "fog_left";
                         } else if (strcmp(argv[i + 1], "walk") == 0 ||
                                    strcmp(argv[i + 1], "w") == 0) {
                             type = "walk";
-                        } else if (strcmp(argv[i + 1], "walkghost") == 0 ||
+                        } else if (strcmp(argv[i + 1], "walk_ghost") == 0 ||
                                    strcmp(argv[i + 1], "wg") == 0) {
-                            type = "walkghost";
+                            type = "walk_ghost";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }
