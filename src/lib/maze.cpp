@@ -488,24 +488,24 @@ void Maze::initNeighborsCells_() {
             Cell *cell = cells_[x][y];
             Cell **cellNeighbors = cell->getNeighbors();
             if (x > 0) {
-                cell->setNeighbor(MAZE_CELL_LEFT, cells_[x - 1][y], true);
+                cell->setNeighbor(MAZE_CELL_LEFT, cells_[x - 1][y]);
             } else {
-                cell->setNeighbor(MAZE_CELL_LEFT, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_LEFT, nullptr);
             }
             if (x < width_ - 1) {
-                cell->setNeighbor(MAZE_CELL_RIGHT, cells_[x + 1][y], true);
+                cell->setNeighbor(MAZE_CELL_RIGHT, cells_[x + 1][y]);
             } else {
-                cell->setNeighbor(MAZE_CELL_RIGHT, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_RIGHT, nullptr);
             }
             if (y > 0) {
-                cell->setNeighbor(MAZE_CELL_TOP, cells_[x][y - 1], true);
+                cell->setNeighbor(MAZE_CELL_TOP, cells_[x][y - 1]);
             } else {
-                cell->setNeighbor(MAZE_CELL_TOP, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_TOP, nullptr);
             }
             if (y < height_ - 1) {
-                cell->setNeighbor(MAZE_CELL_BOTTOM, cells_[x][y + 1], true);
+                cell->setNeighbor(MAZE_CELL_BOTTOM, cells_[x][y + 1]);
             } else {
-                cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr, true);
+                cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr);
             }
             cell->setWall(MAZE_CELL_RIGHT, nullptr);
             cell->setWall(MAZE_CELL_BOTTOM, nullptr);

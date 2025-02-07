@@ -1,17 +1,13 @@
 #include "cell.hpp"
 
-#include <stdlib.h>
-
-#include <iostream>
-
 #include "var.hpp"
 #include "wall.hpp"
 
-Cell::Cell() { Cell(0, 0); }
+Cell::Cell() : Cell(0, 0) {}
 
-Cell::Cell(int x, int y) { Cell(x, y, -1, -1); }
+Cell::Cell(const int x, const int y) : Cell(x, y, -1, -1) {}
 
-Cell::Cell(int x, int y, int width, int height) {
+Cell::Cell(const int x, const int y, const int width, const int height) {
     x_ = x, y_ = y;
     width_ = width, height_ = height;
 }
@@ -24,49 +20,49 @@ int Cell::getY() const { return y_; }
 
 Cell **Cell::getNeighbors() { return neighbors_; }
 
-Cell *Cell::getNeighbor(int i) { return neighbors_[i]; }
+Cell *Cell::getNeighbor(const int i) const { return neighbors_[i]; }
 
-Cell *Cell::getRelativeNeighbor(int i) { return relativeNeighbors_[i]; }
+Cell *Cell::getRelativeNeighbor(const int i) const { return relativeNeighbors_[i]; }
 
 Wall **Cell::getWalls() { return walls_; }
 
-Wall *Cell::getWall(int i) { return walls_[i]; }
+Wall *Cell::getWall(const int i) const { return walls_[i]; }
 
-bool Cell::isWall(int i) {
+bool Cell::isWall(const int i) const {
     return walls_[i] != nullptr || (i == MAZE_CELL_TOP && y_ == 0) ||
            (i == MAZE_CELL_LEFT && x_ == 0) ||
            (i == MAZE_CELL_RIGHT && x_ == width_ - 1) ||
            (i == MAZE_CELL_BOTTOM && y_ == height_ - 1);
 }
 
-bool Cell::isAlreadyVisited() { return alreadyVisited_; }
+bool Cell::isAlreadyVisited() const { return alreadyVisited_; }
 
-int Cell::getAbsoluteNumberOfNeighbors() {
+int Cell::getAbsoluteNumberOfNeighbors() const {
     int count = 0;
-    for (int i = 0; i < 4; i++) {
-        if (neighbors_[i] != nullptr) {
+    for (const auto neighbor : neighbors_) {
+        if (neighbor != nullptr) {
             count++;
         }
     }
     return count;
 }
 
-void Cell::getAbsoluteNeighbors(Cell **neighbors) {
+void Cell::getAbsoluteNeighbors(Cell **neighbors) const {
     if (neighbors == nullptr) return;
     int count = 0;
-    for (int i = 0; i < 4; i++) {
-        if (neighbors_[i] != nullptr) {
-            neighbors[count] = neighbors_[i];
+    for (const auto neighbor : neighbors_) {
+        if (neighbor != nullptr) {
+            neighbors[count] = neighbor;
             count++;
         }
     }
 }
 
-int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
+int Cell::getAbsoluteNumberOfNeighborsNotVisited() const {
     int count = 0;
-    for (int i = 0; i < 4; i++) {
-        if (neighbors_[i] != nullptr) {
-            if (!(neighbors_[i]->isAlreadyVisited())) {
+    for (const auto neighbor : neighbors_) {
+        if (neighbor != nullptr) {
+            if (!neighbor->isAlreadyVisited()) {
                 count++;
             }
         }
@@ -74,19 +70,19 @@ int Cell::getAbsoluteNumberOfNeighborsNotVisited() {
     return count;
 }
 
-void Cell::getAbsoluteNeighborsNotVisited(Cell **neighbors) {
+void Cell::getAbsoluteNeighborsNotVisited(Cell **neighbors) const {
     int count = 0;
-    for (int i = 0; i < 4; i++) {
-        if (neighbors_[i] != nullptr) {
-            if (!neighbors_[i]->isAlreadyVisited()) {
-                neighbors[count] = neighbors_[i];
+    for (const auto neighbor : neighbors_) {
+        if (neighbor != nullptr) {
+            if (!neighbor->isAlreadyVisited()) {
+                neighbors[count] = neighbor;
                 count++;
             }
         }
     }
 }
 
-int Cell::getRelativeNumberOfNeighborsNotVisited() {
+int Cell::getRelativeNumberOfNeighborsNotVisited() const {
     int count = 4;
     if (getX() <= 0) {
         count--;
@@ -103,7 +99,7 @@ int Cell::getRelativeNumberOfNeighborsNotVisited() {
     return count;
 }
 
-void Cell::getRelativeNeighborsNotVisited(Cell **neighbors) {
+void Cell::getRelativeNeighborsNotVisited(Cell **neighbors) const {
     int count = 0;
     if (getX() > 0) {
         neighbors[count] = relativeNeighbors_[MAZE_CELL_LEFT];
@@ -119,13 +115,12 @@ void Cell::getRelativeNeighborsNotVisited(Cell **neighbors) {
     }
     if (getY() < height_ - 1) {
         neighbors[count] = relativeNeighbors_[MAZE_CELL_BOTTOM];
-        count++;
     }
 }
 
-int Cell::getStatus() { return status_; }
+int Cell::getStatus() const { return status_; }
 
-bool Cell::isNeighbor(int i) {
+bool Cell::isNeighbor(const int i) const {
     return !((getX() <= 0 && i == MAZE_CELL_LEFT) ||
              (getY() <= 0 && i == MAZE_CELL_TOP) ||
              (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) ||
@@ -133,7 +128,7 @@ bool Cell::isNeighbor(int i) {
            neighbors_[i] != nullptr;
 }
 
-bool Cell::isRelativeNeighbor(int i) {
+bool Cell::isRelativeNeighbor(const int i) const {
     return !((getX() <= 0 && i == MAZE_CELL_LEFT) ||
              (getY() <= 0 && i == MAZE_CELL_TOP) ||
              (getX() >= width_ - 1 && i == MAZE_CELL_RIGHT) ||
@@ -141,11 +136,11 @@ bool Cell::isRelativeNeighbor(int i) {
            relativeNeighbors_[i] != nullptr;
 }
 
-void Cell::setX(int x) { x_ = x; }
+void Cell::setX(const int x) { x_ = x; }
 
-void Cell::setY(int y) { y_ = y; }
+void Cell::setY(const int y) { y_ = y; }
 
-void Cell::setXY(int x, int y) {
+void Cell::setXY(const int x, const int y) {
     x_ = x;
     y_ = y;
 }
@@ -159,16 +154,10 @@ void Cell::setNeighbors(Cell *neighbors[4]) {
     }
 }
 
-void Cell::setNeighbor(int i, Cell *cell) { setNeighbor(i, cell, false); }
-
-void Cell::setNeighbor(int i, Cell *cell, bool force) {
-    neighbors_[i] = cell;
-    if (cell != nullptr) {
-        if (force) {
-            relativeNeighbors_[i] = cell;
-        } else {
-            relativeNeighbors_[i] = cell;
-        }
+void Cell::setNeighbor(const int i, Cell *neighbor) { 
+    neighbors_[i] = neighbor;
+    if (neighbor != nullptr) {
+        relativeNeighbors_[i] = neighbor;
     }
 }
 
@@ -178,24 +167,24 @@ void Cell::setWalls(Wall *walls[4]) {
     }
 }
 
-void Cell::setWall(int i, Wall *wall) { walls_[i] = wall; }
+void Cell::setWall(const int i, Wall *wall) { walls_[i] = wall; }
 
-void Cell::setAlreadyVisited(bool alreadyVisited) {
+void Cell::setAlreadyVisited(const bool alreadyVisited) {
     alreadyVisited_ = alreadyVisited;
 }
 
-void Cell::setStatus(int status) { status_ = status; }
+void Cell::setStatus(const int status) { status_ = status; }
 
-void Cell::freeWall(int i) {
+void Cell::freeWall(const int i) const {
     if (i < 0 || i > 3) {
         return;
     }
     if (getWall(i) != nullptr) {
-        delete (walls_[i]);
+        delete walls_[i];
     }
 }
 
-void Cell::freeWalls() {
+void Cell::freeWalls() const {
     for (int i = 0; i < 4; i++) {
         freeWall(i);
     }
