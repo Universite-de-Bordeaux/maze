@@ -10,7 +10,7 @@ Stack::~Stack() { delete[] data; }
 
 void Stack::push(void *data) {
     if (size_ == capacity_) {
-        void **newData = new void *[capacity_ * 2];
+        const auto newData = new void *[capacity_ * 2];
         for (int i = 0; i < size_; i++) {
             newData[i] = this->data[i];
         }
@@ -24,7 +24,7 @@ void Stack::push(void *data) {
 
 void Stack::pop() {
     if (size_ < capacity_ / 4) {
-        void **newData = new void *[capacity_ / 2];
+        const auto newData = new void *[capacity_ / 2];
         for (int i = 0; i < size_; i++) {
             newData[i] = this->data[i];
         }
@@ -37,6 +37,6 @@ void Stack::pop() {
     }
 }
 
-void *Stack::top() { return data[size_ - 1]; }
+void *Stack::top() const { return data[size_ - 1]; }
 
-bool Stack::empty() { return size_ == 0; }
+bool Stack::empty() const { return size_ == 0; }

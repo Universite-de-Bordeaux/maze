@@ -2,19 +2,40 @@
 #define STACK_H
 
 class Stack {
-   private:
-    int size_;
-    int capacity_;
-    void **data;
-
    public:
-    Stack();   // Constructeur par défaut
-    ~Stack();  // Destructeur
+    /**
+     * Constructeur par défaut
+     */
+    Stack();
+    /**
+     * Destructeur
+     */
+    ~Stack();
 
-    void push(void *data);  // Ajoute un élément à la pile
-    void pop();               // Retire un élément de la pile
-    void *top();              // Retourne le premier élément de la pile
-    bool empty();             // Retourne vrai si la pile est vide
+    /**
+     * @brief Ajoute un élément à la pile
+     * @param data L'élément à ajouter
+     */
+    void push(void *data);
+    /**
+     * @brief Retire un élément de la pile
+     */
+    void pop();
+    /**
+     * @brief Retourne le premier élément de la pile
+     * @return Le premier élément de la pile
+     */
+    void *top() const;
+    /**
+     * @brief Retourne vrai si la pile est vide
+     * @return Retourne vrai si la pile est vide
+     */
+    bool empty() const;
+
+   private:
+    int size_;      ///< Taille de la pile
+    int capacity_;  ///< Capacité de la pile
+    void **data;    ///< Tableau de données
 };
 
 #endif  // STACK_H
