@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/String.hpp>
 #include <SFML/Window/Event.hpp>
+#include <fstream>
 #include <iostream>
 #include <random>
 #include <thread>
@@ -14,8 +15,27 @@ Show::Show(Maze *maze) {
     renderWindow_ = nullptr;
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
-    setRefreshRate(60);
-    setDelay(0);
+
+    std::ifstream envFile(".env");
+    if (envFile.is_open()) {
+        std::string line;
+        unsigned int framerate = 60;
+        float delay = 0;
+        while (std::getline(envFile, line)) {
+            if (line.find("FRAMERATE=") == 0) {
+                framerate = std::stoi(line.substr(10));
+            } else if (line.find("DELAY_SHOW=") == 0) {
+                delay = std::stof(line.substr(11)) * 1000;
+            }
+        }
+        setRefreshRate(framerate);
+        setDelay(delay);
+        envFile.close();
+    } else {
+        setRefreshRate(60);
+        setDelay(0);
+    }
+
     if (!font_.loadFromFile("src/assets/poppins.ttf")) {
         std::cerr << "Error: cannot load font" << std::endl;
     }

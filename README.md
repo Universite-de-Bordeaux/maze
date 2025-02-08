@@ -69,6 +69,12 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-c` ou `--clear` : Efface le labyrinthe en mémoire
 * `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire
 
+> Il est possible de définir les valeurs framerate et delay-show dans le fichier .env
+> ```dotenv
+> FRAMERATE=60
+> DELAY_SHOW=0.0
+```
+
 #### Génération de labyrinthe (maze_generator)
 
 * `-g` ou `--generate` : Génère un labyrinthe (écrase le labyrinthe en mémoire)
