@@ -1,10 +1,6 @@
 #include "show.hpp"
 
-#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/System/Clock.hpp>
-#include <SFML/System/InputStream.hpp>
 #include <SFML/System/String.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
@@ -24,7 +20,7 @@ Show::Show(Maze *maze) {
 
 void Show::create() {
     cellSize_ = 50;
-    sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
+    const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
     if (maze_->getWidth() * cellSize_ >
             desktopSize.width * MAZE_MAX_WINDOW_RATIO ||
         maze_->getHeight() * cellSize_ >
@@ -39,7 +35,8 @@ void Show::create() {
                              "Maze");
     renderWindow_->setVerticalSyncEnabled(true);
 
-    sf::Vector2i screenCenter(desktopSize.width / 2, desktopSize.height / 2);
+    const sf::Vector2i screenCenter(static_cast<int>(desktopSize.width / 2),
+                                    static_cast<int>(desktopSize.height / 2));
     renderWindow_->setPosition(screenCenter -
                                sf::Vector2i(renderWindow_->getSize().x / 2,
                                             renderWindow_->getSize().y / 2));
@@ -53,57 +50,59 @@ void Show::destroy() {
     renderWindow_ = nullptr;
 }
 
-bool Show::isOpen() {
+bool Show::isOpen() const {
     if (renderWindow_ == nullptr) {
         return false;
     }
     return renderWindow_->isOpen();
 }
 
-void Show::draw() {
-    // Dessin du labyrinthe
-    for (int y = 0; y < maze_->getHeight(); y++) {
-        for (int x = 0; x < maze_->getWidth(); x++) {
-            Cell *cell = maze_->getCell(x, y);
-            updateCell(cell);
-        }
-    }
-}
-
-void Show::eventHandler_(sf::Event &event) {
-    if (event.type == sf::Event::Closed) {
-        renderWindow_->close();
-    }
-}
-
-void Show::eventHandler() {
-    sf::Event event;
+void Show::eventHandler() const {
+    sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
         eventHandler_(event);
     }
 }
 
-bool Show::pollEvent(sf::Event &event) {
+bool Show::pollEvent(sf::Event &event) const {
     return renderWindow_->pollEvent(event);
 }
 
-void Show::clear() { renderWindow_->clear(sf::Color::Black); }
+void Show::eventHandler_(const sf::Event &event) const {
+    if (event.type == sf::Event::Closed ||
+        (event.type == sf::Event::KeyPressed &&
+         event.key.code == sf::Keyboard::Escape)) {
+        renderWindow_->close();
+    }
+}
 
-void Show::display() {
+void Show::clearBlack() const { renderWindow_->clear(sf::Color::Black); }
+
+void Show::refreshDisplay() const {
     renderWindow_->display();
     sf::sleep(sf::milliseconds(1000 / 60 + 1));
 }
 
-void Show::update() {
-    eventHandler();
-    // clear();
-    draw();
-    display();
+void Show::drawCells() const {
+    for (int y = 0; y < maze_->getHeight(); y++) {
+        for (int x = 0; x < maze_->getWidth(); x++) {
+            drawCell(maze_->getCell(x, y));
+        }
+    }
 }
 
-void Show::drawCell_(Cell *cell) {
-    sf::RectangleShape visited(sf::Vector2f(cellSize_, cellSize_));
-    visited.setPosition(cell->getX() * cellSize_, cell->getY() * cellSize_);
+void Show::refreshMaze() const {
+    eventHandler();
+    // clear();
+    drawCells();
+    refreshDisplay();
+}
+
+void Show::drawCell_(const Cell *cell) const {
+    sf::RectangleShape visited(sf::Vector2f(static_cast<float>(cellSize_),
+                                            static_cast<float>(cellSize_)));
+    visited.setPosition(static_cast<float>(cell->getX() * cellSize_),
+                        static_cast<float>(cell->getY() * cellSize_));
     if (cell->getStatus() == MAZE_STATUS_IDLE) {
         visited.setFillColor(sf::Color(MAZE_STATUS_IDLE_COLOR, 255));
     } else if (cell->getStatus() == MAZE_STATUS_VISITED) {
@@ -123,7 +122,7 @@ void Show::drawCell_(Cell *cell) {
     renderWindow_->draw(visited);
 }
 
-void Show::drawWall_(Cell *cell, int orientation) {
+void Show::drawWall_(const Cell *cell, const int orientation) const {
     int x = cell->getX();
     int y = cell->getY();
     if (cell->getWall(orientation)) {
@@ -146,7 +145,7 @@ void Show::drawWall_(Cell *cell, int orientation) {
         } else if (orientation == MAZE_CELL_BOTTOM) {
             neighbor = maze_->getCell(x, y + 1);
             wall.setPosition(x * cellSize_, y * cellSize_ + cellSize_);
-        } else if (orientation == MAZE_CELL_LEFT) {
+        } else {
             neighbor = maze_->getCell(x - 1, y);
             if (maze_->getCell(x - 1, y)->getWall(MAZE_CELL_RIGHT)) x--;
             wall.setSize(sf::Vector2f(1, cellSize_));
@@ -163,7 +162,7 @@ void Show::drawWall_(Cell *cell, int orientation) {
     }
 }
 
-void Show::drawFrontier_(Cell *cell, int orientation) {
+void Show::drawFrontier_(const Cell *cell, const int orientation) const {
     sf::RectangleShape frontier(sf::Vector2f(cellSize_, 1));
     if (orientation == MAZE_CELL_TOP) {
         frontier.setPosition(cell->getX() * cellSize_, 0);
@@ -174,7 +173,7 @@ void Show::drawFrontier_(Cell *cell, int orientation) {
     } else if (orientation == MAZE_CELL_BOTTOM) {
         frontier.setPosition(cell->getX() * cellSize_,
                              maze_->getHeight() * cellSize_ - 1);
-    } else if (orientation == MAZE_CELL_LEFT) {
+    } else {
         frontier.setSize(sf::Vector2f(1, cellSize_));
         frontier.setPosition(0, cell->getY() * cellSize_);
     }
@@ -189,9 +188,9 @@ void Show::drawFrontier_(Cell *cell, int orientation) {
     renderWindow_->draw(frontier);
 }
 
-void Show::updateCell(Cell *cell) {
-    int x = cell->getX();
-    int y = cell->getY();
+void Show::drawCell(const Cell *cell) const {
+    const int x = cell->getX();
+    const int y = cell->getY();
     drawCell_(cell);
     // Dessin des murs
     if (y > 0) {
@@ -222,7 +221,7 @@ void Show::updateCell(Cell *cell) {
 }
 
 bool Show::keyPress() {
-    sf::Event event;
+    sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
         if (event.type == sf::Event::KeyPressed) {
             lastKeyPressed_ = event.key;
@@ -232,56 +231,58 @@ bool Show::keyPress() {
     return false;
 }
 
-sf::Event::KeyEvent Show::getLastKeyPressed() { return lastKeyPressed_; }
+sf::Event::KeyEvent Show::getLastKeyPressed() const { return lastKeyPressed_; }
 
-void Show::close() {
+void Show::close() const {
     if (renderWindow_ == nullptr) {
         return;
     }
     renderWindow_->close();
 }
 
-void updateShowLive(Show *show, Maze *maze, bool fastCooling) {
+void updateShowLive(const Show *show, const Maze *maze,
+                    const bool fastCooling) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
     show->eventHandler();
     if (fastCooling) {
         if (maze->getWidth() <= MAZE_REFRESH_SIZE &&
             maze->getHeight() <= MAZE_REFRESH_SIZE) {
-            show->update();
+            show->drawCells();
         }
     } else {
         if (maze->getWidth() > MAZE_REFRESH_SIZE ||
             maze->getHeight() > MAZE_REFRESH_SIZE) {
-            show->update();
+            show->drawCells();
         }
     }
-    show->display();
+    show->refreshDisplay();
 }
 
-void updateShowLive(Show *show, Maze *maze) {
+void updateShowLive(const Show *show, const Maze *maze) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
     show->eventHandler();
     updateShowLive(show, maze, false);
     updateShowLive(show, maze, true);
-    show->display();
+    show->refreshDisplay();
 }
 
-void updateShowLive(Show *show, Maze *maze, int argc, Cell *argv[]) {
+void updateShowLive(const Show *show, const Maze *maze, const int argc,
+                    Cell *argv[]) {
     if (show == nullptr || maze == nullptr) return;
     if (!show->isOpen()) return;
     if (argc <= 0) return;
     show->eventHandler();
     for (int i = 0; i < argc; i++) {
-        if (argv[i] != nullptr) show->updateCell(argv[i]);
+        if (argv[i] != nullptr) show->drawCell(argv[i]);
     }
-    show->display();
+    show->refreshDisplay();
 }
 
-void refreshShow(Show *show) {
+void refreshShow(const Show *show) {
     if (show == nullptr) return;
     if (!show->isOpen()) return;
     // show->eventHandler();
-    show->update();
+    show->drawCells();
 }

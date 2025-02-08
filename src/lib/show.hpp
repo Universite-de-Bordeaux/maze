@@ -12,7 +12,7 @@ class Show {
      * @brief Constructeur de la classe Show
      * @param maze Pointeur vers un objet de type Maze
      */
-    Show(Maze *maze);
+    explicit Show(Maze *maze);
     /**
      * @brief Crée une fenêtre de rendu
      */
@@ -23,42 +23,59 @@ class Show {
     void destroy();
     /**
      * @brief Vérifie si la fenêtre de rendu est ouverte
-     * @return true si la fenêtre est ouverte, false sinon
+     * @return True si la fenêtre de rendu est ouverte, false sinon
      */
-    bool isOpen();
+    bool isOpen() const;
     /**
-     * @brief Dessine la fenêtre de rendu
+     * @brief Gère les événements de la fenêtre de rendu
      */
-    void draw();
+    void eventHandler() const;
     /**
      * @brief Récupère un événement
-     * @param event Référence vers un objet de type sf::Event
-     * @return true si un événement a été récupéré, false sinon
+     * @param event Référence vers un event
+     * @return True si un événement a été récupéré, false sinon
      */
-    bool pollEvent(sf::Event &);
-    /**
-     * @brief Récupère l'événement de fermeture de la fenêtre
-     * @return true si l'événement de fermeture a été récupéré, false sinon
-     */
-    void eventHandler();
+    bool pollEvent(sf::Event &event) const;
     /**
      * @brief Efface le contenu de la fenêtre de rendu
      */
-    void clear();
+    void clearBlack() const;
     /**
      * @brief Affiche le contenu de la fenêtre de rendu
      */
-    void display();
+    void refreshDisplay() const;
     /**
      * @brief Met à jour la fenêtre de rendu
      */
-    void update();
-    void updateCell(Cell *);
+    /**
+     * @brief Dessine toutes les cellules du labyrinthe
+     */
+    void drawCells() const;
+    /**
+     * @brief Rafraîchit l'ensemble du labyrinthe
+     */
+    void refreshMaze() const;
+    /**
+     * @brief Met à jour une cellule
+     * @param cell Pointeur vers un objet de type Cell
+     */
+    void drawCell(const Cell *cell) const;
 
+    /**
+     * @brief Gère les événements de la fenêtre de rendu
+     * @return True si une touche a été pressée, false sinon
+     */
     bool keyPress();
-    sf::Event::KeyEvent getLastKeyPressed();
+    /**
+     * @brief Récupère la dernière touche pressée
+     * @return Dernière touche pressée
+     */
+    sf::Event::KeyEvent getLastKeyPressed() const;
 
-    void close();
+    /**
+     * @brief Ferme la fenêtre de rendu
+     */
+    void close() const;
 
    private:
     Maze *maze_;  //> Pointeur vers un objet de type Maze
@@ -66,34 +83,48 @@ class Show {
         nullptr;     //> Pointeur vers un objet de type sf::RenderWindow
     int cellSize_;   //> Taille d'une cellule
     sf::Font font_;  //> Police d'écriture
-    sf::Event::KeyEvent lastKeyPressed_;  //> Dernière touche pressée
+    sf::Event::KeyEvent lastKeyPressed_{};  //> Dernière touche pressée
 
     /**
      * @brief Gère les événements de la fenêtre de rendu
-     * @param event Référence vers un objet de type sf::Event
+     * @param event Référence vers event
      */
-    void eventHandler_(sf::Event &);
-    void drawCell_(Cell *);
-    void drawWall_(Cell *, int);
-    void drawFrontier_(Cell *, int);
+    void eventHandler_(const sf::Event &event) const;
+    /**
+     * @brief Dessine une cellule
+     * @param cell Pointeur vers un objet de type Cell
+     */
+    void drawCell_(const Cell *cell) const;
+    /**
+     * @brief Dessine un mur
+     * @param cell Pointeur vers un objet de type Cell
+     * @param orientation Orientation du mur
+     */
+    void drawWall_(const Cell *cell, int orientation) const;
+    /**
+     * @brief Dessine une frontière
+     * @param cell Pointeur vers un objet de type Cell
+     * @param orientation Orientation de la frontière
+     */
+    void drawFrontier_(const Cell *cell, int orientation) const;
 };
 
-/*
+/**
  * @brief Met à jour la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
  * @param maze Pointeur vers un objet de type Maze
  * @param fastCooling Refroidissement rapide
  * @return void
  */
-void updateShowLive(Show *, Maze *, bool);
-/*
+void updateShowLive(const Show *show, const Maze *maze, bool fastCooling);
+/**
  * @brief Met à jour la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
  * @param maze Pointeur vers un objet de type Maze
  * @return void
  */
-void updateShowLive(Show *, Maze *);
-/*
+void updateShowLive(const Show *show, const Maze *maze);
+/**
  * @brief Met à jour la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
  * @param maze Pointeur vers un objet de type Maze
@@ -101,12 +132,12 @@ void updateShowLive(Show *, Maze *);
  * @param argv Tableau de pointeurs vers des objets de type Cell
  * @return void
  */
-void updateShowLive(Show *, Maze *, int, Cell **);
-/*
+void updateShowLive(const Show *show, const Maze *maze, int argc, Cell *argv[]);
+/**
  * @brief Rafraîchit la fenêtre de rendu
  * @param show Pointeur vers un objet de type Show
  * @return void
  */
-void refreshShow(Show *);
+void refreshShow(const Show *show);
 
 #endif  // SHOW_HPP
