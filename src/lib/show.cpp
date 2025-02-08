@@ -27,13 +27,13 @@ Show::Show(Maze *maze) {
                 framerate = std::stoi(line.substr(10));
             } else if (line.find("DELAY_SHOW=") == 0) {
                 delay = std::stof(line.substr(11));
-            } else if (line.find("LOW_FREQ=") == 0) {
-                if (line.substr(9) == "true") {
+            } else if (line.find("LOW_FREQUENCY=") == 0) {
+                if (line.substr(14) == "true") {
                     lowFreq_ = true;
-                } else if (line.substr(9) == "false") {
+                } else if (line.substr(14) == "false") {
                     lowFreq_ = false;
                 } else {
-                    std::cerr << "Error: cannot read LOW_FREQ" << std::endl;
+                    std::cerr << "Error: cannot read 13" << std::endl;
                     exit(MAZE_COMMAND_ERROR);
                 }
             }

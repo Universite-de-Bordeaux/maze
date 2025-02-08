@@ -76,7 +76,12 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 > ```dotenv
 >  FRAMERATE=60
 >  DELAY_SHOW=0.0
+>  LOW_FREQUENCY=false
 > ```
+
+> Il est possible de mettre en pause le programme quand l'affichage est activé en appuyant sur la touche `espace`\
+> Il est possible de quitter le programme quand l'affichage est activé en appuyant sur la touche `échap`\
+> Il est possible de rafraichir l'ensemble des cellules du labyrinthe en appuyant sur la touche `r`
 
 #### Génération de labyrinthe (maze_generator)
 
