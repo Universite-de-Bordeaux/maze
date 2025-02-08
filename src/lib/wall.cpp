@@ -7,6 +7,8 @@ Wall::Wall(const bool horizontal) {
     alreadyVisited_ = false;
 }
 
+Wall::~Wall() = default;
+
 bool Wall::getIsHorizontal() const { return isHorizontal_; }
 
 Wall **Wall::getNeighbors() { return neighbors_; }
