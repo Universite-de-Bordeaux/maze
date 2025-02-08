@@ -31,6 +31,13 @@ void help() {
               << std::endl;
     std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire"
               << std::endl;
+    std::cout << "    -f ou --framerate <framerate> : Spécifie le framerate de "
+                 "l'affichage (par défaut : 60)"
+              << std::endl;
+    std::cout
+        << "    -ds ou --delay-show <delay> : Spécifie le délai d'affichage "
+           "entre chaque cellule en millisecondes (par défaut : 0)"
+        << std::endl;
     std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
                  "sauvegarder le labyrinthe en mémoire"
               << std::endl;
