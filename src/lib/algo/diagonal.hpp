@@ -13,6 +13,7 @@
  * @param probability La probabilité de mur
  * @param show L'objet pour afficher le labyrinthe
  */
-void algo_diagonal(Maze* maze, int width, int height, bool perfect, double probability, Show* show);
+void algo_diagonal(Maze* maze, int width, int height, bool perfect,
+                   double probability, Show* show);
 
 #endif  // ALGO_DIAGONAL_HPP

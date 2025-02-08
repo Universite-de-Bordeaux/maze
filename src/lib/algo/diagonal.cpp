@@ -29,7 +29,7 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
         const int startB = (isHorizontal ? (whereStart->left ? *b : 0)
                                          : (whereStart->top ? *b : 0));
         const int endB = (isHorizontal ? (whereStart->left ? *maxB : *b)
-                                 : (whereStart->top ? *maxB : *b));
+                                       : (whereStart->top ? *maxB : *b));
         if (startB == endB) {
             (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
                                  : (whereStart->left ? 1 : -1);
@@ -56,8 +56,8 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
     }
 }
 
-void algo_diagonal(Maze *maze, int width, int height, bool perfect,
-                   double probability, Show *show) {
+void algo_diagonal(Maze *maze, const int width, const int height,
+                   const bool perfect, const double probability, Show *show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
