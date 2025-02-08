@@ -5,12 +5,11 @@
 #include "../show.hpp"
 
 /**
- * @brief Résoud le labyrinthe sans connaitre son parcours précédent en se
- * baladant aléatoirement
+ * @brief Réalise le jeu du labyrinthe avec sans visibilité de manière aléatoire
  * @param maze Le labyrinthe à résoudre
  * @param show L'affichage du labyrinthe
- * @return int Le nombre de pas effectués pour résoudre le labyrinthe
+ * @return Le nombre de pas pour sortir du labyrinthe
  */
-int game_fog(Maze*, Show*);
+int game_fog(Maze* maze, Show* show);
 
 #endif  // GAME_FOG_HPP

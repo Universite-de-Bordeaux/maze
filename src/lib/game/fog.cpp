@@ -4,19 +4,19 @@
 #include "../var.hpp"
 
 int game_fog(Maze *maze, Show *show) {
-    refreshShow(show);
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
+    refreshShow(show);
     int steps = 0;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
-        int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
+        const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
             refreshShow(show, 1, &cell);
             return -1;
         }
-        int direction = rand() % nbNeighbors;
-        Cell **neighbors = new Cell *[nbNeighbors];
+        const int direction = maze->getRand()->get(0, nbNeighbors - 1);
+        const auto neighbors = new Cell *[nbNeighbors];
         cell->getAbsoluteNeighbors(neighbors);
         Cell *neighbor = neighbors[direction];
         delete[] neighbors;
@@ -30,5 +30,6 @@ int game_fog(Maze *maze, Show *show) {
         steps++;
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
+    refreshShow(show, 1, &cell);
     return steps;
 }

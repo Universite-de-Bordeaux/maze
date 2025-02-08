@@ -19,7 +19,7 @@ struct positionHistory {
     int parent_y;
 };
 
-void checker_breadth_first(const Maze *maze, bool perfect, Show *show) {
+void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
     Queue queue;
     Stack stack;
     bool imperfect = false;
