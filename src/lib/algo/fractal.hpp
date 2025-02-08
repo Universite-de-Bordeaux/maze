@@ -6,10 +6,13 @@
 
 /**
  * Crée un labyrinthe
- * @param Maze* pointeur vers le labyrinthe à genérer
- * @param n donne la taille du labyrinthe qui sera de 2^n
- * @param bool vrai si le labyrinthe est parfait
+ * @param maze le labyrinthe
+ * @param n Le nombre d'itérations
+ * @param perfect Si le labyrinthe est parfait
+ * @param probability la probabilité de casse d'un mur
+ * @param show l'affichage
  */
-void algo_fractal(Maze*, int, bool, double, Show*);
+void algo_fractal(Maze* maze, int n, bool perfect, double probability,
+                  Show* show);
 
 #endif  // ALGO_FRACTAL_HPP

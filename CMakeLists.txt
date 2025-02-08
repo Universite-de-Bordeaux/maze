@@ -145,7 +145,7 @@ add_custom_target(run_algo_diagonal_test
 add_custom_target(run_algo_fractal
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "4" "4" "-a" "f" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs"
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-i" "-d" "4" "4" "-a" "f" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "4" "4" "-a" "f" "-i" "-p" "0.25" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-p"
         DEPENDS ${EXECUTABLE_PROJECT} ${EXECUTABLE_PROJECT_GENERATOR}
 )

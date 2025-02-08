@@ -1,31 +1,29 @@
 #include "fractal.hpp"
 
-#include <chrono>
 #include <cmath>
-#include <cstdlib>
 #include <iostream>
-#include <thread>
 
 #include "../maze.hpp"
 #include "../show.hpp"
 #include "../var.hpp"
 
-static bool add_wall_imperfect(Maze *maze, int mid, double probability) {
+static bool add_wall_imperfect(Maze *maze, const int mid,
+                               const double probability) {
     for (int i = 0; i < maze->getHeight(); i++) {
         maze->addWall(mid - 1, i, false);
         maze->addWall(i, mid - 1, true);
     }
     int remove[4];
-    remove[0] = rand() % mid;
+    remove[0] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(mid - 1, remove[0], false);
-    remove[1] = rand() % mid;
+    remove[1] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(remove[1], mid - 1, true);
-    remove[2] = rand() % mid;
+    remove[2] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(mid - 1, mid + remove[2], false);
-    remove[3] = rand() % mid;
+    remove[3] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(mid + remove[3], mid - 1, true);
-    if ((double)(rand() % 10000) > probability * (double)10000) {
-        int r = rand() % 4;
+    if (!maze->getRand()->get(probability)) {
+        const int r = maze->getRand()->get(0, 3);
         if (r == 0) {
             maze->addWall(mid - 1, remove[0], false);
         } else if (r == 1) {
@@ -39,41 +37,41 @@ static bool add_wall_imperfect(Maze *maze, int mid, double probability) {
     return true;
 }
 
-static bool add_wall_perfect(Maze *maze, int mid) {
+static bool add_wall_perfect(Maze *maze, const int mid) {
     for (int i = 0; i < mid; i++) {
         maze->addWall(mid - 1, i, false);
         maze->addWall(mid + i, mid - 1, true);
         maze->addWall(mid - 1, mid + i, false);
         maze->addWall(i, mid - 1, true);
     }
-    int direction = rand() % 4;
+    int direction = maze->getRand()->get(0, 3);
     if (direction == NORTH) {
-        int remove = rand() % mid;
+        int remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid + remove, mid - 1, true);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid - 1, mid + remove, false);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(remove, mid - 1, true);
     } else if (direction == EAST) {
-        int remove = rand() % mid;
+        int remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid - 1, mid + remove, false);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(remove, mid - 1, true);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid - 1, remove, false);
     } else if (direction == SOUTH) {
-        int remove = rand() % mid;
+        int remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(remove, mid - 1, true);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid - 1, remove, false);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid + remove, mid - 1, true);
     } else if (direction == WEST) {
-        int remove = rand() % mid;
+        int remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid - 1, remove, false);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid + remove, mid - 1, true);
-        remove = rand() % mid;
+        remove = maze->getRand()->get(0, mid - 1);
         maze->removeWall(mid - 1, mid + remove, false);
     } else {
         return false;
@@ -82,9 +80,9 @@ static bool add_wall_perfect(Maze *maze, int mid) {
 }
 
 static void quad_maze(Maze *maze) {
-    int old_width = maze->getWidth();
-    int old_height = maze->getHeight();
-    Maze new_maze = Maze();
+    const int old_width = maze->getWidth();
+    const int old_height = maze->getHeight();
+    auto new_maze = Maze();
     new_maze.setWidthHeight(old_width, old_height);
     // copie de maze dans new_maze
     for (int i = 0; i < old_width; i++) {
@@ -112,8 +110,8 @@ static void quad_maze(Maze *maze) {
     new_maze.clearMaze();
 }
 
-void algo_fractal(Maze *maze, int n, bool perfect, double probability,
-                  Show *show) {
+void algo_fractal(Maze *maze, int n, const bool perfect,
+                  const double probability, Show *show) {
     maze->setWidthHeight(1, 1);
     if (show) {
         show->create();
@@ -155,5 +153,4 @@ void algo_fractal(Maze *maze, int n, bool perfect, double probability,
 
         n -= 1;
     }
-    return;
 }
