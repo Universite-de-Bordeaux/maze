@@ -73,8 +73,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 
 > Il est possible de définir les valeurs framerate et delay-show dans le fichier .env
 > ```dotenv
-> FRAMERATE=60
-> DELAY_SHOW=0.0
+>  FRAMERATE=60
+>  DELAY_SHOW=0.0
 > ```
 
 #### Génération de labyrinthe (maze_generator)
