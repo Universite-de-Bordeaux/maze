@@ -203,3 +203,4 @@ src/instances/tmp/*
 .fleet
 default.nix
 .cmake
+.env
