@@ -61,8 +61,8 @@ static void checkCell(Maze *maze, int x, int y, Show *show,  // NOLINT
  * @param left Vérifie si le labyrinthe est parfait en partant à gauche
  */
 static void checkCellPerfect(Maze *maze, const int x, const int y,  // NOLINT
-                             bool *imperfect,
-                             Show *show, const int direction, const bool left) {
+                             bool *imperfect, Show *show, const int direction,
+                             const bool left) {
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_VISITED);
@@ -95,8 +95,8 @@ static void checkCellPerfect(Maze *maze, const int x, const int y,  // NOLINT
         if (cell->isNeighbor(index)) {
             const Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                checkCellPerfect(maze, neighbor->getX(), neighbor->getY(), imperfect, show,
-                          (index + 2) % 4, left);
+                checkCellPerfect(maze, neighbor->getX(), neighbor->getY(),
+                                 imperfect, show, (index + 2) % 4, left);
             }
         }
     }

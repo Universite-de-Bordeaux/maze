@@ -22,8 +22,9 @@ struct positionHistory {
 void checker_breadth_first(const Maze *maze, bool perfect, Show *show) {
     Queue queue;
     Stack stack;
+    bool imperfect = false;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
-        // return false;
+        return;
     }
     refreshShow(show);
     position start = {maze->getStartX(), maze->getStartY()};
@@ -39,6 +40,12 @@ void checker_breadth_first(const Maze *maze, bool perfect, Show *show) {
         const int x = current->x;
         const int y = current->y;
         Cell *cell = maze->getCell(x, y);
+        if (cell->getAbsoluteNumberOfNeighbors() -
+                cell->getAbsoluteNumberOfNeighborsNotVisited() >=
+            2) {
+            cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
+            imperfect = true;
+        }
         refreshShow(show, 1, &cell);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
@@ -55,35 +62,24 @@ void checker_breadth_first(const Maze *maze, bool perfect, Show *show) {
                 stack.push(neighborHistory);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
-                if (neighbor->getX() == maze->getEndX() &&
-                    neighbor->getY() == maze->getEndY()) {
-                    neighbor->setStatus(MAZE_STATUS_WAY_OUT);
-                    refreshShow(show, 1, &neighbor);
-                    while (!stack.empty()) {
-                        const auto *currentCell =
-                            static_cast<positionHistory *>(stack.top());
-                        const auto *cellTop =
-                            static_cast<positionHistory *>(stack.top());
-                        while (!stack.empty() &&
-                               (cellTop->x != currentCell->parent_x ||
-                                cellTop->y != currentCell->parent_y)) {
-                            stack.pop();
-                            cellTop =
-                                static_cast<positionHistory *>(stack.top());
-                        }
-                        if (stack.empty()) {
-                            break;
-                        }
-                        cell = maze->getCell(cellTop->x, cellTop->y);
-                        if (cell != nullptr) {
-                            cell->setStatus(MAZE_STATUS_WAY_OUT);
-                            refreshShow(show, 1, &cell);
-                        }
-                    }
-                    // return true;
-                }
             }
         }
     }
-    // return false;
+    for (int i = 0; i < maze->getWidth(); i++) {
+        for (int j = 0; j < maze->getHeight(); j++) {
+            const Cell *cell = maze->getCell(i, j);
+            if (!cell->isAlreadyVisited()) {
+                std::cout << "Maze is not valid!" << std::endl;
+                return;
+            }
+        }
+    }
+    std::cout << "Maze is valid!" << std::endl;
+    if (perfect) {
+        if (!imperfect) {
+            std::cout << "Maze is perfect!" << std::endl;
+        } else {
+            std::cout << "Maze is not perfect!" << std::endl;
+        }
+    }
 }
