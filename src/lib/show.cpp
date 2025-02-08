@@ -53,10 +53,10 @@ void Show::create() {
                                    maze_->getHeight() / desktopSize.height;
         if (priorityWidth) {
             cellSize_ = static_cast<float>(desktopSize.width) /
-                        static_cast<float>(maze_->getWidth());
+                        static_cast<float>(maze_->getWidth()) * MAZE_MAX_WINDOW_RATIO;
         } else {
             cellSize_ = static_cast<float>(desktopSize.height) /
-                        static_cast<float>(maze_->getHeight());
+                        static_cast<float>(maze_->getHeight()) * MAZE_MAX_WINDOW_RATIO;
         }
     }
     renderWindow_ = new sf::RenderWindow(
