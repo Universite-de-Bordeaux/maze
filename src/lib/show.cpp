@@ -15,7 +15,7 @@ Show::Show(Maze *maze) {
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
     setRefreshRate(60);
-    setDelay(0);
+    setDelay(0.0f);
     if (!font_.loadFromFile("src/assets/poppins.ttf")) {
         std::cerr << "Error: cannot load font" << std::endl;
     }
@@ -93,7 +93,7 @@ void Show::refreshDisplay() {
         renderWindow_->display();
         lastDisplay_ = std::chrono::high_resolution_clock::now();
     }
-    std::this_thread::sleep_for(std::chrono::nanoseconds(delay_));
+    std::this_thread::sleep_for(delay_);
 }
 
 void Show::drawCells_() const {
@@ -307,5 +307,5 @@ void Show::setRefreshRate(const unsigned int rate) {
 }
 
 void Show::setDelay(const float delay) {
-    delay_ = std::chrono::nanoseconds(static_cast<int>(delay * 1000));
+    delay_ = std::chrono::microseconds(static_cast<int>(delay * 1000));
 }
