@@ -279,6 +279,10 @@ void Show::close() const {
 }
 
 void refreshShow(Show *show, const int argc, Cell *argv[]) {
+    refreshShow(show, argc, argv, true);
+}
+
+void refreshShow(Show *show, const int argc, Cell *argv[], const bool lowFreq) {
     if (show == nullptr) return;
     if (!show->isOpen()) return;
     if (argc <= 0) return;
@@ -286,15 +290,7 @@ void refreshShow(Show *show, const int argc, Cell *argv[]) {
     for (int i = 0; i < argc; i++) {
         if (argv[i] != nullptr) show->drawCell(argv[i]);
     }
-    show->refreshDisplay();
-}
-
-void refreshShow(Show *show, const int argc, Cell *argv[], const bool lowFreq) {
-    if (show == nullptr) return;
-    if (show->getLowFreq() && lowFreq)
-        refreshShow(show);
-    else if (!show->getLowFreq())
-        refreshShow(show, argc, argv);
+    if (lowFreq || !show->getLowFreq()) show->refreshDisplay();
 }
 
 void refreshShow(Show *show) {
