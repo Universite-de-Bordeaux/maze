@@ -25,7 +25,7 @@ Show::Show(Maze *maze) {
             if (line.find("FRAMERATE=") == 0) {
                 framerate = std::stoi(line.substr(10));
             } else if (line.find("DELAY_SHOW=") == 0) {
-                delay = std::stof(line.substr(11)) * 1000;
+                delay = std::stof(line.substr(11));
             }
         }
         setRefreshRate(framerate);
@@ -327,5 +327,5 @@ void Show::setRefreshRate(const unsigned int rate) {
 }
 
 void Show::setDelay(const float delay) {
-    delay_ = std::chrono::nanoseconds(static_cast<int>(delay * 1000));
+    delay_ = std::chrono::microseconds(static_cast<int>(delay * 1000));
 }
