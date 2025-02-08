@@ -1,23 +1,23 @@
 #include "writer.hpp"
 
+#include <fstream>
 #include <ios>
 #include <iostream>
 #include <ostream>
 
-void write(Maze *maze, char *file) {
-    // ouverture du fichier
-    std::cout << "Writing maze to file " << file << std::endl;
+void write(const Maze *maze, const char *filename) {
+    std::cout << "Writing maze to file " << filename << std::endl;
     std::ofstream new_file;
-    new_file.open(file, std::ios_base::out);
+    new_file.open(filename, std::ios_base::out);
     // récupération de largeur et hauteur
-    int height = maze->getHeight();
-    int width = maze->getWidth();
+    const int height = maze->getHeight();
+    const int width = maze->getWidth();
     // écriture de la première ligne
     new_file << width << ' ' << height << std::endl;
     // écriture des lignes suivantes
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            Cell *cell = maze->getCell(x, y);
+            const Cell *cell = maze->getCell(x, y);
             if (cell->getWall(MAZE_CELL_RIGHT)) {
                 new_file << x << ' ' << y << ' ' << 'V' << std::endl;
             }
