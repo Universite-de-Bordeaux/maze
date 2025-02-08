@@ -1,14 +1,16 @@
-#ifndef CHECKER_DEPTHFIRST_HPP
-#define CHECKER_DEPTHFIRST_HPP
+#ifndef CHECKER_DEPTH_FIRST_HPP
+#define CHECKER_DEPTH_FIRST_HPP
 
 #include "../maze.hpp"
 #include "../show.hpp"
 
 /**
- * @brief checker - Vérifie si le labyrinthe est valide
- * @param maze - Labyrinthe à vérifier
- * @param perfect - Vérifie si le labyrinthe est parfait
+ * @brief Vérifie si le labyrinthe est valide
+ * @param maze Labyrinthe à vérifier
+ * @param perfect Vérifie si le labyrinthe est parfait
+ * @param left Vérifie si le labyrinthe est parfait en partant à gauche
+ * @param show Affichage du labyrinthe
  */
-void checker_depth_first(Maze *, bool, Show *);
+void checker_depth_first(Maze* maze, bool perfect, bool left, Show* show);
 
-#endif  // CHECKER_DEPTHFIRST_HPP
+#endif  // CHECKER_DEPTH_FIRST_HPP

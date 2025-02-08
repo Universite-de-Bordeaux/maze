@@ -1,15 +1,15 @@
-#ifndef CHECKER_BREADTHFIRST_HPP
-#define CHECKER_BREADTHFIRST_HPP
+#ifndef CHECKER_BREADTH_FIRST_HPP
+#define CHECKER_BREADTH_FIRST_HPP
 
 #include "../maze.hpp"
-#include "../queue.hpp"
 #include "../show.hpp"
 
 /**
- * @brief checker - Vérifie si le labyrinthe est valide
- * @param maze - Labyrinthe à vérifier
- * @param perfect - Vérifie si le labyrinthe est parfait
+ * @brief Vérifie si le labyrinthe est valide
+ * @param maze Labyrinthe à vérifier
+ * @param perfect Vérifie si le labyrinthe est parfait
+ * @param show Affichage du labyrinthe
  */
-void checker_breadthfirst(Maze *, bool, Show *);
+void checker_breadth_first(const Maze *maze, bool perfect, Show *show);
 
-#endif  // CHECKER_BREADTHFIRST_HPP
+#endif  // CHECKER_BREADTH_FIRST_HPP

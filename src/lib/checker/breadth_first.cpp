@@ -1,52 +1,89 @@
 #include "breadth_first.hpp"
 
-#include <chrono>
 #include <iostream>
-#include <thread>
 
 #include "../queue.hpp"
 #include "../show.hpp"
+#include "../stack.hpp"
 #include "../var.hpp"
 
-bool checker_breadthfirst(Maze *maze, Show *show) {
-    refreshShow(show);
-    std::cout << "Résolution du labyrinthe en largeur" << std::endl;
+struct position {
+    int x;
+    int y;
+};
+
+struct positionHistory {
+    int x;
+    int y;
+    int parent_x;
+    int parent_y;
+};
+
+void checker_breadth_first(const Maze *maze, bool perfect, Show *show) {
     Queue queue;
-    int cont = 0;
+    Stack stack;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
-        return false;
+        // return false;
     }
-    queue.push(maze->getStartX(), maze->getStartY());
+    refreshShow(show);
+    position start = {maze->getStartX(), maze->getStartY()};
+    queue.push(&start);
+    positionHistory startHistory = {maze->getStartX(), maze->getStartY(), -1,
+                                    -1};
+    stack.push(&startHistory);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
     while (!queue.empty()) {
-        Position current = queue.front();
+        const auto *current = static_cast<position *>(queue.front());
         queue.pop();
-        int x = current.x;
-        int y = current.y;
+        const int x = current->x;
+        const int y = current->y;
         Cell *cell = maze->getCell(x, y);
-        refreshShow(show);
-        bool parfaite = true;
+        refreshShow(show, 1, &cell);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                queue.push(neighbor->getX(), neighbor->getY());
+                auto *neighborPosition = new position;
+                neighborPosition->x = neighbor->getX();
+                neighborPosition->y = neighbor->getY();
+                queue.push(neighborPosition);
+                auto *neighborHistory = new positionHistory;
+                neighborHistory->x = neighbor->getX();
+                neighborHistory->y = neighbor->getY();
+                neighborHistory->parent_x = x;
+                neighborHistory->parent_y = y;
+                stack.push(neighborHistory);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
-                cont++;
+                if (neighbor->getX() == maze->getEndX() &&
+                    neighbor->getY() == maze->getEndY()) {
+                    neighbor->setStatus(MAZE_STATUS_WAY_OUT);
+                    refreshShow(show, 1, &neighbor);
+                    while (!stack.empty()) {
+                        const auto *currentCell =
+                            static_cast<positionHistory *>(stack.top());
+                        const auto *cellTop =
+                            static_cast<positionHistory *>(stack.top());
+                        while (!stack.empty() &&
+                               (cellTop->x != currentCell->parent_x ||
+                                cellTop->y != currentCell->parent_y)) {
+                            stack.pop();
+                            cellTop =
+                                static_cast<positionHistory *>(stack.top());
+                        }
+                        if (stack.empty()) {
+                            break;
+                        }
+                        cell = maze->getCell(cellTop->x, cellTop->y);
+                        if (cell != nullptr) {
+                            cell->setStatus(MAZE_STATUS_WAY_OUT);
+                            refreshShow(show, 1, &cell);
+                        }
+                    }
+                    // return true;
+                }
             }
-            if (neighbor != nullptr && neighbor->isAlreadyVisited()) {
-                parfaite = false;
-            }
-        }
-        if (parfaite) {
-            std::cout << "Le labirynthe n'est pas parfait" << std::endl;
-        } else {
-            std::cout << "Le labirynthe n'est parfait" << std::endl;
-        }
-        if (cont == maze->getSize()) {
-            std::cout << "Le labirynthe est valide" << std::endl;
-        } else {
-            std::cout << "Le labirynthe n'est pas valide" << std::endl;
         }
     }
+    // return false;
+}

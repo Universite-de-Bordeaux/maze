@@ -7,6 +7,18 @@
 #include "../stack.hpp"
 #include "../var.hpp"
 
+struct position {
+    int x;
+    int y;
+};
+
+struct positionHistory {
+    int x;
+    int y;
+    int parent_x;
+    int parent_y;
+};
+
 bool solver_breadth_first(const Maze *maze, Show *show) {
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
     Queue queue;

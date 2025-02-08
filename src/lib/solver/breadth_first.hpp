@@ -4,18 +4,6 @@
 #include "../maze.hpp"
 #include "../show.hpp"
 
-struct position {
-    int x;
-    int y;
-};
-
-struct positionHistory {
-    int x;
-    int y;
-    int parent_x;
-    int parent_y;
-};
-
 /**
  * @brief Réalise la résolution du labyrinthe en largeur
  * @param maze Le labyrinthe à résoudre

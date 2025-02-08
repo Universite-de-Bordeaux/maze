@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+#include "lib/checker/breadth_first.hpp"
 #include "lib/checker/depth_first.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
@@ -148,11 +149,11 @@ void checkMaze(Maze *maze, const std::string &algorithm, const bool perfect,
               << ", perfect=" << perfect << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
     if (algorithm == "depth_first_right" || algorithm == "dfr")
-        checker_depth_first(maze, perfect, show);  // TODO
+        checker_depth_first(maze, perfect, false, show);
     else if (algorithm == "depth_first_left" || algorithm == "dfl")
-        checker_depth_first(maze, perfect, show);
-    //    else if (algorithm == "breadth_first" || algorithm == "bf") // TODO
-    //    checker_breadth_first(maze, perfect, show); // TODO
+        checker_depth_first(maze, perfect, true, show);
+    else if (algorithm == "breadth_first" || algorithm == "bf")
+        checker_breadth_first(maze, perfect, show);
     else
         exit(MAZE_COMMAND_ERROR);
     const auto end = std::chrono::high_resolution_clock::now();

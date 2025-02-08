@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCE_FILES
         src/main.cpp
         src/lib/cell.cpp
+        src/lib/checker/breadth_first.cpp
         src/lib/checker/depth_first.cpp
         src/lib/game/fog.cpp
         src/lib/game/fog_hand.cpp
