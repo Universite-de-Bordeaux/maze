@@ -68,6 +68,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-o` ou `--output` `<fichier>` : Spécifie le fichier où sauvegarder le labyrinthe en mémoire
 * `-c` ou `--clear` : Efface le labyrinthe en mémoire
 * `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire
+* `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe en mémoire (uniquement disponible pour les résolutions et les jeux) (les valeurs négatives sont autorisées et sont relatives à la fin du labyrinthe) (les valeurs flottantes sont autorisées et sont utilisées comme pourcentage du labyrinthe) (par défaut : aléatoire)
+* `-pe` ou `--player-end` `<x> <y>` : Spécifie la position d'arrivée du joueur dans le labyrinthe en mémoire (uniquement disponible pour les résolutions et les jeux) (les valeurs négatives sont autorisées et sont relatives à la fin du labyrinthe) (par défaut : aléatoire) (les valeurs flottantes sont autorisées et sont utilisées comme pourcentage du labyrinthe) (par défaut : aléatoire)
 
 > Il est possible de définir les valeurs framerate et delay-show dans le fichier .env
 > ```dotenv

@@ -48,6 +48,22 @@ void help() {
     std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe "
                  "en mémoire"
               << std::endl;
+    std::cout
+        << "  -ps ou --player-start <x> <y> : Spécifie la position de départ "
+           "du joueur dans le labyrinthe en mémoire (uniquement disponible "
+           "pour les résolutions et les jeux) (les valeurs négatives sont "
+           "autorisées et sont relatives à la fin du labyrinthe) (les valeurs "
+           "flottantes sont autorisées et sont utilisées comme pourcentage du "
+           "labyrinthe) (par défaut : aléatoire)"
+        << std::endl;
+    std::cout
+        << "  -pe ou --player-end <x> <y> : Spécifie la position d'arrivée "
+           "du joueur dans le labyrinthe en mémoire (uniquement disponible "
+           "pour les résolutions et les jeux) (les valeurs négatives sont "
+           "autorisées et sont relatives à la fin du labyrinthe) (les valeurs "
+           "flottantes sont autorisées et sont utilisées comme pourcentage du "
+           "labyrinthe) (par défaut : aléatoire)"
+        << std::endl;
 
     std::cout << "\nRésolution de labyrinthe" << std::endl;
     std::cout << "------------------------" << std::endl;
@@ -245,6 +261,48 @@ int main(int argc, char *argv[]) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
             show.setDelay(std::stof(argv[i + 1]));
             i++;
+        } else if (strcmp(argv[i], "-ps") == 0 ||
+                   strcmp(argv[i], "--player-start") == 0) {
+            if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);
+            long double x_tmp = std::stold(argv[i + 1]);
+            long double y_tmp = std::stold(argv[i + 2]);
+            int x;
+            if (x_tmp < 0)
+                x = maze.getWidth() + x_tmp;
+            else if (x_tmp > 0 && x_tmp < 1)
+                x = maze.getWidth() * x_tmp;
+            else
+                x = x_tmp;
+            int y;
+            if (y_tmp < 0)
+                y = maze.getHeight() + y_tmp;
+            else if (y_tmp > 0 && y_tmp < 1)
+                y = maze.getHeight() * y_tmp;
+            else
+                y = y_tmp;
+            maze.setStart(x, y);
+            i += 2;
+        } else if (strcmp(argv[i], "-pe") == 0 ||
+                   strcmp(argv[i], "--player-end") == 0) {
+            if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);
+            long double x_tmp = std::stold(argv[i + 1]);
+            long double y_tmp = std::stold(argv[i + 2]);
+            int x;
+            if (x_tmp < 0)
+                x = maze.getWidth() + x_tmp;
+            else if (x_tmp > 0 && x_tmp < 1)
+                x = maze.getWidth() * x_tmp;
+            else
+                x = x_tmp;
+            int y;
+            if (y_tmp < 0)
+                y = maze.getHeight() + y_tmp;
+            else if (y_tmp > 0 && y_tmp < 1)
+                y = maze.getHeight() * y_tmp;
+            else
+                y = y_tmp;
+            maze.setEnd(x, y);
+            i += 2;
         }
         // Vérifie si le labyrinthe est valide
         else if (strcmp(argv[i], "-v") == 0 ||
