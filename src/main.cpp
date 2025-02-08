@@ -291,7 +291,6 @@ int main(int argc, char *argv[]) {
                             } else {
                                 return help(MAZE_COMMAND_ERROR);
                             }
-                            i++;
                         }
                     }
                 }
