@@ -45,7 +45,7 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
             2) {
             cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
             imperfect = true;
-        refreshShow(show, 1, &cell, true);
+            refreshShow(show, 1, &cell, true);
         } else {
             refreshShow(show, 1, &cell, false);
         }

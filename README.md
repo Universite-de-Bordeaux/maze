@@ -65,6 +65,7 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-s` ou `--show` : Affiche le labyrinthe en mémoire
     + `-f` ou `--framerate` `<framerate>` : Spécifie le framerate de l'affichage (par défaut : 60)
     + `-ds` ou `--delay-show` `<delay>` : Spécifie le délai d'affichage entre chaque cellule en millisecondes (par défaut : 0.0 (précis à la microseconde))
+    + `-lf` ou `--low-frequency` : Affiche le labyrinthe en mémoire à basse fréquence (par défaut : haute fréquence)
 * `-o` ou `--output` `<fichier>` : Spécifie le fichier où sauvegarder le labyrinthe en mémoire
 * `-c` ou `--clear` : Efface le labyrinthe en mémoire
 * `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire

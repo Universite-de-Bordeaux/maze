@@ -40,6 +40,9 @@ void help() {
            "entre chaque cellule en millisecondes (par défaut : 0.0 (précis à "
            "la microseconde))"
         << std::endl;
+    std::cout << "    -lf ou --low-freq : Affiche le labyrinthe en mémoire à "
+                 "basse fréquence (par défaut : haute fréquence)"
+              << std::endl;
     std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
                  "sauvegarder le labyrinthe en mémoire"
               << std::endl;
@@ -261,6 +264,9 @@ int main(int argc, char *argv[]) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
             show.setDelay(std::stof(argv[i + 1]));
             i++;
+        } else if (strcmp(argv[i], "-lf") == 0 ||
+                   strcmp(argv[i], "--low-freq") == 0) {
+            show.setLowFreq(true);
         } else if (strcmp(argv[i], "-ps") == 0 ||
                    strcmp(argv[i], "--player-start") == 0) {
             if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);

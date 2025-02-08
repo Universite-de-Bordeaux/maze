@@ -85,7 +85,17 @@ class Show {
      * @param delay Délai en millisecondes
      */
     void setDelay(float delay);
+    /**
+     * @brief Met à jour lowFreq_ qui détermine si le rafraîchissement doit se
+     * faire à basse fréquence ou non
+     * @param lowFreq Précise si le rafraîchissement doit se faire à basse
+     * fréquence
+     */
     void setLowFreq(const bool lowFreq) { lowFreq_ = lowFreq; }
+    /**
+     * @brief Récupère lowFreq_
+     * @return lowFreq_
+     */
     bool getLowFreq() const { return lowFreq_; }
 
    private:

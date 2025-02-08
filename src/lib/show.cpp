@@ -15,7 +15,7 @@ Show::Show(Maze *maze) {
     renderWindow_ = nullptr;
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
-    lowFreq_ = true;
+    lowFreq_ = false;
 
     std::ifstream envFile(".env");
     if (envFile.is_open()) {
@@ -291,8 +291,10 @@ void refreshShow(Show *show, const int argc, Cell *argv[]) {
 
 void refreshShow(Show *show, const int argc, Cell *argv[], const bool lowFreq) {
     if (show == nullptr) return;
-    if (show->getLowFreq() && lowFreq) refreshShow(show);
-    else if (!show->getLowFreq()) refreshShow(show, argc, argv);
+    if (show->getLowFreq() && lowFreq)
+        refreshShow(show);
+    else if (!show->getLowFreq())
+        refreshShow(show, argc, argv);
 }
 
 void refreshShow(Show *show) {
