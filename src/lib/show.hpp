@@ -1,9 +1,9 @@
 #ifndef SHOW_HPP
 #define SHOW_HPP
 
-#include <chrono>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <chrono>
 
 #include "maze.hpp"
 
@@ -75,6 +75,16 @@ class Show {
      * @return True si le labyrinthe est vide, false sinon
      */
     bool mazeIsEmpty() const;
+    /**
+     * @brief Met à jour le taux de rafraîchissement
+     * @param rate Taux de rafraîchissement
+     */
+    void setRefreshRate(unsigned int rate);
+    /**
+     * @brief Met à jour le délai
+     * @param delay Délai en millisecondes
+     */
+    void setDelay(unsigned int delay);
 
    private:
     Maze *maze_;  //> Pointeur vers un objet de type Maze
@@ -82,10 +92,11 @@ class Show {
         nullptr;      //> Pointeur vers un objet de type sf::RenderWindow
     float cellSize_;  //> Taille d'une cellule
     sf::Font font_;   //> Police d'écriture
-    sf::Event::KeyEvent lastKeyPressed_{};  //> Dernière touche pressée
+    sf::Event::KeyEvent lastKeyPressed_{};   //> Dernière touche pressée
     std::chrono::milliseconds refreshRate_;  //> Taux de rafraîchissement
-    std::chrono::milliseconds delay_;  //> Délai
-    std::chrono::high_resolution_clock::time_point lastDisplay_;  //> Dernier affichage
+    std::chrono::milliseconds delay_;        //> Délai
+    std::chrono::high_resolution_clock::time_point
+        lastDisplay_;  //> Dernier affichage
 
     /**
      * @brief Dessine toutes les cellules du labyrinthe
