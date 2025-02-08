@@ -1,16 +1,13 @@
 #include "breadth_first.hpp"
 
-#include <chrono>
 #include <iostream>
-#include <queue>
-#include <thread>
 
 #include "../queue.hpp"
 #include "../show.hpp"
 #include "../stack.hpp"
 #include "../var.hpp"
 
-bool solver_breadth_first(Maze *maze, Show *show) {
+bool solver_breadth_first(const Maze *maze, Show *show) {
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
     Queue queue;
     Stack stack;
@@ -26,20 +23,20 @@ bool solver_breadth_first(Maze *maze, Show *show) {
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
     while (!queue.empty()) {
-        position *current = (position *)queue.front();
+        const auto *current = static_cast<position *>(queue.front());
         queue.pop();
-        int x = current->x;
-        int y = current->y;
+        const int x = current->x;
+        const int y = current->y;
         Cell *cell = maze->getCell(x, y);
         refreshShow(show, 1, &cell);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                position *neighborPosition = new position;
+                auto *neighborPosition = new position;
                 neighborPosition->x = neighbor->getX();
                 neighborPosition->y = neighbor->getY();
                 queue.push(neighborPosition);
-                positionHistory *neighborHistory = new positionHistory;
+                auto *neighborHistory = new positionHistory;
                 neighborHistory->x = neighbor->getX();
                 neighborHistory->y = neighbor->getY();
                 neighborHistory->parent_x = x;
@@ -52,15 +49,15 @@ bool solver_breadth_first(Maze *maze, Show *show) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
                     refreshShow(show, 1, &neighbor);
                     while (!stack.empty()) {
-                        positionHistory *currentCell =
-                            (positionHistory *)stack.top();
-                        positionHistory *cellTop =
-                            (positionHistory *)stack.top();
+                        const auto *currentCell =
+                            static_cast<positionHistory *>(stack.top());
+                        const auto *cellTop =
+                            static_cast<positionHistory *>(stack.top());
                         while (!stack.empty() &&
                                (cellTop->x != currentCell->parent_x ||
                                 cellTop->y != currentCell->parent_y)) {
                             stack.pop();
-                            cellTop = (positionHistory *)stack.top();
+                            cellTop = static_cast<positionHistory *>(stack.top());
                         }
                         if (stack.empty()) {
                             break;
