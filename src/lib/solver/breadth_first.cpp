@@ -57,7 +57,8 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                                (cellTop->x != currentCell->parent_x ||
                                 cellTop->y != currentCell->parent_y)) {
                             stack.pop();
-                            cellTop = static_cast<positionHistory *>(stack.top());
+                            cellTop =
+                                static_cast<positionHistory *>(stack.top());
                         }
                         if (stack.empty()) {
                             break;

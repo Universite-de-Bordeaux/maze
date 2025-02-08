@@ -3,8 +3,8 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-static bool solve(Maze *maze, Show *show, int x, int y, int direction,
-                  bool toLeft) {
+static bool solve(Maze *maze, Show *show, const int x, const int y,  // NOLINT
+                  const int direction, const bool toLeft) {
     Cell *cell = maze->getCell(x, y);
     cell->setAlreadyVisited(true);
     cell->setStatus(MAZE_STATUS_CURRENT);
@@ -30,7 +30,7 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction,
             index += 4;
         }
         if (cell->isNeighbor(index)) {
-            Cell *neighbor = cell->getNeighbor(index);
+            const Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
                 if (solve(maze, show, neighbor->getX(), neighbor->getY(),
                           (index + 2) % 4, toLeft)) {
@@ -46,7 +46,7 @@ static bool solve(Maze *maze, Show *show, int x, int y, int direction,
     return false;
 }
 
-bool solver_depth_first(Maze *maze, Show *show, bool toLeft) {
+bool solver_depth_first(Maze *maze, Show *show, const bool left) {
     refreshShow(show);
-    return solve(maze, show, maze->getStartX(), maze->getStartY(), 0, toLeft);
+    return solve(maze, show, maze->getStartX(), maze->getStartY(), 0, left);
 }
