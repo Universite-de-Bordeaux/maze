@@ -36,7 +36,8 @@ void help() {
               << std::endl;
     std::cout
         << "    -ds ou --delay-show <delay> : Spécifie le délai d'affichage "
-           "entre chaque cellule en millisecondes (par défaut : 0)"
+           "entre chaque cellule en millisecondes (par défaut : 0.0 (précis à "
+           "la nanoseconde))"
         << std::endl;
     std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
                  "sauvegarder le labyrinthe en mémoire"
@@ -233,13 +234,13 @@ int main(int argc, char *argv[]) {
                 refreshShow(&show);
             }
             show.destroy();
-        }
-        else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--framerate") == 0) {
+        } else if (strcmp(argv[i], "-f") == 0 ||
+                   strcmp(argv[i], "--framerate") == 0) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
             show.setRefreshRate(std::stoi(argv[i + 1]));
             i++;
-        }
-        else if (strcmp(argv[i], "-ds") == 0 || strcmp(argv[i], "--delay-show") == 0) {
+        } else if (strcmp(argv[i], "-ds") == 0 ||
+                   strcmp(argv[i], "--delay-show") == 0) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
             show.setDelay(std::stof(argv[i + 1]));
             i++;

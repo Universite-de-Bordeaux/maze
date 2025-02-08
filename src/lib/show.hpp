@@ -94,7 +94,7 @@ class Show {
     sf::Font font_;   //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};   //> Dernière touche pressée
     std::chrono::milliseconds refreshRate_;  //> Taux de rafraîchissement
-    std::chrono::nanoseconds delay_;        //> Délai
+    std::chrono::nanoseconds delay_;         //> Délai
     std::chrono::high_resolution_clock::time_point
         lastDisplay_;  //> Dernier affichage
 
