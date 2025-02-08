@@ -154,6 +154,7 @@ int main(const int argc, char *argv[]) {
             while (show.isOpen()) {
                 refreshShow(&show);
             }
+            show.destroy();
         }
         // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
         else if (strcmp(argv[i], "-o") == 0 ||
@@ -190,7 +191,6 @@ int main(const int argc, char *argv[]) {
             } else {
                 std::cout << "Clear all" << std::endl;
                 mazeLoaded = false;
-                show.destroy();
             }
         }
         // Si l'utilisateur veut générer un labyrinthe
@@ -282,6 +282,7 @@ int main(const int argc, char *argv[]) {
                 while (show.isOpen()) {
                     refreshShow(&show);
                 }
+                show.destroy();
             } else {
                 generateMaze(&maze, algorithm, width, height, perfect,
                              probability, nullptr);

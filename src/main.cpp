@@ -225,6 +225,7 @@ int main(int argc, char *argv[]) {
             while (show.isOpen()) {
                 refreshShow(&show);
             }
+            show.destroy();
         }
         // Vérifie si le labyrinthe est valide
         else if (strcmp(argv[i], "-v") == 0 ||
@@ -283,6 +284,7 @@ int main(int argc, char *argv[]) {
                 while (show.isOpen()) {
                     refreshShow(&show);
                 }
+                show.destroy();
             } else {
                 checkMaze(&maze, algorithm, perfect, nullptr);
             }
@@ -338,7 +340,6 @@ int main(int argc, char *argv[]) {
             } else {
                 std::cout << "Clear all" << std::endl;
                 mazeLoaded = false;
-                show.destroy();
             }
         }
         // Si l'utilisateur veut résoudre un labyrinthe
@@ -385,6 +386,7 @@ int main(int argc, char *argv[]) {
                 while (show.isOpen()) {
                     refreshShow(&show);
                 }
+                show.destroy();
             } else {
                 resolveMaze(&maze, algorithm, nullptr);
             }
@@ -437,6 +439,7 @@ int main(int argc, char *argv[]) {
                 while (show.isOpen()) {
                     refreshShow(&show);
                 }
+                show.destroy();
             } else {
                 gameMaze(&maze, type, nullptr);
             }
