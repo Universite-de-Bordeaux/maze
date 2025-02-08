@@ -3,16 +3,16 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
-    refreshShow(show);
+int game_fog_hand(const Maze *maze, Show *show, const bool left) {
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
+    refreshShow(show);
     int direction = 0;
-    int move = toLeft ? 1 : 3;
+    const int move = left ? 1 : 3;
     int steps = 0;
     bool tmpChangeDirection = false;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
-        int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
+        const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
             refreshShow(show, 1, &cell);
