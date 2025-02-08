@@ -72,7 +72,7 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 * `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe en mémoire (uniquement disponible pour les résolutions et les jeux) (les valeurs négatives sont autorisées et sont relatives à la fin du labyrinthe) (les valeurs flottantes sont autorisées et sont utilisées comme pourcentage du labyrinthe) (par défaut : aléatoire)
 * `-pe` ou `--player-end` `<x> <y>` : Spécifie la position d'arrivée du joueur dans le labyrinthe en mémoire (uniquement disponible pour les résolutions et les jeux) (les valeurs négatives sont autorisées et sont relatives à la fin du labyrinthe) (par défaut : aléatoire) (les valeurs flottantes sont autorisées et sont utilisées comme pourcentage du labyrinthe) (par défaut : aléatoire)
 
-> Il est possible de définir les valeurs framerate et delay-show dans le fichier .env
+> Il est possible de définir les valeurs suivantes dans le fichier .env
 > ```dotenv
 >  FRAMERATE=60
 >  DELAY_SHOW=0.0
