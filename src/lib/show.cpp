@@ -302,6 +302,7 @@ void refreshShow(Show *show) {
 bool Show::mazeIsEmpty() const { return maze_ == nullptr; }
 
 void Show::setRefreshRate(const unsigned int rate) {
+    if (rate <= 0) exit(MAZE_GRAPHIC_ERROR);
     refreshRate_ = std::chrono::milliseconds(1000 / rate);
 }
 

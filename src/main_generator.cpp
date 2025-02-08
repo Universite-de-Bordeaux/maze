@@ -163,6 +163,16 @@ int main(const int argc, char *argv[]) {
             }
             show.destroy();
         }
+        else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--framerate") == 0) {
+            if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
+            show.setRefreshRate(std::stoi(argv[i + 1]));
+            i++;
+        }
+        else if (strcmp(argv[i], "-ds") == 0 || strcmp(argv[i], "--delay-show") == 0) {
+            if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
+            show.setDelay(std::stoi(argv[i + 1]));
+            i++;
+        }
         // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
         else if (strcmp(argv[i], "-o") == 0 ||
                  strcmp(argv[i], "--output") == 0) {
