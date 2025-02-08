@@ -8,7 +8,7 @@
 
 #include "var.hpp"
 
-void read(std::string filename, Maze *maze) {
+void read(const std::string& filename, Maze* maze) {
     // ouverture du fichier
     std::fstream file;
     file.open(filename, std::ios_base::in);
@@ -20,23 +20,23 @@ void read(std::string filename, Maze *maze) {
     std::istringstream iss(line);
 
     if (iss >> width >>
-        height) {  // iss permet de récuperer la largeur et la hauteur
+        height) {  // iss permet de récupérer la largeur et la hauteur
         maze->setWidthHeight(width, height);
         getline(file, line);
 
-        while (!file.eof() && line.size() > 0) {
+        while (!file.eof() && !line.empty()) {
             int x, y;
-            std::istringstream iss(line);
+            std::istringstream iss_tmp(line);
             char orientation;
 
-            if (iss >> x >> y >> orientation) {
+            if (iss_tmp >> x >> y >> orientation) {
                 // vérification d'erreur
                 if (orientation != 'H' && orientation != 'V') {
                     exit(MAZE_FILE_ERROR);
                 }
 
                 // ajout du mur en prenant en compte les potentielles erreurs
-                // renvoyer par addWall
+                // renvoyé par addWall
                 if (!maze->addWall(x, y, orientation == 'H')) {
                     exit(MAZE_FILE_ERROR);
                 }

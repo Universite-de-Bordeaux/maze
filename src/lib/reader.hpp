@@ -7,9 +7,9 @@
 
 /**
  * Lit un fichier et remplit un objet Maze
- * @param filename le nom du fichier à lire
+ * @param filename Le nom du fichier à lire
  * @param maze l'objet Maze à remplir
  */
-void read(std::string filename, Maze *maze);
+void read(const std::string& filename, Maze* maze);
 
-#endif  // MAZE_HPP
+#endif  // READER_HPP
