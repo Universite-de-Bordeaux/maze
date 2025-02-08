@@ -15,6 +15,7 @@ Show::Show(Maze *maze) {
     renderWindow_ = nullptr;
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
+    lowFreq_ = true;
 
     std::ifstream envFile(".env");
     if (envFile.is_open()) {
@@ -53,10 +54,12 @@ void Show::create() {
                                    maze_->getHeight() / desktopSize.height;
         if (priorityWidth) {
             cellSize_ = static_cast<float>(desktopSize.width) /
-                        static_cast<float>(maze_->getWidth()) * MAZE_MAX_WINDOW_RATIO;
+                        static_cast<float>(maze_->getWidth()) *
+                        MAZE_MAX_WINDOW_RATIO;
         } else {
             cellSize_ = static_cast<float>(desktopSize.height) /
-                        static_cast<float>(maze_->getHeight()) * MAZE_MAX_WINDOW_RATIO;
+                        static_cast<float>(maze_->getHeight()) *
+                        MAZE_MAX_WINDOW_RATIO;
         }
     }
     renderWindow_ = new sf::RenderWindow(
@@ -275,34 +278,6 @@ void Show::close() const {
     renderWindow_->close();
 }
 
-// void updateShowLive(const Show *show, const Maze *maze,
-//                     const bool fastCooling) {
-//     if (show == nullptr || maze == nullptr) return;
-//     if (!show->isOpen()) return;
-//     show->eventHandler();
-//     if (fastCooling) {
-//         if (maze->getWidth() <= MAZE_REFRESH_SIZE &&
-//             maze->getHeight() <= MAZE_REFRESH_SIZE) {
-//             show->drawCells();
-//         }
-//     } else {
-//         if (maze->getWidth() > MAZE_REFRESH_SIZE ||
-//             maze->getHeight() > MAZE_REFRESH_SIZE) {
-//             show->drawCells();
-//         }
-//     }
-//     show->refreshDisplay();
-// }
-
-// void updateShowLive(const Show *show, const Maze *maze) {
-//     if (show == nullptr || maze == nullptr) return;
-//     if (!show->isOpen()) return;
-//     show->eventHandler();
-//     updateShowLive(show, maze, false);
-//     updateShowLive(show, maze, true);
-//     show->refreshDisplay();
-// }
-
 void refreshShow(Show *show, const int argc, Cell *argv[]) {
     if (show == nullptr) return;
     if (!show->isOpen()) return;
@@ -312,6 +287,12 @@ void refreshShow(Show *show, const int argc, Cell *argv[]) {
         if (argv[i] != nullptr) show->drawCell(argv[i]);
     }
     show->refreshDisplay();
+}
+
+void refreshShow(Show *show, const int argc, Cell *argv[], const bool lowFreq) {
+    if (show == nullptr) return;
+    if (show->getLowFreq() && lowFreq) refreshShow(show);
+    else if (!show->getLowFreq()) refreshShow(show, argc, argv);
 }
 
 void refreshShow(Show *show) {

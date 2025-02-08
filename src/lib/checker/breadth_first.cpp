@@ -45,8 +45,10 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
             2) {
             cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
             imperfect = true;
+        refreshShow(show, 1, &cell, true);
+        } else {
+            refreshShow(show, 1, &cell, false);
         }
-        refreshShow(show, 1, &cell);
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
@@ -65,6 +67,7 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
             }
         }
     }
+    refreshShow(show);
     for (int i = 0; i < maze->getWidth(); i++) {
         for (int j = 0; j < maze->getHeight(); j++) {
             const Cell *cell = maze->getCell(i, j);

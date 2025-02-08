@@ -40,7 +40,8 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
         const int x = current->x;
         const int y = current->y;
         Cell *cell = maze->getCell(x, y);
-        refreshShow(show, 1, &cell);
+        refreshShow(show, 1, &cell, false);
+        int count = 0;
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
@@ -59,7 +60,7 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                 if (neighbor->getX() == maze->getEndX() &&
                     neighbor->getY() == maze->getEndY()) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
-                    refreshShow(show, 1, &neighbor);
+                    refreshShow(show, 1, &neighbor, true);
                     while (!stack.empty()) {
                         const auto *currentCell =
                             static_cast<positionHistory *>(stack.top());
@@ -78,13 +79,21 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                         cell = maze->getCell(cellTop->x, cellTop->y);
                         if (cell != nullptr) {
                             cell->setStatus(MAZE_STATUS_WAY_OUT);
-                            refreshShow(show, 1, &cell);
+                            refreshShow(show, 1, &cell, false);
                         }
                     }
+                    refreshShow(show);
                     return true;
                 }
+            } else {
+                count++;
             }
         }
+        if (count == 4) {
+            cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
+            refreshShow(show, 1, &cell, true);
+        }
     }
+    refreshShow(show);
     return false;
 }

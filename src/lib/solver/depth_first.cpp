@@ -10,15 +10,15 @@ static bool solve(Maze *maze, Show *show, const int x, const int y,  // NOLINT
     cell->setStatus(MAZE_STATUS_CURRENT);
     if (x == maze->getEndX() && y == maze->getEndY()) {
         cell->setStatus(MAZE_STATUS_WAY_OUT);
-        refreshShow(show, 1, &cell);
+        refreshShow(show, 1, &cell, true);
         return true;
     }
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        refreshShow(show, 1, &cell);
+        refreshShow(show, 1, &cell, true);
         return false;
     }
-    refreshShow(show, 1, &cell);
+    refreshShow(show, 1, &cell, false);
     for (int i = 0; i < 4; i++) {
         int index;
         if (toLeft) {
@@ -35,14 +35,14 @@ static bool solve(Maze *maze, Show *show, const int x, const int y,  // NOLINT
                 if (solve(maze, show, neighbor->getX(), neighbor->getY(),
                           (index + 2) % 4, toLeft)) {
                     cell->setStatus(MAZE_STATUS_WAY_OUT);
-                    refreshShow(show, 1, &cell);
+                    refreshShow(show, 1, &cell, false);
                     return true;
                 }
             }
         }
     }
     cell->setStatus(MAZE_STATUS_VISITED);
-    refreshShow(show, 1, &cell);
+    refreshShow(show, 1, &cell, false);
     return false;
 }
 

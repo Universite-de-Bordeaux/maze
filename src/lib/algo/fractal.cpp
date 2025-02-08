@@ -113,11 +113,11 @@ static void quad_maze(Maze *maze) {
 void algo_fractal(Maze *maze, int n, const bool perfect,
                   const double probability, Show *show) {
     maze->setWidthHeight(1, 1);
-    if (show) {
+    if (show && !show->getLowFreq()) {
         show->create();
     }
     int nb_murs_supp = 3;
-    if (show) {
+    if (show && !show->getLowFreq()) {
         show->destroy();
         show->create();
     }
@@ -145,12 +145,16 @@ void algo_fractal(Maze *maze, int n, const bool perfect,
         }
 
         // affichage
-        if (show) {
+        if (show && !show->getLowFreq()) {
             show->destroy();
             show->create();
         }
         refreshShow(show);
 
         n -= 1;
+    }
+    if (show && show->getLowFreq()) {
+        show->destroy();
+        show->create();
     }
 }

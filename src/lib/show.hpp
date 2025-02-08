@@ -85,12 +85,15 @@ class Show {
      * @param delay Délai en millisecondes
      */
     void setDelay(float delay);
+    void setLowFreq(const bool lowFreq) { lowFreq_ = lowFreq; }
+    bool getLowFreq() const { return lowFreq_; }
 
    private:
     Maze *maze_;  //> Pointeur vers un objet de type Maze
     sf::RenderWindow *renderWindow_ =
         nullptr;      //> Pointeur vers un objet de type sf::RenderWindow
     float cellSize_;  //> Taille d'une cellule
+    bool lowFreq_;    //> Fréquence basse
     sf::Font font_;   //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};     //> Dernière touche pressée
     std::chrono::milliseconds refreshRate_{};  //> Taux de rafraîchissement
@@ -121,21 +124,6 @@ class Show {
     void drawWall_(const Cell *cell, int orientation) const;
 };
 
-// /**
-//  * @brief Met à jour la fenêtre de rendu
-//  * @param show Pointeur vers un objet de type Show
-//  * @param maze Pointeur vers un objet de type Maze
-//  * @param fastCooling Refroidissement rapide
-//  * @return void
-//  */
-// void updateShowLive(const Show *show, const Maze *maze, bool fastCooling);
-// /**
-//  * @brief Met à jour la fenêtre de rendu
-//  * @param show Pointeur vers un objet de type Show
-//  * @param maze Pointeur vers un objet de type Maze
-//  * @return void
-//  */
-// void updateShowLive(const Show *show, const Maze *maze);
 /**
  * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules modifiées
  * @param show Pointeur vers un objet de type Show
@@ -144,6 +132,16 @@ class Show {
  * @return void
  */
 void refreshShow(Show *show, int argc, Cell *argv[]);
+/**
+ * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules modifiées à
+ * haute fréquence et toutes les cellules à basse fréquence
+ * @param show Pointeur vers un objet de type Show
+ * @param argc Nombre d'arguments
+ * @param argv Tableau de pointeurs vers des objets de type Cell
+ * @param lowFreq Précise si le rafraîchissement doit se faire à basse fréquence
+ * @return void
+ */
+void refreshShow(Show *show, int argc, Cell *argv[], bool lowFreq);
 /**
  * @brief Rafraîchit la fenêtre de rendu avec toutes les cellules
  * @param show Pointeur vers un objet de type Show

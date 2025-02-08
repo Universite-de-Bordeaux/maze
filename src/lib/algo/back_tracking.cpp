@@ -86,7 +86,7 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
             Cell* showCells[2] = {currentCell, neighbor};
-            refreshShow(show, 2, showCells);
+            refreshShow(show, 2, showCells, false);
         } else {
             const int numberOfNeighbors =
                 numberRelativeNeighbors(maze, currentX, currentY);
@@ -136,8 +136,8 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
                 maze->getCell(neighbors[0].x, neighbors[0].y)
                     ->setStatus(MAZE_STATUS_CURRENT);
             }
-            refreshShow(show, 1, &currentCell);
+            refreshShow(show, 1, &currentCell, true);
         }
     }
-    maze->clearMaze();
+    refreshShow(show);
 }

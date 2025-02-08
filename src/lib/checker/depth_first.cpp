@@ -38,7 +38,7 @@ static void check(Maze *maze, int x, int y, Show *show,  // NOLINT
                 2) {
                 cell->setStatus(MAZE_STATUS_HOPELESS);
             }
-            refreshShow(show, 1, &cell);
+            refreshShow(show, 1, &cell, true);
             return;
         }
     }
@@ -46,10 +46,10 @@ static void check(Maze *maze, int x, int y, Show *show,  // NOLINT
         cell->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighborsNotVisited <= 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        refreshShow(show, 1, &cell);
+        refreshShow(show, 1, &cell, true);
         return;
     }
-    refreshShow(show, 1, &cell);
+    refreshShow(show, 1, &cell, false);
     for (int i = 0; i < 4; i++) {
         int index;
         if (left) {
@@ -74,6 +74,7 @@ void checker_depth_first(Maze *maze, const bool perfect, const bool left,
                          Show *show) {
     bool imperfect = false;
     check(maze, 0, 0, show, 0, left, perfect, &imperfect);
+    refreshShow(show);
     for (int i = 0; i < maze->getWidth(); i++) {
         for (int j = 0; j < maze->getHeight(); j++) {
             const Cell *cell = maze->getCell(i, j);

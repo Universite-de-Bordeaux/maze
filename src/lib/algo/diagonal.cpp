@@ -35,7 +35,7 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
                                  : (whereStart->left ? 1 : -1);
             return;
         }
-        const int rb = maze->getRand()->get(startB, endB);
+        const int rb = maze->getRand()->get(startB, endB - 1);
         for (int bb = startB; bb <= endB; bb++) {
             if (bb != rb && (perfect || maze->getRand()->get(probability))) {
                 if (isHorizontal) {
@@ -46,13 +46,13 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
             }
             Cell *cell =
                 maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb);
-            refreshShow(show, 1, &cell);
+            refreshShow(show, 1, &cell, false);
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
                              : (whereStart->left ? 1 : -1);
         Cell *cell =
             maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb);
-        refreshShow(show, 1, &cell);
+        refreshShow(show, 1, &cell, true);
     }
 }
 
@@ -80,4 +80,5 @@ void algo_diagonal(Maze *maze, const int width, const int height,
                         perfect, probability, show);
         }
     }
+    refreshShow(show);
 }
