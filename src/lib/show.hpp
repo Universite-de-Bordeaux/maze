@@ -1,6 +1,7 @@
 #ifndef SHOW_HPP
 #define SHOW_HPP
 
+#include <chrono>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
 
@@ -43,11 +44,11 @@ class Show {
     /**
      * @brief Affiche le contenu de la fenêtre de rendu
      */
-    void refreshDisplay() const;
+    void refreshDisplay();
     /**
      * @brief Rafraîchit l'ensemble du labyrinthe
      */
-    void refreshMaze() const;
+    void refreshMaze();
     /**
      * @brief Met à jour une cellule
      * @param cell Pointeur vers un objet de type Cell
@@ -82,6 +83,9 @@ class Show {
     float cellSize_;  //> Taille d'une cellule
     sf::Font font_;   //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};  //> Dernière touche pressée
+    std::chrono::milliseconds refreshRate_;  //> Taux de rafraîchissement
+    std::chrono::milliseconds delay_;  //> Délai
+    std::chrono::high_resolution_clock::time_point lastDisplay_;  //> Dernier affichage
 
     /**
      * @brief Dessine toutes les cellules du labyrinthe
@@ -128,12 +132,12 @@ class Show {
  * @param argv Tableau de pointeurs vers des objets de type Cell
  * @return void
  */
-void refreshShow(const Show *show, int argc, Cell *argv[]);
+void refreshShow(Show *show, int argc, Cell *argv[]);
 /**
  * @brief Rafraîchit la fenêtre de rendu avec toutes les cellules
  * @param show Pointeur vers un objet de type Show
  * @return void
  */
-void refreshShow(const Show *show);
+void refreshShow(Show *show);
 
 #endif  // SHOW_HPP

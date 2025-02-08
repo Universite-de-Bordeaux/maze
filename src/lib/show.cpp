@@ -2,10 +2,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/String.hpp>
-#include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <random>
+#include <thread>
 
 #include "var.hpp"
 
@@ -13,6 +13,9 @@ Show::Show(Maze *maze) {
     maze_ = maze;
     renderWindow_ = nullptr;
     cellSize_ = 50;
+    lastDisplay_ = std::chrono::high_resolution_clock::now();
+    refreshRate_ = std::chrono::milliseconds(1000 / 60);
+    delay_ = std::chrono::milliseconds(0);
     if (!font_.loadFromFile("src/assets/poppins.ttf")) {
         std::cerr << "Error: cannot load font" << std::endl;
     }
@@ -20,6 +23,7 @@ Show::Show(Maze *maze) {
 
 void Show::create() {
     cellSize_ = 50;
+    lastDisplay_ = std::chrono::high_resolution_clock::now();
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
     if (static_cast<float>(maze_->getWidth()) * cellSize_ >
             desktopSize.width * MAZE_MAX_WINDOW_RATIO ||
@@ -81,9 +85,14 @@ bool Show::pollEvent(sf::Event &event) const {
 
 void Show::clearBlack() const { renderWindow_->clear(sf::Color::Black); }
 
-void Show::refreshDisplay() const {  // TODO
-    renderWindow_->display();
-    sf::sleep(sf::milliseconds(1000 / 60 + 1));
+void Show::refreshDisplay() {
+    const auto now = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastDisplay_);
+    if (duration >= refreshRate_) {
+        renderWindow_->display();
+        lastDisplay_ = std::chrono::high_resolution_clock::now();
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(delay_));
 }
 
 void Show::drawCells_() const {
@@ -94,7 +103,7 @@ void Show::drawCells_() const {
     }
 }
 
-void Show::refreshMaze() const {
+void Show::refreshMaze() {
     eventHandler();
     // clearBlack();
     drawCells_();
@@ -271,7 +280,7 @@ void Show::close() const {
 //     show->refreshDisplay();
 // }
 
-void refreshShow(const Show *show, const int argc, Cell *argv[]) {
+void refreshShow(Show *show, const int argc, Cell *argv[]) {
     if (show == nullptr) return;
     if (!show->isOpen()) return;
     if (argc <= 0) return;
@@ -282,7 +291,7 @@ void refreshShow(const Show *show, const int argc, Cell *argv[]) {
     show->refreshDisplay();
 }
 
-void refreshShow(const Show *show) {
+void refreshShow(Show *show) {
     if (show == nullptr) return;
     if (!show->isOpen()) return;
     if (show->mazeIsEmpty()) return;
