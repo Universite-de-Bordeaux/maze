@@ -49,10 +49,12 @@ void Show::create() {
             desktopSize.width * MAZE_MAX_WINDOW_RATIO ||
         static_cast<float>(maze_->getHeight()) * cellSize_ >
             desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
-        cellSize_ = static_cast<float>(desktopSize.width) /
-                    static_cast<float>(maze_->getWidth());
-        if (cellSize_ * static_cast<float>(maze_->getHeight()) >
-            desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
+        const bool priorityWidth = maze_->getWidth() / desktopSize.width >
+                                   maze_->getHeight() / desktopSize.height;
+        if (priorityWidth) {
+            cellSize_ = static_cast<float>(desktopSize.width) /
+                        static_cast<float>(maze_->getWidth());
+        } else {
             cellSize_ = static_cast<float>(desktopSize.height) /
                         static_cast<float>(maze_->getHeight());
         }
