@@ -92,9 +92,9 @@ class Show {
         nullptr;      //> Pointeur vers un objet de type sf::RenderWindow
     float cellSize_;  //> Taille d'une cellule
     sf::Font font_;   //> Police d'écriture
-    sf::Event::KeyEvent lastKeyPressed_{};   //> Dernière touche pressée
+    sf::Event::KeyEvent lastKeyPressed_{};     //> Dernière touche pressée
     std::chrono::milliseconds refreshRate_{};  //> Taux de rafraîchissement
-    std::chrono::microseconds delay_{};         //> Délai
+    std::chrono::microseconds delay_{};        //> Délai
     std::chrono::high_resolution_clock::time_point
         lastDisplay_;  //> Dernier affichage
 
