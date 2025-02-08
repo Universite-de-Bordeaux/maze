@@ -75,7 +75,7 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 > ```dotenv
 > FRAMERATE=60
 > DELAY_SHOW=0.0
-```
+> ```
 
 #### Génération de labyrinthe (maze_generator)
 
