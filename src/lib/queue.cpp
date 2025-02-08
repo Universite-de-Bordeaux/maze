@@ -1,9 +1,5 @@
 #include "queue.hpp"
 
-#include <stdexcept>
-
-#include "queue.hpp"
-
 Queue::Queue() {
     size_ = 0;
     capacity_ = 1;
@@ -14,7 +10,7 @@ Queue::~Queue() { delete[] data; }
 
 void Queue::push(void *data) {
     if (size_ == capacity_) {
-        void **newData = new void *[capacity_ * 2];
+        const auto newData = new void *[capacity_ * 2];
         for (int i = 0; i < size_; i++) {
                 newData[i] = this->data[i];
         }
@@ -28,7 +24,7 @@ void Queue::push(void *data) {
 
 void Queue::pop() {
     if (size_ < capacity_ / 4) {
-        void **newData = new void *[capacity_ / 2];
+        const auto newData = new void *[capacity_ / 2];
         for (int i = 0; i < size_; i++) {
                 newData[i] = this->data[i];
         }
@@ -44,6 +40,6 @@ void Queue::pop() {
     }
 }
 
-void *Queue::front() { return data[0]; }
+void *Queue::front() const { return data[0]; }
 
-bool Queue::empty() { return size_ == 0; }
+bool Queue::empty() const { return size_ == 0; }
