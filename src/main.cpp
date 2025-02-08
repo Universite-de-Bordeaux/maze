@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
         }
         else if (strcmp(argv[i], "-ds") == 0 || strcmp(argv[i], "--delay-show") == 0) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
-            show.setDelay(std::stoi(argv[i + 1]));
+            show.setDelay(std::stof(argv[i + 1]));
             i++;
         }
         // Vérifie si le labyrinthe est valide

@@ -93,7 +93,7 @@ void Show::refreshDisplay() {
         renderWindow_->display();
         lastDisplay_ = std::chrono::high_resolution_clock::now();
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(delay_));
+    std::this_thread::sleep_for(std::chrono::nanoseconds(delay_));
 }
 
 void Show::drawCells_() const {
@@ -306,6 +306,6 @@ void Show::setRefreshRate(const unsigned int rate) {
     refreshRate_ = std::chrono::milliseconds(1000 / rate);
 }
 
-void Show::setDelay(const unsigned int delay) {
-    delay_ = std::chrono::milliseconds(delay);
+void Show::setDelay(const float delay) {
+    delay_ = std::chrono::nanoseconds(static_cast<int>(delay * 1000));
 }
