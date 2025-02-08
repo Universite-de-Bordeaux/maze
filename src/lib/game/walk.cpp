@@ -14,14 +14,14 @@ int game_walk(Maze *maze, Show *show, bool ghost) {
     if (!ghost)
         refreshShow(show);
     else {
-        updateShowLive(show, maze, 1, &cell);
+        refreshShow(show, 1, &cell);
     }
     int steps = 0;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
-            updateShowLive(show, maze, 1, &cell);
+            refreshShow(show, 1, &cell);
             return -1;
         }
         sf::Event event;
@@ -60,7 +60,7 @@ int game_walk(Maze *maze, Show *show, bool ghost) {
             cell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
             Cell *showCell[2] = {cell, neighbor};
-            updateShowLive(show, maze, 2, showCell);
+            refreshShow(show, 2, showCell);
             cell = neighbor;
             steps++;
         }

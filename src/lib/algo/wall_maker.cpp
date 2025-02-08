@@ -90,7 +90,7 @@ void algo_wall_maker(Maze* maze, int width, int height, bool perfect,double prob
         }
         resetAlreadyVisited(maze);
         Cell* showCell[1] = {maze->getCell(x, y)};
-        updateShowLive(show, maze, 1, showCell);
+        refreshShow(show, 1, showCell);
         if (show && show->isOpen()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }

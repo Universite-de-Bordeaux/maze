@@ -19,7 +19,7 @@ static int numberRelativeNeighbors(Maze* maze, int width, int height,
             numberOfNeighbors++;
             currentCell->setStatus(MAZE_STATUS_VISITED);
             cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
-            updateShowLive(show, maze, 1, &cell);
+            refreshShow(show, 1, &cell);
         }
     }
     return numberOfNeighbors;
@@ -89,7 +89,7 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect, double 
                 stack.push(newCoordPtr);
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
-            updateShowLive(show, maze, 1, &neighbor);
+            refreshShow(show, 1, &neighbor);
         } else {
             int numberOfNeighbors =
                 numberRelativeNeighbors(maze, width, height, currentX, currentY,
@@ -135,10 +135,10 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect, double 
                 maze->getCell(neighbors[0].x, neighbors[0].y)
                     ->setStatus(MAZE_STATUS_CURRENT);
                 Cell* showCell = maze->getCell(neighbors[0].x, neighbors[0].y);
-                updateShowLive(show, maze, 1, &showCell);
+                refreshShow(show, 1, &showCell);
             }
         }
-        updateShowLive(show, maze, 1, &currentCell);
+        refreshShow(show, 1, &currentCell);
     }
     maze->clearMaze();
 }

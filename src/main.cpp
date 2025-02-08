@@ -223,7 +223,7 @@ int main(int argc, char *argv[]) {
             }
             show.create();
             while (show.isOpen()) {
-                show.refreshMaze();
+                refreshShow(&show);
             }
         }
         // Vérifie si le labyrinthe est valide
@@ -281,7 +281,7 @@ int main(int argc, char *argv[]) {
                 show.create();
                 checkMaze(&maze, algorithm, perfect, &show);
                 while (show.isOpen()) {
-                    show.refreshMaze();
+            refreshShow(&show);
                 }
             } else {
                 checkMaze(&maze, algorithm, perfect, nullptr);
@@ -383,7 +383,7 @@ int main(int argc, char *argv[]) {
                 show.create();
                 resolveMaze(&maze, algorithm, &show);
                 while (show.isOpen()) {
-                    show.refreshMaze();
+            refreshShow(&show);
                 }
             } else {
                 resolveMaze(&maze, algorithm, nullptr);
@@ -435,7 +435,7 @@ int main(int argc, char *argv[]) {
                 show.create();
                 gameMaze(&maze, type, &show);
                 while (show.isOpen()) {
-                    show.refreshMaze();
+            refreshShow(&show);
                 }
             } else {
                 gameMaze(&maze, type, nullptr);

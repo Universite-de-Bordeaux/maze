@@ -152,7 +152,7 @@ int main(const int argc, char *argv[]) {
             }
             show.create();
             while (show.isOpen()) {
-                show.refreshMaze();
+            refreshShow(&show);
             }
         }
         // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
@@ -280,7 +280,7 @@ int main(const int argc, char *argv[]) {
                 generateMaze(&maze, algorithm, width, height, perfect,
                              probability, &show);
                 while (show.isOpen()) {
-                    show.refreshMaze();
+            refreshShow(&show);
                 }
             } else {
                 generateMaze(&maze, algorithm, width, height, perfect,

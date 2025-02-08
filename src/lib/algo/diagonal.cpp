@@ -47,13 +47,13 @@ static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
             }
             Cell *cell =
                 maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb);
-            updateShowLive(show, maze, 1, &cell);
+            refreshShow(show, 1, &cell);
         }
         (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
                              : (whereStart->left ? 1 : -1);
         Cell *cell =
             maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb);
-        updateShowLive(show, maze, 1, &cell);
+        refreshShow(show, 1, &cell);
     }
 }
 

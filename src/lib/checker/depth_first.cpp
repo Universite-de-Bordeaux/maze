@@ -21,11 +21,11 @@ static void checkCell(Maze *maze, int x, int y, Show *show) {
         cell->getAbsoluteNumberOfNeighborsNotVisited();
     if (numberOfNeighborsNotVisited <= 0) {
         cell->setStatus(MAZE_STATUS_HOPELESS);
-        updateShowLive(show, maze, 1, &cell);
+        refreshShow(show, 1, &cell);
         // refreshShow(show);
         return;
     }
-    updateShowLive(show, maze, 1, &cell);
+    refreshShow(show, 1, &cell);
     // refreshShow(show);
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
@@ -60,14 +60,14 @@ static void checkCellPerfect(Maze *maze, int x, int y, int pastX, int pastY,
               2)) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
         }
-        updateShowLive(show, maze, 1, &cell);
+        refreshShow(show, 1, &cell);
         return;
     }
     int numberOfNeighborsNotVisited =
         cell->getAbsoluteNumberOfNeighborsNotVisited();
     Cell *neighbors[numberOfNeighborsNotVisited];
     cell->getAbsoluteNeighborsNotVisited(neighbors);
-    updateShowLive(show, maze, 1, &cell);
+    refreshShow(show, 1, &cell);
     for (int i = 0; i < numberOfNeighborsNotVisited; i++) {
         Cell *neighbor = neighbors[i];
         checkCellPerfect(maze, neighbor->getX(), neighbor->getY(), x, y,

@@ -15,7 +15,7 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
         int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
-            updateShowLive(show, maze, 1, &cell);
+            refreshShow(show, 1, &cell);
             return -1;
         }
         for (int i = 0; i < 3 && cell->getNeighbor(direction) == nullptr; i++) {
@@ -38,7 +38,7 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
             neighbor->setStatus(MAZE_STATUS_CURRENT);
             cell->setStatus(MAZE_STATUS_VISITED);
             Cell *showCell[2] = {cell, neighbor};
-            updateShowLive(show, maze, 2, showCell);
+            refreshShow(show, 2, showCell);
             cell = neighbor;
         }
         steps++;

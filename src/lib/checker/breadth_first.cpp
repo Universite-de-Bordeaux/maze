@@ -9,7 +9,7 @@
 #include "../var.hpp"
 
 bool checker_breadthfirst(Maze *maze, Show *show) {
-    updateShowLive(show, maze);
+    refreshShow(show);
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
     Queue queue;
     int cont = 0;
@@ -25,7 +25,7 @@ bool checker_breadthfirst(Maze *maze, Show *show) {
         int x = current.x;
         int y = current.y;
         Cell *cell = maze->getCell(x, y);
-        updateShowLive(show, maze);
+        refreshShow(show);
         bool parfaite = true;
         for (int i = 0; i < 4; i++) {
             Cell *neighbor = cell->getNeighbor(i);

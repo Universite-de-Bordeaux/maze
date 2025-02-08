@@ -45,13 +45,6 @@ class Show {
      */
     void refreshDisplay() const;
     /**
-     * @brief Met à jour la fenêtre de rendu
-     */
-    /**
-     * @brief Dessine toutes les cellules du labyrinthe
-     */
-    void drawCells() const;
-    /**
      * @brief Rafraîchit l'ensemble du labyrinthe
      */
     void refreshMaze() const;
@@ -76,20 +69,24 @@ class Show {
      * @brief Ferme la fenêtre de rendu
      */
     void close() const;
+      /**
+   * @brief Vérifie si le labyrinthe est vide
+   * @return True si le labyrinthe est vide, false sinon
+   */
+bool mazeIsEmpty() const;
 
    private:
     Maze *maze_;  //> Pointeur vers un objet de type Maze
     sf::RenderWindow *renderWindow_ =
         nullptr;     //> Pointeur vers un objet de type sf::RenderWindow
-    int cellSize_;   //> Taille d'une cellule
+    float cellSize_;   //> Taille d'une cellule
     sf::Font font_;  //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};  //> Dernière touche pressée
-
-    /**
-     * @brief Gère les événements de la fenêtre de rendu
-     * @param event Référence vers event
-     */
-    void eventHandler_(const sf::Event &event) const;
+  
+  /**
+   * @brief Dessine toutes les cellules du labyrinthe
+   */
+  void drawCells_() const;
     /**
      * @brief Dessine une cellule
      * @param cell Pointeur vers un objet de type Cell
@@ -109,32 +106,31 @@ class Show {
     void drawFrontier_(const Cell *cell, int orientation) const;
 };
 
+// /**
+//  * @brief Met à jour la fenêtre de rendu
+//  * @param show Pointeur vers un objet de type Show
+//  * @param maze Pointeur vers un objet de type Maze
+//  * @param fastCooling Refroidissement rapide
+//  * @return void
+//  */
+// void updateShowLive(const Show *show, const Maze *maze, bool fastCooling);
+// /**
+//  * @brief Met à jour la fenêtre de rendu
+//  * @param show Pointeur vers un objet de type Show
+//  * @param maze Pointeur vers un objet de type Maze
+//  * @return void
+//  */
+// void updateShowLive(const Show *show, const Maze *maze);
 /**
- * @brief Met à jour la fenêtre de rendu
+ * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules modifiées
  * @param show Pointeur vers un objet de type Show
- * @param maze Pointeur vers un objet de type Maze
- * @param fastCooling Refroidissement rapide
- * @return void
- */
-void updateShowLive(const Show *show, const Maze *maze, bool fastCooling);
-/**
- * @brief Met à jour la fenêtre de rendu
- * @param show Pointeur vers un objet de type Show
- * @param maze Pointeur vers un objet de type Maze
- * @return void
- */
-void updateShowLive(const Show *show, const Maze *maze);
-/**
- * @brief Met à jour la fenêtre de rendu
- * @param show Pointeur vers un objet de type Show
- * @param maze Pointeur vers un objet de type Maze
  * @param argc Nombre d'arguments
  * @param argv Tableau de pointeurs vers des objets de type Cell
  * @return void
  */
-void updateShowLive(const Show *show, const Maze *maze, int argc, Cell *argv[]);
+void refreshShow(const Show *show, int argc, Cell *argv[]);
 /**
- * @brief Rafraîchit la fenêtre de rendu
+ * @brief Rafraîchit la fenêtre de rendu avec toutes les cellules
  * @param show Pointeur vers un objet de type Show
  * @return void
  */
