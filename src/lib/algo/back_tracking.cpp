@@ -1,51 +1,47 @@
 #include "back_tracking.hpp"
 
-#include <iostream>
-
 #include "../show.hpp"
 #include "../stack.hpp"
 
-static int numberRelativeNeighbors(Maze* maze, int width, int height,
-                                   int currentX, int currentY,
-                                   const int DIRECTIONS[4][2],
-                                   Cell* currentCell, Show* show) {
+static int numberRelativeNeighbors(const Maze* maze, const int currentX,
+                                   const int currentY) {
     int numberOfNeighbors = 0;
-    for (int i = 0; i < 4; i++) {
-        int x = currentX + DIRECTIONS[i][0];
-        int y = currentY + DIRECTIONS[i][1];
-        Cell* cell = maze->getCell(x, y);
-        if (x >= 0 && x < width && y >= 0 && y < height &&
-            cell->isAlreadyVisited() == false) {
-            numberOfNeighbors++;
-            currentCell->setStatus(MAZE_STATUS_VISITED);
-            cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
-            refreshShow(show, 1, &cell);
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            if (i != j && (i == 0 || j == 0)) {
+                const int x = currentX + i;
+                const int y = currentY + j;
+                if (x >= 0 && x < maze->getWidth() && y >= 0 &&
+                    y < maze->getHeight() &&
+                    maze->getCell(x, y)->isAlreadyVisited() == false) {
+                    numberOfNeighbors++;
+                }
+            }
         }
     }
     return numberOfNeighbors;
 }
 
-static Cell* nextNeighbor(Cell* current) {
-    int numberOfNeighbors = current->getAbsoluteNumberOfNeighborsNotVisited();
-    if (numberOfNeighbors == 0) {
-        return nullptr;  // Aucun voisin non visité
-    }
-
+static Cell* nextNeighbor(const Cell* current, Rand* rand) {
+    const int numberOfNeighbors =
+        current->getAbsoluteNumberOfNeighborsNotVisited();
+    if (numberOfNeighbors == 0) return nullptr;
     Cell* listCell[numberOfNeighbors];
     current->getAbsoluteNeighborsNotVisited(
         listCell);  // Récupérer les voisins non visités
-    int random = rand() % numberOfNeighbors;
+    const int random = rand->get(0, numberOfNeighbors - 1);
     return listCell[random];  // Retourner un voisin non visité au hasard
 }
 
 // Fonction principale de l'algorithme (back_tracking)
-void algo_back_tracking(Maze* maze, int width, int height, bool perfect,
-                        double probability, Show* show) {
+void algo_back_tracking(Maze* maze, const int width, const int height,
+                        const bool perfect, const double probability,
+                        Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
     }
-    Stack stack = Stack();
+    auto stack = Stack();
 
     Cell* cellStart = maze->getCell(0, 0);
     cellStart->setAlreadyVisited(true);
@@ -55,17 +51,17 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect,
     stack.push(&startCoord);
 
     while (!stack.empty()) {
-        // cellule curent a patire de cellHistory
-        coordinate* currentCoord = (coordinate*)stack.top();
-        int currentX = currentCoord->x;
-        int currentY = currentCoord->y;
+        // cellule curent a partir de cellHistory
+        const auto* currentCoord = static_cast<coordinate*>(stack.top());
+        const int currentX = currentCoord->x;
+        const int currentY = currentCoord->y;
         Cell* currentCell = maze->getCell(currentX, currentY);
         currentCell->setStatus(MAZE_STATUS_CURRENT);
 
-        Cell* neighbor = nextNeighbor(currentCell);
+        Cell* neighbor = nextNeighbor(currentCell, maze->getRand());
 
         if (neighbor != nullptr) {
-            int numberOfNeighbors =
+            const int numberOfNeighbors =
                 currentCell->getAbsoluteNumberOfNeighborsNotVisited();
             Cell* listCell[numberOfNeighbors];
             currentCell->getAbsoluteNeighborsNotVisited(listCell);
@@ -80,32 +76,31 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect,
             neighbor->setAlreadyVisited(true);
 
             // ajout à historique
-            coordinate newCoord;
+            coordinate newCoord{};
             newCoord.x = neighbor->getX();
             newCoord.y = neighbor->getY();
-            coordinate* newCoordPtr = new coordinate;
+            auto* newCoordPtr = new coordinate;
             newCoordPtr->x = newCoord.x;
             newCoordPtr->y = newCoord.y;
             stack.push(newCoordPtr);
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
-            refreshShow(show, 1, &neighbor);
+            Cell* showCells[2] = {currentCell, neighbor};
+            refreshShow(show, 2, showCells);
         } else {
-            int numberOfNeighbors =
-                numberRelativeNeighbors(maze, width, height, currentX, currentY,
-                                        DIRECTIONS, currentCell, show);
+            const int numberOfNeighbors =
+                numberRelativeNeighbors(maze, currentX, currentY);
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 stack.pop();
-                if (!perfect &&
-                    (double)(rand() % 10000) < probability * (double)10000) {
-                    int randomIndex = rand() % 4;
+                if (!perfect && maze->getRand()->get(probability)) {
+                    const int randomIndex = maze->getRand()->get(0, 3);
                     for (int i = 0; i < 4; i++) {
-                        int index = (randomIndex + i) % 4;
-                        int x = currentX + DIRECTIONS[index][0];
-                        int y = currentY + DIRECTIONS[index][1];
+                        const int index = (randomIndex + i) % 4;
+                        const int x = currentX + DIRECTIONS[index][0];
+                        const int y = currentY + DIRECTIONS[index][1];
                         if (x >= 0 && x < width && y >= 0 && y < height) {
-                            Cell* neighborCell = maze->getCell(x, y);
+                            const Cell* neighborCell = maze->getCell(x, y);
                             if (neighborCell->isAlreadyVisited()) {
                                 maze->removeWall(currentCell, neighborCell);
                                 break;
@@ -116,30 +111,33 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect,
             } else {
                 coordinate neighbors[numberOfNeighbors];
                 int index = 0;
-                for (int i = 0; i < 4; i++) {
-                    int x = currentX + DIRECTIONS[i][0];
-                    int y = currentY + DIRECTIONS[i][1];
-                    if (x >= 0 && x < width && y >= 0 && y < height &&
-                        maze->getCell(x, y)->isAlreadyVisited() == false) {
-                        neighbors[index].x = x;
-                        neighbors[index].y = y;
-                        index++;
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        if (i != j && (i == 0 || j == 0)) {
+                            const int x = currentX + i;
+                            const int y = currentY + j;
+                            if (x >= 0 && x < width && y >= 0 && y < height &&
+                                maze->getCell(x, y)->isAlreadyVisited() ==
+                                    false) {
+                                neighbors[index].x = x;
+                                neighbors[index].y = y;
+                                index++;
+                            }
+                        }
                     }
                 }
                 maze->removeWall(currentCell,
                                  maze->getCell(neighbors[0].x, neighbors[0].y));
-                coordinate* newCoordPtr = new coordinate;
+                auto* newCoordPtr = new coordinate;
                 newCoordPtr->x = neighbors[0].x;
                 newCoordPtr->y = neighbors[0].y;
                 stack.push(newCoordPtr);
                 currentCell->setStatus(MAZE_STATUS_VISITED);
                 maze->getCell(neighbors[0].x, neighbors[0].y)
                     ->setStatus(MAZE_STATUS_CURRENT);
-                Cell* showCell = maze->getCell(neighbors[0].x, neighbors[0].y);
-                refreshShow(show, 1, &showCell);
             }
+            refreshShow(show, 1, &currentCell);
         }
-        refreshShow(show, 1, &currentCell);
     }
     maze->clearMaze();
 }

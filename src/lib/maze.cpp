@@ -1,44 +1,31 @@
 #include "maze.hpp"
 
-#include <random>
-
 #include "cell.hpp"
 #include "var.hpp"
 
-static int defaultStartX(const int width) {
+static int defaultStartX(const int width, Rand *rand) {
     if (width <= 0) return 0;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, width - 1);
-    return dis(gen);
+    return rand->get(0, width - 1);
 }
-static int defaultStartY(const int height) {
+static int defaultStartY(const int height, Rand *rand) {
     if (height <= 0) return 0;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, height - 1);
-    return dis(gen);
+    return rand->get(0, height - 1);
 }
-static int defaultEndX(const int width) {
+static int defaultEndX(const int width, Rand *rand) {
     if (width <= 0) return 0;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, width - 1);
-    return dis(gen);
+    return rand->get(0, width - 1);
 }
-static int defaultEndY(const int height) {
+static int defaultEndY(const int height, Rand *rand) {
     if (height <= 0) return 0;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, height - 1);
-    return dis(gen);
+    return rand->get(0, height - 1);
 }
 
 Maze::Maze() : Maze(0, 0, 0, 0, 0, 0){};
 
 Maze::Maze(const int width, const int height)
-    : Maze(width, height, defaultStartX(width), defaultStartY(height),
-           defaultEndX(width), defaultEndY(height)){};
+    : Maze(width, height, defaultStartX(width, &rand_),
+           defaultStartY(height, &rand_), defaultEndX(width, &rand_),
+           defaultEndY(height, &rand_)){};
 
 Maze::Maze(const int width, const int height, const int startX,
            const int startY, const int endX, const int endY) {
@@ -90,8 +77,9 @@ Cell *Maze::getStartCell() const { return getCell(start_[0], start_[1]); }
 Cell *Maze::getEndCell() const { return getCell(end_[0], end_[1]); }
 
 void Maze::setWidthHeight(const int width, const int height) {
-    setWidthHeight(width, height, defaultStartX(width), defaultStartY(height),
-                   defaultEndX(width), defaultEndY(height));
+    setWidthHeight(width, height, defaultStartX(width, &rand_),
+                   defaultStartY(height, &rand_), defaultEndX(width, &rand_),
+                   defaultEndY(height, &rand_));
 }
 
 void Maze::setWidthHeight(const int width, const int height, const int startX,
@@ -545,8 +533,10 @@ void Maze::freeMaze() {
         // delete[] cells_;
         cells_ = nullptr;
     }
-    start_[0] = defaultStartX(width_), start_[1] = defaultStartY(height_);
-    end_[0] = defaultEndX(width_), end_[1] = defaultEndY(height_);
+    start_[0] = defaultStartX(width_, &rand_),
+    start_[1] = defaultStartY(height_, &rand_);
+    end_[0] = defaultEndX(width_, &rand_),
+    end_[1] = defaultEndY(height_, &rand_);
 }
 
 void Maze::clearMaze() const {

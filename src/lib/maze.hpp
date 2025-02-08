@@ -2,6 +2,7 @@
 #define MAZE_HPP
 
 #include "cell.hpp"
+#include "rand.hpp"
 
 /**
 @class Maze
@@ -205,6 +206,11 @@ class Maze {
      * @brief Nettoie le labyrinthe
      */
     void clearMaze() const;
+    /**
+     * @brief Retourne le générateur de nombres aléatoires
+     * @return Le générateur de nombres aléatoires
+     */
+    Rand *getRand() { return &rand_; }
 
    private:
     int width_{};              ///< Largeur du labyrinthe
@@ -212,6 +218,7 @@ class Maze {
     Cell ***cells_ = nullptr;  ///< Cellules du labyrinthe
     int start_[2] = {0, 0};    ///< Coordonnées de la cellule de départ
     int end_[2] = {0, 0};      ///< Coordonnées de la cellule d'arrivée
+    Rand rand_;                ///< Générateur de nombres aléatoires
 
     /**
      * @brief Initialise les cellules du labyrinthe

@@ -9,15 +9,18 @@ struct coordinate {
     int y;
 };
 
-const int DIRECTIONS[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+constexpr int DIRECTIONS[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
 /**
- * Crée un labyrinthe
- * @param Maze* pointeur vers le labyrinthe à genérer
- * @param int largeur du labyrinthe
- * @param int hauteur du labyrinthe
- * @param bool  vrai si le labyrinthe est parfait
+ * Crée un labyrinthe avec l'algorithme de backtracking
+ * @param maze Pointeur vers le labyrinthe à créer
+ * @param width Largeur du labyrinthe
+ * @param height Hauteur du labyrinthe
+ * @param perfect Si le labyrinthe doit être parfait
+ * @param probability Probabilité de casser un mur
+ * @param show Pointeur vers l'objet Show
  */
-void algo_back_tracking(Maze*, int, int, bool, double, Show*);
+void algo_back_tracking(Maze* maze, int width, int height, bool perfect,
+                        double probability, Show* show);
 
 #endif  // ALGO_BACKTRACKING_HPP

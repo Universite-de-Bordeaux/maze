@@ -12,6 +12,7 @@ set(SOURCE_FILES
         src/lib/game/fog_hand.cpp
         src/lib/game/walk.cpp
         src/lib/maze.cpp
+        src/lib/rand.cpp
         src/lib/reader.cpp
         src/lib/queue.cpp
         src/lib/show.cpp
@@ -31,6 +32,7 @@ set(SOURCE_FILES_GENERATOR
         src/lib/cell.cpp
         src/lib/maze.cpp
         src/lib/queue.cpp
+        src/lib/rand.cpp
         src/lib/show.cpp
         src/lib/stack.cpp
         src/lib/wall.cpp

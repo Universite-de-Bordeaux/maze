@@ -34,7 +34,7 @@ void help() {
     std::cout
         << "    -ds ou --delay-show <delay> : Spécifie le délai d'affichage "
            "entre chaque cellule en millisecondes (par défaut : 0.0 (précis à "
-           "la nanoseconde))"
+           "la microseconde))"
         << std::endl;
     std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
                  "sauvegarder le labyrinthe en mémoire"
