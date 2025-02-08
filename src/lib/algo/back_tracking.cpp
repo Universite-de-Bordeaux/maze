@@ -7,8 +7,8 @@
 
 static int numberRelativeNeighbors(Maze* maze, int width, int height,
                                    int currentX, int currentY,
-                                   const int DIRECTIONS[4][2], Cell* currentCell,
-                                   Show* show) {
+                                   const int DIRECTIONS[4][2],
+                                   Cell* currentCell, Show* show) {
     int numberOfNeighbors = 0;
     for (int i = 0; i < 4; i++) {
         int x = currentX + DIRECTIONS[i][0];
@@ -39,8 +39,8 @@ static Cell* nextNeighbor(Cell* current) {
 }
 
 // Fonction principale de l'algorithme (back_tracking)
-void algo_back_tracking(Maze* maze, int width, int height, bool perfect, double probability,
-                       Show* show) {
+void algo_back_tracking(Maze* maze, int width, int height, bool perfect,
+                        double probability, Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
@@ -84,9 +84,9 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect, double 
             newCoord.x = neighbor->getX();
             newCoord.y = neighbor->getY();
             coordinate* newCoordPtr = new coordinate;
-                newCoordPtr->x = newCoord.x;
-                newCoordPtr->y = newCoord.y;
-                stack.push(newCoordPtr);
+            newCoordPtr->x = newCoord.x;
+            newCoordPtr->y = newCoord.y;
+            stack.push(newCoordPtr);
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
             refreshShow(show, 1, &neighbor);
@@ -97,7 +97,8 @@ void algo_back_tracking(Maze* maze, int width, int height, bool perfect, double 
             if (numberOfNeighbors <= 0) {
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 stack.pop();
-                if (!perfect && (double)(rand() % 10000) < probability * (double)10000) {
+                if (!perfect &&
+                    (double)(rand() % 10000) < probability * (double)10000) {
                     int randomIndex = rand() % 4;
                     for (int i = 0; i < 4; i++) {
                         int index = (randomIndex + i) % 4;

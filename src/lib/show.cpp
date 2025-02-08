@@ -25,22 +25,28 @@ void Show::create() {
             desktopSize.width * MAZE_MAX_WINDOW_RATIO ||
         static_cast<float>(maze_->getHeight()) * cellSize_ >
             desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
-        cellSize_ = static_cast<float>(desktopSize.width) / static_cast<float>(maze_->getWidth());
-        if (cellSize_ * static_cast<float>(maze_->getHeight()) > desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
-            cellSize_ = static_cast<float>(desktopSize.height) / static_cast<float>(maze_->getHeight());
+        cellSize_ = static_cast<float>(desktopSize.width) /
+                    static_cast<float>(maze_->getWidth());
+        if (cellSize_ * static_cast<float>(maze_->getHeight()) >
+            desktopSize.height * MAZE_MAX_WINDOW_RATIO) {
+            cellSize_ = static_cast<float>(desktopSize.height) /
+                        static_cast<float>(maze_->getHeight());
         }
     }
-    renderWindow_ =
-        new sf::RenderWindow(sf::VideoMode(static_cast<unsigned int>(static_cast<float>(maze_->getWidth()) * cellSize_),
-                                           static_cast<unsigned int>(static_cast<float>(maze_->getHeight()) * cellSize_)),
-                             "Maze");
+    renderWindow_ = new sf::RenderWindow(
+        sf::VideoMode(static_cast<unsigned int>(
+                          static_cast<float>(maze_->getWidth()) * cellSize_),
+                      static_cast<unsigned int>(
+                          static_cast<float>(maze_->getHeight()) * cellSize_)),
+        "Maze");
     renderWindow_->setVerticalSyncEnabled(true);
 
     const sf::Vector2i screenCenter(static_cast<int>(desktopSize.width / 2),
                                     static_cast<int>(desktopSize.height / 2));
-    renderWindow_->setPosition(screenCenter -
-                               sf::Vector2i(static_cast<int>(renderWindow_->getSize().x / 2),
-                                                static_cast<int>(renderWindow_->getSize().y / 2)));
+    renderWindow_->setPosition(
+        screenCenter -
+        sf::Vector2i(static_cast<int>(renderWindow_->getSize().x / 2),
+                     static_cast<int>(renderWindow_->getSize().y / 2)));
 }
 
 void Show::destroy() {
@@ -65,7 +71,7 @@ void Show::eventHandler() const {
             (event.type == sf::Event::KeyPressed &&
              event.key.code == sf::Keyboard::Escape)) {
             renderWindow_->close();
-             }
+        }
     }
 }
 
@@ -75,7 +81,7 @@ bool Show::pollEvent(sf::Event &event) const {
 
 void Show::clearBlack() const { renderWindow_->clear(sf::Color::Black); }
 
-void Show::refreshDisplay() const { // TODO
+void Show::refreshDisplay() const {  // TODO
     renderWindow_->display();
     sf::sleep(sf::milliseconds(1000 / 60 + 1));
 }
@@ -96,8 +102,7 @@ void Show::refreshMaze() const {
 }
 
 void Show::drawCell_(const Cell *cell) const {
-    sf::RectangleShape visited(sf::Vector2f(cellSize_,
-                                            cellSize_));
+    sf::RectangleShape visited(sf::Vector2f(cellSize_, cellSize_));
     visited.setPosition(static_cast<float>(cell->getX()) * cellSize_,
                         static_cast<float>(cell->getY()) * cellSize_);
     if (cell->getStatus() == MAZE_STATUS_IDLE) {
@@ -134,19 +139,23 @@ void Show::drawWall_(const Cell *cell, const int orientation) const {
         if (orientation == MAZE_CELL_TOP) {
             neighbor = maze_->getCell(x, y - 1);
             if (neighbor->getWall(MAZE_CELL_BOTTOM)) y--;
-            wall.setPosition(static_cast<float>(x) * cellSize_, static_cast<float>(y) * cellSize_ + cellSize_);
+            wall.setPosition(static_cast<float>(x) * cellSize_,
+                             static_cast<float>(y) * cellSize_ + cellSize_);
         } else if (orientation == MAZE_CELL_RIGHT) {
             neighbor = maze_->getCell(x + 1, y);
             wall.setSize(sf::Vector2f(1, cellSize_));
-            wall.setPosition(static_cast<float>(x) * cellSize_ + cellSize_, static_cast<float>(y) * cellSize_);
+            wall.setPosition(static_cast<float>(x) * cellSize_ + cellSize_,
+                             static_cast<float>(y) * cellSize_);
         } else if (orientation == MAZE_CELL_BOTTOM) {
             neighbor = maze_->getCell(x, y + 1);
-            wall.setPosition(static_cast<float>(x) * cellSize_, static_cast<float>(y) * cellSize_ + cellSize_);
+            wall.setPosition(static_cast<float>(x) * cellSize_,
+                             static_cast<float>(y) * cellSize_ + cellSize_);
         } else {
             neighbor = maze_->getCell(x - 1, y);
             if (maze_->getCell(x - 1, y)->getWall(MAZE_CELL_RIGHT)) x--;
             wall.setSize(sf::Vector2f(1, cellSize_));
-            wall.setPosition(static_cast<float>(x) * cellSize_ + cellSize_, static_cast<float>(y) * cellSize_);
+            wall.setPosition(static_cast<float>(x) * cellSize_ + cellSize_,
+                             static_cast<float>(y) * cellSize_);
         }
         if (neighbor->getX() == maze_->getEndX() &&
             neighbor->getY() == maze_->getEndY()) {
@@ -165,11 +174,13 @@ void Show::drawFrontier_(const Cell *cell, const int orientation) const {
         frontier.setPosition(static_cast<float>(cell->getX()) * cellSize_, 0);
     } else if (orientation == MAZE_CELL_RIGHT) {
         frontier.setSize(sf::Vector2f(1, cellSize_));
-        frontier.setPosition(static_cast<float>(maze_->getWidth()) * cellSize_ - 1,
-                             static_cast<float>(cell->getY()) * cellSize_);
+        frontier.setPosition(
+            static_cast<float>(maze_->getWidth()) * cellSize_ - 1,
+            static_cast<float>(cell->getY()) * cellSize_);
     } else if (orientation == MAZE_CELL_BOTTOM) {
-        frontier.setPosition(static_cast<float>(cell->getX()) * cellSize_,
-                             static_cast<float>(maze_->getHeight()) * cellSize_ - 1);
+        frontier.setPosition(
+            static_cast<float>(cell->getX()) * cellSize_,
+            static_cast<float>(maze_->getHeight()) * cellSize_ - 1);
     } else {
         frontier.setSize(sf::Vector2f(1, cellSize_));
         frontier.setPosition(0, static_cast<float>(cell->getY()) * cellSize_);
@@ -260,8 +271,7 @@ void Show::close() const {
 //     show->refreshDisplay();
 // }
 
-void refreshShow(const Show *show, const int argc,
-                    Cell *argv[]) {
+void refreshShow(const Show *show, const int argc, Cell *argv[]) {
     if (show == nullptr) return;
     if (!show->isOpen()) return;
     if (argc <= 0) return;
@@ -279,6 +289,4 @@ void refreshShow(const Show *show) {
     show->refreshMaze();
 }
 
-bool Show::mazeIsEmpty() const {
-    return maze_ == nullptr;
-}
+bool Show::mazeIsEmpty() const { return maze_ == nullptr; }

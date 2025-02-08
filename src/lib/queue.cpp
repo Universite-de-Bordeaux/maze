@@ -12,7 +12,7 @@ void Queue::push(void *data) {
     if (size_ == capacity_) {
         const auto newData = new void *[capacity_ * 2];
         for (int i = 0; i < size_; i++) {
-                newData[i] = this->data[i];
+            newData[i] = this->data[i];
         }
         delete[] this->data;
         this->data = newData;
@@ -26,7 +26,7 @@ void Queue::pop() {
     if (size_ < capacity_ / 4) {
         const auto newData = new void *[capacity_ / 2];
         for (int i = 0; i < size_; i++) {
-                newData[i] = this->data[i];
+            newData[i] = this->data[i];
         }
         delete[] this->data;
         this->data = newData;
@@ -34,7 +34,7 @@ void Queue::pop() {
     }
     if (size_ > 0) {
         for (int i = 0; i < size_ - 1; i++) {
-                data[i] = data[i + 1];
+            data[i] = data[i + 1];
         }
         size_--;
     }

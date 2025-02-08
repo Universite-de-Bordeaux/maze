@@ -40,8 +40,8 @@ static void resetAlreadyVisited(Maze* maze) {
     }
 }
 
-void algo_wall_maker(Maze* maze, int width, int height, bool perfect,double probability,
-                    Show* show) {
+void algo_wall_maker(Maze* maze, int width, int height, bool perfect,
+                     double probability, Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();

@@ -5,10 +5,10 @@
 #include <queue>
 #include <thread>
 
-#include "../show.hpp"
-#include "../var.hpp"
 #include "../queue.hpp"
+#include "../show.hpp"
 #include "../stack.hpp"
+#include "../var.hpp"
 
 bool solver_breadth_first(Maze *maze, Show *show) {
     std::cout << "Résolution du labyrinthe en largeur" << std::endl;
@@ -20,7 +20,8 @@ bool solver_breadth_first(Maze *maze, Show *show) {
     refreshShow(show);
     position start = {maze->getStartX(), maze->getStartY()};
     queue.push(&start);
-    positionHistory startHistory = {maze->getStartX(), maze->getStartY(), -1, -1};
+    positionHistory startHistory = {maze->getStartX(), maze->getStartY(), -1,
+                                    -1};
     stack.push(&startHistory);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
@@ -51,13 +52,15 @@ bool solver_breadth_first(Maze *maze, Show *show) {
                     neighbor->setStatus(MAZE_STATUS_WAY_OUT);
                     refreshShow(show, 1, &neighbor);
                     while (!stack.empty()) {
-                        positionHistory *currentCell = (positionHistory*)stack.top();
-                        positionHistory *cellTop = (positionHistory*)stack.top();
+                        positionHistory *currentCell =
+                            (positionHistory *)stack.top();
+                        positionHistory *cellTop =
+                            (positionHistory *)stack.top();
                         while (!stack.empty() &&
                                (cellTop->x != currentCell->parent_x ||
                                 cellTop->y != currentCell->parent_y)) {
                             stack.pop();
-                            cellTop = (positionHistory*)stack.top();
+                            cellTop = (positionHistory *)stack.top();
                         }
                         if (stack.empty()) {
                             break;

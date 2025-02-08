@@ -23,8 +23,8 @@ struct start {
  * @param show L'objet pour afficher le labyrinthe
  */
 static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
-                        bool isHorizontal, start *whereStart, bool perfect, double probability,
-                        Show *show) {
+                        bool isHorizontal, start *whereStart, bool perfect,
+                        double probability, Show *show) {
     if ((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
         int startB = (isHorizontal ? (whereStart->left ? *b : 0)
@@ -38,7 +38,8 @@ static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
         }
         int rb = (int)(rand() % (endB - startB)) + startB;
         for (int bb = startB; bb <= endB; bb++) {
-            if (bb != rb && (perfect || (double)(rand() % 10000) > probability * (double)10000)) {
+            if (bb != rb && (perfect || (double)(rand() % 10000) >
+                                            probability * (double)10000)) {
                 if (isHorizontal) {
                     maze->addWall(bb, *a - !whereStart->top, isHorizontal);
                 } else {
@@ -57,8 +58,8 @@ static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
     }
 }
 
-void algo_diagonal(Maze *maze, int width, int height, bool perfect, double probability,
-                   Show *show) {
+void algo_diagonal(Maze *maze, int width, int height, bool perfect,
+                   double probability, Show *show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
@@ -69,13 +70,15 @@ void algo_diagonal(Maze *maze, int width, int height, bool perfect, double proba
     while ((!whereStart.left <= x && x < width - whereStart.left) ||
            (!whereStart.top <= y && y < height - whereStart.top)) {
         if (rand() % 2 == 0) {
-            create_exit(&x, &width, &y, &height, maze, false, &whereStart,perfect, probability,
-                        show);
-            create_exit(&y, &height, &x, &width, maze, true, &whereStart,perfect, probability, show);
+            create_exit(&x, &width, &y, &height, maze, false, &whereStart,
+                        perfect, probability, show);
+            create_exit(&y, &height, &x, &width, maze, true, &whereStart,
+                        perfect, probability, show);
         } else {
-            create_exit(&y, &height, &x, &width, maze, true, &whereStart,perfect, probability, show);
-            create_exit(&x, &width, &y, &height, maze, false, &whereStart,perfect, probability,
-                        show);
+            create_exit(&y, &height, &x, &width, maze, true, &whereStart,
+                        perfect, probability, show);
+            create_exit(&x, &width, &y, &height, maze, false, &whereStart,
+                        perfect, probability, show);
         }
     }
 }

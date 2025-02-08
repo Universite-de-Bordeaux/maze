@@ -69,24 +69,24 @@ class Show {
      * @brief Ferme la fenêtre de rendu
      */
     void close() const;
-      /**
-   * @brief Vérifie si le labyrinthe est vide
-   * @return True si le labyrinthe est vide, false sinon
-   */
-bool mazeIsEmpty() const;
+    /**
+     * @brief Vérifie si le labyrinthe est vide
+     * @return True si le labyrinthe est vide, false sinon
+     */
+    bool mazeIsEmpty() const;
 
    private:
     Maze *maze_;  //> Pointeur vers un objet de type Maze
     sf::RenderWindow *renderWindow_ =
-        nullptr;     //> Pointeur vers un objet de type sf::RenderWindow
-    float cellSize_;   //> Taille d'une cellule
-    sf::Font font_;  //> Police d'écriture
+        nullptr;      //> Pointeur vers un objet de type sf::RenderWindow
+    float cellSize_;  //> Taille d'une cellule
+    sf::Font font_;   //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};  //> Dernière touche pressée
-  
-  /**
-   * @brief Dessine toutes les cellules du labyrinthe
-   */
-  void drawCells_() const;
+
+    /**
+     * @brief Dessine toutes les cellules du labyrinthe
+     */
+    void drawCells_() const;
     /**
      * @brief Dessine une cellule
      * @param cell Pointeur vers un objet de type Cell

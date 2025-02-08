@@ -18,7 +18,7 @@
 #define MAZE_WALL_END 4                //> End wall
 #define MAZE_WALL_END_LEFT_BOTTOM 5    //> End wall left bottom
 
-#define MAZE_WALL_COLOR 255, 255, 255  //> Wall color
+#define MAZE_WALL_COLOR 255, 255, 255    //> Wall color
 #define MAZE_WALL_START_COLOR 255, 0, 0  //> Start wall color
 #define MAZE_WALL_END_COLOR 0, 255, 0    //> End wall color
 

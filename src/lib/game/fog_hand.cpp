@@ -23,7 +23,8 @@ int game_fog_hand(Maze *maze, Show *show, bool toLeft) {
         }
         if (tmpChangeDirection) {
             int tmpDirection = (direction + 2) % 4;
-            for (int i = 0; i < 3 && cell->getNeighbor(tmpDirection) == nullptr; i++) {
+            for (int i = 0; i < 3 && cell->getNeighbor(tmpDirection) == nullptr;
+                 i++) {
                 tmpDirection = (tmpDirection + move + 2) % 4;
             }
             if (tmpDirection != direction) {

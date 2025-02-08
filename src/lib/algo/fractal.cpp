@@ -16,7 +16,7 @@ static bool add_wall_imperfect(Maze *maze, int mid, double probability) {
         maze->addWall(i, mid - 1, true);
     }
     int remove[4];
-    remove[0]= rand() % mid;
+    remove[0] = rand() % mid;
     maze->removeWall(mid - 1, remove[0], false);
     remove[1] = rand() % mid;
     maze->removeWall(remove[1], mid - 1, true);
@@ -28,14 +28,11 @@ static bool add_wall_imperfect(Maze *maze, int mid, double probability) {
         int r = rand() % 4;
         if (r == 0) {
             maze->addWall(mid - 1, remove[0], false);
-        }
-        else if (r == 1) {
+        } else if (r == 1) {
             maze->addWall(remove[1], mid - 1, true);
-        }
-        else if (r == 2) {
+        } else if (r == 2) {
             maze->addWall(mid - 1, mid + remove[2], false);
-        }
-        else if (r == 3) {
+        } else if (r == 3) {
             maze->addWall(mid + remove[3], mid - 1, true);
         }
     }
@@ -115,7 +112,8 @@ static void quad_maze(Maze *maze) {
     new_maze.clearMaze();
 }
 
-void algo_fractal(Maze *maze, int n, bool perfect, double probability, Show *show) {
+void algo_fractal(Maze *maze, int n, bool perfect, double probability,
+                  Show *show) {
     maze->setWidthHeight(1, 1);
     if (show) {
         show->create();
