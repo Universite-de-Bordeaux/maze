@@ -17,8 +17,8 @@
  * @param imperfect Labyrinthe imparfait
  */
 static void check(Maze *maze, int x, int y, Show *show,  // NOLINT
-                      const int direction, const bool left, const bool perfect,
-                      bool *imperfect) {
+                  const int direction, const bool left, const bool perfect,
+                  bool *imperfect) {
     Cell *cell = maze->getCell(x, y);
     if (cell == nullptr) {
         return;
@@ -64,7 +64,7 @@ static void check(Maze *maze, int x, int y, Show *show,  // NOLINT
             const Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
                 check(maze, neighbor->getX(), neighbor->getY(), show,
-                          (index + 2) % 4, left, perfect, imperfect);
+                      (index + 2) % 4, left, perfect, imperfect);
             }
         }
     }

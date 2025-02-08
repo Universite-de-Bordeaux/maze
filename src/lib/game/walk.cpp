@@ -1,13 +1,15 @@
+#include "walk.hpp"
+
 #include <iostream>
 
 #include "../show.hpp"
 #include "../var.hpp"
-#include "fog.hpp"
 
-int game_walk(Maze *maze, Show *show, bool ghost) {
+int game_walk(const Maze *maze, Show *show, const bool ghost) {
     if (show == nullptr) {
-        std::cout << "No show" << std::endl;
-        return -1;
+        std::cerr << "Show is needed to play the game, use -gs or --game-show"
+                  << std::endl;
+        exit(MAZE_COMMAND_ERROR);
     }
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
@@ -18,17 +20,19 @@ int game_walk(Maze *maze, Show *show, bool ghost) {
     }
     int steps = 0;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
-        int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
+        const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
             refreshShow(show, 1, &cell);
             return -1;
         }
-        sf::Event event;
+        sf::Event event{};
         bool move = false;
         Cell *neighbor = nullptr;
         while (show->isOpen() && !move && show->pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == sf::Event::Closed ||
+                event.type == sf::Event::KeyPressed &&
+                    event.key.code == sf::Keyboard::Escape) {
                 show->close();
                 return -1;
             }

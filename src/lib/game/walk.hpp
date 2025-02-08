@@ -5,12 +5,13 @@
 #include "../show.hpp"
 
 /**
- * @brief Résoud le labyrinthe sans connaitre son parcours précédent en se
- * baladant aléatoirement
+ * @brief Réalise le jeu du labyrinthe en se déplaçant avec les flèches du
+ * clavier
  * @param maze Le labyrinthe à résoudre
  * @param show L'affichage du labyrinthe
- * @return int Le nombre de pas effectués pour résoudre le labyrinthe
+ * @param ghost Si le mode fantôme est activé
+ * @return Le nombre de pas pour sortir du labyrinthe
  */
-int game_walk(Maze*, Show*, bool);
+int game_walk(const Maze* maze, Show* show, bool ghost);
 
 #endif  // GAME_WALK_HPP
