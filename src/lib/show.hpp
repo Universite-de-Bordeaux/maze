@@ -99,26 +99,26 @@ class Show {
         lastDisplay_;  //> Dernier affichage
 
     /**
-     * @brief Dessine toutes les cellules du labyrinthe
-     */
-    void drawCells_() const;
-    /**
      * @brief Dessine une cellule
      * @param cell Pointeur vers un objet de type Cell
      */
     void drawCell_(const Cell *cell) const;
     /**
-     * @brief Dessine un mur
-     * @param cell Pointeur vers un objet de type Cell
-     * @param orientation Orientation du mur
+     * @brief Dessine toutes les cellules du labyrinthe
      */
-    void drawWall_(const Cell *cell, int orientation) const;
+    void drawCells_() const;
     /**
      * @brief Dessine une frontière
      * @param cell Pointeur vers un objet de type Cell
      * @param orientation Orientation de la frontière
      */
     void drawFrontier_(const Cell *cell, int orientation) const;
+    /**
+     * @brief Dessine un mur
+     * @param cell Pointeur vers un objet de type Cell
+     * @param orientation Orientation du mur
+     */
+    void drawWall_(const Cell *cell, int orientation) const;
 };
 
 // /**

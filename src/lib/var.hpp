@@ -32,9 +32,9 @@
 #define MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR \
     128, 128, 0                              //> Too many neighbors cell color
 #define MAZE_STATUS_WAY_OUT 4                //> Way out cell
-#define MAZE_STATUS_WAY_OUT_COLOR 0, 255, 0  //> Way out cell color
+#define MAZE_STATUS_WAY_OUT_COLOR 0, 125, 0  //> Way out cell color
 #define MAZE_STATUS_CURRENT 5                //> Current cell
-#define MAZE_STATUS_CURRENT_COLOR 255, 0, 0  //> Current cell color
+#define MAZE_STATUS_CURRENT_COLOR 125, 0, 0  //> Current cell color
 
 #define NORTH 0  //> North direction
 #define EAST 1   //> East direction
