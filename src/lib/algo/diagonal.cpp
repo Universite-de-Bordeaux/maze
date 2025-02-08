@@ -1,9 +1,5 @@
 #include "diagonal.hpp"
 
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-
 #include "../show.hpp"
 
 struct start {
@@ -20,26 +16,28 @@ struct start {
  * @param maze Le labyrinthe
  * @param isHorizontal Si la sortie est horizontale
  * @param whereStart La position de départ
+ * @param perfect
+ * @param probability
  * @param show L'objet pour afficher le labyrinthe
  */
-static void create_exit(int *a, int *maxA, int *b, int *maxB, Maze *maze,
-                        bool isHorizontal, start *whereStart, bool perfect,
-                        double probability, Show *show) {
+static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
+                        Maze *maze, const bool isHorizontal,
+                        const start *whereStart, const bool perfect,
+                        const double probability, Show *show) {
     if ((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
-        int startB = (isHorizontal ? (whereStart->left ? *b : 0)
-                                   : (whereStart->top ? *b : 0));
-        int endB = (isHorizontal ? (whereStart->left ? *maxB : *b)
+        const int startB = (isHorizontal ? (whereStart->left ? *b : 0)
+                                         : (whereStart->top ? *b : 0));
+        const int endB = (isHorizontal ? (whereStart->left ? *maxB : *b)
                                  : (whereStart->top ? *maxB : *b));
         if (startB == endB) {
             (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
                                  : (whereStart->left ? 1 : -1);
             return;
         }
-        int rb = (int)(rand() % (endB - startB)) + startB;
+        const int rb = maze->getRand()->get(startB, endB);
         for (int bb = startB; bb <= endB; bb++) {
-            if (bb != rb && (perfect || (double)(rand() % 10000) >
-                                            probability * (double)10000)) {
+            if (bb != rb && (perfect || maze->getRand()->get(probability))) {
                 if (isHorizontal) {
                     maze->addWall(bb, *a - !whereStart->top, isHorizontal);
                 } else {
@@ -64,12 +62,13 @@ void algo_diagonal(Maze *maze, int width, int height, bool perfect,
     if (show) {
         show->create();
     }
-    start whereStart = {(bool)(rand() % 2), (bool)(rand() % 2)};
+    const start whereStart = {maze->getRand()->get(0, 1) == 0,
+                              maze->getRand()->get(0, 1) == 0};
     int x = whereStart.left ? 0 : width - 1;
     int y = whereStart.top ? 0 : height - 1;
     while ((!whereStart.left <= x && x < width - whereStart.left) ||
            (!whereStart.top <= y && y < height - whereStart.top)) {
-        if (rand() % 2 == 0) {
+        if (maze->getRand()->get(0, 1)) {
             create_exit(&x, &width, &y, &height, maze, false, &whereStart,
                         perfect, probability, show);
             create_exit(&y, &height, &x, &width, maze, true, &whereStart,

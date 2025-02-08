@@ -6,11 +6,13 @@
 
 /**
  * Crée un labyrinthe
- * @param Maze* pointeur vers le labyrinthe à genérer
- * @param int largeur du labyrinthe
- * @param int hauteur du labyrinthe
- * @param bool  vrai si le labyrinthe est parfait
+ * @param maze Le labyrinthe
+ * @param width La largeur du labyrinthe
+ * @param height La hauteur du labyrinthe
+ * @param perfect Si le labyrinthe doit être parfait
+ * @param probability La probabilité de mur
+ * @param show L'objet pour afficher le labyrinthe
  */
-void algo_diagonal(Maze*, int, int, bool, double, Show*);
+void algo_diagonal(Maze* maze, int width, int height, bool perfect, double probability, Show* show);
 
 #endif  // ALGO_DIAGONAL_HPP
