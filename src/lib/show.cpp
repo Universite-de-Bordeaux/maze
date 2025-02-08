@@ -101,6 +101,20 @@ void Show::eventHandler() const {
              event.key.code == sf::Keyboard::Escape)) {
             renderWindow_->close();
         }
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::R) {
+                drawCells_();
+            } else if (event.key.code == sf::Keyboard::Space) {
+                while (true) {
+                    if (pollEvent(event)) {
+                        if (event.type == sf::Event::KeyPressed &&
+                            event.key.code == sf::Keyboard::Space) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
