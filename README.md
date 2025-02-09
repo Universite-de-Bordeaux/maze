@@ -2,298 +2,358 @@
 
 ## Description
 
-Le projet Maze est un projet de programmation en C++ réalisé dans le cadre de la formation CMI OPTIM.
-Le but de ce projet est de générer des labyrinthes parfaits et imparfaits, de les résoudre et de les afficher en
-utilisant plusieurs algorithmes de générations et de résolutions.
+Le projet Maze est une application en C++ conçue pour générer, résoudre, vérifier et visualiser des labyrinthes. Il propose plusieurs algorithmes de génération, de résolution et de vérification, ainsi que des fonctionnalités interactives pour explorer les labyrinthes.
 
-La description de la structure du projet peut être trouvé dans la [documentation](doc/README.md)
+Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe trois fichiers principaux :
+1. `maze_generator.out` : Génère des labyrinthes.
+2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
 
-La description complète du projet peut être trouvé dans la [documentation](doc/documentation.pdf)
+## Structure du Projet
 
-## Auteurs
-
-- [**Arnaud Aloyse**](https://github.com/aloyse33)
-- [**Facca Ethan**](https://github.com/untypequicode)
-- [**Glasson Lucien**](https://github.com/lulu-froid)
+```
+maze_project/
+├── doc/                           # Documentation du projet
+│   ├── README.md                  # Présentation générale
+│   └── documentation.pdf          # Document technique complet
+├── src/                           # Code source
+│   ├── main.cpp                   # Fichier principal du résolveur, vérificateur et joueur
+│   ├── maze_generator.cpp         # Fichier principal du générateur
+│   └── instances/                 # Exemples de labyrinthes
+│   └── lib/                       # Bibliothèques
+│       ├── cell.cpp               # Classe de cellule
+│       ├── maze.hpp               # Classe de labyrinthe
+│       ├── queue.hpp              # Classe de file
+│       ├── rand.hpp               # Classe de génération de nombres aléatoires
+│       ├── reader.hpp             # Lecture de fichiers
+│       ├── show.hpp               # Affichage graphique
+│       ├── stack.hpp              # Classe de pile
+│       ├── var.hpp                # Variables globales
+│       ├── wall.hpp               # Classe de mur
+│       ├── writer.hpp             # Écriture de fichiers
+│       └── algo/                  # Algorithmes de génération
+│           ├── back_tracking.hpp  # Algorithme de backtracking
+│           ├── diagonal.hpp       # Algorithme diagonal
+│           ├── fractal.hpp        # Algorithme fractal
+│           └── wall_maker.hpp     # Algorithme wall maker
+│       └── checker/               # Algorithmes de vérification
+│           ├── breadth_first.hpp  # Algorithme de largeur
+│           └── depth_first.hpp    # Algorithme de profondeur
+│       └── game/                  # Jeux interactifs
+│           ├── fog.hpp            # Jeu avec brouillard
+│           ├── fog_hand.hpp       # Jeu avec brouillard à la main
+│           ├── walk.hpp           # Jeu de marche
+│       └── solver/                # Algorithmes de résolution
+│           ├── breadth_first.hpp  # Algorithme de largeur
+│           └── depth_first.hpp    # Algorithme de profondeur
+└── CMakeLists.txt                 # Fichier de compilation
+└── README.md                      # Fichier de présentation
+```
 
 ## Prérequis
 
-Pour compiler le projet, il est nécessaire d'avoir installé `g++`, `cmake`, `make` et `sfml` sur sa machine.
+Pour utiliser ce projet, vous devez avoir les outils suivants installés sur votre système :
 
-Pour installer ces outils, il suffit de lancer la commande suivante :
+### Logiciels Nécessaires
+- **Compilateur C++** (g++ ou clang++)
+- **CMake** (système de compilation)
+- **SFML** (bibliothèque graphique)
+- **Make** (système de build)
 
+### Installation
+
+#### Sur Debian/Ubuntu :
 ```bash
-# Pour Debian et dérivés
-sudo apt-get install g++ cmake make libsfml-dev
-# Pour Arch Linux et dérivés
-sudo pacman -S g++ cmake make sfml
-# Pour Fedora et dérivés
-sudo dnf install g++ cmake make SFML
-# Pour NixOS
-nix-env -i g++ cmake make sfml
+sudo apt-get update
+sudo apt-get install -y g++ cmake make libsfml-dev
+```
+
+#### Sur Fedora :
+```bash
+sudo dnf install -y gcc-c++ cmake make SFML
+```
+
+#### Sur Arch Linux :
+```bash
+sudo pacman -S gcc cmake make sfml
+```
+
+#### Sur NixOS :
+```bash
+nix-shell -p gcc cmake make sfml
+```
+
+#### Sur macOS (avec Homebrew) :
+```bash
+brew install gcc cmake make sfml
+```
+
+#### Sur Windows (avec MSYS2) :
+```bash
+pacman -S gcc-c++ cmake make sfml
 ```
 
 ## Compilation
 
-Pour compiler le projet, il suffit de lancer la commande `cmake .` puis `make`.
+Pour compiler le projet, suivez ces étapes :
 
-```bash
-cmake .
-make
-```
+1. Générez les fichiers Makefile :
+   ```bash
+   cmake .
+   ```
+
+2. Compilez le projet :
+   ```bash
+   make
+   ```
 
 ## Utilisation
 
-L'utilisation de l'application de génération est la suivante :
+Ce projet comporte deux exécutables principaux :
+1. `maze_generator.out` : Génère des labyrinthes avec différents algorithmes.
+2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
 
+### Commandes Générales
+
+#### Afficher l'aide :
 ```bash
-./maze_generator.out [-option] [argument]
+./maze_generator.out --help
+./maze_generator.out -h
+./maze.out --help
+./maze.out -h
 ```
 
-L'utilisation de l'application avec le reste des fonctionnalités est la suivante :
-
+#### Charger un labyrinthe :
 ```bash
-./maze.out [-option] [argument]
+./maze.out --input fichier_maze.txt
+./maze.out -i fichier_maze.txt
 ```
 
-### Options
-
-#### Générales
-
-* `-h` ou `--help` : Affiche cette aide
-* `-i` ou `--input` `<fichier>` : Spécifie le fichier d'un labyrinthe à charger en mémoire
-* `-s` ou `--show` : Affiche le labyrinthe en mémoire
-    + `-f` ou `--framerate` `<framerate>` : Spécifie le framerate de l'affichage (par défaut : 60)
-    + `-ds` ou `--delay-show` `<delay>` : Spécifie le délai d'affichage entre chaque cellule en millisecondes (par défaut : 0.0 (précis à la microseconde))
-    + `-lf` ou `--low-frequency` : Affiche le labyrinthe en mémoire à basse fréquence (par défaut : haute fréquence)
-* `-o` ou `--output` `<fichier>` : Spécifie le fichier où sauvegarder le labyrinthe en mémoire
-* `-c` ou `--clear` : Efface le labyrinthe en mémoire
-* `-cm` ou `--clear-maze` : Nettoie les cellules du labyrinthe en mémoire
-* `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe en mémoire (uniquement disponible pour les résolutions et les jeux) (les valeurs négatives sont autorisées et sont relatives à la fin du labyrinthe) (les valeurs flottantes sont autorisées et sont utilisées comme pourcentage du labyrinthe) (par défaut : aléatoire)
-* `-pe` ou `--player-end` `<x> <y>` : Spécifie la position d'arrivée du joueur dans le labyrinthe en mémoire (uniquement disponible pour les résolutions et les jeux) (les valeurs négatives sont autorisées et sont relatives à la fin du labyrinthe) (par défaut : aléatoire) (les valeurs flottantes sont autorisées et sont utilisées comme pourcentage du labyrinthe) (par défaut : aléatoire)
-
-> Il est possible de définir les valeurs suivantes dans le fichier .env
-> ```dotenv
->  FRAMERATE=60
->  DELAY_SHOW=0.0
->  LOW_FREQUENCY=false
-> ```
-
-> ### Contrôles de l'affichage
-> `echap` : Ferme l'affichage\
-> `espace` : Met en pause le programme\
-> `d` : Rafraichit l'ensemble des cellules du labyrinthe\
-> `r` : Réinitialise les paramètres de l'affichage\
-> `l` : Change la valeur de LOW_FREQUENCY\
-> `+` : Augmente le framerate\
-> `-` : Diminue le framerate\
-> `*` : Augmente le délai d'affichage\
-> `/` : Diminue le délai d'affichage\
-> `click gauche` et `déplacement souris` : Déplace la vue du labyrinthe\
-
-#### Génération de labyrinthe (maze_generator)
-
-* `-g` ou `--generate` : Génère un labyrinthe (écrase le labyrinthe en mémoire)
-* `-gs` ou `--generate-show` : Génère un labyrinthe et l'affiche pendant la génération (nécessite un labyrinthe en mémoire)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la génération (back_tracking (bt), wall_maker (wm), diagonal (d), fractal (f), par défaut : back_tracking)
-    + `-d` ou `--dimension` `<largueur> <hauteur>` : Spécifie les dimensions du labyrinthe à générer (par défaut : 10 10)
-    + `-i` ou `--imperfect` : Génère un labyrinthe imparfait (le labyrinthe généré est par défaut parfait)
-        + `-p` ou `--probability` `<probabilité>` : Spécifie la probabilité de suppression d'un mur pour un labyrinthe imparfait (par défaut : 0.1 soit 10%)
-
-#### Résolution de labyrinthe (maze)
-
-* `-r` ou `--resolve` : Résout le labyrinthe en mémoire (nécessite un labyrinthe en mémoire)
-* `-rs` ou `--resolve-show` : Résout le labyrinthe en mémoire et l'affiche pendant la résolution (nécessite un labyrinthe en mémoire)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la résolution (depth_first_left (dfl), depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
-
-#### Vérification de labyrinthe (maze)
-
-* `-v` ou `--verify` : Vérifie si un labyrinthe est parfait (nécessite un labyrinthe en mémoire)
-* `-vs` ou `--verify-show` : Vérifie si un labyrinthe est valide et l'affiche pendant la vérification (nécessite un labyrinthe en mémoire)
-    + `-p` ou `--perfect` : Vérifie si un labyrinthe est parfait (on ne vérifie pas la perfection par défaut)
-    + `-a` ou `--algorithm` `<algorithme>` : Spécifie l'algorithme à utiliser pour la vérification (depth_first_left (dfl), depth_first_right (dfr), breadth_first (bf), par défaut : depth_first_left)
-
-#### Jeu de labyrinthe (maze)
-
-* `-g` ou `--game` : Lance le jeu de labyrinthe (nécessite un labyrinthe en mémoire)
-* `-gs` ou `--game-show` : Lance le jeu de labyrinthe et l'affiche pendant le jeu (nécessite un labyrinthe en
-      mémoire)
-        + `-t` ou `--type` `<type>` : Spécifie le type de jeu à lancer (fog (f), fog_right (fr), fog_left (fl), walk (w), walk_ghost (wg), par défaut : fog)
-
-## Lancement automatisé
-
-### Lancement d'algorithmes
-
-On peut lancer automatiquement nos algorithmes en utilisant la commande
-
+#### Sauvegarder un labyrinthe :
 ```bash
-make run_[algo/solver/checker]_[nom de l'algorithme à utiliser]
+./maze_generator.out --output fichier_maze.txt
+./maze_generator.out -o fichier_maze.txt
 ```
 
-Par exemple pour générer un labyrinthe avec l'algorithme fractal :
-
+#### Effacer un labyrinthe :
 ```bash
-make run_algo_fractal
+./maze.out --input fichier_maze.txt --clear --input fichier_maze_aux.txt
+./maze.out -i fichier_maze.txt -c -i fichier_maze_aux.txt
 ```
 
-Pour résoudre un labyrinthe avec l'algorithme breadth_first :
-
+#### Effacer le cache d'un labyrinthe :
 ```bash
-make run_solver_breadth_first
+./maze.out --input fichier_maze.txt --clear-maze
+./maze.out --input fichier_maze.txt -cm
 ```
 
-Pour jouer à un labyrinthe avec l'algorithme fog :
-
+#### Afficher le labyrinthe :
 ```bash
-make run_game_fog
+./maze.out --input fichier_maze.txt --show
+./maze.out -i fichier_maze.txt -s
 ```
 
-### Lancement de tests
+##### Paramètres de l'Affichage
+* `-s` ou `--show` : Active l'affichage graphique.
+* `-f` ou `--framerate` `<fps>` : Spécifie le framerate de l'affichage. (Par défaut : 60 fps).
+* `-ds` ou `--delay-show` `<ms>` : Spécifie le délai d'affichage. (Par défaut : 0 ms).
+* `-lf` ou `--low-frequency` : Active la fréquence d'affichage basse.
 
-On peut ajouter _test à la fin de la commande pour lancer les tests. Il est possibles
-que cela fasse crasher le programme, car les tests vont dépasser les limites du programme
-
-Par exemple pour tester les algorithmes de vérification de labyrinthe depth_first_left et depth_first_right :
-
-```bash
-make run_checker_depth_first_test
+Il est possible de définir les valeurs suivantes dans le fichier `.env` :
+```dotenv
+ FRAMERATE=60
+ DELAY_SHOW=0.0
+ LOW_FREQUENCY=false
 ```
 
-### Lancement particulier
+#### Contrôles de l'Affichage
 
-Il existe 3 lancements particuliers
+L'affichage graphique propose les contrôles suivants :
+- **Echap** : Ferme l'affichage.
+- **Espace** : Met en pause le programme.
+- **D** : Rafraîchit toutes les cellules.
+- **R** : Réinitialise les paramètres d'affichage.
+- **L** : Inverse la fréquence d'affichage (haute/basse).
+- **+** : Augmente le framerate.
+- **-** : Diminue le framerate.
+- \* Augmente le délai d'affichage.
+- **/** : Diminue le délai d'affichage.
+- **Clic gauche + déplacement souris** : Déplace la vue du labyrinthe (valable pour les labyrinthes inférieurs à 100x100).
+- **Molette de la souris** : Zoom avant/arrière.
 
-#### Lancement de tous les algorithmes
+#### Paramètres du Joueur
+* `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe (Valeurs négatives sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
+* `-pe` ou `--player-end` `<x> <y>` : Spécifie la position d'arrivée du joueur dans le labyrinthe (Valeurs négatives sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
 
+### Fonctionnalités Spécifiques
+
+#### Générateur de Labyrinthes (`maze_generator.out`)
+
+**Syntaxe de base** :
 ```bash
-make run_all
+./maze_generator.out [OPTIONS]
 ```
 
-#### Lancement de tous les tests
+**Options** :
 
+| Option                 | Description                                               | Exemple                    |
+|------------------------|-----------------------------------------------------------|----------------------------|
+| `-g, --generate`       | Génère un labyrinthe par défaut.                          | `./maze_generator.out -g`  |
+| `-gs, --generate-show` | Génère et affiche le labyrinthe.                          | `./maze_generator.out -gs` |
+| `-a, --algorithm`      | Spécifie l'algorithme de génération.                      | `-a bt` ou `-a wall_maker` |
+| `-d, --dimension`      | Spécifie les dimensions (largeur x hauteur).              | `-d 20 20`                 |
+| `-i, --imperfect`      | Génère un labyrinthe imparfait.                           | `-i`                       |
+| `-p, --probability`    | Spécifie la probabilité de suppression de murs (0.0-1.0). | `-p 0.1`                   |
+
+**Algorithmes de Génération** :
+- `back_tracking` (bt) : Algorithme de backtracking. (par défaut)
+- `wall_maker` (wm) : Algorithme wall maker.
+- `diagonal` (d) : Algorithme de génération en diagonale.
+- `fractal` (f) : Algorithme fractal.
+
+**Exemples** :
+1. Générer un labyrinthe de 15x15 avec l'algorithme backtracking :
+   ```bash
+   ./maze_generator.out -g -d 15 15 -a bt
+   ```
+
+2. Générer un labyrinthe imparfait de 20x20 avec une probabilité de 10% :
+   ```bash
+   ./maze_generator.out -g -d 20 20 -i -p 0.1
+   ```
+
+#### Résolveur de Labyrinthes (`maze.out`)
+
+**Syntaxe de base** :
 ```bash
-make run_all_test
+./maze.out [OPTIONS]
 ```
 
-#### Lancement d'un test manuel
+**Options** :
 
+| Option                | Description                          | Exemple                     |
+|-----------------------|--------------------------------------|-----------------------------|
+| `-r, --resolve`       | Résout le labyrinthe chargé.         | `./maze.out -i maze.txt -r` |
+| `-rs, --resolve-show` | Résout et affiche le processus.      | `./maze.out -i maze.txt -rs |`
+| `-a, --algorithm`     | Spécifie l'algorithme de résolution. | `-a dfl` ou `-a bf`         |
+
+**Algorithmes de Résolution** :
+- `depth_first_left` (dfl) : Algorithme de profondeur (par défaut).
+- `depth_first_right` (dfr) : Version droite de l'algorithme de profondeur.
+- `breadth_first` (bf) : Algorithme de largeur.
+
+**Exemples** :
+1. Résoudre un labyrinthe avec l'algorithme depth_first_left :
+   ```bash
+   ./maze.out -i maze.txt -r -a dfl
+   ```
+
+2. Résoudre et visualiser le processus :
+   ```bash
+   ./maze.out -i maze.txt -rs -a bf
+   ```
+
+#### Vérification de Labyrinthes (`maze.out`)
+
+**Syntaxe de base** :
 ```bash
-make run_test
+./maze.out [OPTIONS]
 ```
 
-### Codes d'erreur
+**Options** :
 
-- 0 : Aucune erreur
-- 1 : Erreur dans les arguments de l'appel du fichier
-- 2 : Erreur avec une intéraction sur un fichier (lecture ou écriture)
-- 3 : Erreur lors de l'affichage d'un labyrinthe
+| Option               | Description                            | Exemple                     |
+|----------------------|----------------------------------------|-----------------------------|
+| `-v, --verify`       | Vérifie si le labyrinthe est valide.   | `./maze.out -i maze.txt -v` |
+| `-vs, --verify-show` | Vérifie et affiche le processus.       | `./maze.out -i maze.txt -vs |
+| `-a, --algorithm`    | Spécifie l'algorithme de vérification. | `-a dfl` ou `-a bf`         |
+| `-p, --perfect`      | Vérifie si le labyrinthe est parfait.  | `-p`                        |
 
-## Exemples
+**Algorithmes de Vérification** :
+- `depth_first_left` (dfl) : Algorithme de profondeur (par défaut).
+- `depth_first_right` (dfr) : Version droite de l'algorithme de profondeur.
+- `breadth_first` (bf) : Algorithme de largeur.
 
-### Générer un labyrinthe
+**Exemples** :
+1. Vérifier si un labyrinthe est parfait :
+   ```bash
+   ./maze.out -i maze.txt -v -p -a dfl
+   ```
 
-Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de back_tracking, il suffit de lancer la commande
-suivante :
+2. Vérifier et visualiser le processus :
+   ```bash
+   ./maze.out -i maze.txt -vs -a bf
+   ```
 
+#### Jeu de Labyrinthes (`maze.out`)
+
+**Syntaxe de base** :
 ```bash
-./maze_generator.out -g -d 20 20 -a bt
+./maze.out [OPTIONS]
 ```
 
-Pour générer un labyrinthe imparfait de dimensions 20x20 avec l'algorithme de wall_maker, il suffit de lancer la
-commande suivante :
+**Options** :
 
+| Option             | Description                           | Exemple                     |
+|--------------------|---------------------------------------|-----------------------------|
+| `-g, --game`       | Lance un jeu dans le labyrinthe.      | `./maze.out -i maze.txt -g` |
+| `-gs, --game-show` | Lance un jeu et affiche le processus. | `./maze.out -i maze.txt -gs |`
+| `-t, --type`       | Spécifie le type de jeu.              | `-t f` ou `-t w`            |
+
+**Types de Jeu** :
+- `fog` (f) : Jeu avec brouillard. (par défaut)
+- `fog_right` (fr) : Brouillard à droite.
+- `fog_left` (fl) : Brouillard à gauche.
+- `walk` (w) : Marche normale. (nécessite l'activation de show)
+- `walk_ghost` (wg) : Marche sans visibilité. (nécessite l'activation de show)
+
+**Exemples** :
+1. Jouer avec le type `fog` :
+   ```bash
+   ./maze.out -i maze.txt -g -t f
+   ```
+
+2. Jouer et visualiser le processus :
+   ```bash
+   ./maze.out -i maze.txt -gs -t w
+   ```
+
+## Codes d'Erreur
+
+| Code | Description                          |
+|------|--------------------------------------|
+| 0    | Aucune erreur                        |
+| 1    | Erreur dans les arguments            |
+| 2    | Erreur de fichier (lecture/écriture) |
+| 3    | Erreur d'affichage                   |
+
+## Exemples Complets
+
+### Génération et Résolution
 ```bash
-./maze_generator.out -g -d 20 20 -a wm -i
+# Étape 1 : Générer un labyrinthe de 20x20 avec l'algorithme backtracking
+./maze_generator.out -g -d 20 20 -a bt -o mon_labyrinthe.txt
+
+# Étape 2 : Résoudre le labyrinthe généré
+./maze.out -i mon_labyrinthe.txt -r -a dfl
+
+# Étape 3 : Vérifier si le labyrinthe est parfait
+./maze.out -i mon_labyrinthe.txt -v -p -a bf
 ```
 
-Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de diagonal, il suffit de lancer la commande suivante :
-
+### Jeu Interactif
 ```bash
-./maze_generator.out -g -d 20 20 -a d
+# Lancez le jeu avec le type de jeu par défaut (fog)
+./maze.out -i mon_labyrinthe.txt -g -t f
 ```
 
-Pour générer un labyrinthe de dimensions 20x20 avec l'algorithme de fractal, il suffit de lancer la commande suivante :
+## Auteurs
 
-```bash
-./maze_generator.out -g -d 10 10 -a f
-```
+- **Arnaud Aloyse** : [GitHub](https://github.com/aloyse33)
+- **Facca Ethan** : [GitHub](https://github.com/untypequicode)
+- **Glasson Lucien** : [GitHub](https://github.com/lulu-froid)
 
-### Résoudre un labyrinthe
+## Liens Utiles
 
-Pour résoudre un labyrinthe avec l'algorithme de depth_first_left, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -r -a dfl
-```
-
-Pour résoudre un labyrinthe avec l'algorithme de depth_first_right, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -r -a dfr
-```
-
-Pour résoudre un labyrinthe avec l'algorithme de breadth_first, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -r -a bf
-```
-
-### Vérifier un labyrinthe
-
-Pour vérifier si un labyrinthe est parfait avec l'algorithme de depth_first_left, il suffit de lancer la commande
-suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -v -a dfl
-```
-
-Pour vérifier si un labyrinthe est parfait avec l'algorithme de depth_first_right, il suffit de lancer la commande
-suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -v -a dfr
-```
-
-Pour vérifier si un labyrinthe est parfait avec l'algorithme de breadth_first, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -v -a bf
-```
-
-### Jouer à un labyrinthe
-
-Pour jouer à un labyrinthe avec l'algorithme de fog, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -g -t f
-```
-
-Pour jouer à un labyrinthe avec l'algorithme de fog_right, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -g -t fr
-```
-
-### Afficher un labyrinthe
-
-Pour afficher un labyrinthe, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -s
-```
-
-### Sauvegarder un labyrinthe
-
-Pour sauvegarder un labyrinthe, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -o labyrinthe2.txt
-```
-
-### Nettoyer un labyrinthe
-
-Pour nettoyer un labyrinthe, et manipuler deux labyrinthes, il suffit de lancer la commande suivante :
-
-```bash
-./maze.out -i labyrinthe.txt -r -a dfl -c -i labyrinthe2.txt -r -a dfr
-```
+- **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
+- **Documentation Technique** : [Documentation](doc/README.md)
+- **Repository GitHub** : [ lien GitHub]
