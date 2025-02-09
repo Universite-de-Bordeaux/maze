@@ -123,10 +123,6 @@ void algo_fractal(Maze *maze, int n, const bool perfect,
     }
     refreshShow(show);
     while (n > 0) {
-        // attend 10ms
-        //        if (show && show->isOpen()) {
-        //            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        //        }
 
         // duplication du labyrinthe
         quad_maze(maze);
