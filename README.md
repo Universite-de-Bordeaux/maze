@@ -8,6 +8,18 @@ Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe tr
 1. `maze_generator.out` : Génère des labyrinthes.
 2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
 
+## Sommaire
+
+1. [Description](#description)
+2. [Structure du Projet](#structure-du-projet)
+3. [Prérequis](#prérequis)
+4. [Compilation](#compilation)
+5. [Utilisation](#utilisation)
+6. [Codes d'Erreur](#codes-derreur)
+7. [Exemples Complets](#exemples-complets)
+8. [Auteurs](#auteurs)
+9. [Liens Utiles](#liens-utiles)
+
 ## Structure du Projet
 
 ```
@@ -356,4 +368,4 @@ L'affichage graphique propose les contrôles suivants :
 
 - **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
 - **Documentation Technique** : [Documentation](doc/README.md)
-- **Repository GitHub** : [ lien GitHub]
+- **Repository GitHub** : [lien GitHub](https://github.com/Universite-de-Bordeaux/maze)
