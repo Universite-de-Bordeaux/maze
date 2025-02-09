@@ -70,7 +70,7 @@ void help() {
     std::cout << "-r, --resolve                 Résout le labyrinthe\n";
     std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de résolution\n";
     std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
-    std::cout << "                              dfl : depth_first_left\n";
+    std::cout << "                              dfl : depth_first_left (default)\n";
     std::cout << "                              dfr : depth_first_right\n";
     std::cout << "                              bf : breadth_first\n";
     std::cout << "\n";
@@ -81,7 +81,7 @@ void help() {
     std::cout << "  --perfect                   Vérifie la perfection du labyrinthe\n";
     std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de vérification\n";
     std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
-    std::cout << "                              dfl : depth_first_left\n";
+    std::cout << "                              dfl : depth_first_left (default)\n";
     std::cout << "                              dfr : depth_first_right\n";
     std::cout << "                              bf : breadth_first\n";
     std::cout << "\n";
@@ -91,7 +91,7 @@ void help() {
     std::cout << "-g, --game                    Lance le jeu\n";
     std::cout << "  --type <type>               Sélectionne le type de jeu\n";
     std::cout << "    Types disponibles :       f, fr, fl, w, wg\n";
-    std::cout << "                              f : fog\n";
+    std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
     std::cout << "                              w : walk\n";
@@ -328,7 +328,7 @@ int main(int argc, char *argv[]) {
             bool isShow = strcmp(argv[i], "-vs") == 0 ||
                           strcmp(argv[i], "--verify-show") == 0;
             bool perfect = false;
-            std::string algorithm = "dfl";
+            std::string algorithm = "depth_first_left";
             while (i + 1 < argc && argv[i + 1][0] == '-' &&
                    ((strcmp(argv[i + 1], "-p") == 0 ||
                      strcmp(argv[i + 1], "--perfect") == 0) ||

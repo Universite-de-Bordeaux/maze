@@ -14,60 +14,68 @@
 #include "lib/writer.hpp"
 
 /**
- * Affiche l'aide
+ * Affiche la documentation d'aide pour l'application de génération
  */
 void help() {
-    std::cout << "Options du programme" << std::endl;
-    std::cout << "-------------------" << std::endl;
-
-    std::cout << "Générales" << std::endl;
-    std::cout << "---------" << std::endl;
-    std::cout << "  -h ou --help : Affiche cette aide" << std::endl;
-    std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un "
-                 "labyrinthe à charger en mémoire"
-              << std::endl;
-    std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "    -f ou --framerate <framerate> : Spécifie le framerate de "
-                 "l'affichage (par défaut : 60)"
-              << std::endl;
-    std::cout
-        << "    -ds ou --delay-show <delay> : Spécifie le délai d'affichage "
-           "entre chaque cellule en millisecondes (par défaut : 0.0 (précis à "
-           "la microseconde))"
-        << std::endl;
-    std::cout << "    -lf ou --low-freq : Affiche le labyrinthe en mémoire à "
-                 "basse fréquence (par défaut : haute fréquence)"
-              << std::endl;
-    std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
-                 "sauvegarder le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe "
-                 "en mémoire"
-              << std::endl;
-
-    std::cout << "\nGénération de labyrinthe" << std::endl;
-    std::cout << "-----------------------" << std::endl;
-    std::cout << "  -g ou --generate : Génère un labyrinthe (écrase le "
-                 "labyrinthe en mémoire)"
-              << std::endl;
-    std::cout << "  -gs ou --generate-show : Génère un labyrinthe et l'affiche "
-                 "pendant la génération"
-              << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la génération (bt, wm, d, f)"
-              << std::endl;
-    std::cout << "    -d ou --dimension <largeur> <hauteur> : Spécifie les "
-                 "dimensions du labyrinthe à générer"
-              << std::endl;
-    std::cout << "    -i ou --imperfect : Génère un labyrinthe imparfait"
-              << std::endl;
-    std::cout
-        << "      -p ou --probability <probabilité> : Spécifie la probabilité "
-           "de suppression d'un mur pour un labyrinthe imparfait (0.0-1.0)"
-        << std::endl;
+    std::cout << "=================================================================\n";
+    std::cout << "=                     MAZE GENERATOR APPLICATION               =\n";
+    std::cout << "=================================================================\n";
+    std::cout << "\n";
+    
+    std::cout << "Usage : ./maze_generator.out [-option] [arguments]\n";
+    std::cout << "\n";
+    
+    std::cout << "OPTIONS\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-h, --help                    Affiche cette documentation\n";
+    std::cout << "-i, --input <fichier>         Charge un labyrinthe depuis un fichier\n";
+    std::cout << "-o, --output <fichier>        Sauvegarde le labyrinthe dans un fichier\n";
+    std::cout << "-c, --clear                   Efface complètement le labyrinthe\n";
+    std::cout << "--clear-maze                  Efface uniquement les cellules du labyrinthe\n";
+    std::cout << "\n";
+    
+    std::cout << "AFFICHAGE\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-s, --show                    Affiche le labyrinthe\n";
+    std::cout << "--framerate <fps>             Définit le framerate d'affichage\n";
+    std::cout << "--delay-show <ms>             Définit le délai entre chaque mise à jour\n";
+    std::cout << "--low-freq                    Affiche le labyrinthe à basse fréquence\n";
+    std::cout << "\n";
+    
+    std::cout << "      RACCOURCIS CLAVIER\n";
+    std::cout << "      ------------------------\n";
+    std::cout << "      Echap                   Ferme l'affichage\n";
+    std::cout << "      Espace                  Met en pause le programme\n";
+    std::cout << "      D                       Rafraîchit toutes les cellules\n";
+    std::cout << "      R                       Réinitialise les paramètres d'affichage\n";
+    std::cout << "      L                       Inverse la fréquence d'affichage ( haute/basse)\n";
+    std::cout << "      +                       Augmente le framerate\n";
+    std::cout << "      -                       Diminue le framerate\n";
+    std::cout << "      *                       Augmente le délai d'affichage\n";
+    std::cout << "      /                       Diminue le délai d'affichage\n";
+    std::cout << "\n";
+    
+    std::cout << "      SOURIS\n";
+    std::cout << "      ------------------------\n";
+    std::cout << "      Clic gauche +           Déplace la vue du labyrinthe déplacement souris\n";
+    std::cout << "      Molette                 Zoom avant/arrière sur l'affichage\n";
+    std::cout << "\n";
+    
+    std::cout << "GENERATION\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-g, --generate                Génère un labyrinthe parfait\n";
+    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de génération\n";
+    std::cout << "    Algorithmes disponibles : bt, wm, d, f\n";
+    std::cout << "                              bt : back_tracking (défaut)\n";
+    std::cout << "                              wm : wall_maker\n";
+    std::cout << "                              d : diagonal\n";
+    std::cout << "                              f : fractal\n";
+    std::cout << "  --dimension <w> <h>         Définit les dimensions du labyrinthe\n";
+    std::cout << "  --imperfect                 Génère un labyrinthe imparfait\n";
+    std::cout << "    --probability <p>         Définit la probabilité de suppression de murs [0.0-1.0]\n";
+    std::cout << "\n";
+    
+    std::cout << "Pour plus d'informations, veuillez consulter la documentation complète.\n";
 }
 
 /**
