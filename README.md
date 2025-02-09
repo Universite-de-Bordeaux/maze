@@ -8,6 +8,8 @@ Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe tr
 1. `maze_generator.out` : Génère des labyrinthes.
 2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
 
+<img alt="Exemple de labyrinthe généré avec ce projet" src="doc/maze.png" title="Labyrinthe"/>
+
 ## Sommaire
 
 1. [Description](#description)
