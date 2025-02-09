@@ -190,7 +190,7 @@ L'affichage graphique propose les contrôles suivants :
 - \* Augmente le délai d'affichage.
 - **/** : Diminue le délai d'affichage.
 - **Clic gauche + déplacement souris** : Déplace la vue du labyrinthe (valable pour les labyrinthes inférieurs à 100x100).
-- **Molette de la souris** : Zoom avant/arrière.
+- **Molette de la souris** : Zoom avant/arrière. (valable pour les labyrinthes inférieurs à 100x100).
 
 #### Paramètres du Joueur
 * `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe (Valeurs négatives sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
@@ -242,11 +242,11 @@ L'affichage graphique propose les contrôles suivants :
 
 **Options** :
 
-| Option                | Description                          | Exemple                     |
-|-----------------------|--------------------------------------|-----------------------------|
-| `-r, --resolve`       | Résout le labyrinthe chargé.         | `./maze.out -i maze.txt -r` |
-| `-rs, --resolve-show` | Résout et affiche le processus.      | `./maze.out -i maze.txt -rs |`
-| `-a, --algorithm`     | Spécifie l'algorithme de résolution. | `-a dfl` ou `-a bf`         |
+| Option                | Description                          | Exemple                      |
+|-----------------------|--------------------------------------|------------------------------|
+| `-r, --resolve`       | Résout le labyrinthe chargé.         | `./maze.out -i maze.txt -r`  |
+| `-rs, --resolve-show` | Résout et affiche le processus.      | `./maze.out -i maze.txt -rs` |
+| `-a, --algorithm`     | Spécifie l'algorithme de résolution. | `-a dfl` ou `-a bf`          |
 
 **Algorithmes de Résolution** :
 - `depth_first_left` (dfl) : Algorithme de profondeur (par défaut).
@@ -273,12 +273,12 @@ L'affichage graphique propose les contrôles suivants :
 
 **Options** :
 
-| Option               | Description                            | Exemple                     |
-|----------------------|----------------------------------------|-----------------------------|
-| `-v, --verify`       | Vérifie si le labyrinthe est valide.   | `./maze.out -i maze.txt -v` |
-| `-vs, --verify-show` | Vérifie et affiche le processus.       | `./maze.out -i maze.txt -vs |
-| `-a, --algorithm`    | Spécifie l'algorithme de vérification. | `-a dfl` ou `-a bf`         |
-| `-p, --perfect`      | Vérifie si le labyrinthe est parfait.  | `-p`                        |
+| Option               | Description                            | Exemple                      |
+|----------------------|----------------------------------------|------------------------------|
+| `-v, --verify`       | Vérifie si le labyrinthe est valide.   | `./maze.out -i maze.txt -v`  |
+| `-vs, --verify-show` | Vérifie et affiche le processus.       | `./maze.out -i maze.txt -vs` |
+| `-a, --algorithm`    | Spécifie l'algorithme de vérification. | `-a dfl` ou `-a bf`          |
+| `-p, --perfect`      | Vérifie si le labyrinthe est parfait.  | `-p`                         |
 
 **Algorithmes de Vérification** :
 - `depth_first_left` (dfl) : Algorithme de profondeur (par défaut).
@@ -305,11 +305,11 @@ L'affichage graphique propose les contrôles suivants :
 
 **Options** :
 
-| Option             | Description                           | Exemple                     |
-|--------------------|---------------------------------------|-----------------------------|
-| `-g, --game`       | Lance un jeu dans le labyrinthe.      | `./maze.out -i maze.txt -g` |
-| `-gs, --game-show` | Lance un jeu et affiche le processus. | `./maze.out -i maze.txt -gs |`
-| `-t, --type`       | Spécifie le type de jeu.              | `-t f` ou `-t w`            |
+| Option             | Description                           | Exemple                      |
+|--------------------|---------------------------------------|------------------------------|
+| `-g, --game`       | Lance un jeu dans le labyrinthe.      | `./maze.out -i maze.txt -g`  |
+| `-gs, --game-show` | Lance un jeu et affiche le processus. | `./maze.out -i maze.txt -gs` |
+| `-t, --type`       | Spécifie le type de jeu.              | `-t f` ou `-t w`             |
 
 **Types de Jeu** :
 - `fog` (f) : Jeu avec brouillard. (par défaut)
@@ -368,4 +368,4 @@ L'affichage graphique propose les contrôles suivants :
 
 - **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
 - **Documentation Technique** : [Documentation](doc/README.md)
-- **Repository GitHub** : [lien GitHub](https://github.com/Universite-de-Bordeaux/maze)
+- **Repository GitHub** : [Lien GitHub](https://github.com/Universite-de-Bordeaux/maze)
