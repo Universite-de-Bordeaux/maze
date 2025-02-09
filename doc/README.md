@@ -56,6 +56,7 @@ Ces fichiers contiennent les définitions et prototypes des classes utilisées d
 - `show.cpp` et `show.hpp` : Classe `Show` permettant d'afficher un labyrinthe. [Documentation de la classe Show](doc_classe/doc_classe_show.md)
 - `stack.cpp` et `stack.hpp` : Classe `Stack` représentant une pile. [Documentation de la classe Stack](doc_classe/doc_classe_stack.md)
 - `writer.cpp` et `writer.hpp` : Classe `Writer` permettant d'écrire un labyrinthe dans un fichier. [Documentation de la classe Writer](doc_classe/doc_classe_writer.md)
+- `rand.cpp` et `rand.hpp` : Classe `Rand` permettant de générer des nombres aléatoires. [Documentation de la classe Rand](doc_classe/doc_classe_rand.md)
 - `var.hpp` : Contient les variables globales du programme.
 
 ### Fichiers Principaux
