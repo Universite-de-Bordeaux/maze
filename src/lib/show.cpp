@@ -74,7 +74,7 @@ bool Show::isOpen() const {
     return renderWindow_->isOpen();
 }
 
-void Show::eventHandler() { // NOLINT
+void Show::eventHandler() {  // NOLINT
     sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
         if (event.type == sf::Event::Closed ||
@@ -141,9 +141,10 @@ void Show::eventHandler() { // NOLINT
                     lastViewCenter_ = renderWindow_->getView().getCenter();
                 }
             } else {
-                std::cerr << "Error: mouse dragging is disabled for mazes larger "
-                             "100x100"
-                          << std::endl;
+                std::cerr
+                    << "Error: mouse dragging is disabled for mazes larger "
+                       "100x100"
+                    << std::endl;
             }
         } else if (event.type == sf::Event::MouseButtonReleased) {
             if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
@@ -154,13 +155,15 @@ void Show::eventHandler() { // NOLINT
         } else if (event.type == sf::Event::MouseMoved && isDragging_) {
             if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
                 // Récupérez la position actuelle de la souris
-                sf::Vector2i mousePosition = sf::Mouse::getPosition(*renderWindow_);
+                sf::Vector2i mousePosition =
+                    sf::Mouse::getPosition(*renderWindow_);
                 // Calculez le changement de position
                 const sf::Vector2i delta = mousePosition - lastMousePosition_;
                 // Convertir le delta en pixels en un décalage proportionnel
                 sf::View currentView = renderWindow_->getView();
                 const float scale =
-                    currentView.getSize().x / static_cast<float>(renderWindow_->getSize().x);
+                    currentView.getSize().x /
+                    static_cast<float>(renderWindow_->getSize().x);
                 // Calcul du décalage en coordonné monde
                 sf::Vector2f offset(static_cast<float>(-delta.x) / scale,
                                     static_cast<float>(-delta.y) / scale);
@@ -168,13 +171,13 @@ void Show::eventHandler() { // NOLINT
                 sf::Vector2f newCenter = lastViewCenter_ + offset;
                 // Limiter le déplacement dans les limites de la grille
                 newCenter.x = std::max(
-                    0.0f,
-                    std::min(newCenter.x, static_cast<float>(maze_->getWidth()) *
-                                              cellSize_ * zoomLevel_));
+                    0.0f, std::min(newCenter.x,
+                                   static_cast<float>(maze_->getWidth()) *
+                                       cellSize_ * zoomLevel_));
                 newCenter.y = std::max(
-                    0.0f,
-                    std::min(newCenter.y, static_cast<float>(maze_->getHeight()) *
-                                              cellSize_ * zoomLevel_));
+                    0.0f, std::min(newCenter.y,
+                                   static_cast<float>(maze_->getHeight()) *
+                                       cellSize_ * zoomLevel_));
                 // Met à jour la vue
                 currentView.setCenter(newCenter);
                 renderWindow_->setView(currentView);

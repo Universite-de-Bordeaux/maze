@@ -17,65 +17,88 @@
  * Affiche la documentation d'aide pour l'application de génération
  */
 void help() {
-    std::cout << "=================================================================\n";
-    std::cout << "=                     MAZE GENERATOR APPLICATION               =\n";
-    std::cout << "=================================================================\n";
+    std::cout << "============================================================="
+                 "====\n";
+    std::cout
+        << "=                     MAZE GENERATOR APPLICATION               =\n";
+    std::cout << "============================================================="
+                 "====\n";
     std::cout << "\n";
-    
+
     std::cout << "Usage : ./maze_generator.out [-option] [arguments]\n";
     std::cout << "\n";
-    
+
     std::cout << "OPTIONS\n";
     std::cout << "------------------------------\n";
     std::cout << "-h, --help                    Affiche cette documentation\n";
-    std::cout << "-i, --input <fichier>         Charge un labyrinthe depuis un fichier\n";
-    std::cout << "-o, --output <fichier>        Sauvegarde le labyrinthe dans un fichier\n";
-    std::cout << "-c, --clear                   Efface complètement le labyrinthe\n";
-    std::cout << "--clear-maze                  Efface uniquement les cellules du labyrinthe\n";
+    std::cout << "-i, --input <fichier>         Charge un labyrinthe depuis un "
+                 "fichier\n";
+    std::cout << "-o, --output <fichier>        Sauvegarde le labyrinthe dans "
+                 "un fichier\n";
+    std::cout
+        << "-c, --clear                   Efface complètement le labyrinthe\n";
+    std::cout << "--clear-maze                  Efface uniquement les cellules "
+                 "du labyrinthe\n";
     std::cout << "\n";
-    
+
     std::cout << "AFFICHAGE\n";
     std::cout << "------------------------------\n";
     std::cout << "-s, --show                    Affiche le labyrinthe\n";
-    std::cout << "-f --framerate <fps>          Définit le framerate d'affichage\n";
-    std::cout << "-ds --delay-show <ms>         Définit le délai entre chaque mise à jour\n";
-    std::cout << "-lf --low-freq                Affiche le labyrinthe à basse fréquence\n";
+    std::cout
+        << "-f --framerate <fps>          Définit le framerate d'affichage\n";
+    std::cout << "-ds --delay-show <ms>         Définit le délai entre chaque "
+                 "mise à jour\n";
+    std::cout << "-lf --low-freq                Affiche le labyrinthe à basse "
+                 "fréquence\n";
     std::cout << "\n";
-    
+
     std::cout << "      RACCOURCIS CLAVIER\n";
     std::cout << "      ------------------------\n";
     std::cout << "      Echap                   Ferme l'affichage\n";
     std::cout << "      Espace                  Met en pause le programme\n";
-    std::cout << "      D                       Rafraîchit toutes les cellules\n";
-    std::cout << "      R                       Réinitialise les paramètres d'affichage\n";
-    std::cout << "      L                       Inverse la fréquence d'affichage ( haute/basse)\n";
+    std::cout
+        << "      D                       Rafraîchit toutes les cellules\n";
+    std::cout << "      R                       Réinitialise les paramètres "
+                 "d'affichage\n";
+    std::cout << "      L                       Inverse la fréquence "
+                 "d'affichage ( haute/basse)\n";
     std::cout << "      +                       Augmente le framerate\n";
     std::cout << "      -                       Diminue le framerate\n";
-    std::cout << "      *                       Augmente le délai d'affichage\n";
+    std::cout
+        << "      *                       Augmente le délai d'affichage\n";
     std::cout << "      /                       Diminue le délai d'affichage\n";
     std::cout << "\n";
-    
+
     std::cout << "      SOURIS\n";
     std::cout << "      ------------------------\n";
-    std::cout << "      Clic gauche +           Déplace la vue du labyrinthe déplacement souris (seulement si le labyrinthe est inférieur à 100 x 100)\n";
-    std::cout << "      Molette                 Zoom avant/arrière sur l'affichage (seulement si le labyrinthe est inférieur à 100 x 100)\n";
+    std::cout << "      Clic gauche +           Déplace la vue du labyrinthe "
+                 "déplacement souris (seulement si le labyrinthe est inférieur "
+                 "à 100 x 100)\n";
+    std::cout
+        << "      Molette                 Zoom avant/arrière sur l'affichage "
+           "(seulement si le labyrinthe est inférieur à 100 x 100)\n";
     std::cout << "\n";
-    
+
     std::cout << "GENERATION\n";
     std::cout << "------------------------------\n";
     std::cout << "-g, --generate                Génère un labyrinthe parfait\n";
-    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de génération\n";
+    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de "
+                 "génération\n";
     std::cout << "    Algorithmes disponibles : bt, wm, d, f\n";
     std::cout << "                              bt : back_tracking (défaut)\n";
     std::cout << "                              wm : wall_maker\n";
     std::cout << "                              d : diagonal\n";
     std::cout << "                              f : fractal\n";
-    std::cout << "  --dimension <w> <h>         Définit les dimensions du labyrinthe\n";
-    std::cout << "  --imperfect                 Génère un labyrinthe imparfait\n";
-    std::cout << "    --probability <p>         Définit la probabilité de suppression de murs [0.0-1.0]\n";
+    std::cout << "  --dimension <w> <h>         Définit les dimensions du "
+                 "labyrinthe\n";
+    std::cout
+        << "  --imperfect                 Génère un labyrinthe imparfait\n";
+    std::cout << "    --probability <p>         Définit la probabilité de "
+                 "suppression de murs [0.0-1.0]\n";
     std::cout << "\n";
-    
-    std::cout << "Pour plus d'informations, veuillez consulter la documentation complète.\n";
+
+    std::cout << "Pour plus d'informations, veuillez consulter la "
+                 "documentation complète.\n";
 }
 
 /**
