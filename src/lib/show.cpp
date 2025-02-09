@@ -74,7 +74,7 @@ bool Show::isOpen() const {
     return renderWindow_->isOpen();
 }
 
-void Show::eventHandler() { // NOLINT
+void Show::eventHandler() {  // NOLINT
     sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
         if (event.type == sf::Event::Closed ||
@@ -117,57 +117,76 @@ void Show::eventHandler() { // NOLINT
                 resetValues();
             }
         } else if (event.type == sf::Event::MouseWheelScrolled) {
-            static constexpr float zoomFactor = 1.1f;
-            if (event.mouseWheelScroll.delta > 0) {
-                zoomLevel_ *= zoomFactor;
+            if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
+                static constexpr float zoomFactor = 1.1f;
+                if (event.mouseWheelScroll.delta > 0) {
+                    zoomLevel_ *= zoomFactor;
+                } else {
+                    zoomLevel_ /= zoomFactor;
+                }
+                zoomLevel_ = std::max(MIN_ZOOM, std::min(zoomLevel_, MAX_ZOOM));
+                clearBlack();
+                refreshMaze();
             } else {
-                zoomLevel_ /= zoomFactor;
+                std::cerr << "Error: zoom is disabled for mazes larger than "
+                             "100x100"
+                          << std::endl;
             }
-            zoomLevel_ = std::max(MIN_ZOOM, std::min(zoomLevel_, MAX_ZOOM));
-            clearBlack();
-            refreshMaze();
         } else if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                isDragging_ = true;
-                lastMousePosition_ = sf::Mouse::getPosition(*renderWindow_);
-                // Enregistrez le centre actuel de la vue
-                lastViewCenter_ = renderWindow_->getView().getCenter();
+            if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    isDragging_ = true;
+                    lastMousePosition_ = sf::Mouse::getPosition(*renderWindow_);
+                    // Enregistrez le centre actuel de la vue
+                    lastViewCenter_ = renderWindow_->getView().getCenter();
+                }
+            } else {
+                std::cerr
+                    << "Error: mouse dragging is disabled for mazes larger "
+                       "100x100"
+                    << std::endl;
             }
         } else if (event.type == sf::Event::MouseButtonReleased) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                isDragging_ = false;
+            if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    isDragging_ = false;
+                }
             }
         } else if (event.type == sf::Event::MouseMoved && isDragging_) {
-            // Récupérez la position actuelle de la souris
-            sf::Vector2i mousePosition = sf::Mouse::getPosition(*renderWindow_);
-            // Calculez le changement de position
-            const sf::Vector2i delta = mousePosition - lastMousePosition_;
-            // Convertir le delta en pixels en un décalage proportionnel
-            sf::View currentView = renderWindow_->getView();
-            const float scale =
-                currentView.getSize().x / static_cast<float>(renderWindow_->getSize().x);
-            // Calcul du décalage en coordonné monde
-            sf::Vector2f offset(static_cast<float>(-delta.x) / scale,
-                                static_cast<float>(-delta.y) / scale);
-            // Met à jour le centre de la vue
-            sf::Vector2f newCenter = lastViewCenter_ + offset;
-            // Limiter le déplacement dans les limites de la grille
-            newCenter.x = std::max(
-                0.0f,
-                std::min(newCenter.x, static_cast<float>(maze_->getWidth()) *
-                                          cellSize_ * zoomLevel_));
-            newCenter.y = std::max(
-                0.0f,
-                std::min(newCenter.y, static_cast<float>(maze_->getHeight()) *
-                                          cellSize_ * zoomLevel_));
-            // Met à jour la vue
-            currentView.setCenter(newCenter);
-            renderWindow_->setView(currentView);
-            // Mise à jour de la dernière position de la souris et du centre
-            lastMousePosition_ = mousePosition;
-            lastViewCenter_ = newCenter;
-            clearBlack();
-            refreshMaze();
+            if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
+                // Récupérez la position actuelle de la souris
+                sf::Vector2i mousePosition =
+                    sf::Mouse::getPosition(*renderWindow_);
+                // Calculez le changement de position
+                const sf::Vector2i delta = mousePosition - lastMousePosition_;
+                // Convertir le delta en pixels en un décalage proportionnel
+                sf::View currentView = renderWindow_->getView();
+                const float scale =
+                    currentView.getSize().x /
+                    static_cast<float>(renderWindow_->getSize().x);
+                // Calcul du décalage en coordonné monde
+                sf::Vector2f offset(static_cast<float>(-delta.x) / scale,
+                                    static_cast<float>(-delta.y) / scale);
+                // Met à jour le centre de la vue
+                sf::Vector2f newCenter = lastViewCenter_ + offset;
+                // Limiter le déplacement dans les limites de la grille
+                newCenter.x = std::max(
+                    0.0f, std::min(newCenter.x,
+                                   static_cast<float>(maze_->getWidth()) *
+                                       cellSize_ * zoomLevel_));
+                newCenter.y = std::max(
+                    0.0f, std::min(newCenter.y,
+                                   static_cast<float>(maze_->getHeight()) *
+                                       cellSize_ * zoomLevel_));
+                // Met à jour la vue
+                currentView.setCenter(newCenter);
+                renderWindow_->setView(currentView);
+                // Mise à jour de la dernière position de la souris et du centre
+                lastMousePosition_ = mousePosition;
+                lastViewCenter_ = newCenter;
+                clearBlack();
+                refreshMaze();
+            }
         }
     }
 }
