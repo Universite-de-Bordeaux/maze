@@ -45,4 +45,8 @@
 #define MAZE_REFRESH_SIZE 200      //> Refresh size
 #define MAZE_MAX_WINDOW_RATIO 0.9  //> Max window ratio
 
+static constexpr float MIN_ZOOM = 0.5f;
+static constexpr float MAX_ZOOM = 5.0f;
+static constexpr float ZOOM_FACTOR = 1.1f;
+
 #endif  // MAZE_VAR_HPP

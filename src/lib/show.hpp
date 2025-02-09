@@ -110,6 +110,10 @@ class Show {
     std::chrono::microseconds delay_{};        //> Délai
     std::chrono::high_resolution_clock::time_point
         lastDisplay_;  //> Dernier affichage
+    float zoomLevel_;  //> Niveau de zoom
+    bool isDragging_;  //> Précise si l'utilisateur est en train de drag la vue
+    sf::Vector2i lastMousePosition_;  //> Dernière position de la souris
+    sf::Vector2f lastViewCenter_;     //> Dernier centre de la vue
 
     /**
      * @brief Dessine une cellule

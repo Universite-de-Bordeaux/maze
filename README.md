@@ -88,7 +88,8 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 > `+` : Augmente le framerate\
 > `-` : Diminue le framerate\
 > `*` : Augmente le délai d'affichage\
-> `/` : Diminue le délai d'affichage
+> `/` : Diminue le délai d'affichage\
+> `click gauche` et `déplacement souris` : Déplace la vue du labyrinthe\
 
 #### Génération de labyrinthe (maze_generator)
 
