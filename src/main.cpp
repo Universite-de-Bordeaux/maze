@@ -18,91 +18,96 @@
 #include "lib/writer.hpp"
 
 /**
- * Affiche l'aide
+ * Affiche la documentation d'aide pour l'application
  */
 void help() {
-    std::cout << "Options du programme" << std::endl;
-    std::cout << "-------------------" << std::endl;
-
-    std::cout << "Générales" << std::endl;
-    std::cout << "---------" << std::endl;
-    std::cout << "  -h ou --help : Affiche cette aide" << std::endl;
-    std::cout << "  -i ou --input <fichier> : Spécifie le fichier d'un "
-                 "labyrinthe à charger en mémoire"
-              << std::endl;
-    std::cout << "  -s ou --show : Affiche le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "    -f ou --framerate <framerate> : Spécifie le framerate de "
-                 "l'affichage (par défaut : 60)"
-              << std::endl;
-    std::cout
-        << "    -ds ou --delay-show <delay> : Spécifie le délai d'affichage "
-           "entre chaque cellule en millisecondes (par défaut : 0.0 (précis à "
-           "la microseconde))"
-        << std::endl;
-    std::cout << "    -lf ou --low-freq : Affiche le labyrinthe en mémoire à "
-                 "basse fréquence (par défaut : haute fréquence)"
-              << std::endl;
-    std::cout << "  -o ou --output <fichier> : Spécifie le fichier où "
-                 "sauvegarder le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "  -c ou --clear : Efface le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "  -cm ou --clear-maze : Nettoie les cellules du labyrinthe "
-                 "en mémoire"
-              << std::endl;
-    std::cout
-        << "  -ps ou --player-start <x> <y> : Spécifie la position de départ "
-           "du joueur dans le labyrinthe en mémoire (uniquement disponible "
-           "pour les résolutions et les jeux) (les valeurs négatives sont "
-           "autorisées et sont relatives à la fin du labyrinthe) (les valeurs "
-           "flottantes sont autorisées et sont utilisées comme pourcentage du "
-           "labyrinthe) (par défaut : aléatoire)"
-        << std::endl;
-    std::cout
-        << "  -pe ou --player-end <x> <y> : Spécifie la position d'arrivée "
-           "du joueur dans le labyrinthe en mémoire (uniquement disponible "
-           "pour les résolutions et les jeux) (les valeurs négatives sont "
-           "autorisées et sont relatives à la fin du labyrinthe) (les valeurs "
-           "flottantes sont autorisées et sont utilisées comme pourcentage du "
-           "labyrinthe) (par défaut : aléatoire)"
-        << std::endl;
-
-    std::cout << "\nRésolution de labyrinthe" << std::endl;
-    std::cout << "------------------------" << std::endl;
-    std::cout << "  -r ou --resolve : Résout le labyrinthe en mémoire"
-              << std::endl;
-    std::cout << "  -rs ou --resolve-show : Résout le labyrinthe en mémoire et "
-                 "l'affiche pendant la résolution"
-              << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la résolution (dfr/depth_first_right, "
-                 "dfl/depth_first_left, bf/breadth_first)"
-              << std::endl;
-
-    std::cout << "\nVérification de labyrinthe" << std::endl;
-    std::cout << "-------------------------" << std::endl;
-    std::cout << "  -v ou --verify : Vérifie si un labyrinthe est parfait"
-              << std::endl;
-    std::cout << "  -vs ou --verify-show : Vérifie si un labyrinthe est valide "
-                 "et l'affiche pendant la vérification"
-              << std::endl;
-    std::cout << "    -p ou --perfect : Vérifie si un labyrinthe est parfait"
-              << std::endl;
-    std::cout << "    -a ou --algorithm <algorithme> : Spécifie l'algorithme à "
-                 "utiliser pour la vérification (dfr/depth_first_right, "
-                 "dfl/depth_first_left, bf/breadth_first)"
-              << std::endl;
-
-    std::cout << "\nJeux de labyrinthe" << std::endl;
-    std::cout << "------------------" << std::endl;
-    std::cout << "  -g ou --game : Joue à un jeu de labyrinthe" << std::endl;
-    std::cout << "  -gs ou --game-show : Joue à un jeu de labyrinthe et "
-                 "l'affiche pendant le jeu"
-              << std::endl;
-    std::cout << "    -t ou --type <type> : Spécifie le type de jeu à jouer "
-                 "(f/fog, fr/fog_right, fl/fog_left, w/walk, wg/walk_ghost)"
-              << std::endl;
+    std::cout << "=================================================================\n";
+    std::cout << "=                          MAZE APPLICATION                     =\n";
+    std::cout << "=================================================================\n";
+    std::cout << "\n";
+    
+    std::cout << "Usage : ./maze.out [-option] [arguments]\n";
+    std::cout << "\n";
+    
+    std::cout << "OPTIONS\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-h, --help                    Affiche cette documentation\n";
+    std::cout << "-i, --input <fichier>         Charge un labyrinthe depuis un fichier\n";
+    std::cout << "-o, --output <fichier>        Sauvegarde le labyrinthe dans un fichier\n";
+    std::cout << "-c, --clear                   Efface complètement le labyrinthe\n";
+    std::cout << "--clear-maze                  Efface uniquement les cellules du labyrinthe\n";
+    std::cout << "\n";
+    
+    std::cout << "AFFICHAGE\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-s, --show                    Affiche le labyrinthe\n";
+    std::cout << "--framerate <fps>             Définit le framerate d'affichage\n";
+    std::cout << "--delay-show <ms>             Définit le délai entre chaque mise à jour\n";
+    std::cout << "--low-freq                    Affiche le labyrinthe à basse fréquence\n";
+    std::cout << "\n";
+    
+    std::cout << "      RACCOURCIS CLAVIER\n";
+    std::cout << "      ------------------------\n";
+    std::cout << "      Echap                   Ferme l'affichage\n";
+    std::cout << "      Espace                  Met en pause le programme\n";
+    std::cout << "      D                       Rafraîchit toutes les cellules\n";
+    std::cout << "      R                       Réinitialise les paramètres d'affichage\n";
+    std::cout << "      L                       Inverse la fréquence d'affichage ( haute/basse)\n";
+    std::cout << "      +                       Augmente le framerate\n";
+    std::cout << "      -                       Diminue le framerate\n";
+    std::cout << "      *                       Augmente le délai d'affichage\n";
+    std::cout << "      /                       Diminue le délai d'affichage\n";
+    std::cout << "\n";
+    
+    std::cout << "      SOURIS\n";
+    std::cout << "      ------------------------\n";
+    std::cout << "      Clic gauche +           Déplace la vue du labyrinthe déplacement souris\n";
+    std::cout << "      Molette                 Zoom avant/arrière sur l'affichage\n";
+    std::cout << "\n";
+    
+    std::cout << "RESOLUTION\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-r, --resolve                 Résout le labyrinthe\n";
+    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de résolution\n";
+    std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
+    std::cout << "                              dfl : depth_first_left\n";
+    std::cout << "                              dfr : depth_first_right\n";
+    std::cout << "                              bf : breadth_first\n";
+    std::cout << "\n";
+    
+    std::cout << "VERIFICATION\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-v, --verify                  Vérifie si le labyrinthe est valide\n";
+    std::cout << "  --perfect                   Vérifie la perfection du labyrinthe\n";
+    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de vérification\n";
+    std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
+    std::cout << "                              dfl : depth_first_left\n";
+    std::cout << "                              dfr : depth_first_right\n";
+    std::cout << "                              bf : breadth_first\n";
+    std::cout << "\n";
+    
+    std::cout << "JEU\n";
+    std::cout << "------------------------------\n";
+    std::cout << "-g, --game                    Lance le jeu\n";
+    std::cout << "  --type <type>               Sélectionne le type de jeu\n";
+    std::cout << "    Types disponibles :       f, fr, fl, w, wg\n";
+    std::cout << "                              f : fog\n";
+    std::cout << "                              fr : fog_right\n";
+    std::cout << "                              fl : fog_left\n";
+    std::cout << "                              w : walk\n";
+    std::cout << "                              wg : walk_ghost\n";
+    std::cout << "\n";
+    
+    std::cout << "POINTS DE DEPART\n";
+    std::cout << "------------------------------\n";
+    std::cout << "--player-start <x> <y>        Définit la position de départ\n";
+    std::cout << "--player-end <x> <y>          Définit la position d'arrivée\n";
+    std::cout << "  Formats acceptés :          pourcentages, indices, négatifs (relatifs)\n";
+    std::cout << "                              `0.5, 0.5` : centre\n";
+    std::cout << "                              `0, 0` : coin supérieur gauche\n";
+    std::cout << "                              `-1, -1` : coin inférieur droit\n";
+    
+    std::cout << "\nPour plus d'informations, veuillez consulter la documentation complète.\n";
 }
 
 /**
@@ -274,18 +279,18 @@ int main(int argc, char *argv[]) {
             long double y_tmp = std::stold(argv[i + 2]);
             int x;
             if (x_tmp < 0)
-                x = maze.getWidth() + x_tmp;
+                x = static_cast<int>(static_cast<long double>(maze.getWidth()) + x_tmp);
             else if (x_tmp > 0 && x_tmp < 1)
-                x = maze.getWidth() * x_tmp;
+                x = static_cast<int>(static_cast<long double>(maze.getWidth()) * x_tmp);
             else
-                x = x_tmp;
+                x = static_cast<int>(x_tmp);
             int y;
             if (y_tmp < 0)
-                y = maze.getHeight() + y_tmp;
+                y = static_cast<int>(static_cast<long double>(maze.getHeight()) + y_tmp);
             else if (y_tmp > 0 && y_tmp < 1)
-                y = maze.getHeight() * y_tmp;
+                y = static_cast<int>(static_cast<long double>(maze.getHeight()) * y_tmp);
             else
-                y = y_tmp;
+                y = static_cast<int>(y_tmp);
             maze.setStart(x, y);
             i += 2;
         } else if (strcmp(argv[i], "-pe") == 0 ||
@@ -295,18 +300,18 @@ int main(int argc, char *argv[]) {
             long double y_tmp = std::stold(argv[i + 2]);
             int x;
             if (x_tmp < 0)
-                x = maze.getWidth() + x_tmp;
+                x = static_cast<int>(static_cast<long double>(maze.getWidth()) + x_tmp);
             else if (x_tmp > 0 && x_tmp < 1)
-                x = maze.getWidth() * x_tmp;
+                x = static_cast<int>(static_cast<long double>(maze.getWidth()) * x_tmp);
             else
-                x = x_tmp;
+                x = static_cast<int>(x_tmp);
             int y;
             if (y_tmp < 0)
-                y = maze.getHeight() + y_tmp;
+                y = static_cast<int>(static_cast<long double>(maze.getHeight()) + y_tmp);
             else if (y_tmp > 0 && y_tmp < 1)
-                y = maze.getHeight() * y_tmp;
+                y = static_cast<int>(static_cast<long double>(maze.getHeight()) * y_tmp);
             else
-                y = y_tmp;
+                y = static_cast<int>(y_tmp);
             maze.setEnd(x, y);
             i += 2;
         }
