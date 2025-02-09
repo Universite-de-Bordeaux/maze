@@ -74,7 +74,7 @@ bool Show::isOpen() const {
     return renderWindow_->isOpen();
 }
 
-void Show::eventHandler() {
+void Show::eventHandler() { // NOLINT
     sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
         if (event.type == sf::Event::Closed ||
@@ -145,7 +145,7 @@ void Show::eventHandler() {
             // Convertir le delta en pixels en un décalage proportionnel
             sf::View currentView = renderWindow_->getView();
             const float scale =
-                currentView.getSize().x / renderWindow_->getSize().x;
+                currentView.getSize().x / static_cast<float>(renderWindow_->getSize().x);
             // Calcul du décalage en coordonné monde
             sf::Vector2f offset(static_cast<float>(-delta.x) / scale,
                                 static_cast<float>(-delta.y) / scale);

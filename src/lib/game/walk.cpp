@@ -30,6 +30,7 @@ int game_walk(const Maze *maze, Show *show, const bool ghost) {
         bool move = false;
         Cell *neighbor = nullptr;
         while (show->isOpen() && !move && show->pollEvent(event)) {
+            show->eventHandler();
             if (event.type == sf::Event::Closed ||
                 event.type == sf::Event::KeyPressed &&
                     event.key.code == sf::Keyboard::Escape) {
