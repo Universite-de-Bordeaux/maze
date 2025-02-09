@@ -37,9 +37,9 @@ void help() {
     std::cout << "AFFICHAGE\n";
     std::cout << "------------------------------\n";
     std::cout << "-s, --show                    Affiche le labyrinthe\n";
-    std::cout << "--framerate <fps>             Définit le framerate d'affichage\n";
-    std::cout << "--delay-show <ms>             Définit le délai entre chaque mise à jour\n";
-    std::cout << "--low-freq                    Affiche le labyrinthe à basse fréquence\n";
+    std::cout << "-f --framerate <fps>          Définit le framerate d'affichage\n";
+    std::cout << "-ds --delay-show <ms>         Définit le délai entre chaque mise à jour\n";
+    std::cout << "-lf --low-freq                Affiche le labyrinthe à basse fréquence\n";
     std::cout << "\n";
     
     std::cout << "      RACCOURCIS CLAVIER\n";
@@ -57,8 +57,8 @@ void help() {
     
     std::cout << "      SOURIS\n";
     std::cout << "      ------------------------\n";
-    std::cout << "      Clic gauche +           Déplace la vue du labyrinthe déplacement souris\n";
-    std::cout << "      Molette                 Zoom avant/arrière sur l'affichage\n";
+    std::cout << "      Clic gauche +           Déplace la vue du labyrinthe déplacement souris (seulement si le labyrinthe est inférieur à 100 x 100)\n";
+    std::cout << "      Molette                 Zoom avant/arrière sur l'affichage (seulement si le labyrinthe est inférieur à 100 x 100)\n";
     std::cout << "\n";
     
     std::cout << "GENERATION\n";
