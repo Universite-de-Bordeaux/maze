@@ -97,16 +97,19 @@ void Show::eventHandler() {
                 }
             } else if (key == sf::Keyboard::L) {
                 lowFreq_ = !lowFreq_;
-            } else if (key == sf::Keyboard::Add) {
+            } else if (key == sf::Keyboard::Add ||
+                       key == sf::Keyboard::Equal) {
                 refreshRate_ += std::chrono::milliseconds(10);
-            } else if (key == sf::Keyboard::Subtract) {
+            } else if (key == sf::Keyboard::Subtract ||
+                       key == sf::Keyboard::Dash) {
                 refreshRate_ -= std::chrono::milliseconds(10);
                 if (refreshRate_ < std::chrono::milliseconds(0)) {
                     refreshRate_ = std::chrono::milliseconds(0);
                 }
             } else if (key == sf::Keyboard::Multiply) {
                 delay_ += std::chrono::milliseconds(10);
-            } else if (key == sf::Keyboard::Divide) {
+            } else if (key == sf::Keyboard::Divide ||
+                       key == sf::Keyboard::Slash) {
                 delay_ -= std::chrono::milliseconds(10);
                 if (delay_ < std::chrono::milliseconds(0)) {
                     delay_ = std::chrono::milliseconds(0);
