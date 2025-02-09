@@ -79,9 +79,16 @@ L'utilisation de l'application avec le reste des fonctionnalités est la suivant
 >  LOW_FREQUENCY=false
 > ```
 
-> Il est possible de mettre en pause le programme quand l'affichage est activé en appuyant sur la touche `espace`\
-> Il est possible de quitter le programme quand l'affichage est activé en appuyant sur la touche `échap`\
-> Il est possible de rafraichir l'ensemble des cellules du labyrinthe en appuyant sur la touche `r`
+> ### Contrôles de l'affichage
+> `echap` : Ferme l'affichage\
+> `espace` : Met en pause le programme\
+> `d` : Rafraichit l'ensemble des cellules du labyrinthe\
+> `r` : Réinitialise les paramètres de l'affichage\
+> `l` : Change la valeur de LOW_FREQUENCY\
+> `+` : Augmente le framerate\
+> `-` : Diminue le framerate\
+> `*` : Augmente le délai d'affichage\
+> `/` : Diminue le délai d'affichage
 
 #### Génération de labyrinthe (maze_generator)
 

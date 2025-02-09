@@ -15,36 +15,8 @@ Show::Show(Maze *maze) {
     renderWindow_ = nullptr;
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
-    lowFreq_ = false;
 
-    std::ifstream envFile(".env");
-    if (envFile.is_open()) {
-        std::string line;
-        unsigned int framerate = 60;
-        float delay = 0;
-        while (std::getline(envFile, line)) {
-            if (line.find("FRAMERATE=") == 0) {
-                framerate = std::stoi(line.substr(10));
-            } else if (line.find("DELAY_SHOW=") == 0) {
-                delay = std::stof(line.substr(11));
-            } else if (line.find("LOW_FREQUENCY=") == 0) {
-                if (line.substr(14) == "true") {
-                    lowFreq_ = true;
-                } else if (line.substr(14) == "false") {
-                    lowFreq_ = false;
-                } else {
-                    std::cerr << "Error: cannot read 13" << std::endl;
-                    exit(MAZE_COMMAND_ERROR);
-                }
-            }
-        }
-        setRefreshRate(framerate);
-        setDelay(delay);
-        envFile.close();
-    } else {
-        setRefreshRate(60);
-        setDelay(0);
-    }
+    resetValues();
 
     if (!font_.loadFromFile("src/assets/poppins.ttf")) {
         std::cerr << "Error: cannot load font" << std::endl;
@@ -102,7 +74,7 @@ bool Show::isOpen() const {
     return renderWindow_->isOpen();
 }
 
-void Show::eventHandler() const {
+void Show::eventHandler() {
     sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
         if (event.type == sf::Event::Closed ||
@@ -111,9 +83,10 @@ void Show::eventHandler() const {
             renderWindow_->close();
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::R) {
+            const auto key = event.key.code;
+            if (key == sf::Keyboard::D) {
                 drawCells_();
-            } else if (event.key.code == sf::Keyboard::Space) {
+            } else if (key == sf::Keyboard::Space) {
                 while (true) {
                     if (pollEvent(event)) {
                         if (event.type == sf::Event::KeyPressed &&
@@ -122,6 +95,24 @@ void Show::eventHandler() const {
                         }
                     }
                 }
+            } else if (key == sf::Keyboard::L) {
+                lowFreq_ = !lowFreq_;
+            } else if (key == sf::Keyboard::Add) {
+                refreshRate_ += std::chrono::milliseconds(10);
+            } else if (key == sf::Keyboard::Subtract) {
+                refreshRate_ -= std::chrono::milliseconds(10);
+                if (refreshRate_ < std::chrono::milliseconds(0)) {
+                    refreshRate_ = std::chrono::milliseconds(0);
+                }
+            } else if (key == sf::Keyboard::Multiply) {
+                delay_ += std::chrono::milliseconds(10);
+            } else if (key == sf::Keyboard::Divide) {
+                delay_ -= std::chrono::milliseconds(10);
+                if (delay_ < std::chrono::milliseconds(0)) {
+                    delay_ = std::chrono::milliseconds(0);
+                }
+            } else if (key == sf::Keyboard::R) {
+                resetValues();
             }
         }
     }
@@ -332,4 +323,38 @@ void Show::setRefreshRate(const unsigned int rate) {
 
 void Show::setDelay(const float delay) {
     delay_ = std::chrono::microseconds(static_cast<int>(delay * 1000));
+}
+
+void Show::resetValues() {
+    std::ifstream envFile(".env");
+    if (envFile.is_open()) {
+        std::string line;
+        unsigned int framerate = 60;
+        float delay = 0;
+        bool lowFreq = false;
+        while (std::getline(envFile, line)) {
+            if (line.find("FRAMERATE=") == 0) {
+                framerate = std::stoi(line.substr(10));
+            } else if (line.find("DELAY_SHOW=") == 0) {
+                delay = std::stof(line.substr(11));
+            } else if (line.find("LOW_FREQUENCY=") == 0) {
+                if (line.substr(14) == "true") {
+                    lowFreq = true;
+                } else if (line.substr(14) == "false") {
+                    lowFreq = false;
+                } else {
+                    std::cerr << "Error: cannot read 13" << std::endl;
+                    exit(MAZE_COMMAND_ERROR);
+                }
+            }
+        }
+        setRefreshRate(framerate);
+        setDelay(delay);
+        setLowFreq(lowFreq);
+        envFile.close();
+    } else {
+        setRefreshRate(60);
+        setDelay(0);
+        setLowFreq(false);
+    }
 }

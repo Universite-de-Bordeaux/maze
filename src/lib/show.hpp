@@ -30,7 +30,7 @@ class Show {
     /**
      * @brief Gère les événements de la fenêtre de rendu
      */
-    void eventHandler() const;
+    void eventHandler();
     /**
      * @brief Récupère un événement
      * @param event Référence vers un event
@@ -132,6 +132,10 @@ class Show {
      * @param orientation Orientation du mur
      */
     void drawWall_(const Cell *cell, int orientation) const;
+    /**
+     * @brief Réinitialise les valeurs en utilisant les valeurs par défaut
+     */
+    void resetValues();
 };
 
 /**
