@@ -2,9 +2,12 @@
 
 ## Description
 
-Le projet Maze est une application en C++ conçue pour générer, résoudre, vérifier et visualiser des labyrinthes. Il propose plusieurs algorithmes de génération, de résolution et de vérification, ainsi que des fonctionnalités interactives pour explorer les labyrinthes.
+Le projet Maze est une application en C++ conçue pour générer, résoudre, vérifier et visualiser des labyrinthes. Il
+propose plusieurs algorithmes de génération, de résolution et de vérification, ainsi que des fonctionnalités
+interactives pour explorer les labyrinthes.
 
 Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe trois fichiers principaux :
+
 1. `maze_generator.out` : Génère des labyrinthes.
 2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
 
@@ -68,6 +71,7 @@ maze_project/
 Pour utiliser ce projet, vous devez avoir les outils suivants installés sur votre système :
 
 ### Logiciels Nécessaires
+
 - **Compilateur C++** (g++ ou clang++)
 - **CMake** (système de compilation)
 - **SFML** (bibliothèque graphique)
@@ -76,32 +80,38 @@ Pour utiliser ce projet, vous devez avoir les outils suivants installés sur vot
 ### Installation
 
 #### Sur Debian/Ubuntu :
+
 ```bash
 sudo apt-get update
 sudo apt-get install -y g++ cmake make libsfml-dev
 ```
 
 #### Sur Fedora :
+
 ```bash
 sudo dnf install -y gcc-c++ cmake make SFML
 ```
 
 #### Sur Arch Linux :
+
 ```bash
 sudo pacman -S gcc cmake make sfml
 ```
 
 #### Sur NixOS :
+
 ```bash
 nix-shell -p gcc cmake make sfml
 ```
 
 #### Sur macOS (avec Homebrew) :
+
 ```bash
 brew install gcc cmake make sfml
 ```
 
 #### Sur Windows (avec MSYS2) :
+
 ```bash
 pacman -S gcc-c++ cmake make sfml
 ```
@@ -123,12 +133,14 @@ Pour compiler le projet, suivez ces étapes :
 ## Utilisation
 
 Ce projet comporte deux exécutables principaux :
+
 1. `maze_generator.out` : Génère des labyrinthes avec différents algorithmes.
 2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
 
 ### Commandes Générales
 
 #### Afficher l'aide :
+
 ```bash
 ./maze_generator.out --help
 ./maze_generator.out -h
@@ -137,51 +149,74 @@ Ce projet comporte deux exécutables principaux :
 ```
 
 #### Charger un labyrinthe :
+
 ```bash
 ./maze.out --input fichier_maze.txt
 ./maze.out -i fichier_maze.txt
 ```
 
 #### Sauvegarder un labyrinthe :
+
 ```bash
 ./maze_generator.out --output fichier_maze.txt
 ./maze_generator.out -o fichier_maze.txt
 ```
 
 #### Effacer un labyrinthe :
+
 ```bash
 ./maze.out --input fichier_maze.txt --clear --input fichier_maze_aux.txt
 ./maze.out -i fichier_maze.txt -c -i fichier_maze_aux.txt
 ```
 
 #### Effacer le cache d'un labyrinthe :
+
 ```bash
 ./maze.out --input fichier_maze.txt --clear-maze
 ./maze.out --input fichier_maze.txt -cm
 ```
 
 #### Afficher le labyrinthe :
+
 ```bash
 ./maze.out --input fichier_maze.txt --show
 ./maze.out -i fichier_maze.txt -s
 ```
 
 ##### Paramètres de l'Affichage
+
 * `-s` ou `--show` : Active l'affichage graphique.
 * `-f` ou `--framerate` `<fps>` : Spécifie le framerate de l'affichage. (Par défaut : 60 fps).
 * `-ds` ou `--delay-show` `<ms>` : Spécifie le délai d'affichage. (Par défaut : 0 ms).
 * `-lf` ou `--low-frequency` : Active la fréquence d'affichage basse.
 
 Il est possible de définir les valeurs suivantes dans le fichier `.env` :
+
 ```dotenv
  FRAMERATE=60
  DELAY_SHOW=0.0
  LOW_FREQUENCY=false
 ```
 
+###### Paramètres de Couleur
+
+Les couleurs utilisées dans l'affichage du labyrinthe peuvent être personnalisées via le fichier `.env`. Les paramètres
+disponibles sont :
+
+* `MAZE_WALL_COLOR=255,255,255` : Couleur des murs du labyrinthe. (par défaut : Blanc)
+* `MAZE_WALL_START_COLOR=255,0,0` : Couleur de la cellule de départ. (par défaut : Rouge)
+* `MAZE_WALL_END_COLOR=0,255,0` : Couleur de la cellule d'arrivée. (par défaut : Vert)
+* `MAZE_STATUS_IDLE_COLOR=0,0,0` : Couleur des cellules non visitées. (par défaut : Noir)
+* `MAZE_STATUS_VISITED_COLOR=0,0,128` : Couleur des cellules visitées. (par défaut : Blue)
+* `MAZE_STATUS_HOPELESS_COLOR=0,0,255` : Couleur des cellules sans issue. (par défaut : Jaune)
+* `MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR=128,128,0` : Couleur des cellules trop connectées. (par défaut : Cyan)
+* `MAZE_STATUS_WAY_OUT_COLOR=0,128,0` : Couleur du chemin de sortie. (par défaut : Vert Clair)
+* `MAZE_STATUS_CURRENT_COLOR=125,0,0` : Couleur de la cellule actuelle. (par défaut : Rouge Foncé)
+
 #### Contrôles de l'Affichage
 
 L'affichage graphique propose les contrôles suivants :
+
 - **Echap** : Ferme l'affichage.
 - **Espace** : Met en pause le programme.
 - **D** : Rafraîchit toutes les cellules.
@@ -191,18 +226,23 @@ L'affichage graphique propose les contrôles suivants :
 - **-** : Diminue le framerate.
 - \* Augmente le délai d'affichage.
 - **/** : Diminue le délai d'affichage.
-- **Clic gauche + déplacement souris** : Déplace la vue du labyrinthe (valable pour les labyrinthes inférieurs à 100x100).
+- **Clic gauche + déplacement souris** : Déplace la vue du labyrinthe (valable pour les labyrinthes inférieurs à
+  100x100).
 - **Molette de la souris** : Zoom avant/arrière. (valable pour les labyrinthes inférieurs à 100x100).
 
 #### Paramètres du Joueur
-* `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe (Valeurs négatives sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
-* `-pe` ou `--player-end` `<x> <y>` : Spécifie la position d'arrivée du joueur dans le labyrinthe (Valeurs négatives sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
+
+* `-ps` ou `--player-start` `<x> <y>` : Spécifie la position de départ du joueur dans le labyrinthe (Valeurs négatives
+  sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
+* `-pe` ou `--player-end` `<x> <y>` : Spécifie la position d'arrivée du joueur dans le labyrinthe (Valeurs négatives
+  sont relatives à la fin du labyrinthe, valeurs flottantes utilisées comme pourcentage). (Par défaut : aléatoire).
 
 ### Fonctionnalités Spécifiques
 
 #### Générateur de Labyrinthes (`maze_generator.out`)
 
 **Syntaxe de base** :
+
 ```bash
 ./maze_generator.out [OPTIONS]
 ```
@@ -219,12 +259,14 @@ L'affichage graphique propose les contrôles suivants :
 | `-p, --probability`    | Spécifie la probabilité de suppression de murs (0.0-1.0). | `-p 0.1`                   |
 
 **Algorithmes de Génération** :
+
 - `back_tracking` (bt) : Algorithme de backtracking. (par défaut)
 - `wall_maker` (wm) : Algorithme wall maker.
 - `diagonal` (d) : Algorithme de génération en diagonale.
 - `fractal` (f) : Algorithme fractal.
 
 **Exemples** :
+
 1. Générer un labyrinthe de 15x15 avec l'algorithme backtracking :
    ```bash
    ./maze_generator.out -g -d 15 15 -a bt
@@ -238,6 +280,7 @@ L'affichage graphique propose les contrôles suivants :
 #### Résolveur de Labyrinthes (`maze.out`)
 
 **Syntaxe de base** :
+
 ```bash
 ./maze.out [OPTIONS]
 ```
@@ -251,11 +294,13 @@ L'affichage graphique propose les contrôles suivants :
 | `-a, --algorithm`     | Spécifie l'algorithme de résolution. | `-a dfl` ou `-a bf`          |
 
 **Algorithmes de Résolution** :
+
 - `depth_first_left` (dfl) : Algorithme de profondeur (par défaut).
 - `depth_first_right` (dfr) : Version droite de l'algorithme de profondeur.
 - `breadth_first` (bf) : Algorithme de largeur.
 
 **Exemples** :
+
 1. Résoudre un labyrinthe avec l'algorithme depth_first_left :
    ```bash
    ./maze.out -i maze.txt -r -a dfl
@@ -269,6 +314,7 @@ L'affichage graphique propose les contrôles suivants :
 #### Vérification de Labyrinthes (`maze.out`)
 
 **Syntaxe de base** :
+
 ```bash
 ./maze.out [OPTIONS]
 ```
@@ -283,11 +329,13 @@ L'affichage graphique propose les contrôles suivants :
 | `-p, --perfect`      | Vérifie si le labyrinthe est parfait.  | `-p`                         |
 
 **Algorithmes de Vérification** :
+
 - `depth_first_left` (dfl) : Algorithme de profondeur (par défaut).
 - `depth_first_right` (dfr) : Version droite de l'algorithme de profondeur.
 - `breadth_first` (bf) : Algorithme de largeur.
 
 **Exemples** :
+
 1. Vérifier si un labyrinthe est parfait :
    ```bash
    ./maze.out -i maze.txt -v -p -a dfl
@@ -301,6 +349,7 @@ L'affichage graphique propose les contrôles suivants :
 #### Jeu de Labyrinthes (`maze.out`)
 
 **Syntaxe de base** :
+
 ```bash
 ./maze.out [OPTIONS]
 ```
@@ -314,6 +363,7 @@ L'affichage graphique propose les contrôles suivants :
 | `-t, --type`       | Spécifie le type de jeu.              | `-t f` ou `-t w`             |
 
 **Types de Jeu** :
+
 - `fog` (f) : Jeu avec brouillard. (par défaut)
 - `fog_right` (fr) : Brouillard à droite.
 - `fog_left` (fl) : Brouillard à gauche.
@@ -321,6 +371,7 @@ L'affichage graphique propose les contrôles suivants :
 - `walk_ghost` (wg) : Marche sans visibilité. (nécessite l'activation de show)
 
 **Exemples** :
+
 1. Jouer avec le type `fog` :
    ```bash
    ./maze.out -i maze.txt -g -t f
@@ -343,6 +394,7 @@ L'affichage graphique propose les contrôles suivants :
 ## Exemples Complets
 
 ### Génération et Résolution
+
 ```bash
 # Étape 1 : Générer un labyrinthe de 20x20 avec l'algorithme backtracking
 ./maze_generator.out -g -d 20 20 -a bt -o mon_labyrinthe.txt
@@ -355,6 +407,7 @@ L'affichage graphique propose les contrôles suivants :
 ```
 
 ### Jeu Interactif
+
 ```bash
 # Lancez le jeu avec le type de jeu par défaut (fog)
 ./maze.out -i mon_labyrinthe.txt -g -t f
