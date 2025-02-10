@@ -1,6 +1,8 @@
 #ifndef MAZE_VAR_HPP
 #define MAZE_VAR_HPP
 
+#define MAZE_ENV_FILE ".env"  //> Environment file
+
 #define MAZE_OK 0             //> No error
 #define MAZE_COMMAND_ERROR 1  //> Command line error
 #define MAZE_FILE_ERROR 2     //> File error
@@ -42,7 +44,6 @@
 #define WEST 3   //> West direction
 #define ALL 4    //> All directions
 
-#define MAZE_REFRESH_SIZE 200      //> Refresh size
 #define MAZE_MAX_WINDOW_RATIO 0.9  //> Max window ratio
 
 static constexpr float MIN_ZOOM = 0.5f;

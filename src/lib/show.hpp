@@ -6,6 +6,7 @@
 #include <chrono>
 
 #include "maze.hpp"
+#include "queue.hpp"
 
 class Show {
    public:
@@ -101,19 +102,31 @@ class Show {
    private:
     Maze *maze_;  //> Pointeur vers un objet de type Maze
     sf::RenderWindow *renderWindow_ =
-        nullptr;      //> Pointeur vers un objet de type sf::RenderWindow
-    float cellSize_;  //> Taille d'une cellule
-    bool lowFreq_{};    //> Fréquence basse
-    sf::Font font_{};   //> Police d'écriture
+        nullptr;       //> Pointeur vers un objet de type sf::RenderWindow
+    float cellSize_;   //> Taille d'une cellule
+    bool lowFreq_{};   //> Fréquence basse
+    sf::Font font_{};  //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};     //> Dernière touche pressée
     std::chrono::milliseconds refreshRate_{};  //> Taux de rafraîchissement
     std::chrono::microseconds delay_{};        //> Délai
     std::chrono::high_resolution_clock::time_point
-        lastDisplay_;  //> Dernier affichage
+        lastDisplay_;    //> Dernier affichage
     float zoomLevel_{};  //> Niveau de zoom
-    bool isDragging_{};  //> Précise si l'utilisateur est en train de drag la vue
+    bool
+        isDragging_{};  //> Précise si l'utilisateur est en train de drag la vue
     sf::Vector2i lastMousePosition_{};  //> Dernière position de la souris
     sf::Vector2f lastViewCenter_{};     //> Dernier centre de la vue
+    struct colorConfig_ {
+        sf::Color wall{};
+        sf::Color wallStart{};
+        sf::Color wallEnd{};
+        sf::Color idle{};
+        sf::Color visited{};
+        sf::Color hopeless{};
+        sf::Color tooManyNeighbors{};
+        sf::Color wayOut{};
+        sf::Color current{};
+    } colorConfig_{};  //> Configuration des couleurs
 
     /**
      * @brief Dessine une cellule
@@ -140,10 +153,24 @@ class Show {
      * @brief Réinitialise les valeurs en utilisant les valeurs par défaut
      */
     void resetValues();
+    /**
+     * @brief Charge les couleurs à partir du fichier .env
+     * @param key Clé
+     * @param color Couleur
+     */
+    void loadColorsFromEnv_(const std::string &key, sf::Color &color);
+    /**
+     * @brief Divise une chaîne de caractères en tokens
+     * @param str Chaîne de caractères
+     * @param delimiter Délimiteur
+     * @return Queue de tokens
+     */
+    Queue splitString_(const std::string &str, char delimiter);
 };
 
 /**
- * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules modifiées
+ * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules
+ * modifiées
  * @param show Pointeur vers un objet de type Show
  * @param argc Nombre d'arguments
  * @param argv Tableau de pointeurs vers des objets de type Cell
@@ -151,12 +178,13 @@ class Show {
  */
 void refreshShow(Show *show, int argc, Cell *argv[]);
 /**
- * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules modifiées à
- * haute fréquence et toutes les cellules à basse fréquence
+ * @brief Rafraîchit la fenêtre de rendu avec seulement les cellules
+ * modifiées à haute fréquence et toutes les cellules à basse fréquence
  * @param show Pointeur vers un objet de type Show
  * @param argc Nombre d'arguments
  * @param argv Tableau de pointeurs vers des objets de type Cell
- * @param lowFreq Précise si le rafraîchissement doit se faire à basse fréquence
+ * @param lowFreq Précise si le rafraîchissement doit se faire à basse
+ * fréquence
  * @return void
  */
 void refreshShow(Show *show, int argc, Cell *argv[], bool lowFreq);

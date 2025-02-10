@@ -16,6 +16,29 @@ Show::Show(Maze *maze) {
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
 
+    // Initialisation des couleurs par défaut
+    colorConfig_.wall = sf::Color(MAZE_WALL_COLOR, 255);
+    colorConfig_.wallStart = sf::Color(MAZE_WALL_START_COLOR, 255);
+    colorConfig_.wallEnd = sf::Color(MAZE_WALL_END_COLOR, 255);
+    colorConfig_.idle = sf::Color(MAZE_STATUS_IDLE_COLOR, 255);
+    colorConfig_.visited = sf::Color(MAZE_STATUS_VISITED_COLOR, 255);
+    colorConfig_.hopeless = sf::Color(MAZE_STATUS_HOPELESS_COLOR, 255);
+    colorConfig_.tooManyNeighbors =
+        sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255);
+    colorConfig_.wayOut = sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255);
+    colorConfig_.current = sf::Color(MAZE_STATUS_CURRENT_COLOR, 255);
+
+    loadColorsFromEnv_("MAZE_WALL_COLOR", colorConfig_.wall);
+    loadColorsFromEnv_("MAZE_WALL_START_COLOR", colorConfig_.wallStart);
+    loadColorsFromEnv_("MAZE_WALL_END_COLOR", colorConfig_.wallEnd);
+    loadColorsFromEnv_("MAZE_STATUS_IDLE_COLOR", colorConfig_.idle);
+    loadColorsFromEnv_("MAZE_STATUS_VISITED_COLOR", colorConfig_.visited);
+    loadColorsFromEnv_("MAZE_STATUS_HOPELESS_COLOR", colorConfig_.hopeless);
+    loadColorsFromEnv_("MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR",
+                       colorConfig_.tooManyNeighbors);
+    loadColorsFromEnv_("MAZE_STATUS_WAY_OUT_COLOR", colorConfig_.wayOut);
+    loadColorsFromEnv_("MAZE_STATUS_CURRENT_COLOR", colorConfig_.current);
+
     resetValues();
 
     if (!font_.loadFromFile("src/assets/poppins.ttf")) {
@@ -229,18 +252,17 @@ void Show::drawCell_(const Cell *cell) const {
     visited.setPosition(static_cast<float>(cell->getX()) * scaledSize,
                         static_cast<float>(cell->getY()) * scaledSize);
     if (cell->getStatus() == MAZE_STATUS_IDLE) {
-        visited.setFillColor(sf::Color(MAZE_STATUS_IDLE_COLOR, 255));
+        visited.setFillColor(colorConfig_.idle);
     } else if (cell->getStatus() == MAZE_STATUS_VISITED) {
-        visited.setFillColor(sf::Color(MAZE_STATUS_VISITED_COLOR, 255));
+        visited.setFillColor(colorConfig_.visited);
     } else if (cell->getStatus() == MAZE_STATUS_HOPELESS) {
-        visited.setFillColor(sf::Color(MAZE_STATUS_HOPELESS_COLOR, 255));
+        visited.setFillColor(colorConfig_.hopeless);
     } else if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-        visited.setFillColor(
-            sf::Color(MAZE_STATUS_TOO_MANY_NEIGHBORS_COLOR, 255));
+        visited.setFillColor(colorConfig_.tooManyNeighbors);
     } else if (cell->getStatus() == MAZE_STATUS_WAY_OUT) {
-        visited.setFillColor(sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255));
+        visited.setFillColor(colorConfig_.wayOut);
     } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
-        visited.setFillColor(sf::Color(MAZE_STATUS_CURRENT_COLOR, 255));
+        visited.setFillColor(colorConfig_.current);
     } else {
         visited.setFillColor(sf::Color::Black);
     }
@@ -253,11 +275,11 @@ void Show::drawWall_(const Cell *cell, const int orientation) const {
     if (cell->getWall(orientation)) {
         const float scaledSize = cellSize_ * zoomLevel_;
         sf::RectangleShape wall(sf::Vector2f(scaledSize, 1));
-        wall.setFillColor(sf::Color(MAZE_WALL_COLOR, 255));
+        wall.setFillColor(colorConfig_.wall);
         if (x == maze_->getEndX() && y == maze_->getEndY()) {
-            wall.setFillColor(sf::Color(MAZE_WALL_END_COLOR, 255));
+            wall.setFillColor(colorConfig_.wallEnd);
         } else if (x == maze_->getStartX() && y == maze_->getStartY()) {
-            wall.setFillColor(sf::Color(MAZE_WALL_START_COLOR, 255));
+            wall.setFillColor(colorConfig_.wallStart);
         }
         const Cell *neighbor = nullptr;
         if (orientation == MAZE_CELL_TOP) {
@@ -283,10 +305,10 @@ void Show::drawWall_(const Cell *cell, const int orientation) const {
         }
         if (neighbor->getX() == maze_->getEndX() &&
             neighbor->getY() == maze_->getEndY()) {
-            wall.setFillColor(sf::Color(MAZE_WALL_END_COLOR, 255));
+            wall.setFillColor(colorConfig_.wallEnd);
         } else if (neighbor->getX() == maze_->getStartX() &&
                    neighbor->getY() == maze_->getStartY()) {
-            wall.setFillColor(sf::Color(MAZE_WALL_START_COLOR, 255));
+            wall.setFillColor(colorConfig_.wallStart);
         }
         renderWindow_->draw(wall);
     }
@@ -310,14 +332,13 @@ void Show::drawFrontier_(const Cell *cell, const int orientation) const {
         frontier.setSize(sf::Vector2f(1, scaledSize));
         frontier.setPosition(0, static_cast<float>(cell->getY()) * scaledSize);
     }
-    frontier.setFillColor(sf::Color(
-        cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()
-            ? MAZE_WALL_END_COLOR
-        : cell->getX() == maze_->getStartX() &&
-                cell->getY() == maze_->getStartY()
-            ? MAZE_WALL_START_COLOR
-            : MAZE_WALL_COLOR,
-        255));
+    frontier.setFillColor(cell->getX() == maze_->getEndX() &&
+                                  cell->getY() == maze_->getEndY()
+                              ? colorConfig_.wallEnd
+                          : cell->getX() == maze_->getStartX() &&
+                                  cell->getY() == maze_->getStartY()
+                              ? colorConfig_.wallStart
+                              : colorConfig_.wall);
     renderWindow_->draw(frontier);
 }
 
@@ -403,7 +424,7 @@ void Show::setDelay(const float delay) {
 
 void Show::resetValues() {
     // Réinitialisation des paramètres par défaut
-    std::ifstream envFile(".env");
+    std::ifstream envFile(MAZE_ENV_FILE);
     if (envFile.is_open()) {
         std::string line;
         unsigned int framerate = 60;
@@ -471,4 +492,73 @@ void Show::resetValues() {
         clearBlack();
         refreshMaze();
     }
+}
+
+void Show::loadColorsFromEnv_(const std::string &key, sf::Color &color) {
+    std::ifstream envFile(MAZE_ENV_FILE);
+    std::string line;
+
+    while (std::getline(envFile, line)) {
+        if (line.find(key + "=") == 0) {
+            std::string values = line.substr(key.length() + 1);
+            Queue tokens = splitString_(values, ',');
+            uint8_t r = 0, g = 0, b = 0;
+            int count = 0;
+
+            while (!tokens.empty()) {
+                auto tokenPtr = static_cast<std::string *>(tokens.front());
+                try {
+                    uint8_t value = std::stoul(*tokenPtr);
+                    switch (count) {
+                        case 0:
+                            r = value;
+                            break;
+                        case 1:
+                            g = value;
+                            break;
+                        case 2:
+                            b = value;
+                            break;
+                        default:;
+                    }
+                    count++;
+                } catch (const std::invalid_argument &ia) {
+                    // Gestion d'erreur si un token n'est pas un nombre valide
+                    std::cerr
+                        << "Erreur lors du parsage de la couleur : " << key
+                        << std::endl;
+                    break;
+                }
+
+                // Libère la mémoire de l'objet string
+                delete tokenPtr;
+                tokens.pop();
+            }
+
+            if (count >= 3) {
+                color = sf::Color(r, g, b);
+            }
+            break;
+        }
+    }
+}
+
+Queue Show::splitString_(const std::string &str, const char delimiter) {
+    Queue q;
+    size_t start = 0;
+    size_t end = str.find(delimiter);
+
+    while (end != std::string::npos) {
+        // Extrait la sous-chaîne de `start` à `end`
+        const std::string token = str.substr(start, end - start);
+        // Alloue de la mémoire pour la chaîne et ajoute à la queue
+        q.push(new std::string(token));
+        start = end + 1;
+        end = str.find(delimiter, start);
+    }
+    // Ajoute le dernier token après le dernier délimiteur
+    const std::string lastToken = str.substr(start);
+    q.push(new std::string(lastToken));
+
+    return q;
 }
