@@ -41,7 +41,7 @@ void help() {
                  "un fichier\n";
     std::cout
         << "-c, --clear                   Efface complètement le labyrinthe\n";
-    std::cout << "--clear-maze                  Efface uniquement les cellules "
+    std::cout << "-cm, --clear-maze             Efface uniquement les cellules "
                  "du labyrinthe\n";
     std::cout << "\n";
 
@@ -49,10 +49,10 @@ void help() {
     std::cout << "------------------------------\n";
     std::cout << "-s, --show                    Affiche le labyrinthe\n";
     std::cout
-        << "-f --framerate <fps>          Définit le framerate d'affichage\n";
-    std::cout << "-ds --delay-show <ms>         Définit le délai entre chaque "
+        << "-f, --framerate <fps>         Définit le framerate d'affichage\n";
+    std::cout << "-ds, --delay-show <ms>        Définit le délai entre chaque "
                  "mise à jour\n";
-    std::cout << "-lf --low-freq                Affiche le labyrinthe à basse "
+    std::cout << "-lf, --low-freq               Affiche le labyrinthe à basse "
                  "fréquence\n";
     std::cout << "\n";
 
@@ -86,7 +86,7 @@ void help() {
     std::cout << "RESOLUTION\n";
     std::cout << "------------------------------\n";
     std::cout << "-r, --resolve                 Résout le labyrinthe\n";
-    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de "
+    std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
                  "résolution\n";
     std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
     std::cout
@@ -99,9 +99,9 @@ void help() {
     std::cout << "------------------------------\n";
     std::cout << "-v, --verify                  Vérifie si le labyrinthe est "
                  "valide\n";
-    std::cout << "  --perfect                   Vérifie la perfection du "
+    std::cout << "  -p, --perfect               Vérifie la perfection du "
                  "labyrinthe\n";
-    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de "
+    std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
                  "vérification\n";
     std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
     std::cout
@@ -113,7 +113,7 @@ void help() {
     std::cout << "JEU\n";
     std::cout << "------------------------------\n";
     std::cout << "-g, --game                    Lance le jeu\n";
-    std::cout << "  --type <type>               Sélectionne le type de jeu\n";
+    std::cout << "  -t, --type <type>           Sélectionne le type de jeu\n";
     std::cout << "    Types disponibles :       f, fr, fl, w, wg\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
@@ -125,9 +125,9 @@ void help() {
     std::cout << "POINTS DE DEPART\n";
     std::cout << "------------------------------\n";
     std::cout
-        << "--player-start <x> <y>        Définit la position de départ\n";
+        << "-ps, --player-start <x> <y>   Définit la position de départ\n";
     std::cout
-        << "--player-end <x> <y>          Définit la position d'arrivée\n";
+        << "-pe, --player-end <x> <y>     Définit la position d'arrivée\n";
     std::cout << "  Formats acceptés :          pourcentages, indices, "
                  "négatifs (relatifs)\n";
     std::cout << "                              `0.5, 0.5` : centre\n";

@@ -1,7 +1,5 @@
 #include "breadth_first.hpp"
 
-#include <iostream>
-
 #include "../queue.hpp"
 #include "../show.hpp"
 #include "../stack.hpp"
@@ -20,7 +18,6 @@ struct positionHistory {
 };
 
 bool solver_breadth_first(const Maze *maze, Show *show) {
-    std::cout << "Résolution du labyrinthe en largeur" << std::endl;
     Queue queue;
     Stack stack;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
@@ -90,7 +87,7 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
             }
         }
         if (count == 4) {
-            cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
+            cell->setStatus(MAZE_STATUS_HOPELESS);
             refreshShow(show, 1, &cell, true);
         }
     }

@@ -1,52 +1,84 @@
 #include "depth_first.hpp"
 
 #include "../show.hpp"
+#include "../stack.hpp"
 #include "../var.hpp"
 
-static bool solve(Maze *maze, Show *show, const int x, const int y,  // NOLINT
-                  const int direction, const bool toLeft) {
-    Cell *cell = maze->getCell(x, y);
-    cell->setAlreadyVisited(true);
-    cell->setStatus(MAZE_STATUS_CURRENT);
-    if (x == maze->getEndX() && y == maze->getEndY()) {
-        cell->setStatus(MAZE_STATUS_WAY_OUT);
-        refreshShow(show, 1, &cell, true);
-        return true;
-    }
-    if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
-        cell->setStatus(MAZE_STATUS_HOPELESS);
-        refreshShow(show, 1, &cell, true);
+struct positionHistory {
+    int x;
+    int y;
+    int direction;
+    positionHistory *parent;
+};
+
+bool solver_depth_first(const Maze *maze, Show *show, const bool left) {
+    Stack stack;
+    if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return false;
     }
-    refreshShow(show, 1, &cell, false);
-    for (int i = 0; i < 4; i++) {
-        int index;
-        if (toLeft) {
-            index = (direction + i) % 4;
-        } else {
-            index = (direction - i) % 4;
-        }
-        if (index < 0) {
-            index += 4;
-        }
-        if (cell->isNeighbor(index)) {
-            const Cell *neighbor = cell->getNeighbor(index);
+    refreshShow(show);
+    positionHistory startHistory = {maze->getStartX(), maze->getStartY(), 0,
+                                    nullptr};
+    stack.push(&startHistory);
+    maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
+    maze->getStartCell()->setAlreadyVisited(true);
+
+    while (!stack.empty()) {
+        auto *current = static_cast<positionHistory *>(stack.top());
+        stack.pop();
+        const int x = current->x;
+        const int y = current->y;
+        Cell *cell = maze->getCell(x, y);
+        refreshShow(show, 1, &cell, false);
+
+        int count = 0;
+        for (int i = 0; i < 4; i++) {
+            int index;
+            if (left) {
+                index = (current->direction - i) % 4;
+            } else {
+                index = (current->direction + i) % 4;
+            }
+            if (index < 0) {
+                index += 4;
+            }
+            Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                if (solve(maze, show, neighbor->getX(), neighbor->getY(),
-                          (index + 2) % 4, toLeft)) {
-                    cell->setStatus(MAZE_STATUS_WAY_OUT);
-                    refreshShow(show, 1, &cell, false);
+                auto *next = new positionHistory;
+                next->x = neighbor->getX();
+                next->y = neighbor->getY();
+                next->direction = (index + 2) % 4;
+                next->parent = current;
+                stack.push(next);
+                neighbor->setStatus(MAZE_STATUS_VISITED);
+                neighbor->setAlreadyVisited(true);
+                if (neighbor->getX() == maze->getEndX() &&
+                    neighbor->getY() == maze->getEndY()) {
+                    neighbor->setStatus(MAZE_STATUS_WAY_OUT);
+                    refreshShow(show, 1, &neighbor, true);
+
+                    const auto *currentPath = next;
+                    while (currentPath != nullptr) {
+                        Cell *cellTop =
+                            maze->getCell(currentPath->x, currentPath->y);
+                        if (cellTop != nullptr) {
+                            cellTop->setStatus(MAZE_STATUS_WAY_OUT);
+                            refreshShow(show, 1, &cellTop, false);
+                        }
+                        currentPath = currentPath->parent;
+                    }
+                    refreshShow(show);
                     return true;
                 }
+            } else {
+                count++;
             }
         }
+        if (count == 4) {
+            cell->setStatus(MAZE_STATUS_HOPELESS);
+            refreshShow(show, 1, &cell, true);
+        }
     }
-    cell->setStatus(MAZE_STATUS_VISITED);
-    refreshShow(show, 1, &cell, false);
-    return false;
-}
-
-bool solver_depth_first(Maze *maze, Show *show, const bool left) {
     refreshShow(show);
-    return solve(maze, show, maze->getStartX(), maze->getStartY(), 0, left);
+    return false;
 }

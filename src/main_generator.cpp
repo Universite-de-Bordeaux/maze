@@ -37,7 +37,7 @@ void help() {
                  "un fichier\n";
     std::cout
         << "-c, --clear                   Efface complètement le labyrinthe\n";
-    std::cout << "--clear-maze                  Efface uniquement les cellules "
+    std::cout << "-cm, --clear-maze             Efface uniquement les cellules "
                  "du labyrinthe\n";
     std::cout << "\n";
 
@@ -45,10 +45,10 @@ void help() {
     std::cout << "------------------------------\n";
     std::cout << "-s, --show                    Affiche le labyrinthe\n";
     std::cout
-        << "-f --framerate <fps>          Définit le framerate d'affichage\n";
-    std::cout << "-ds --delay-show <ms>         Définit le délai entre chaque "
+        << "-f, --framerate <fps>         Définit le framerate d'affichage\n";
+    std::cout << "-ds, --delay-show <ms>        Définit le délai entre chaque "
                  "mise à jour\n";
-    std::cout << "-lf --low-freq                Affiche le labyrinthe à basse "
+    std::cout << "-lf, --low-freq               Affiche le labyrinthe à basse "
                  "fréquence\n";
     std::cout << "\n";
 
@@ -82,18 +82,18 @@ void help() {
     std::cout << "GENERATION\n";
     std::cout << "------------------------------\n";
     std::cout << "-g, --generate                Génère un labyrinthe parfait\n";
-    std::cout << "  --algorithm <algo>          Sélectionne l'algorithme de "
+    std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
                  "génération\n";
     std::cout << "    Algorithmes disponibles : bt, wm, d, f\n";
     std::cout << "                              bt : back_tracking (défaut)\n";
     std::cout << "                              wm : wall_maker\n";
     std::cout << "                              d : diagonal\n";
     std::cout << "                              f : fractal\n";
-    std::cout << "  --dimension <w> <h>         Définit les dimensions du "
+    std::cout << "  -d, --dimension <w> <h>     Définit les dimensions du "
                  "labyrinthe\n";
     std::cout
-        << "  --imperfect                 Génère un labyrinthe imparfait\n";
-    std::cout << "    --probability <p>         Définit la probabilité de "
+        << "  -i, --imperfect             Génère un labyrinthe imparfait\n";
+    std::cout << "    -p, --probability <p>     Définit la probabilité de "
                  "suppression de murs [0.0-1.0]\n";
     std::cout << "\n";
 
