@@ -103,17 +103,17 @@ class Show {
     sf::RenderWindow *renderWindow_ =
         nullptr;      //> Pointeur vers un objet de type sf::RenderWindow
     float cellSize_;  //> Taille d'une cellule
-    bool lowFreq_;    //> Fréquence basse
-    sf::Font font_;   //> Police d'écriture
+    bool lowFreq_{};    //> Fréquence basse
+    sf::Font font_{};   //> Police d'écriture
     sf::Event::KeyEvent lastKeyPressed_{};     //> Dernière touche pressée
     std::chrono::milliseconds refreshRate_{};  //> Taux de rafraîchissement
     std::chrono::microseconds delay_{};        //> Délai
     std::chrono::high_resolution_clock::time_point
         lastDisplay_;  //> Dernier affichage
-    float zoomLevel_;  //> Niveau de zoom
-    bool isDragging_;  //> Précise si l'utilisateur est en train de drag la vue
-    sf::Vector2i lastMousePosition_;  //> Dernière position de la souris
-    sf::Vector2f lastViewCenter_;     //> Dernier centre de la vue
+    float zoomLevel_{};  //> Niveau de zoom
+    bool isDragging_{};  //> Précise si l'utilisateur est en train de drag la vue
+    sf::Vector2i lastMousePosition_{};  //> Dernière position de la souris
+    sf::Vector2f lastViewCenter_{};     //> Dernier centre de la vue
 
     /**
      * @brief Dessine une cellule

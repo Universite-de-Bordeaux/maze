@@ -6,7 +6,7 @@
 
 #include "../show.hpp"
 
-static int numberBorders(int width, int height, Wall* wall) {
+static int numberBorders(const int width, const int height, Wall* wall) {
     if (wall == nullptr) {
         return 0;
     }
@@ -27,7 +27,7 @@ static int numberBorders(int width, int height, Wall* wall) {
     return number;
 }
 
-static void resetAlreadyVisited(Maze* maze) {
+static void resetAlreadyVisited(const Maze* maze) {
     for (int x = 0; x < maze->getWidth(); x++) {
         for (int y = 0; y < maze->getHeight(); y++) {
             for (int i = 0; i < 2; i++) {
@@ -40,8 +40,8 @@ static void resetAlreadyVisited(Maze* maze) {
     }
 }
 
-void algo_wall_maker(Maze* maze, int width, int height, bool perfect,
-                     double probability, Show* show) {
+void algo_wall_maker(Maze* maze, const int width, const int height,
+                     bool perfect, double probability, Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
@@ -66,10 +66,10 @@ void algo_wall_maker(Maze* maze, int width, int height, bool perfect,
         }
     }
     while (wallsPossibleSize > 0) {
-        int random = rand() % wallsPossibleSize;
-        int x = wallsPossible[random][0];
-        int y = wallsPossible[random][1];
-        int direction = wallsPossible[random][2];
+        const int random = maze->getRand()->get(0, wallsPossibleSize - 1);
+        const int x = wallsPossible[random][0];
+        const int y = wallsPossible[random][1];
+        const int direction = wallsPossible[random][2];
         wallsPossible[random][0] = wallsPossible[wallsPossibleSize - 1][0];
         wallsPossible[random][1] = wallsPossible[wallsPossibleSize - 1][1];
         wallsPossible[random][2] = wallsPossible[wallsPossibleSize - 1][2];

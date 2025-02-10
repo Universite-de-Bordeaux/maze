@@ -310,14 +310,14 @@ void Show::drawFrontier_(const Cell *cell, const int orientation) const {
         frontier.setSize(sf::Vector2f(1, scaledSize));
         frontier.setPosition(0, static_cast<float>(cell->getY()) * scaledSize);
     }
-    if (cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()) {
-        frontier.setFillColor(sf::Color(MAZE_WALL_END_COLOR, 255));
-    } else if (cell->getX() == maze_->getStartX() &&
-               cell->getY() == maze_->getStartY()) {
-        frontier.setFillColor(sf::Color(MAZE_WALL_START_COLOR, 255));
-    } else {
-        frontier.setFillColor(sf::Color(MAZE_WALL_COLOR, 255));
-    }
+    frontier.setFillColor(sf::Color(
+        cell->getX() == maze_->getEndX() && cell->getY() == maze_->getEndY()
+            ? MAZE_WALL_END_COLOR
+        : cell->getX() == maze_->getStartX() &&
+                cell->getY() == maze_->getStartY()
+            ? MAZE_WALL_START_COLOR
+            : MAZE_WALL_COLOR,
+        255));
     renderWindow_->draw(frontier);
 }
 

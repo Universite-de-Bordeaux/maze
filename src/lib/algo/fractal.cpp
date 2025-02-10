@@ -11,8 +11,8 @@ static bool add_wall_imperfect(Maze *maze, const int mid,
                                const double probability) {
     bool status = true;
     for (int i = 0; i < maze->getHeight(); i++) {
-        status &= maze->addWall(mid - 1, i,
-                                false) && maze->addWall(i, mid - 1, true);
+        status &=
+            maze->addWall(mid - 1, i, false) && maze->addWall(i, mid - 1, true);
     }
     int remove[4];
     remove[0] = maze->getRand()->get(0, mid - 1);
@@ -46,7 +46,7 @@ static bool add_wall_perfect(Maze *maze, const int mid) {
         status &= maze->addWall(mid - 1, mid + i, false);
         status &= maze->addWall(i, mid - 1, true);
     }
-    int direction = maze->getRand()->get(0, 3);
+    const int direction = maze->getRand()->get(0, 3);
     if (direction == NORTH) {
         int remove = maze->getRand()->get(0, mid - 1);
         status &= maze->removeWall(mid + remove, mid - 1, true);
@@ -113,7 +113,7 @@ static void quad_maze(Maze *maze) {
     new_maze.clearMaze();
 }
 
-void algo_fractal(Maze *maze, int n, const bool perfect,
+void algo_fractal(Maze *maze, const int n, const bool perfect,
                   const double probability, Show *show) {
     maze->setWidthHeight(1, 1);
     if (show && !show->getLowFreq()) {
@@ -125,30 +125,30 @@ void algo_fractal(Maze *maze, int n, const bool perfect,
     }
     refreshShow(show);
     for (int i = 0; i < n; i++) {
-
         // duplication du labyrinthe
         quad_maze(maze);
 
         // ajout des murs
-        if (!perfect && !add_wall_imperfect(maze, maze->getHeight() / 2, probability)) {
-                std::cerr << "Error: add_wall" << std::endl;
-                return;
-            }
-        }
-        if (!add_wall_perfect(maze, maze->getHeight() / 2)) {
+        if (!perfect &&
+            !add_wall_imperfect(maze, maze->getHeight() / 2, probability)) {
             std::cerr << "Error: add_wall" << std::endl;
             return;
         }
-
-        // affichage
-        if (show && !show->getLowFreq()) {
-            show->destroy();
-            show->create();
-        }
-        refreshShow(show);
-
-        if (show && show->getLowFreq()) {
-            show->destroy();
-            show->create();
-        }
     }
+    if (!add_wall_perfect(maze, maze->getHeight() / 2)) {
+        std::cerr << "Error: add_wall" << std::endl;
+        return;
+    }
+
+    // affichage
+    if (show && !show->getLowFreq()) {
+        show->destroy();
+        show->create();
+    }
+    refreshShow(show);
+
+    if (show && show->getLowFreq()) {
+        show->destroy();
+        show->create();
+    }
+}
