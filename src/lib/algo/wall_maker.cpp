@@ -13,18 +13,35 @@ static int numberBorders(const int width, const int height, Wall* wall) {
     if (wall->isAlreadyVisited()) {
         return 0;
     }
+
+    int count = 0;
+    Queue queue;
+    queue.push(wall);
     wall->setAlreadyVisited(true);
-    int number = 0;
+
     if (wall->isBorder()) {
-        number++;
+        count++;
     }
-    for (int i = 0; i < 6; i++) {
-        Wall* neighbor = wall->getNeighbor(i);
-        if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-            number += numberBorders(width, height, neighbor);
+
+    while (!queue.empty()) {
+        const Wall* current = static_cast<Wall*>(queue.front());
+        queue.pop();
+
+        for (int i = 0; i < 6; i++) {
+            Wall* neighbor = current->getNeighbor(i);
+            if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
+                neighbor->setAlreadyVisited(true);
+                // std::cout << " test=" << neighbor->isBorder() << std::endl;
+                if (neighbor->isBorder()) {
+                    count++;
+                    // std::cout << " numberBorders=" << count << std::endl;
+                }
+                queue.push(neighbor);
+            }
         }
     }
-    return number;
+
+    return count;
 }
 
 static void resetAlreadyVisited(const Maze* maze) {
@@ -40,8 +57,8 @@ static void resetAlreadyVisited(const Maze* maze) {
     }
 }
 
-void algo_wall_maker(Maze* maze, const int width, const int height,
-                     bool perfect, double probability, Show* show) {
+void algo_wall_maker(Maze* maze, const int width, const int height, bool,
+                     double, Show* show) {
     maze->setWidthHeight(width, height);
     if (show) {
         show->create();
@@ -55,15 +72,36 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                     wallsPossible[wallsPossibleSize][0] = x;
                     wallsPossible[wallsPossibleSize][1] = y;
                     wallsPossible[wallsPossibleSize][2] = 0;
+                    std::cout << "wallsPossible[" << wallsPossibleSize
+                              << "][0]=" << wallsPossible[wallsPossibleSize][0]
+                              << " wallsPossible[" << wallsPossibleSize
+                              << "][1]=" << wallsPossible[wallsPossibleSize][1]
+                              << " wallsPossible[" << wallsPossibleSize
+                              << "][2]=" << wallsPossible[wallsPossibleSize][2]
+                              << std::endl;
                     wallsPossibleSize++;
                 } else if (i == 1 && y < height - 1) {
                     wallsPossible[wallsPossibleSize][0] = x;
                     wallsPossible[wallsPossibleSize][1] = y;
                     wallsPossible[wallsPossibleSize][2] = 1;
+                    std::cout << "wallsPossible[" << wallsPossibleSize
+                              << "][0]=" << wallsPossible[wallsPossibleSize][0]
+                              << " wallsPossible[" << wallsPossibleSize
+                              << "][1]=" << wallsPossible[wallsPossibleSize][1]
+                              << " wallsPossible[" << wallsPossibleSize
+                              << "][2]=" << wallsPossible[wallsPossibleSize][2]
+                              << std::endl;
                     wallsPossibleSize++;
                 }
             }
         }
+    }
+    std::cout << std::endl;
+    for (int i = 0; i < width * height * 2; i++) {
+        std::cout << "wallsPossible[" << i << "][0]=" << wallsPossible[i][0]
+                  << " wallsPossible[" << i << "][1]=" << wallsPossible[i][1]
+                  << " wallsPossible[" << i << "][2]=" << wallsPossible[i][2]
+                  << std::endl;
     }
     while (wallsPossibleSize > 0) {
         const int random = maze->getRand()->get(0, wallsPossibleSize - 1);
@@ -79,11 +117,6 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         } else {
             maze->addWall(x, y, true, true);
         }
-        std::cout << "x=" << x << " y=" << y << " direction=" << direction
-                  << " numberBorders="
-                  << numberBorders(width, height,
-                                   maze->getWall(x, y, direction))
-                  << std::endl;
         resetAlreadyVisited(maze);
         if (numberBorders(width, height, maze->getWall(x, y, direction)) > 1) {
             maze->removeWall(x, y, direction, true);
