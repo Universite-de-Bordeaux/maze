@@ -1,64 +1,152 @@
-# Projet de Programmation de Labyrinthes
+# Structure du Projet
 
-Bienvenue dans notre projet de programmation de labyrinthes ! Ce document vous guidera à travers la structure de notre projet et vous expliquera comment il fonctionne.
+Le projet est organisé de manière modulaire et hiérarchique pour faciliter la lecture, la maintenance et le développement.
+Voici une description détaillée de la structure du projet :
+
+## Sommaire
+
+1. [Introduction](#introduction)
+2. [Structure du Projet](#structure-du-projet)
+3. [Classes du Projet](#classes-du-projet)
+4. [Algorithmes Implémentés](#algorithmes-implémentés)
+5. [Fichiers Principaux](#fichiers-principaux)
+
+## Introduction
+
+Ce document décrit en détail la structure du projet de programmation de labyrinthes.
+Il explique l'organisation des dossiers, les classes utilisées et les algorithmes implémentés.
 
 ## Structure du Projet
 
-Notre projet est organisé en plusieurs dossiers et fichiers, chacun ayant un rôle spécifique. Voici un aperçu de la structure du projet :
+Le projet est divisé en plusieurs dossiers principaux :
 
----
+```
+maze_project/
+├── doc/                           # Documentation du projet
+│   ├── README.md                  # Présentation générale
+│   └── rapport.pdf                # Document technique complet
+├── src/                           # Code source
+│   ├── main.cpp                   # Fichier principal du résolveur, vérificateur et joueur
+│   ├── maze_generator.cpp         # Fichier principal du générateur
+│   └── instances/                 # Exemples de labyrinthes
+│   └── lib/                       # Bibliothèques
+│       └── algo/                  # Algorithmes de génération
+│       └── checker/               # Algorithmes de vérification
+│       └── game/                  # Jeux et visites interactives
+│       └── solver/                # Algorithmes de résolution
+└── CMakeLists.txt                 # Fichier de compilation
+```
 
-## Dossier `doc`
-Ce dossier contient toute la documentation relative au projet.
+## Classes du Projet
 
-## Dossier `src`
-Le dossier `src` est le cœur du projet et contient plusieurs sous-dossiers et fichiers :
+Les classes suivantes sont utilisées dans le projet :
 
-### Dossier `asserts`
-Ce dossier contient les ressources nécessaires au projet.
+### 1. `Cell`
+- Représente une cellule du labyrinthe.
+- Attributs :
+    - Coordonnées (x, y) de la cellule.
+    - Tableau des murs (nord, sud, est, ouest).
+    - État de visite.
+- [Documentation complete](doc/classes/cell.md)
 
-### Dossier `instances`
-Ce dossier contient des instances de labyrinthes pour tester le programme.
+### 2. `Maze`
+- Représente l'ensemble du labyrinthe.
+- Attributs :
+    - Largeur et hauteur du labyrinthe.
+    - Grille de cellules.
+    - Positions de départ et d'arrivée.
+- [Documentation complete](doc/classes/maze.md)
 
-### Dossier `lib`
-Le dossier `lib` est subdivisé en plusieurs sous-dossiers :
+### 3. `Wall`
+- Représente un mur d'une cellule.
+- Attributs :
+    - Type de mur (nord, sud, est, ouest).
+    - État du mur (présent ou absent).
+- [Documentation complete](doc/classes/wall.md)
 
-#### Dossier `algo`
-Ce dossier contient les algorithmes de génération de labyrinthes :
-- `back_tracking.cpp` et `back_tracking.hpp` : Algorithme de génération par backtracking.
-- `diagonal.cpp` et `diagonal.hpp` : Algorithme de génération en diagonale.
-- `fractal.cpp` et `fractal.hpp` : Algorithme de génération fractale.
-- `wall_maker.cpp` et `wall_maker.hpp` : Algorithme de génération par ajout de murs.
+### 4. `Queue` et `Stack`
+- Structures de données utilisées dans les algorithmes de résolution.
+- [Documentation Queue](doc/classes/queue.md)
+- [Documentation Stack](doc/classes/stack.md)
 
-#### Dossier `solver`
-Ce dossier contient les algorithmes de résolution de labyrinthes :
-- `breadth_first.cpp` et `breadth_first.hpp` : Algorithme de résolution par recherche en largeur.
-- `depth_first.cpp` et `depth_first.hpp` : Algorithme de résolution par recherche en profondeur.
+### 5. `Reader` et `Writer`
+- Gèrent la lecture et l'écriture des labyrinthes dans des fichiers.
+- [Documentation Reader](doc/classes/reader.md)
+- [Documentation Writer](doc/classes/writer.md)
 
-#### Dossier `checker`
-Ce dossier contient les algorithmes de vérification de labyrinthes :
-- `breadth_first.cpp` et `breadth_first.hpp` : Algorithme de vérification par recherche en largeur.
-- `depth_first.cpp` et `depth_first.hpp` : Algorithme de vérification par recherche en profondeur.
+### 6. `Show`
+- Gère l'affichage du labyrinthe
+- [Documentation complete](doc/classes/show.md)
 
-#### Dossier `game`
-Ce dossier contient les algorithmes de jeu dans un labyrinthe :
-- `fog.cpp` et `fog.hpp` : Algorithme de jeu avec brouillard.
-- `fog_hand.cpp` et `fog_hand.hpp` : Algorithme de jeu avec brouillard et méthode de la main gauche/droite.
-- `walk.cpp` et `walk.hpp` : Algorithme de jeu avec déplacement manuel.
+### 7. `Rand`
+- Simplifie l'utilisation de la librairie random
+- [Documentation complete](doc/classes/rand.md)
 
-### Fichiers de Classes
-Ces fichiers contiennent les définitions et prototypes des classes utilisées dans le projet :
-- `cell.cpp` et `cell.hpp` : Classe `Cell` représentant une cellule d'un labyrinthe. [Documentation de la classe Cell](doc_classe/doc_classe_cell.md)
-- `maze.cpp` et `maze.hpp` : Classe `Maze` représentant un labyrinthe. [Documentation de la classe Maze](doc_classe/doc_classe_maze.md)
-- `wall.cpp` et `wall.hpp` : Classe `Wall` représentant un mur d'une cellule d'un labyrinthe. [Documentation de la classe Wall](doc_classe/doc_classe_wall.md)
-- `queue.cpp` et `queue.hpp` : Classe `Queue` représentant une file. [Documentation de la classe Queue](doc_classe/doc_classe_queue.md)
-- `reader.cpp` et `reader.hpp` : Classe `Reader` permettant de lire un labyrinthe depuis un fichier. [Documentation de la classe Reader](doc_classe/doc_classe_reader.md)
-- `show.cpp` et `show.hpp` : Classe `Show` permettant d'afficher un labyrinthe. [Documentation de la classe Show](doc_classe/doc_classe_show.md)
-- `stack.cpp` et `stack.hpp` : Classe `Stack` représentant une pile. [Documentation de la classe Stack](doc_classe/doc_classe_stack.md)
-- `writer.cpp` et `writer.hpp` : Classe `Writer` permettant d'écrire un labyrinthe dans un fichier. [Documentation de la classe Writer](doc_classe/doc_classe_writer.md)
-- `rand.cpp` et `rand.hpp` : Classe `Rand` permettant de générer des nombres aléatoires. [Documentation de la classe Rand](doc_classe/doc_classe_rand.md)
-- `var.hpp` : Contient les variables globales du programme.
+## Algorithmes Implémentés
 
-### Fichiers Principaux
-- `main.cpp` : Contient le programme principal.
-- `main_generator.cpp` : Contient le programme de génération de labyrinthes.
+Le projet implémente plusieurs algorithmes pour la génération, la résolution et la vérification des labyrinthes :
+
+### Génération de Labyrinthes
+1. **Backtracking** :
+    - Créé en supprimant aléatoirement des murs tout en garantissant la connectivité.
+    - Fichier : `lib/algorithms/generation/backtracking.cpp`.
+
+2. **Wall Maker** :
+    - Construit les murs de manière aléatoire tout en respectant certaines contraintes.
+    - Fichier : `lib/algorithms/generation/wall_maker.cpp`.
+
+3. **Diagonal** :
+    - Génère des labyrinthes en suivant une logique diagonale.
+    - Fichier : `lib/algorithms/generation/diagonal.cpp`.
+
+4. **Fractal** :
+    - Créé des labyrinthes à base de motifs répétitifs.
+    - Fichier : `lib/algorithms/generation/fractal.cpp`.
+
+### Résolution de Labyrinthes
+1. **Recherche en Profondeur (DFS)** :
+    - Exploration exhaustive des chemins.
+    - Fichier : `lib/algorithms/solving/depth_first.cpp`.
+
+2. **Recherche en Largeur (BFS)** :
+    - Exploration niveau par niveau.
+    - Fichier : `lib/algorithms/solving/breadth_first.cpp`.
+
+### Vérification de Labyrinthes
+1. **DFS** :
+    - Vérifie si le labyrinthe est parfait (sans cycles).
+    - Fichier : `lib/algorithms/checking/depth_first.cpp`.
+
+2. **BFS** :
+    - Vérifie la connectivité du labyrinthe.
+    - Fichier : `lib/algorithms/checking/breadth_first.cpp`.
+
+### Jeu et visite dans le Labyrinthe
+1. **Fog** :
+    - Marche avec un champ de vision limité.
+    - Fichier : `lib/algorithms/game/fog.cpp`.
+
+2. **Walk** :
+    - Marche interactive dans le labyrinthe.
+    - Fichier : `lib/algorithms/game/walk.cpp`.
+
+## Fichiers Principaux
+
+### 1. `main.cpp`
+- Contient le programme principal pour résoudre, vérifier et jouer dans un labyrinthe.
+- Fonctionnalités :
+    - Chargement d'un labyrinthe depuis un fichier.
+    - Résolution du labyrinthe.
+    - Vérification de l'intégrité.
+    - Mode jeu interactif.
+
+### 2. `maze_generator.cpp`
+- Contient le programme de génération de labyrinthes.
+- Fonctionnalités :
+    - Génération de labyrinthes parfaits ou imparfaits.
+    - Sauvegarde du labyrinthe dans un fichier.
+
+## Liens Utiles
+
+- **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
+- **Repository GitHub** : [Lien GitHub](https://github.com/Universite-de-Bordeaux/maze)

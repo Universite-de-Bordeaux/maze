@@ -31,7 +31,7 @@ Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe tr
 maze_project/
 ├── doc/                           # Documentation du projet
 │   ├── README.md                  # Présentation générale
-│   └── documentation.pdf          # Document technique complet
+│   └── rapport.pdf                # Document technique complet
 ├── src/                           # Code source
 │   ├── main.cpp                   # Fichier principal du résolveur, vérificateur et joueur
 │   ├── maze_generator.cpp         # Fichier principal du générateur
