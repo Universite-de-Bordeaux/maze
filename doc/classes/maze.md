@@ -1,4 +1,4 @@
-# Classe `Maze`
+# Classe [`Maze`](../../src/lib/maze.hpp)
 
 ## Description
 

@@ -1,4 +1,4 @@
-# Classe `Wall`
+# Classe [`Wall`](../../src/lib/wall.hpp)
 
 ## Description
 
