@@ -116,7 +116,6 @@ void algo_wall_maker(Maze* maze, const int width, const int height, bool,
         }
     }
     std::cout << "wallsPossibleSize=" << wallsPossibleSize << std::endl;
-    std::cout << "size=" << size << std::endl;
 
     while (wallsPossibleSize > 0) {
         const int random = maze->getRand()->get(0, wallsPossibleSize - 1);
