@@ -47,7 +47,7 @@ Destructeur. Libère la mémoire allouée pour le labyrinthe.
 
 ---
 
-## Fonctions Membres
+## Méthodes
 
 ### **Accesseurs**
 

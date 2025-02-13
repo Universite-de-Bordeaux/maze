@@ -1,95 +1,61 @@
 # Classe `Wall`
 
----
+## Description
 
-### Wall()
-Constructeur par défaut de la classe Wall.
+La classe `Wall` représente un mur dans un labyrinthe. Elle contient des informations sur son orientation et son statut
+de visite. Cette classe est utilisée pour définir les obstacles et les limites dans le labyrinthe.
 
-**Paramètres** : Aucun
+## Constructeurs
 
-**Renvoie** :  *Wall*  Une instance de Wall
+### `Wall()`
 
----
+**Description**:
 
-### Wall( horizontal)
-Constructeur de la classe Wall.
+Constructeur par défaut. Initialise un mur avec des valeurs par défaut (horizontal et non visité).
 
-**Paramètres** :
-- *bool*  horizontal : Booléen indiquant si le mur est horizontal
+### `Wall(bool horizontal)`
 
-**Renvoie** :  *Wall*  Une instance de Wall
+**Description**:
 
----
+Constructeur qui initialise un mur avec une orientation spécifique.
 
-### ~Wall()
-Destructeur de la classe Wall.
+- **Paramètres**:
+    - `horizontal`: Valeur booléenne indiquant si le mur est horizontal.
 
-**Paramètres** : Aucun
+### `~Wall()`
 
-**Renvoie** :  *void*  Aucune valeur de retour
+**Description**:
 
----
-
-### getIsHorizontal()
-Retourne si le mur est horizontal.
-
-**Paramètres** : Aucun
-
-**Renvoie** :  *bool*  Booléen indiquant si le mur est horizontal
+Destructeur par défaut. Ne nécessite pas de libération de ressources, car il ne gère pas de pointeurs.
 
 ---
 
-### getNeighbors()
-Retourne les voisins du mur.
+## Méthodes
 
-**Paramètres** : Aucun
+### **Accesseurs**
 
-**Renvoie** :  *Wall***  Tableau de pointeurs sur les voisins du mur
+#### `bool getIsHorizontal() const`
 
----
+- **Description** : Retourne si le mur est horizontal.
+- **Retour** : Valeur booléenne indiquant si le mur est horizontal.
 
-### getNeighbor( i)
-Retourne un voisin du mur.
+#### `bool isAlreadyVisited() const`
 
-**Paramètres** :
-- *int*  i : Voisin à retourner
-
-**Renvoie** :  *Wall*  Pointeur sur le voisin demandé
+- **Description** : Vérifie si le mur a déjà été visité.
+- **Retour** : Valeur booléenne indiquant si le mur a déjà été visité.
 
 ---
 
-### isAlreadyVisited()
-Retourne si le mur a déjà été visité.
+### **Modificateurs**
 
-**Paramètres** : Aucun
+#### `void setIsHorizontal(bool horizontal)`
 
-**Renvoie** :  *bool*  Booléen indiquant si le mur a déjà été visité
+- **Description** : Définit si le mur est horizontal.
+- **Paramètres**:
+    - `horizontal`: Valeur booléenne pour définir l'orientation du mur.
 
----
+#### `void setAlreadyVisited(bool visited)`
 
-### isBorder()
-Retourne si le mur est une bordure.
-
-**Paramètres** : Aucun
-
-**Renvoie** :  *bool*  Booléen indiquant si le mur est une bordure
-
----
-
-### setIsHorizontal( horizontal)
-Définit si le mur est horizontal.
-
-**Paramètres** :
-- *bool*  horizontal : Booléen indiquant si le mur est horizontal
-
-**Renvoie** :  *void*  Aucune valeur de retour
-
----
-
-### setNeighbors( neighbors)
-Définit les voisins du mur.
-
-**Paramètres** :
-- *Wall***  neighbors : Tableau de pointeurs sur les voisins du mur
-
-**Renvoie** :  *void*  Aucune valeur de retour
+- **Description** : Définit si le mur a déjà été visité.
+- **Paramètres**:
+    - `visited`: Valeur booléenne pour indiquer si le mur a été visité.
