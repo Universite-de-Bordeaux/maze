@@ -55,9 +55,9 @@ maze_project/
 │       └── checker/               # Algorithmes de vérification
 │           ├── breadth_first.hpp  # Algorithme de largeur
 │           └── depth_first.hpp    # Algorithme de profondeur
-│       └── game/                  # Jeux interactifs
-│           ├── fog.hpp            # Jeu avec brouillard
-│           ├── fog_hand.hpp       # Jeu avec brouillard à la main
+│       └── game/                  # Jeux et visites interactives
+│           ├── fog.hpp            # Visite avec brouillard
+│           ├── fog_hand.hpp       # Visite avec brouillard à la main
 │           ├── walk.hpp           # Jeu de marche
 │       └── solver/                # Algorithmes de résolution
 │           ├── breadth_first.hpp  # Algorithme de largeur
@@ -346,7 +346,7 @@ L'affichage graphique propose les contrôles suivants :
    ./maze.out -i maze.txt -vs -a bf
    ```
 
-#### Jeu de Labyrinthes (`maze.out`)
+#### Jeu et visite de Labyrinthes (`maze.out`)
 
 **Syntaxe de base** :
 
@@ -356,15 +356,15 @@ L'affichage graphique propose les contrôles suivants :
 
 **Options** :
 
-| Option             | Description                           | Exemple                      |
-|--------------------|---------------------------------------|------------------------------|
-| `-g, --game`       | Lance un jeu dans le labyrinthe.      | `./maze.out -i maze.txt -g`  |
-| `-gs, --game-show` | Lance un jeu et affiche le processus. | `./maze.out -i maze.txt -gs` |
-| `-t, --type`       | Spécifie le type de jeu.              | `-t f` ou `-t w`             |
+| Option             | Description                                         | Exemple                      |
+|--------------------|-----------------------------------------------------|------------------------------|
+| `-g, --game`       | Lance un jeu ou une visite dans le labyrinthe.      | `./maze.out -i maze.txt -g`  |
+| `-gs, --game-show` | Lance un jeu ou une visite et affiche le processus. | `./maze.out -i maze.txt -gs` |
+| `-t, --type`       | Spécifie le type de jeu ou de la visite.            | `-t f` ou `-t w`             |
 
-**Types de Jeu** :
+**Types de Jeu ou de visite** :
 
-- `fog` (f) : Jeu avec brouillard. (par défaut)
+- `fog` (f) : Visite avec brouillard. (par défaut)
 - `fog_right` (fr) : Brouillard à droite.
 - `fog_left` (fl) : Brouillard à gauche.
 - `walk` (w) : Marche normale. (nécessite l'activation de show)
@@ -406,7 +406,7 @@ L'affichage graphique propose les contrôles suivants :
 ./maze.out -i mon_labyrinthe.txt -v -p -a bf
 ```
 
-### Jeu Interactif
+### Jeu et Visite
 
 ```bash
 # Lancez le jeu avec le type de jeu par défaut (fog)

@@ -110,10 +110,12 @@ void help() {
     std::cout << "                              bf : breadth_first\n";
     std::cout << "\n";
 
-    std::cout << "JEU\n";
+    std::cout << "JEU ET VISITE\n";
     std::cout << "------------------------------\n";
-    std::cout << "-g, --game                    Lance le jeu\n";
-    std::cout << "  -t, --type <type>           Sélectionne le type de jeu\n";
+    std::cout << "-g, --game                    Lance le jeu ou la visite du "
+                 "labyrinthe\n";
+    std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
+                 "de visite\n";
     std::cout << "    Types disponibles :       f, fr, fl, w, wg\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
