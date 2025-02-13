@@ -47,7 +47,7 @@ Les classes suivantes sont utilisées dans le projet :
     - Coordonnées (x, y) de la cellule.
     - Tableau des murs (nord, sud, est, ouest).
     - État de visite.
-- [Documentation complete](doc/classes/cell.md)
+- [Documentation complete](classes/cell.md)
 
 ### 2. `Maze`
 - Représente l'ensemble du labyrinthe.
@@ -55,32 +55,32 @@ Les classes suivantes sont utilisées dans le projet :
     - Largeur et hauteur du labyrinthe.
     - Grille de cellules.
     - Positions de départ et d'arrivée.
-- [Documentation complete](doc/classes/maze.md)
+- [Documentation complete](classes/maze.md)
 
 ### 3. `Wall`
 - Représente un mur d'une cellule.
 - Attributs :
     - Type de mur (nord, sud, est, ouest).
     - État du mur (présent ou absent).
-- [Documentation complete](doc/classes/wall.md)
+- [Documentation complete](classes/wall.md)
 
 ### 4. `Queue` et `Stack`
 - Structures de données utilisées dans les algorithmes de résolution.
-- [Documentation Queue](doc/classes/queue.md)
-- [Documentation Stack](doc/classes/stack.md)
+- [Documentation Queue](classes/queue.md)
+- [Documentation Stack](classes/stack.md)
 
 ### 5. `Reader` et `Writer`
 - Gèrent la lecture et l'écriture des labyrinthes dans des fichiers.
-- [Documentation Reader](doc/classes/reader.md)
-- [Documentation Writer](doc/classes/writer.md)
+- [Documentation Reader](classes/reader.md)
+- [Documentation Writer](classes/writer.md)
 
 ### 6. `Show`
 - Gère l'affichage du labyrinthe
-- [Documentation complete](doc/classes/show.md)
+- [Documentation complete](classes/show.md)
 
 ### 7. `Rand`
 - Simplifie l'utilisation de la librairie random
-- [Documentation complete](doc/classes/rand.md)
+- [Documentation complete](classes/rand.md)
 
 ## Algorithmes Implémentés
 
@@ -148,5 +148,5 @@ Le projet implémente plusieurs algorithmes pour la génération, la résolution
 
 ## Liens Utiles
 
-- **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
+- **Rapport de Projet** : [Rapport PDF](rapport.pdf)
 - **Repository GitHub** : [Lien GitHub](https://github.com/Universite-de-Bordeaux/maze)
