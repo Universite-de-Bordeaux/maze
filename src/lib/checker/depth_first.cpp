@@ -21,10 +21,11 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
         return;
     }
     refreshShow(show);
+    Cell *start = maze->getCell(0, 0);
     positionHistory startHistory = {0, 0, 0, nullptr};
     stack.push(&startHistory);
-    maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
-    maze->getStartCell()->setAlreadyVisited(true);
+    start->setStatus(MAZE_STATUS_VISITED);
+    start->setAlreadyVisited(true);
 
     while (!stack.empty()) {
         auto *current = static_cast<positionHistory *>(stack.top());

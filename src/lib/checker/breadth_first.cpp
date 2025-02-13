@@ -15,14 +15,12 @@ struct positionHistory {
 void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
     Queue queue;
     bool imperfect = false;
-    if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
-        return;
-    }
     refreshShow(show);
+    Cell *start = maze->getCell(0, 0);
     positionHistory startHistory = {0, 0, nullptr};
     queue.push(&startHistory);
-    maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
-    maze->getStartCell()->setAlreadyVisited(true);
+    start->setStatus(MAZE_STATUS_VISITED);
+    start->setAlreadyVisited(true);
 
     while (!queue.empty()) {
         auto *current = static_cast<positionHistory *>(queue.front());
