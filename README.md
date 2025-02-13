@@ -37,7 +37,7 @@ maze_project/
 │   ├── maze_generator.cpp         # Fichier principal du générateur
 │   └── instances/                 # Exemples de labyrinthes
 │   └── lib/                       # Bibliothèques
-│       ├── cell.cpp               # Classe de cellule
+│       ├── cell.hpp               # Classe de cellule
 │       ├── maze.hpp               # Classe de labyrinthe
 │       ├── queue.hpp              # Classe de file
 │       ├── rand.hpp               # Classe de génération de nombres aléatoires
