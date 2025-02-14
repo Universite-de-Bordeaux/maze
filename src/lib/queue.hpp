@@ -1,6 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#include "rand.hpp"
+
 class Queue {
    public:
     /**
@@ -26,6 +28,12 @@ class Queue {
      * @return Le premier élément de la file
      */
     void *front() const;
+    /**
+     * @brief Retourne un élément aléatoire de la file et le retire
+     * @param rand Générateur de nombre aléatoire
+     * @return Un élément aléatoire de la file
+     */
+    void *pop(Rand *rand);
     /**
      * @brief Retourne vrai si la file est vide
      * @return Vrai si la file est vide

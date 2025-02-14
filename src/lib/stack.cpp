@@ -37,6 +37,17 @@ void Stack::pop() {
     }
 }
 
+void *Stack::pop(Rand *rand) {
+    if (size_ == 0) {
+        return nullptr;
+    }
+    const int index = rand->get(0, size_ - 1);
+    void *result = data[index];
+    data[index] = data[size_ - 1];
+    pop();
+    return result;
+}
+
 void *Stack::top() const { return data[size_ - 1]; }
 
 bool Stack::empty() const { return size_ == 0; }

@@ -1,6 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
 
+#include "rand.hpp"
+
 class Stack {
    public:
     /**
@@ -26,6 +28,12 @@ class Stack {
      * @return Le premier élément de la pile
      */
     void *top() const;
+    /**
+     * @brief Retourne un élément aléatoire de la pile et le retire
+     * @param rand Générateur de nombre aléatoire
+     * @return Un élément aléatoire de la pile
+     */
+    void *pop(Rand *rand);
     /**
      * @brief Retourne vrai si la pile est vide
      * @return Retourne vrai si la pile est vide

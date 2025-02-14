@@ -1,5 +1,7 @@
 #include "queue.hpp"
 
+#include <time.h>
+
 Queue::Queue() {
     size_ = 0;
     capacity_ = 1;
@@ -38,6 +40,17 @@ void Queue::pop() {
         }
         size_--;
     }
+}
+
+void *Queue::pop(Rand *rand) {
+    if (size_ == 0) {
+        return nullptr;
+    }
+    const int index = rand->get(0, size_ - 1);
+    void *result = data[index];
+    data[index] = data[0];
+    pop();
+    return result;
 }
 
 void *Queue::front() const { return data[0]; }
