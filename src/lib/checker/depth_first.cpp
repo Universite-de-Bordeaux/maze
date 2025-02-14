@@ -1,7 +1,5 @@
 #include "depth_first.hpp"
 
-#include <iostream>
-
 #include "../cell.hpp"
 #include "../maze.hpp"
 #include "../stack.hpp"
@@ -14,7 +12,7 @@ struct positionHistory {
 };
 
 void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
-                         Show *show) {
+                         Show *show, bool *isValid, bool *isPerfect) {
     Stack stack;
     bool imperfect = false;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
@@ -76,17 +74,17 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
         for (int j = 0; j < maze->getHeight(); j++) {
             const Cell *cell = maze->getCell(i, j);
             if (!cell->isAlreadyVisited()) {
-                std::cout << "Maze is not valid!" << std::endl;
+                if (isValid != nullptr) *isValid = false;
                 return;
             }
         }
     }
-    std::cout << "Maze is valid!" << std::endl;
+    if (isValid != nullptr) *isValid = true;
     if (perfect) {
         if (!imperfect) {
-            std::cout << "Maze is perfect!" << std::endl;
+            if (isPerfect != nullptr) *isPerfect = true;
         } else {
-            std::cout << "Maze is not perfect!" << std::endl;
+            if (isPerfect != nullptr) *isPerfect = false;
         }
     }
 }

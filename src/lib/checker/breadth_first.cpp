@@ -1,7 +1,5 @@
 #include "breadth_first.hpp"
 
-#include <iostream>
-
 #include "../queue.hpp"
 #include "../show.hpp"
 #include "../var.hpp"
@@ -12,7 +10,8 @@ struct positionHistory {
     positionHistory *parent;
 };
 
-void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
+void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
+                           bool *isValid, bool *isPerfect) {
     Queue queue;
     bool imperfect = false;
     refreshShow(show);
@@ -63,17 +62,17 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show) {
         for (int j = 0; j < maze->getHeight(); j++) {
             const Cell *cell = maze->getCell(i, j);
             if (!cell->isAlreadyVisited()) {
-                std::cout << "Maze is not valid!" << std::endl;
+                if (isValid != nullptr) *isValid = false;
                 return;
             }
         }
     }
-    std::cout << "Maze is valid!" << std::endl;
+    if (isValid != nullptr) *isValid = true;
     if (perfect) {
         if (!imperfect) {
-            std::cout << "Maze is perfect!" << std::endl;
+            if (isPerfect != nullptr) *isPerfect = true;
         } else {
-            std::cout << "Maze is not perfect!" << std::endl;
+            if (isPerfect != nullptr) *isPerfect = false;
         }
     }
 }

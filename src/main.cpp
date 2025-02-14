@@ -203,16 +203,28 @@ void checkMaze(Maze *maze, const std::string &algorithm, const bool perfect,
                Show *show) {
     std::cout << "Parameters of checking : algorithm=" << algorithm
               << ", perfect=" << perfect << std::endl;
+    bool isValid = false;
+    bool isPerfect = false;
     const auto start = std::chrono::high_resolution_clock::now();
     if (algorithm == "depth_first_right" || algorithm == "dfr")
-        checker_depth_first(maze, perfect, false, show);
+        checker_depth_first(maze, perfect, false, show, &isValid, &isPerfect);
     else if (algorithm == "depth_first_left" || algorithm == "dfl")
-        checker_depth_first(maze, perfect, true, show);
+        checker_depth_first(maze, perfect, true, show, &isValid, &isPerfect);
     else if (algorithm == "breadth_first" || algorithm == "bf")
-        checker_breadth_first(maze, perfect, show);
+        checker_breadth_first(maze, perfect, show, &isValid, &isPerfect);
     else
         exit(MAZE_COMMAND_ERROR);
     const auto end = std::chrono::high_resolution_clock::now();
+    if (isValid)
+        std::cout << "Maze is valid" << std::endl;
+    else
+        std::cout << "Maze is not valid" << std::endl;
+    if (perfect) {
+        if (isPerfect)
+            std::cout << "Maze is perfect" << std::endl;
+        else
+            std::cout << "Maze is not perfect" << std::endl;
+    }
     std::cout
         << "Resolved in "
         << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
