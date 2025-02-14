@@ -1,6 +1,6 @@
 #include "wall.hpp"
 
-Wall::Wall() : Wall(true) {};
+Wall::Wall() : Wall(true){};
 
 Wall::Wall(const bool horizontal) {
     isHorizontal_ = horizontal;
