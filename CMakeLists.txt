@@ -31,6 +31,7 @@ set(SOURCE_FILES_GENERATOR
         src/lib/algo/fractal.cpp
         src/lib/algo/wall_maker.cpp
         src/lib/cell.cpp
+        src/lib/checker/depth_first.cpp
         src/lib/maze.cpp
         src/lib/queue.cpp
         src/lib/rand.cpp

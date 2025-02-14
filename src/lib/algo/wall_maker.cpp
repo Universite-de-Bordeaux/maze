@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "../checker/depth_first.hpp"
 #include "../show.hpp"
 
 struct wall_maker {
@@ -115,7 +116,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height, bool,
             }
         }
     }
-    std::cout << "wallsPossibleSize=" << wallsPossibleSize << std::endl;
+    // std::cout << "wallsPossibleSize=" << wallsPossibleSize << std::endl;
 
     while (wallsPossibleSize > 0) {
         const int random = maze->getRand()->get(0, wallsPossibleSize - 1);
@@ -128,14 +129,18 @@ void algo_wall_maker(Maze* maze, const int width, const int height, bool,
             wallsPossible[wallsPossibleSize - 1].horizontal;
         wallsPossibleSize--;
         maze->addWall(x, y, direction);
-        const int number =
-            numberBorders(maze, &wallsPossible[wallsPossibleSize]);
-        std::cout << "x=" << x << " y=" << y << " direction=" << direction
-                  << " numberBorders=" << number << std::endl;
-        if (number > 1) {
+        // const int number =
+        //     numberBorders(maze, &wallsPossible[wallsPossibleSize]);
+        // std::cout << "x=" << x << " y=" << y << " direction=" << direction
+        //           << " numberBorders=" << number << std::endl;
+        // if (number > 1) {
+        bool isValid = false;
+        checker_depth_first(maze, false, false, nullptr, &isValid, nullptr);
+        if (!isValid) {
             maze->removeWall(x, y, direction);
         }
-        resetAlreadyVisited(maze);
+        maze->clearMaze();
+        // resetAlreadyVisited(maze);
         Cell* showCell[1] = {maze->getCell(x, y)};
         refreshShow(show, 1, showCell);
     }
