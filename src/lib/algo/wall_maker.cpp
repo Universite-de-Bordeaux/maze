@@ -13,8 +13,8 @@ struct wall_maker {
     bool horizontal;
 };
 
-void processNeighbor(const Maze* maze, Queue& queue, const int x, const int y,
-                     const bool horizontal, int& count, int& j) {
+void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
+                     const int y, const bool horizontal, int& count, int& j) {
     Wall* neighbor = maze->getWall(x, y, horizontal);
     if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
         neighbor->setAlreadyVisited(true);
@@ -27,6 +27,7 @@ void processNeighbor(const Maze* maze, Queue& queue, const int x, const int y,
         wall->y = y;
         wall->horizontal = horizontal;
         queue.push(wall);
+        stack.push(wall);
         j++;
     }
 }
@@ -51,7 +52,9 @@ static int numberBorders(const Maze* maze, wall_maker* wall) {
     }
     Wall* current = maze->getWall(wall->x, wall->y, wall->horizontal);
     Queue queue;
+    Stack stack;
     queue.push(wall);
+    stack.push(wall);
     current->setAlreadyVisited(true);
     int count = 0;
     if ((wall->horizontal &&
@@ -65,21 +68,39 @@ static int numberBorders(const Maze* maze, wall_maker* wall) {
         queue.pop();
         int j = 0;
         if (wall->horizontal) {
-            processNeighbor(maze, queue, wall->x - 1, wall->y, true, count, j);
-            processNeighbor(maze, queue, wall->x - 1, wall->y, false, count, j);
-            processNeighbor(maze, queue, wall->x, wall->y, false, count, j);
-            processNeighbor(maze, queue, wall->x + 1, wall->y, true, count, j);
-            processNeighbor(maze, queue, wall->x - 1, wall->y + 1, false, count,
+            processNeighbor(maze, queue, stack, wall->x - 1, wall->y, true,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x - 1, wall->y, false,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y, false, count,
                             j);
-            processNeighbor(maze, queue, wall->x, wall->y + 1, false, count, j);
+            processNeighbor(maze, queue, stack, wall->x + 1, wall->y, true,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x - 1, wall->y + 1, false,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y + 1, false,
+                            count, j);
         } else {
-            processNeighbor(maze, queue, wall->x, wall->y - 1, false, count, j);
-            processNeighbor(maze, queue, wall->x, wall->y - 1, true, count, j);
-            processNeighbor(maze, queue, wall->x, wall->y, true, count, j);
-            processNeighbor(maze, queue, wall->x, wall->y + 1, false, count, j);
-            processNeighbor(maze, queue, wall->x + 1, wall->y - 1, true, count,
+            processNeighbor(maze, queue, stack, wall->x, wall->y - 1, false,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y - 1, true,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y, true, count,
                             j);
-            processNeighbor(maze, queue, wall->x + 1, wall->y, true, count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y + 1, false,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x + 1, wall->y - 1, true,
+                            count, j);
+            processNeighbor(maze, queue, stack, wall->x + 1, wall->y, true,
+                            count, j);
+        }
+    }
+    while (!stack.empty()) {
+        wall = static_cast<wall_maker*>(stack.top());
+        stack.pop();
+        Wall* current_tmp = maze->getWall(wall->x, wall->y, wall->horizontal);
+        if (current_tmp != nullptr) {
+            current_tmp->setAlreadyVisited(false);
         }
     }
     return count;
@@ -127,7 +148,6 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
             maze->removeWall(x, y, direction);
         }
         maze->clearMaze();
-        resetAlreadyVisited(maze);
         Cell* showCell[1] = {maze->getCell(x, y)};
         refreshShow(show, 1, showCell);
     }
