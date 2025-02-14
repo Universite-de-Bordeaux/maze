@@ -76,12 +76,12 @@ add_custom_target(run_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "10" "10" "-s" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfl" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "10" "10" "-a" "bt" "-s"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-gs" "-d" "10" "10" "-a" "wm" "-s" "-rs" "-a" "dfl" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-gs" "-d" "10" "10" "-a" "wm" "-s" "-rs" "-a" "dfl" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "10" "10" "-a" "d" "-s" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfr" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "4" "4" "-a" "f" "-s" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "bf" "-s"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-gs" "-d" "10" "10" "-a" "wm" "-s" "-vs" "-a" "dfl" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-gs" "-d" "10" "10" "-a" "wm" "-s" "-vs" "-a" "dfl" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "10" "10" "-a" "d" "-s" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfr" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "4" "4" "-a" "f" "-s" "-o" "src/instances/tmp/maze1.txt"
@@ -170,7 +170,7 @@ add_custom_target(run_algo_fractal_test
 )
 
 add_custom_target(run_algo_wall_maker
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "2" "2" "-a" "wm"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-gs" "-d" "10" "10" "-a" "wm"
         DEPENDS ${EXECUTABLE_PROJECT} ${EXECUTABLE_PROJECT_GENERATOR}
 )
 
@@ -182,10 +182,28 @@ add_custom_target(run_algo_wall_maker_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-d" "50" "50" "-a" "wm" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-d" "100" "100" "-a" "wm"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-d" "100" "100" "-a" "wm"
         #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-d" "500" "500" "-a" "wm"
         #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-g" "-d" "750" "750" "-a" "wm"
         #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-g" "-d" "1000" "1000" "-a" "wm"
+        DEPENDS ${EXECUTABLE_PROJECT} ${EXECUTABLE_PROJECT_GENERATOR}
+)
+
+add_custom_target(run_checker_breadth_first
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "back_tracking" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "bf"
+        DEPENDS ${EXECUTABLE_PROJECT} ${EXECUTABLE_PROJECT_GENERATOR}
+)
+
+add_custom_target(run_checker_breadth_first_test
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "back_tracking" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "bf"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "breadth_first"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-g" "-a" "wall_maker" "-vs" "-a" "bf"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "bf"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "fractal" "-d" "4" "4" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "bf"
         DEPENDS ${EXECUTABLE_PROJECT} ${EXECUTABLE_PROJECT_GENERATOR}
 )
 
@@ -203,8 +221,8 @@ add_custom_target(run_checker_depth_first_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "depth_first_left"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "depth_first_right"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfl"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfr"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfl"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfr"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfl"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-vs" "-a" "dfr"
@@ -224,7 +242,8 @@ add_custom_target(run_solver_breadth_first_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "back_tracking" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "bf"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "breadth_first"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-g" "-a" "wall_maker" "-rs" "-a" "bf"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "bf"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "bf"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "fractal" "-d" "4" "4" "-o" "src/instances/tmp/maze1.txt"
@@ -246,8 +265,8 @@ add_custom_target(run_solver_depth_first_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "depth_first_left"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "depth_first_right"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfl"
-        #    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfr"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfl"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfr"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfl"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-rs" "-a" "dfr"
@@ -268,10 +287,10 @@ add_custom_target(run_game_fog_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fog" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "back_tracking" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fog" "-s"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fog"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fog" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fog"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fog" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fog" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
@@ -301,12 +320,12 @@ add_custom_target(run_game_fog_hand_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "back_tracking" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fr" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fl" "-s"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fr" "-s"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fl" "-s"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fr" "-s"
-        #        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fl" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fr" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fl" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "wall_maker" "-d" "100" "100" "-o" "src/instances/tmp/maze1.txt"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fr" "-s"
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-g" "-t" "fl" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT_GENERATOR} "-g" "-a" "diagonal" "-o" "src/instances/tmp/maze1.txt"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fr" "-s"
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/tmp/maze1.txt" "-gs" "-t" "fl" "-s"
