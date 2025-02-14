@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../checker/depth_first.hpp"
+#include "../queue.hpp"
 #include "../show.hpp"
 
 struct wall_maker {
@@ -100,39 +101,35 @@ void algo_wall_maker(Maze* maze, const int width, const int height, bool,
         show->create();
     }
     refreshShow(show);
-    const int size = width * height * 2 - width - height;
-    wall_maker wallsPossible[size];
-    int wallsPossibleSize = 0;
+    Queue queue;
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             for (int i = 0; i < 2; i++) {
                 if (i == 0 && x < width - 1) {
-                    wallsPossible[wallsPossibleSize] = {x, y, false};
-                    wallsPossibleSize++;
+                    auto* wall = new wall_maker;
+                    wall->x = x;
+                    wall->y = y;
+                    wall->horizontal = false;
+                    queue.push(wall);
                 } else if (i == 1 && y < height - 1) {
-                    wallsPossible[wallsPossibleSize] = {x, y, true};
-                    wallsPossibleSize++;
+                    auto* wall = new wall_maker;
+                    wall->x = x;
+                    wall->y = y;
+                    wall->horizontal = true;
+                    queue.push(wall);
                 }
             }
         }
     }
     // std::cout << "wallsPossibleSize=" << wallsPossibleSize << std::endl;
 
-    while (wallsPossibleSize > 0) {
-        const int random = maze->getRand()->get(0, wallsPossibleSize - 1);
-        const int x = wallsPossible[random].x;
-        const int y = wallsPossible[random].y;
-        const bool direction = wallsPossible[random].horizontal;
-        wallsPossible[random].x = wallsPossible[wallsPossibleSize - 1].x;
-        wallsPossible[random].y = wallsPossible[wallsPossibleSize - 1].y;
-        wallsPossible[random].horizontal =
-            wallsPossible[wallsPossibleSize - 1].horizontal;
-        wallsPossibleSize--;
+    while (!queue.empty()) {
+        const auto* wallsPossible =
+            static_cast<wall_maker*>(queue.pop(maze->getRand()));
+        const int x = wallsPossible->x;
+        const int y = wallsPossible->y;
+        const bool direction = wallsPossible->horizontal;
         maze->addWall(x, y, direction);
-        // const int number =
-        //     numberBorders(maze, &wallsPossible[wallsPossibleSize]);
-        // std::cout << "x=" << x << " y=" << y << " direction=" << direction
-        //           << " numberBorders=" << number << std::endl;
         // if (number > 1) {
         bool isValid = false;
         checker_depth_first(maze, false, false, nullptr, &isValid, nullptr);
