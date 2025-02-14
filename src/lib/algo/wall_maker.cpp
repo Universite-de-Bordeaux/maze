@@ -131,12 +131,12 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         const bool direction = wallsPossible->horizontal;
         maze->addWall(x, y, direction);
         // if (number > 1) {
-        // bool isValid = false;
-        // checker_depth_first(maze, false, false, nullptr, &isValid, nullptr);
-        // if (!isValid) {
-        //     maze->removeWall(x, y, direction);
-        // }
-        // maze->clearMaze();
+        bool isValid = false;
+        checker_depth_first(maze, false, false, nullptr, &isValid, nullptr);
+        if (!isValid) {
+            maze->removeWall(x, y, direction);
+        }
+        maze->clearMaze();
         // resetAlreadyVisited(maze);
         Cell* showCell[1] = {maze->getCell(x, y)};
         refreshShow(show, 1, showCell);
