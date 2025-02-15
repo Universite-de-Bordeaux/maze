@@ -1,5 +1,7 @@
 #include "wall_maker.hpp"
 
+#include <iostream>
+
 #include "../checker/depth_first.hpp"
 #include "../queue.hpp"
 #include "../show.hpp"
@@ -13,13 +15,14 @@ struct wall_maker {
 
 void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
                      const int y, const wall_maker& previous_wall,
-                     const bool horizontal, int& count, int& j) {
+                     const bool horizontal, int& nbBorders, int& j,
+                     int& nbNeighbors, int& nbNeighborsNotVisited) {
     Wall* neighbor = maze->getWall(x, y, horizontal);
     if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
         neighbor->setAlreadyVisited(true);
         if ((horizontal && (x == 0 || x == maze->getWidth() - 1)) ||
             (!horizontal && (y == 0 || y == maze->getHeight() - 1))) {
-            count++;
+            nbBorders++;
         }
         auto* wall = new wall_maker;
         wall->x = x;
@@ -28,17 +31,19 @@ void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
         queue.push(wall);
         stack.push(wall);
         j++;
-    } else if (neighbor != nullptr && neighbor->isAlreadyVisited() &&
-               (x != previous_wall.x || y != previous_wall.y ||
-                horizontal != previous_wall.horizontal)) {
-        count++;
+        nbNeighbors++;
+        nbNeighborsNotVisited++;
+    } else if (neighbor != nullptr && neighbor->isAlreadyVisited()) {
+        nbNeighbors++;
     }
 }
 
-static int numberBorders(const Maze* maze, wall_maker* wall) {
+static void numberBorders(const Maze* maze, wall_maker* wall, int& nbBorders,
+                          int& nbLoops) {
     if (wall == nullptr ||
         maze->getWall(wall->x, wall->y, wall->horizontal) == nullptr) {
-        return 0;
+        nbBorders = 0;
+        return;
     }
     Wall* current = maze->getWall(wall->x, wall->y, wall->horizontal);
     Queue queue;
@@ -46,44 +51,60 @@ static int numberBorders(const Maze* maze, wall_maker* wall) {
     queue.push(wall);
     stack.push(wall);
     current->setAlreadyVisited(true);
-    int count = 0;
     if ((wall->horizontal &&
          (wall->x == 0 || wall->x == maze->getWidth() - 1)) ||
         (!wall->horizontal &&
          (wall->y == 0 || wall->y == maze->getHeight() - 1))) {
-        count++;
+        nbBorders++;
     }
-    while (!queue.empty() && count < 2) {
+    while (!queue.empty() && nbBorders < 2 && nbLoops < 1) {
         wall_maker previous_wall = *wall;
         wall = static_cast<wall_maker*>(queue.front());
         queue.pop();
         int j = 0;
+        int nbNeighbors = 0;
+        int nbNeighborsNotVisited = 0;
         if (wall->horizontal) {
             processNeighbor(maze, queue, stack, wall->x - 1, wall->y,
-                            previous_wall, true, count, j);
+                            previous_wall, true, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x - 1, wall->y,
-                            previous_wall, false, count, j);
+                            previous_wall, false, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x, wall->y, previous_wall,
-                            false, count, j);
+                            false, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x + 1, wall->y,
-                            previous_wall, true, count, j);
+                            previous_wall, true, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x - 1, wall->y + 1,
-                            previous_wall, false, count, j);
+                            previous_wall, false, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x, wall->y + 1,
-                            previous_wall, false, count, j);
+                            previous_wall, false, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
         } else {
             processNeighbor(maze, queue, stack, wall->x, wall->y - 1,
-                            previous_wall, false, count, j);
+                            previous_wall, false, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x, wall->y - 1,
-                            previous_wall, true, count, j);
+                            previous_wall, true, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x, wall->y, previous_wall,
-                            true, count, j);
+                            true, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x, wall->y + 1,
-                            previous_wall, false, count, j);
+                            previous_wall, false, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x + 1, wall->y - 1,
-                            previous_wall, true, count, j);
+                            previous_wall, true, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
             processNeighbor(maze, queue, stack, wall->x + 1, wall->y,
-                            previous_wall, true, count, j);
+                            previous_wall, true, nbBorders, j, nbNeighbors,
+                            nbNeighborsNotVisited);
+        }
+        if (nbNeighbors - nbNeighborsNotVisited >= 2) {
+            nbLoops++;
         }
     }
     while (!queue.empty()) {
@@ -97,7 +118,6 @@ static int numberBorders(const Maze* maze, wall_maker* wall) {
             current_tmp->setAlreadyVisited(false);
         }
     }
-    return count;
 }
 
 void algo_wall_maker(Maze* maze, const int width, const int height,
@@ -135,8 +155,15 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         const int y = wallsPossible->y;
         const bool direction = wallsPossible->horizontal;
         maze->addWall(x, y, direction);
-        const int count = numberBorders(maze, wallsPossible);
-        if (count > 1) {
+        int nbBorders = 0;
+        int nbLoops = 0;
+        numberBorders(maze, wallsPossible, nbBorders, nbLoops);
+        if (nbBorders >= 2 || nbLoops >= 1) {
+            if (nbLoops >= 1)
+                std::cout << "x: " << x << " y: " << y
+                          << " direction: " << direction
+                          << " nbBorders: " << nbBorders
+                          << " nbLoops: " << nbLoops << std::endl;
             maze->removeWall(x, y, direction);
         }
         Cell* showCell[1] = {maze->getCell(x, y)};
