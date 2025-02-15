@@ -39,6 +39,11 @@ class Stack {
      * @return Retourne vrai si la pile est vide
      */
     bool empty() const;
+    /**
+     * @brief Retourne la taille de la pile
+     * @return La taille de la pile
+     */
+    int size() const { return size_; }
 
    private:
     int size_;      ///< Taille de la pile

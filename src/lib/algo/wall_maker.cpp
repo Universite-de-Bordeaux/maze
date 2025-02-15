@@ -13,6 +13,86 @@ struct wall_maker {
     bool horizontal;
 };
 
+static int getNbNeighbors(const Maze* maze, const wall_maker* wall) {
+    int nbNeighbors = 0;
+    if (wall->horizontal) {
+        if (maze->getWall(wall->x - 1, wall->y, true) != nullptr) nbNeighbors++;
+        if (maze->getWall(wall->x - 1, wall->y, false) != nullptr)
+            nbNeighbors++;
+        if (maze->getWall(wall->x, wall->y, false) != nullptr) nbNeighbors++;
+        if (maze->getWall(wall->x + 1, wall->y, true) != nullptr) nbNeighbors++;
+        if (maze->getWall(wall->x - 1, wall->y + 1, false) != nullptr)
+            nbNeighbors++;
+        if (maze->getWall(wall->x, wall->y + 1, false) != nullptr)
+            nbNeighbors++;
+    } else {
+        if (maze->getWall(wall->x, wall->y - 1, false) != nullptr)
+            nbNeighbors++;
+        if (maze->getWall(wall->x, wall->y - 1, true) != nullptr) nbNeighbors++;
+        if (maze->getWall(wall->x, wall->y, true) != nullptr) nbNeighbors++;
+        if (maze->getWall(wall->x, wall->y + 1, false) != nullptr)
+            nbNeighbors++;
+        if (maze->getWall(wall->x + 1, wall->y - 1, true) != nullptr)
+            nbNeighbors++;
+        if (maze->getWall(wall->x + 1, wall->y, true) != nullptr) nbNeighbors++;
+    }
+    return nbNeighbors;
+}
+
+static void getNeighbors(const Maze* maze, const wall_maker* wall,
+                        wall_maker* neighbors) {
+    int count = 0;
+    if (wall->horizontal) {
+        if (maze->getWall(wall->x - 1, wall->y, true) != nullptr) {
+            neighbors[count] = {wall->x - 1, wall->y, true};
+            count++;
+        }
+        if (maze->getWall(wall->x - 1, wall->y, false) != nullptr) {
+            neighbors[count] = {wall->x - 1, wall->y, false};
+            count++;
+        }
+        if (maze->getWall(wall->x, wall->y, false) != nullptr) {
+            neighbors[count] = {wall->x, wall->y, false};
+            count++;
+        }
+        if (maze->getWall(wall->x + 1, wall->y, true) != nullptr) {
+            neighbors[count] = {wall->x + 1, wall->y, true};
+            count++;
+        }
+        if (maze->getWall(wall->x - 1, wall->y + 1, false) != nullptr) {
+            neighbors[count] = {wall->x - 1, wall->y + 1, false};
+            count++;
+        }
+        if (maze->getWall(wall->x, wall->y + 1, false) != nullptr) {
+            neighbors[count] = {wall->x, wall->y + 1, false};
+        }
+    } else {
+        if (maze->getWall(wall->x, wall->y - 1, false) != nullptr) {
+            neighbors[count] = {wall->x, wall->y - 1, false};
+            count++;
+        }
+        if (maze->getWall(wall->x, wall->y - 1, true) != nullptr) {
+            neighbors[count] = {wall->x, wall->y - 1, true};
+            count++;
+        }
+        if (maze->getWall(wall->x, wall->y, true) != nullptr) {
+            neighbors[count] = {wall->x, wall->y, true};
+            count++;
+        }
+        if (maze->getWall(wall->x, wall->y + 1, false) != nullptr) {
+            neighbors[count] = {wall->x, wall->y + 1, false};
+            count++;
+        }
+        if (maze->getWall(wall->x + 1, wall->y - 1, true) != nullptr) {
+            neighbors[count] = {wall->x + 1, wall->y - 1, true};
+            count++;
+        }
+        if (maze->getWall(wall->x + 1, wall->y, true) != nullptr) {
+            neighbors[count] = {wall->x + 1, wall->y, true};
+        }
+    }
+}
+
 void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
                      const int y, const wall_maker& previous_wall,
                      const bool horizontal, int& nbBorders, int& j,
@@ -103,7 +183,8 @@ static void numberBorders(const Maze* maze, wall_maker* wall, int& nbBorders,
                             previous_wall, true, nbBorders, j, nbNeighbors,
                             nbNeighborsNotVisited);
         }
-        if (nbNeighbors - nbNeighborsNotVisited >= 2) {
+        if (nbNeighbors - nbNeighborsNotVisited >= 3 ||
+            (nbNeighbors == 2 && nbNeighborsNotVisited == 0)) {
             nbLoops++;
         }
     }
@@ -163,7 +244,8 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                 std::cout << "x: " << x << " y: " << y
                           << " direction: " << direction
                           << " nbBorders: " << nbBorders
-                          << " nbLoops: " << nbLoops << std::endl;
+                          << " nbLoops: " << nbLoops
+                          << " size stack: " << stack.size() << std::endl;
             maze->removeWall(x, y, direction);
         }
         Cell* showCell[1] = {maze->getCell(x, y)};
