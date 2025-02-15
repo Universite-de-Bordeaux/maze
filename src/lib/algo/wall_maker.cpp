@@ -1,7 +1,5 @@
 #include "wall_maker.hpp"
 
-#include <iostream>
-
 #include "../checker/depth_first.hpp"
 #include "../queue.hpp"
 #include "../show.hpp"
@@ -14,7 +12,8 @@ struct wall_maker {
 };
 
 void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
-                     const int y, const bool horizontal, int& count, int& j) {
+                     const int y, const wall_maker& previous_wall,
+                     const bool horizontal, int& count, int& j) {
     Wall* neighbor = maze->getWall(x, y, horizontal);
     if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
         neighbor->setAlreadyVisited(true);
@@ -29,19 +28,10 @@ void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
         queue.push(wall);
         stack.push(wall);
         j++;
-    }
-}
-
-static void resetAlreadyVisited(const Maze* maze) {
-    for (int x = 0; x < maze->getWidth(); x++) {
-        for (int y = 0; y < maze->getHeight(); y++) {
-            for (int i = 0; i < 2; i++) {
-                Wall* wall = maze->getWall(x, y, i);
-                if (wall != nullptr) {
-                    wall->setAlreadyVisited(false);
-                }
-            }
-        }
+    } else if (neighbor != nullptr && neighbor->isAlreadyVisited() &&
+               (x != previous_wall.x || y != previous_wall.y ||
+                horizontal != previous_wall.horizontal)) {
+        count++;
     }
 }
 
@@ -63,37 +53,41 @@ static int numberBorders(const Maze* maze, wall_maker* wall) {
          (wall->y == 0 || wall->y == maze->getHeight() - 1))) {
         count++;
     }
-    while (!queue.empty()) {
+    while (!queue.empty() && count < 2) {
+        wall_maker previous_wall = *wall;
         wall = static_cast<wall_maker*>(queue.front());
         queue.pop();
         int j = 0;
         if (wall->horizontal) {
-            processNeighbor(maze, queue, stack, wall->x - 1, wall->y, true,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x - 1, wall->y, false,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x, wall->y, false, count,
-                            j);
-            processNeighbor(maze, queue, stack, wall->x + 1, wall->y, true,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x - 1, wall->y + 1, false,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x, wall->y + 1, false,
-                            count, j);
+            processNeighbor(maze, queue, stack, wall->x - 1, wall->y,
+                            previous_wall, true, count, j);
+            processNeighbor(maze, queue, stack, wall->x - 1, wall->y,
+                            previous_wall, false, count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y, previous_wall,
+                            false, count, j);
+            processNeighbor(maze, queue, stack, wall->x + 1, wall->y,
+                            previous_wall, true, count, j);
+            processNeighbor(maze, queue, stack, wall->x - 1, wall->y + 1,
+                            previous_wall, false, count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y + 1,
+                            previous_wall, false, count, j);
         } else {
-            processNeighbor(maze, queue, stack, wall->x, wall->y - 1, false,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x, wall->y - 1, true,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x, wall->y, true, count,
-                            j);
-            processNeighbor(maze, queue, stack, wall->x, wall->y + 1, false,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x + 1, wall->y - 1, true,
-                            count, j);
-            processNeighbor(maze, queue, stack, wall->x + 1, wall->y, true,
-                            count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y - 1,
+                            previous_wall, false, count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y - 1,
+                            previous_wall, true, count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y, previous_wall,
+                            true, count, j);
+            processNeighbor(maze, queue, stack, wall->x, wall->y + 1,
+                            previous_wall, false, count, j);
+            processNeighbor(maze, queue, stack, wall->x + 1, wall->y - 1,
+                            previous_wall, true, count, j);
+            processNeighbor(maze, queue, stack, wall->x + 1, wall->y,
+                            previous_wall, true, count, j);
         }
+    }
+    while (!queue.empty()) {
+        queue.pop();
     }
     while (!stack.empty()) {
         wall = static_cast<wall_maker*>(stack.top());
@@ -142,12 +136,9 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         const bool direction = wallsPossible->horizontal;
         maze->addWall(x, y, direction);
         const int count = numberBorders(maze, wallsPossible);
-        bool isValid = false;
-        checker_depth_first(maze, false, false, nullptr, &isValid, nullptr);
         if (count > 1) {
             maze->removeWall(x, y, direction);
         }
-        maze->clearMaze();
         Cell* showCell[1] = {maze->getCell(x, y)};
         refreshShow(show, 1, showCell);
     }
