@@ -205,7 +205,8 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         int nbBorders = 0;
         int nbLoops = 0;
         numberBorders(maze, wallsPossible, nbBorders, nbLoops);
-        if (nbBorders >= 2 || nbLoops >= 1) {
+        if (nbBorders >= 2 || nbLoops >= 1 ||
+            (!perfect && maze->getRand()->get(probability))) {
             if (nbLoops >= 1)
                 std::cout << "x: " << x << " y: " << y
                           << " direction: " << direction
