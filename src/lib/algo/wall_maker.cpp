@@ -165,7 +165,6 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
         return;
     }
     Wall* current = maze->getWall(wall->x, wall->y, wall->horizontal);
-    const wall_maker first_wall = *wall;
     Queue queue;
     Stack stack;
     queue.push(wall);
@@ -253,32 +252,41 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
     }
     bool isValid = false;
     bool isPerfect = false;
-    while (!isValid || !isPerfect) {
-        checker_depth_first(maze, true, false, show, &isValid, &isPerfect);
-        std::cout << "valid : " << isValid << " perfect : " << isPerfect
-                  << std::endl;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                const Cell* cell = maze->getCell(x, y);
-                if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                    const Cell* cell_tmp = nullptr;
-                    if (x < width - 1) {
-                        cell_tmp = maze->getCell(x + 1, y);
-                    } else if (y < height - 1) {
-                        cell_tmp = maze->getCell(x, y + 1);
+    checker_depth_first(maze, true, false, show, &isValid, &isPerfect);
+    struct double_cell {
+        Cell* cell1;
+        Cell* cell2;
+    };
+    Stack stack_double_cell;
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int i = 0; i < 2; i++) {
+                Cell* cell1 = maze->getCell(x, y);
+                if (i == 0 && x < width - 1) {
+                    Cell* cell2 = maze->getCell(x + 1, y);
+                    if (cell1->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS &&
+                        cell2->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+                        stack_double_cell.push(new double_cell{cell1, cell2});
                     }
-                    if (cell_tmp != nullptr &&
-                        cell_tmp->getStatus() ==
-                            MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                        maze->addWall(cell, cell_tmp);
-                        checker_depth_first(maze, true, false, show, &isValid,
-                                            &isPerfect);
-                        if (!isValid) {
-                            maze->removeWall(cell, cell_tmp);
-                        }
+                } else if (i == 1 && y < height - 1) {
+                    Cell* cell2 = maze->getCell(x, y + 1);
+                    if (cell1->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS &&
+                        cell2->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+                        stack_double_cell.push(new double_cell{cell1, cell2});
                     }
                 }
             }
+        }
+    }
+    std::cout << "stack_double_cell size : " << stack_double_cell.size()
+              << std::endl;
+    for (int i = 0; i < stack_double_cell.size(); i++) {
+        const auto* doubleCell =
+            static_cast<double_cell*>(stack_double_cell.get(i));
+        maze->addWall(doubleCell->cell1, doubleCell->cell2);
+        checker_depth_first(maze, true, false, nullptr, &isValid, &isPerfect);
+        if (!isValid) {
+            maze->removeWall(doubleCell->cell1, doubleCell->cell2);
         }
         maze->clearMaze();
     }

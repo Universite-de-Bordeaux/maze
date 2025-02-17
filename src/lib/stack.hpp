@@ -29,6 +29,12 @@ class Stack {
      */
     void *top() const;
     /**
+     * @brief Retourne un élément de la pile
+     * @param index Index de l'élément
+     * @return Un élément de la pile
+     */
+    void *get(int index) const;
+    /**
      * @brief Retourne un élément aléatoire de la pile et le retire
      * @param rand Générateur de nombre aléatoire
      * @return Un élément aléatoire de la pile

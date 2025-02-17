@@ -50,4 +50,11 @@ void *Stack::pop(Rand *rand) {
 
 void *Stack::top() const { return data[size_ - 1]; }
 
+void *Stack::get(const int index) const {
+    if (index < 0 || index >= size_) {
+        return nullptr;
+    }
+    return data[index];
+}
+
 bool Stack::empty() const { return size_ == 0; }
