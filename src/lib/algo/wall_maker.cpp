@@ -283,6 +283,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                 }
             }
         }
+        maze->clearMaze();
         for (int i = 0; i < stackDoubleCell.size(); i++) {
             for (int j = 0; j < 10 && i + j < stackDoubleCell.size(); j++) {
                 const auto* doubleCell =
