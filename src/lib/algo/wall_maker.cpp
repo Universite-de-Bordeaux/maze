@@ -205,6 +205,65 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
         }
     }
 }
+struct double_cell {
+    Cell* cell1;
+    Cell* cell2;
+};
+
+void processStackRecursive(const Maze* maze, const Stack& stackDoubleCell,
+                           bool& isValid, bool& isPerfect,
+                           const int currentIndex) {
+    if (currentIndex >= stackDoubleCell.size()) {
+        return;
+    }
+
+    // Tente d'ajouter les prochains murs
+    for (int j = 0; j < 10 && currentIndex + j < stackDoubleCell.size(); j++) {
+        const auto* doubleCell =
+            static_cast<double_cell*>(stackDoubleCell.get(currentIndex + j));
+        maze->addWall(doubleCell->cell1, doubleCell->cell2);
+    }
+
+    // Vérifie la validité
+    checker_depth_first(maze, true, false, nullptr, &isValid, &isPerfect);
+    maze->clearMaze();
+
+    if (isValid) {
+        // Si c'est valid, on avance de 10
+        processStackRecursive(maze, stackDoubleCell, isValid, isPerfect,
+                              currentIndex + 10);
+        return;
+    }
+
+    // Si non valid, retire les 10 murs
+    for (int j = 0; j < 10 && currentIndex + j < stackDoubleCell.size(); j++) {
+        const auto* doubleCell =
+            static_cast<double_cell*>(stackDoubleCell.get(currentIndex + j));
+        maze->removeWall(doubleCell->cell1, doubleCell->cell2);
+    }
+
+    // Ajoute à nouveau le premier mur
+    if (currentIndex < stackDoubleCell.size()) {
+        const auto* doubleCell =
+            static_cast<double_cell*>(stackDoubleCell.get(currentIndex));
+        maze->addWall(doubleCell->cell1, doubleCell->cell2);
+    }
+
+    // Vérifie à nouveau
+    checker_depth_first(maze, true, false, nullptr, &isValid, &isPerfect);
+    maze->clearMaze();
+
+    if (!isValid) {
+        // Si toujours non valid, retire le mur
+        const auto* doubleCell =
+            static_cast<double_cell*>(stackDoubleCell.get(currentIndex));
+        maze->removeWall(doubleCell->cell1, doubleCell->cell2);
+    }
+
+    // Passe au prochain index
+    processStackRecursive(maze, stackDoubleCell, isValid, isPerfect,
+                          currentIndex + 1);
+}
 
 void algo_wall_maker(Maze* maze, const int width, const int height,
                      const bool perfect, const double probability, Show* show) {
@@ -253,11 +312,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
     bool isValid = false;
     bool isPerfect = false;
     checker_depth_first(maze, true, false, show, &isValid, &isPerfect);
-    struct double_cell {
-        Cell* cell1;
-        Cell* cell2;
-    };
-    Stack stack_double_cell;
+    Stack stackDoubleCell;
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             for (int i = 0; i < 2; i++) {
@@ -266,30 +321,21 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                     Cell* cell2 = maze->getCell(x + 1, y);
                     if (cell1->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS &&
                         cell2->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                        stack_double_cell.push(new double_cell{cell1, cell2});
+                        stackDoubleCell.push(new double_cell{cell1, cell2});
                     }
                 } else if (i == 1 && y < height - 1) {
                     Cell* cell2 = maze->getCell(x, y + 1);
                     if (cell1->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS &&
                         cell2->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                        stack_double_cell.push(new double_cell{cell1, cell2});
+                        stackDoubleCell.push(new double_cell{cell1, cell2});
                     }
                 }
             }
         }
     }
-    std::cout << "stack_double_cell size : " << stack_double_cell.size()
+    std::cout << "stackDoubleCell size : " << stackDoubleCell.size()
               << std::endl;
-    for (int i = 0; i < stack_double_cell.size(); i++) {
-        const auto* doubleCell =
-            static_cast<double_cell*>(stack_double_cell.get(i));
-        maze->addWall(doubleCell->cell1, doubleCell->cell2);
-        checker_depth_first(maze, true, false, nullptr, &isValid, &isPerfect);
-        if (!isValid) {
-            maze->removeWall(doubleCell->cell1, doubleCell->cell2);
-        }
-        maze->clearMaze();
-    }
+    processStackRecursive(maze, stackDoubleCell, isValid, isPerfect, 0);
     if (!perfect)
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
