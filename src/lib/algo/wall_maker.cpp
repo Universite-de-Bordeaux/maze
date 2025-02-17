@@ -244,12 +244,15 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         int nbBorders = 0;
         int nbLoops = 0;
         validWall(maze, wallsPossible, nbBorders, nbLoops);
+        Cell* showCell[1] = {maze->getCell(x, y)};
         if (nbBorders >= 2 || nbLoops >= 1) {
             maze->removeWall(x, y, direction);
+            refreshShow(show, 1, showCell, true);
+        } else {
+            refreshShow(show, 1, showCell, false);
         }
-        Cell* showCell[1] = {maze->getCell(x, y)};
-        refreshShow(show, 1, showCell);
     }
+    refreshShow(show);
     bool isValid = false;
     bool isPerfect = false;
     checker_depth_first(maze, true, false, show, &isValid, &isPerfect);
@@ -289,6 +292,8 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                 const auto* doubleCell =
                     static_cast<double_cell*>(stackDoubleCell.get(i + j));
                 maze->addWall(doubleCell->cell1, doubleCell->cell2);
+                Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
+                refreshShow(show, 2, showCell, false);
             }
             checker_depth_first(maze, true, false, nullptr, &isValid,
                                 &isPerfect);
@@ -302,6 +307,8 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                 const auto* doubleCell =
                     static_cast<double_cell*>(stackDoubleCell.get(i));
                 maze->addWall(doubleCell->cell1, doubleCell->cell2);
+                Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
+                refreshShow(show, 2, showCell, false);
                 checker_depth_first(maze, true, false, nullptr, &isValid,
                                     &isPerfect);
                 maze->clearMaze();
@@ -324,7 +331,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                             maze->removeWall(x, y, true);
                         }
                         Cell* showCell[1] = {maze->getCell(x, y)};
-                        refreshShow(show, 1, showCell);
+                        refreshShow(show, 1, showCell, false);
                     }
                 }
             }
