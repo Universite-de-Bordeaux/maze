@@ -245,17 +245,27 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         int nbBorders = 0;
         int nbLoops = 0;
         validWall(maze, wallsPossible, nbBorders, nbLoops);
-        if (nbBorders >= 2 || nbLoops >= 1 ||
-            (!perfect && maze->getRand()->get(probability))) {
-            // if (nbLoops >= 1)
-            //     std::cout << "x: " << x << " y: " << y
-            //               << " direction: " << direction
-            //               << " nbBorders: " << nbBorders
-            //               << " nbLoops: " << nbLoops
-            //               << " size stack: " << stack.size() << std::endl;
+        if (nbBorders >= 2 || nbLoops >= 1) {
             maze->removeWall(x, y, direction);
         }
         Cell* showCell[1] = {maze->getCell(x, y)};
         refreshShow(show, 1, showCell);
     }
+    checker_depth_first(maze, true, false, show, nullptr, nullptr, true);
+    if (!perfect)
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int i = 0; i < 2; i++) {
+                    if (maze->getRand()->get(probability)) {
+                        if (i == 0 && x < width - 1) {
+                            maze->removeWall(x, y, false);
+                        } else if (i == 1 && y < height - 1) {
+                            maze->removeWall(x, y, true);
+                        }
+                        Cell* showCell[1] = {maze->getCell(x, y)};
+                        refreshShow(show, 1, showCell);
+                    }
+                }
+            }
+        }
 }

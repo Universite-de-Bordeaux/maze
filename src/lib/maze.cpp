@@ -22,12 +22,12 @@ static int defaultEndY(const int height, Rand *rand) {
     return rand->get(0, height - 1);
 }
 
-Maze::Maze() : Maze(0, 0, 0, 0, 0, 0){};
+Maze::Maze() : Maze(0, 0, 0, 0, 0, 0) {};
 
 Maze::Maze(const int width, const int height)
     : Maze(width, height, defaultStartX(width, &rand_),
            defaultStartY(height, &rand_), defaultEndX(width, &rand_),
-           defaultEndY(height, &rand_)){};
+           defaultEndY(height, &rand_)) {};
 
 Maze::Maze(const int width, const int height, const int startX,
            const int startY, const int endX, const int endY) {
@@ -140,12 +140,14 @@ bool Maze::addWall(const int x, const int y, const bool horizontal) const {
     const auto wall = new Wall(horizontal);
     if (horizontal) {
         cell->setWall(MAZE_CELL_BOTTOM, wall);
+        if (cell->getNeighbor(MAZE_CELL_BOTTOM) == nullptr) return false;
         cell->getNeighbor(MAZE_CELL_BOTTOM)->setWall(MAZE_CELL_TOP, wall);
         cell->getNeighbor(MAZE_CELL_BOTTOM)
             ->setNeighbor(MAZE_CELL_TOP, nullptr);
         cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr);
     } else {
         cell->setWall(MAZE_CELL_RIGHT, wall);
+        if (cell->getNeighbor(MAZE_CELL_RIGHT) == nullptr) return false;
         cell->getNeighbor(MAZE_CELL_RIGHT)->setWall(MAZE_CELL_LEFT, wall);
         cell->getNeighbor(MAZE_CELL_RIGHT)
             ->setNeighbor(MAZE_CELL_LEFT, nullptr);
