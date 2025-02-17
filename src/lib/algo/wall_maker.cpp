@@ -251,7 +251,37 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         Cell* showCell[1] = {maze->getCell(x, y)};
         refreshShow(show, 1, showCell);
     }
-    checker_depth_first(maze, true, false, show, nullptr, nullptr, true);
+    bool isValid = false;
+    bool isPerfect = false;
+    while (!isValid || !isPerfect) {
+        checker_depth_first(maze, true, false, show, &isValid, &isPerfect);
+        std::cout << "valid : " << isValid << " perfect : " << isPerfect
+                  << std::endl;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                const Cell* cell = maze->getCell(x, y);
+                if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+                    const Cell* cell_tmp = nullptr;
+                    if (x < width - 1) {
+                        cell_tmp = maze->getCell(x + 1, y);
+                    } else if (y < height - 1) {
+                        cell_tmp = maze->getCell(x, y + 1);
+                    }
+                    if (cell_tmp != nullptr &&
+                        cell_tmp->getStatus() ==
+                            MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+                        maze->addWall(cell, cell_tmp);
+                        checker_depth_first(maze, true, false, show, &isValid,
+                                            &isPerfect);
+                        if (!isValid) {
+                            maze->removeWall(cell, cell_tmp);
+                        }
+                    }
+                }
+            }
+        }
+        maze->clearMaze();
+    }
     if (!perfect)
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {

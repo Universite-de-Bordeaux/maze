@@ -15,8 +15,7 @@ struct positionHistory {
 };
 
 void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
-                         Show *show, bool *isValid, bool *isPerfect,
-                         bool makePerfect) {
+                         Show *show, bool *isValid, bool *isPerfect) {
     Stack stack;
     bool imperfect = false;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
@@ -41,36 +40,6 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
                 2) {
             cell->setStatus(MAZE_STATUS_TOO_MANY_NEIGHBORS);
             imperfect = true;
-            Cell *cell_tmp = maze->getCell(cell->getX() - 1, cell->getY());
-            if (cell_tmp != nullptr &&
-                cell_tmp->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                maze->addWall(cell, cell_tmp);
-                cell->setStatus(MAZE_STATUS_VISITED);
-                cell_tmp->setStatus(MAZE_STATUS_VISITED);
-            }
-            cell_tmp = maze->getCell(cell->getX(), cell->getY() - 1);
-            if (cell_tmp != nullptr &&
-                cell_tmp->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                maze->addWall(cell, cell_tmp);
-                cell->setStatus(MAZE_STATUS_VISITED);
-                cell_tmp->setStatus(MAZE_STATUS_VISITED);
-            }
-            cell_tmp = maze->getCell(cell->getX() + 1, cell->getY());
-            if (cell_tmp != nullptr &&
-                cell_tmp->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                maze->addWall(cell, cell_tmp);
-                cell->setStatus(MAZE_STATUS_VISITED);
-                cell_tmp->setStatus(MAZE_STATUS_VISITED);
-            }
-            cell_tmp = maze->getCell(cell->getX(), cell->getY() + 1);
-            if (cell_tmp != nullptr &&
-                cell_tmp->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                maze->addWall(cell, cell_tmp);
-                cell->setStatus(MAZE_STATUS_VISITED);
-                cell_tmp->setStatus(MAZE_STATUS_VISITED);
-            }
-            Cell *showCell[2] = {cell, cell_tmp};
-            refreshShow(show, 2, showCell);
         }
         if (cell->getAbsoluteNumberOfNeighborsNotVisited() == 0) {
             if (cell->getAbsoluteNumberOfNeighbors() -

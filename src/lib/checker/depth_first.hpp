@@ -15,7 +15,6 @@
  * @param makePerfect Si le labyrinthe doit être transformé en parfait
  */
 void checker_depth_first(const Maze* maze, bool perfect, bool left, Show* show,
-                         bool* isValid, bool* isPerfect,
-                         bool makePerfect = false);
+                         bool* isValid, bool* isPerfect);
 
 #endif  // CHECKER_DEPTH_FIRST_HPP
