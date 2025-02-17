@@ -303,7 +303,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         if (nbBorders >= 2 || nbLoops >= 1 ||
             (!perfect && maze->getRand()->get(probability))) {
             // if (nbLoops >= 1)
-            // std::cout << "x: " << x << " y: " << y
+            //     std::cout << "x: " << x << " y: " << y
             //               << " direction: " << direction
             //               << " nbBorders: " << nbBorders
             //               << " nbLoops: " << nbLoops

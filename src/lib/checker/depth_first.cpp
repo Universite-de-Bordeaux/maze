@@ -12,7 +12,8 @@ struct positionHistory {
 };
 
 void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
-                         Show *show, bool *isValid, bool *isPerfect) {
+                         Show *show, bool *isValid, bool *isPerfect,
+                         bool makePerfect) {
     Stack stack;
     bool imperfect = false;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
