@@ -206,6 +206,37 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
     }
 }
 
+struct double_cell {
+    Cell* cell1;
+    Cell* cell2;
+};
+
+static void dichoAddWall(const Maze* maze,  // NOLINT
+                         const Stack& stackDoubleCell, Show* show,
+                         const int start, const int end) {
+    std::cout << "start : " << start << " end : " << end << std::endl;
+    if (start >= end) return;
+    for (int i = 0; i < stackDoubleCell.size(); i++) {
+        const auto* doubleCell =
+            static_cast<double_cell*>(stackDoubleCell.get(i));
+        maze->addWall(doubleCell->cell1, doubleCell->cell2);
+    }
+    bool isValid = false;
+    bool isPerfect = false;
+    checker_depth_first(maze, true, false, nullptr, &isValid, &isPerfect);
+    maze->clearMaze();
+    if (isValid) return;
+    for (int i = 0; i < stackDoubleCell.size(); i++) {
+        const auto* doubleCell =
+            static_cast<double_cell*>(stackDoubleCell.get(i));
+        maze->removeWall(doubleCell->cell1, doubleCell->cell2);
+    }
+    if (start >= end - 1) return;
+    const int middle = (start + end) / 2;
+    dichoAddWall(maze, stackDoubleCell, show, start, middle);
+    dichoAddWall(maze, stackDoubleCell, show, middle, end);
+}
+
 void algo_wall_maker(Maze* maze, const int width, const int height,
                      const bool perfect, const double probability, Show* show) {
     maze->setWidthHeight(width, height);
@@ -253,42 +284,37 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
     bool isValid = false;
     bool isPerfect = false;
     checker_depth_first(maze, true, false, show, &isValid, &isPerfect);
-    struct double_cell {
-        Cell* cell1;
-        Cell* cell2;
-    };
-    Stack stack_double_cell;
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            for (int i = 0; i < 2; i++) {
-                Cell* cell1 = maze->getCell(x, y);
-                if (i == 0 && x < width - 1) {
-                    Cell* cell2 = maze->getCell(x + 1, y);
-                    if (cell1->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS &&
-                        cell2->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                        stack_double_cell.push(new double_cell{cell1, cell2});
-                    }
-                } else if (i == 1 && y < height - 1) {
-                    Cell* cell2 = maze->getCell(x, y + 1);
-                    if (cell1->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS &&
-                        cell2->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                        stack_double_cell.push(new double_cell{cell1, cell2});
+    if (!isPerfect) {
+        Stack stackDoubleCell;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int i = 0; i < 2; i++) {
+                    Cell* cell1 = maze->getCell(x, y);
+                    if (i == 0 && x < width - 1) {
+                        Cell* cell2 = maze->getCell(x + 1, y);
+                        if (cell1->getStatus() ==
+                                MAZE_STATUS_TOO_MANY_NEIGHBORS &&
+                            cell2->getStatus() ==
+                                MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+                            stackDoubleCell.push(new double_cell{cell1, cell2});
+                        }
+                    } else if (i == 1 && y < height - 1) {
+                        Cell* cell2 = maze->getCell(x, y + 1);
+                        if (cell1->getStatus() ==
+                                MAZE_STATUS_TOO_MANY_NEIGHBORS &&
+                            cell2->getStatus() ==
+                                MAZE_STATUS_TOO_MANY_NEIGHBORS) {
+                            stackDoubleCell.push(new double_cell{cell1, cell2});
+                        }
                     }
                 }
             }
         }
-    }
-    std::cout << "stack_double_cell size : " << stack_double_cell.size()
-              << std::endl;
-    for (int i = 0; i < stack_double_cell.size(); i++) {
-        const auto* doubleCell =
-            static_cast<double_cell*>(stack_double_cell.get(i));
-        maze->addWall(doubleCell->cell1, doubleCell->cell2);
-        checker_depth_first(maze, true, false, nullptr, &isValid, &isPerfect);
-        if (!isValid) {
-            maze->removeWall(doubleCell->cell1, doubleCell->cell2);
-        }
+        std::cout << "stackDoubleCell size : " << stackDoubleCell.size()
+                  << std::endl;
         maze->clearMaze();
+        dichoAddWall(maze, stackDoubleCell, show, 0,
+                     stackDoubleCell.size() - 1);
     }
     if (!perfect)
         for (int x = 0; x < width; x++) {
