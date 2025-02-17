@@ -157,51 +157,6 @@ void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
     }
 }
 
-static bool wallMakerEqual(const wall_maker* wall1, const wall_maker* wall2) {
-    return (wall1->x == wall2->x) && (wall1->y == wall2->y) &&
-           (wall1->horizontal == wall2->horizontal);
-}
-
-static bool pathBetweenTwoNeighbors(const Maze* maze, wall_maker* start,
-                                    wall_maker* neighbors,
-                                    const int nbNeighbors) {
-    Stack stack;
-    stack.push(start);
-    while (!stack.empty()) {
-        const auto* current = static_cast<wall_maker*>(stack.top());
-        stack.pop();
-        maze->getWall(current->x, current->y, current->horizontal)
-            ->setAlreadyVisited(true);
-        const int nbFollower = getNbNeighbors(maze, current);
-        wall_maker* followers[nbFollower];
-        getNeighbors(maze, current, *followers);
-        for (int i = 0; i < nbFollower; i++) {
-            if (maze->getWall(followers[i]->x, followers[i]->y,
-                              followers[i]->horizontal)
-                    ->isAlreadyVisited()) {
-                stack.push(followers[i]);
-            }
-        }
-        for (int i = 0; i < nbNeighbors; i++) {
-            if (stack.size() > 1) {
-                if (wallMakerEqual(&neighbors[i], current)) {
-                    return true;
-                }
-            }
-        }
-        // const int nbNeighbors = getNbNeighbors(maze, wall);
-        // wall_maker neighbors[nbNeighbors];
-        // getNeighbors(maze, wall, neighbors);
-        // const int nbNeighborsNotVisited = getNbNeighborsNotVisited(maze,
-        // wall);
-        // for (int i = 0; i < nbNeighbors; i++) {
-        //     processNeighbor(maze, queue, stack, neighbors[i].x,
-        //     neighbors[i].y, neighbors[i].horizontal, nbBorders, j);
-        // }
-    }
-    return false;
-}
-
 static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
                       int& nbLoops) {
     if (wall == nullptr ||
@@ -248,16 +203,6 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
         Wall* current_tmp = maze->getWall(wall->x, wall->y, wall->horizontal);
         if (current_tmp != nullptr) {
             current_tmp->setAlreadyVisited(false);
-        }
-    }
-    *wall = first_wall;
-    const int nbNeighbors = getNbNeighbors(maze, wall);
-    wall_maker neighbors[nbNeighbors];
-    getNeighbors(maze, wall, neighbors);
-    // coder ici
-    for (int i = 0; i < nbNeighbors; i++) {
-        if (pathBetweenTwoNeighbors(maze, wall, neighbors, nbNeighbors)) {
-            nbLoops++;
         }
     }
 }
