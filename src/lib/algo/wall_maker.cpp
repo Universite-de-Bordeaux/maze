@@ -1,7 +1,5 @@
 #include "wall_maker.hpp"
 
-#include <iostream>
-
 #include "../checker/depth_first.hpp"
 #include "../queue.hpp"
 #include "../show.hpp"
