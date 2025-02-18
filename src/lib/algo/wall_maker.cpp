@@ -289,38 +289,18 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         }
         maze->clearMaze();
         for (int i = 0; i < stackDoubleCell.size(); i++) {
-            for (int j = 0; j < 10 && i + j < stackDoubleCell.size(); j++) {
-                const auto* doubleCell =
-                    static_cast<double_cell*>(stackDoubleCell.get(i + j));
-                maze->addWall(doubleCell->cell1, doubleCell->cell2);
-                Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
-                refreshShow(show, 2, showCell, false);
+            const auto* doubleCell =
+                static_cast<double_cell*>(stackDoubleCell.get(i));
+            maze->addWall(doubleCell->cell1, doubleCell->cell2);
+            Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
+            refreshShow(show, 2, showCell, false);
+            maze->setStart(doubleCell->cell1->getX(),
+                           doubleCell->cell1->getY());
+            maze->setEnd(doubleCell->cell2->getX(), doubleCell->cell2->getY());
+            if (!solver_breadth_first(maze, show)) {
+                maze->removeWall(doubleCell->cell1, doubleCell->cell2);
             }
-            checker_depth_first(maze, true, false, nullptr, &isValid,
-                                &isPerfect);
             maze->clearMaze();
-            if (!isValid) {
-                for (int j = 0; j < 10 && i + j < stackDoubleCell.size(); j++) {
-                    const auto* doubleCell =
-                        static_cast<double_cell*>(stackDoubleCell.get(i + j));
-                    maze->removeWall(doubleCell->cell1, doubleCell->cell2);
-                }
-                const auto* doubleCell =
-                    static_cast<double_cell*>(stackDoubleCell.get(i));
-                maze->addWall(doubleCell->cell1, doubleCell->cell2);
-                Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
-                refreshShow(show, 2, showCell, false);
-                maze->setStart(doubleCell->cell1->getX(),
-                               doubleCell->cell1->getY());
-                maze->setEnd(doubleCell->cell2->getX(),
-                             doubleCell->cell2->getY());
-                if (!solver_breadth_first(maze, show)) {
-                    maze->removeWall(doubleCell->cell1, doubleCell->cell2);
-                }
-                maze->clearMaze();
-            } else {
-                i += 9;
-            }
         }
     }
     if (!perfect)
