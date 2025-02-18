@@ -288,9 +288,9 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
             }
         }
         maze->clearMaze();
-        for (int i = 0; i < stackDoubleCell.size(); i++) {
+        while (!stackDoubleCell.empty()) {
             const auto* doubleCell =
-                static_cast<double_cell*>(stackDoubleCell.get(i));
+                static_cast<double_cell*>(stackDoubleCell.pop(maze->getRand()));
             maze->addWall(doubleCell->cell1, doubleCell->cell2);
             Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
             refreshShow(show, 2, showCell, false);
