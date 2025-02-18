@@ -36,6 +36,7 @@ set(SOURCE_FILES_GENERATOR
         src/lib/queue.cpp
         src/lib/rand.cpp
         src/lib/show.cpp
+        src/lib/solver/breadth_first.cpp
         src/lib/stack.cpp
         src/lib/wall.cpp
         src/lib/writer.cpp

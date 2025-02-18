@@ -5,6 +5,7 @@
 #include "../checker/depth_first.hpp"
 #include "../queue.hpp"
 #include "../show.hpp"
+#include "../solver/breadth_first.hpp"
 #include "../stack.hpp"
 
 struct wall_maker {
@@ -309,12 +310,14 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                 maze->addWall(doubleCell->cell1, doubleCell->cell2);
                 Cell* showCell[2] = {doubleCell->cell1, doubleCell->cell2};
                 refreshShow(show, 2, showCell, false);
-                checker_depth_first(maze, true, false, nullptr, &isValid,
-                                    &isPerfect);
-                maze->clearMaze();
-                if (!isValid) {
+                maze->setStart(doubleCell->cell1->getX(),
+                               doubleCell->cell1->getY());
+                maze->setEnd(doubleCell->cell2->getX(),
+                             doubleCell->cell2->getY());
+                if (!solver_breadth_first(maze, show)) {
                     maze->removeWall(doubleCell->cell1, doubleCell->cell2);
                 }
+                maze->clearMaze();
             } else {
                 i += 9;
             }
