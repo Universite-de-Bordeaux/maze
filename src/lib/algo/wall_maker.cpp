@@ -302,6 +302,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
         }
     }
     if (!perfect)
+    refreshShow(show);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int i = 0; i < 2; i++) {
@@ -312,7 +313,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                             maze->removeWall(x, y, true);
                         }
                         Cell* showCell[1] = {maze->getCell(x, y)};
-                        refreshShow(show, 1, showCell, false);
+                        refreshShow(show, 1, showCell, true);
                     }
                 }
             }
