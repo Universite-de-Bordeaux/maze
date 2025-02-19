@@ -44,6 +44,22 @@ set(SOURCE_FILES_GENERATOR
 
 set(SOURCE_FILES_DATA
         src/main_data.cpp
+        src/lib/algo/back_tracking.cpp
+        src/lib/algo/diagonal.cpp
+        src/lib/algo/fractal.cpp
+        src/lib/algo/wall_maker.cpp
+        src/lib/cell.cpp
+        src/lib/checker/depth_first.cpp
+        src/lib/game/fog.cpp
+        src/lib/game/fog_hand.cpp
+        src/lib/maze.cpp
+        src/lib/queue.cpp
+        src/lib/rand.cpp
+        src/lib/show.cpp
+        src/lib/solver/breadth_first.cpp
+        src/lib/stack.cpp
+        src/lib/wall.cpp
+        src/lib/writer.cpp
 )
 
 set(INCLUDE_DIRS
