@@ -42,6 +42,10 @@ set(SOURCE_FILES_GENERATOR
         src/lib/writer.cpp
 )
 
+set(SOURCE_FILES_DATA
+        src/main_data.cpp
+)
+
 set(INCLUDE_DIRS
         SFML-2.5.1/include
 )
@@ -60,13 +64,18 @@ set(EXECUTABLE_PROJECT ${PROJECT_NAME}.out)
 add_executable(${EXECUTABLE_PROJECT} ${SOURCE_FILES})
 set(EXECUTABLE_PROJECT_GENERATOR ${PROJECT_NAME}_generator.out)
 add_executable(${EXECUTABLE_PROJECT_GENERATOR} ${SOURCE_FILES_GENERATOR})
+set(EXECUTABLE_PROJECT_DATA ${PROJECT_NAME}_data.out)
+add_executable(${EXECUTABLE_PROJECT_DATA} ${SOURCE_FILES_DATA})
 
 target_include_directories(${EXECUTABLE_PROJECT} PUBLIC ${INCLUDE_DIRS})
 target_include_directories(${EXECUTABLE_PROJECT_GENERATOR} PUBLIC ${INCLUDE_DIRS})
+target_include_directories(${EXECUTABLE_PROJECT_DATA} PUBLIC ${INCLUDE_DIRS})
 target_link_directories(${EXECUTABLE_PROJECT} PUBLIC ${LINK_DIRS})
 target_link_directories(${EXECUTABLE_PROJECT_GENERATOR} PUBLIC ${LINK_DIRS})
+target_link_directories(${EXECUTABLE_PROJECT_DATA} PUBLIC ${LINK_DIRS})
 target_link_libraries(${EXECUTABLE_PROJECT} PUBLIC ${LINK_LIBS})
 target_link_libraries(${EXECUTABLE_PROJECT_GENERATOR} PUBLIC ${LINK_LIBS})
+target_link_libraries(${EXECUTABLE_PROJECT_DATA} PUBLIC ${LINK_LIBS})
 
 add_custom_target(run_test
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${EXECUTABLE_PROJECT} "-i" "src/instances/maze1.txt" "-s"

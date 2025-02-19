@@ -169,7 +169,7 @@ int help(const int error, const std::string &command) {
  * @param algorithm Algorithme
  * @param show Affichage
  */
-void resolveMaze(Maze *maze, const std::string &algorithm, Show *show) {
+void resolveMaze(const Maze *maze, const std::string &algorithm, Show *show) {
     std::cout << "Parameters of resolution : algorithm=" << algorithm
               << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
@@ -199,8 +199,8 @@ void resolveMaze(Maze *maze, const std::string &algorithm, Show *show) {
  * @param perfect Parfait
  * @param show Affichage
  */
-void checkMaze(Maze *maze, const std::string &algorithm, const bool perfect,
-               Show *show) {
+void checkMaze(const Maze *maze, const std::string &algorithm,
+               const bool perfect, Show *show) {
     std::cout << "Parameters of checking : algorithm=" << algorithm
               << ", perfect=" << perfect << std::endl;
     bool isValid = false;
