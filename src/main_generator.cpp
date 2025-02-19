@@ -82,6 +82,9 @@ void help() {
     std::cout << "GENERATION\n";
     std::cout << "------------------------------\n";
     std::cout << "-g, --generate                Génère un labyrinthe parfait\n";
+    std::cout
+        << "-gs, --generate-show          Génère un labyrinthe parfait et "
+           "l'affiche\n";
     std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
                  "génération\n";
     std::cout << "    Algorithmes disponibles : bt, wm, d, f\n";

@@ -86,6 +86,8 @@ void help() {
     std::cout << "RESOLUTION\n";
     std::cout << "------------------------------\n";
     std::cout << "-r, --resolve                 Résout le labyrinthe\n";
+    std::cout << "-rs, --resolve-show           Résout le labyrinthe avec "
+                 "affichage\n";
     std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
                  "résolution\n";
     std::cout << "    Algorithmes disponibles : dfl, dfr, bf\n";
@@ -99,6 +101,8 @@ void help() {
     std::cout << "------------------------------\n";
     std::cout << "-v, --verify                  Vérifie si le labyrinthe est "
                  "valide\n";
+    std::cout << "-vs, --verify-show            Vérifie si le labyrinthe est "
+                 "valide avec affichage\n";
     std::cout << "  -p, --perfect               Vérifie la perfection du "
                  "labyrinthe\n";
     std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
@@ -114,6 +118,8 @@ void help() {
     std::cout << "------------------------------\n";
     std::cout << "-g, --game                    Lance le jeu ou la visite du "
                  "labyrinthe\n";
+    std::cout << "-gs, --game-show              Lance le jeu ou la visite du "
+                 "labyrinthe avec affichage\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
     std::cout << "    Types disponibles :       f, fr, fl, w, wg\n";
