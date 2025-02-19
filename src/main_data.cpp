@@ -11,6 +11,7 @@
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/maze.hpp"
+#include "lib/stack.hpp"
 #include "lib/var.hpp"
 #include "lib/writer.hpp"
 
@@ -36,6 +37,10 @@ void help() {
                  "dans un fichier LaTeX\n";
     std::cout << "-os, --output-stats <fichier> Sauvegarde les statistiques "
                  "dans un fichier texte\n";
+    std::cout
+        << "-ng, --nb-generate <n>        Génère n labyrinthes (défaut : 1)\n";
+    std::cout << "-nu, --nb-uses <n>            Utilise n fois le labyrinthe "
+                 "(défaut : 1)\n";
 
     std::cout << "GENERATION\n";
     std::cout << "------------------------------\n";
@@ -57,7 +62,7 @@ void help() {
 
     std::cout << "JEU ET VISITE\n";
     std::cout << "------------------------------\n";
-    std::cout << "-g, --game                    Lance le jeu ou la visite du "
+    std::cout << "-ga, --game                    Lance le jeu ou la visite du "
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
@@ -120,15 +125,16 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
         algo_fractal(maze, width, isPerfect, probability, show);
     else
         exit(MAZE_COMMAND_ERROR);
-    const auto end = std::chrono::high_resolution_clock::now();
-    std::cout
-        << "Generated in "
-        << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
-        << "."
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                   .count() %
-               1000
-        << "s" << std::endl;
+    // const auto end = std::chrono::high_resolution_clock::now();
+    // std::cout
+    //     << "Generated in "
+    //     << std::chrono::duration_cast<std::chrono::seconds>(end -
+    //     start).count()
+    //     << "."
+    //     << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+    //                .count() %
+    //            1000
+    //     << "s" << std::endl;
 }
 
 /**
@@ -137,9 +143,9 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
  * @param type Type de jeu
  * @param show Affichage
  */
-void gameMaze(Maze *maze, const std::string &type, Show *show) {
+int gameMaze(Maze *maze, const std::string &type, Show *show) {
     std::cout << "Parameters of game : type=" << type << std::endl;
-    const auto start = std::chrono::high_resolution_clock::now();
+    // const auto start = std::chrono::high_resolution_clock::now();
     int steps = 0;
     if (type == "fog" || type == "f") {
         steps = game_fog(maze, show);
@@ -150,15 +156,17 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
-    const auto end = std::chrono::high_resolution_clock::now();
-    std::cout
-        << "Resolved in "
-        << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
-        << "."
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                   .count() %
-               1000
-        << "s with " << steps << " steps" << std::endl;
+    // const auto end = std::chrono::high_resolution_clock::now();
+    // std::cout
+    //     << "Resolved in "
+    //     << std::chrono::duration_cast<std::chrono::seconds>(end -
+    //     start).count()
+    //     << "."
+    //     << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+    //                .count() %
+    //            1000
+    //     << "s with " << steps << " steps" << std::endl;
+    return steps;
 }
 
 /**
@@ -174,8 +182,22 @@ int main(const int argc, char *argv[]) {
         std::cout << "Usage:./main [-option] [args]" << std::endl;
         return MAZE_COMMAND_ERROR;
     }
-    bool mazeLoaded = false;
-    auto maze = Maze();
+    uint nbMazeToGenerate = 1;
+    uint nbUsesMaze = 1;
+    Stack algorithms;
+    int width = 10, height = 10;
+    bool perfect = true;
+    double probability = 0.01;
+    auto types = Stack();
+    bool startInitiated = false;
+    int startX;
+    int startY;
+    bool endInitiated = false;
+    int endX;
+    int endY;
+    std::string outputLatex;
+    std::string outputStats;
+
     // Parcours les arguments
     for (int i = 1; i < argc; i++) {
         // Vérifie si l'argument est une commande
@@ -187,58 +209,68 @@ int main(const int argc, char *argv[]) {
             if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);
             long double x_tmp = std::stold(argv[i + 1]);
             long double y_tmp = std::stold(argv[i + 2]);
-            int x;
             if (x_tmp < 0)
-                x = static_cast<int>(static_cast<long double>(maze.getWidth()) +
-                                     x_tmp);
+                startX =
+                    static_cast<int>(static_cast<long double>(width) + x_tmp);
             else if (x_tmp > 0 && x_tmp < 1)
-                x = static_cast<int>(static_cast<long double>(maze.getWidth()) *
-                                     x_tmp);
+                startX =
+                    static_cast<int>(static_cast<long double>(width) * x_tmp);
             else
-                x = static_cast<int>(x_tmp);
-            int y;
+                startX = static_cast<int>(x_tmp);
             if (y_tmp < 0)
-                y = static_cast<int>(
-                    static_cast<long double>(maze.getHeight()) + y_tmp);
+                startY =
+                    static_cast<int>(static_cast<long double>(height) + y_tmp);
             else if (y_tmp > 0 && y_tmp < 1)
-                y = static_cast<int>(
-                    static_cast<long double>(maze.getHeight()) * y_tmp);
+                startY =
+                    static_cast<int>(static_cast<long double>(height) * y_tmp);
             else
-                y = static_cast<int>(y_tmp);
-            maze.setStart(x, y);
+                startY = static_cast<int>(y_tmp);
+            startInitiated = true;
             i += 2;
         } else if (strcmp(argv[i], "-pe") == 0 ||
                    strcmp(argv[i], "--player-end") == 0) {
             if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);
             long double x_tmp = std::stold(argv[i + 1]);
             long double y_tmp = std::stold(argv[i + 2]);
-            int x;
             if (x_tmp < 0)
-                x = static_cast<int>(static_cast<long double>(maze.getWidth()) +
-                                     x_tmp);
+                endX =
+                    static_cast<int>(static_cast<long double>(width) + x_tmp);
             else if (x_tmp > 0 && x_tmp < 1)
-                x = static_cast<int>(static_cast<long double>(maze.getWidth()) *
-                                     x_tmp);
+                endX =
+                    static_cast<int>(static_cast<long double>(width) * x_tmp);
             else
-                x = static_cast<int>(x_tmp);
-            int y;
+                endX = static_cast<int>(x_tmp);
             if (y_tmp < 0)
-                y = static_cast<int>(
-                    static_cast<long double>(maze.getHeight()) + y_tmp);
+                endY =
+                    static_cast<int>(static_cast<long double>(height) + y_tmp);
             else if (y_tmp > 0 && y_tmp < 1)
-                y = static_cast<int>(
-                    static_cast<long double>(maze.getHeight()) * y_tmp);
+                endY =
+                    static_cast<int>(static_cast<long double>(height) * y_tmp);
             else
-                y = static_cast<int>(y_tmp);
-            maze.setEnd(x, y);
+                endY = static_cast<int>(y_tmp);
+            endInitiated = true;
             i += 2;
-        }  // Si l'utilisateur veut générer un labyrinthe
-        else if (strcmp(argv[i], "-g") == 0 ||
-                 strcmp(argv[i], "--generate") == 0) {
-            std::string algorithm = "back_tracking";
-            int width = 10, height = 10;
-            bool perfect = true;
-            double probability = 0.01;
+        }  // Si l'utilisateur a précisé le nombre de labyrinthes à générer
+        else if (strcmp(argv[i], "-ng") == 0 ||
+                 strcmp(argv[i], "--number-generations") == 0) {
+            if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
+            const int nbMaze = std::atoi(argv[i + 1]);
+            if (nbMaze > 0)
+                nbMazeToGenerate = nbMaze;
+            else
+                return help(MAZE_COMMAND_ERROR);
+            i++;
+        } else if (strcmp(argv[i], "-nu") == 0 ||
+                   strcmp(argv[i], "--number-uses") == 0) {
+            if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
+            const int nbUses = std::atoi(argv[i + 1]);
+            if (nbUses > 0)
+                nbUsesMaze = nbUses;
+            else
+                return help(MAZE_COMMAND_ERROR);
+            i++;
+        } else if (strcmp(argv[i], "-g") == 0 ||
+                   strcmp(argv[i], "--generate") == 0) {
             // Si l'utilisateur a spécifié des options
             while (i + 1 < argc && argv[i + 1][0] == '-' &&
                    ((strcmp(argv[i + 1], "-a") == 0 ||
@@ -255,16 +287,22 @@ int main(const int argc, char *argv[]) {
                         if (i + 1 < argc) {
                             if (strcmp(argv[i + 1], "back_tracking") == 0 ||
                                 strcmp(argv[i + 1], "bt") == 0) {
-                                algorithm = "back_tracking";
+                                std::string *algo =
+                                    new std::string("back_tracking");
+                                algorithms.push(algo);
                             } else if (strcmp(argv[i + 1], "wall_maker") == 0 ||
                                        strcmp(argv[i + 1], "wm") == 0) {
-                                algorithm = "wall_maker";
+                                std::string *algo =
+                                    new std::string("wall_maker");
+                                algorithms.push(algo);
                             } else if (strcmp(argv[i + 1], "diagonal") == 0 ||
                                        strcmp(argv[i + 1], "d") == 0) {
-                                algorithm = "diagonal";
+                                std::string *algo = new std::string("diagonal");
+                                algorithms.push(algo);
                             } else if (strcmp(argv[i + 1], "fractal") == 0 ||
                                        strcmp(argv[i + 1], "f") == 0) {
-                                algorithm = "fractal";
+                                std::string *algo = new std::string("fractal");
+                                algorithms.push(algo);
                             } else {
                                 return help(MAZE_COMMAND_ERROR);
                             }
@@ -311,9 +349,6 @@ int main(const int argc, char *argv[]) {
                     }
                 }
             }
-            generateMaze(&maze, algorithm, width, height, perfect, probability,
-                         nullptr);
-            mazeLoaded = true;
         }
         // Vérifie si le labyrinthe est valide
         // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
@@ -321,61 +356,75 @@ int main(const int argc, char *argv[]) {
                  strcmp(argv[i], "--output-latex") == 0) {
             // Si aucun fichier n'est spécifié
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
-            // Si aucun labyrinthe n'est chargé
-            if (!mazeLoaded) {
-                std::cout << "No maze loaded" << std::endl;
-                return MAZE_COMMAND_ERROR;
-            }
-            std::ofstream file(argv[i + 1]);
-            // Si le fichier n'existe pas
-            if (!file) {
-                std::cout << "File not found : " << argv[i + 1] << std::endl;
-                return MAZE_FILE_ERROR;
-            }
-            write(&maze, argv[i + 1]);
+            outputLatex = argv[i + 1];
+            i++;
+        } else if (strcmp(argv[i], "-os") == 0 ||
+                   strcmp(argv[i], "--output-stats") == 0) {
+            // Si aucun fichier n'est spécifié
+            if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
+            outputStats = argv[i + 1];
             i++;
         }
         // Si l'utilisateur veut jouer à un jeu de labyrinthe
-        else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--game") == 0 ||
-                 strcmp(argv[i], "-gs") == 0 ||
-                 strcmp(argv[i], "--game-show") == 0) {
-            // Si aucun labyrinthe n'est chargé
-            if (!mazeLoaded) {
-                std::cout << "No maze loaded" << std::endl;
-                return MAZE_COMMAND_ERROR;
-            }
-            std::string type = "fog";
+        else if (strcmp(argv[i], "-ga") == 0 ||
+                 strcmp(argv[i], "--game") == 0) {
             // Si l'utilisateur a spécifié le type de jeu
-            if (i + 1 < argc) {
-                if (strcmp(argv[i + 1], "-t") == 0 ||
-                    strcmp(argv[i + 1], "--type") == 0) {
-                    i++;
-                    if (i + 1 < argc) {
-                        if (strcmp(argv[i + 1], "fog") == 0 ||
-                            strcmp(argv[i + 1], "f") == 0) {
-                            type = "fog";
-                        } else if (strcmp(argv[i + 1], "fog_right") == 0 ||
-                                   strcmp(argv[i + 1], "fr") == 0) {
-                            type = "fog_right";
-                        } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
-                                   strcmp(argv[i + 1], "fl") == 0) {
-                            type = "fog_left";
-                        } else {
-                            return help(MAZE_COMMAND_ERROR);
-                        }
-                        i++;
+            while (i + 1 < argc && argv[i + 1][0] == '-' &&
+                   (strcmp(argv[i + 1], "-t") == 0 ||
+                    strcmp(argv[i + 1], "--type") == 0)) {
+                i++;
+                if (i + 1 < argc) {
+                    if (strcmp(argv[i + 1], "fog") == 0 ||
+                        strcmp(argv[i + 1], "f") == 0) {
+                        std::string *type = new std::string("fog");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "fog_right") == 0 ||
+                               strcmp(argv[i + 1], "fr") == 0) {
+                        std::string *type = new std::string("fog_right");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
+                               strcmp(argv[i + 1], "fl") == 0) {
+                        std::string *type = new std::string("fog_left");
+                        types.push(type);
                     } else {
                         return help(MAZE_COMMAND_ERROR);
                     }
+                    i++;
+                } else {
+                    return help(MAZE_COMMAND_ERROR);
                 }
             }
-            gameMaze(&maze, type, nullptr);
         }
         // Si l'utilisateur a spécifié une commande inconnue
         else {
             return help(MAZE_COMMAND_ERROR, argv[i]);
         }
     }
+    auto maze = Maze();
+    std::ofstream fileLatex(outputLatex);
+    std::ofstream fileStats(outputStats);
 
-    return 0;
+    while (!algorithms.empty()) {
+        std::string *algorithm = static_cast<std::string *>(algorithms.top());
+        algorithms.pop();
+        for (int i = 0; i < nbMazeToGenerate; i++) {
+            generateMaze(&maze, *algorithm, width, height, perfect, probability,
+                         nullptr);
+            if (startInitiated) maze.setStart(startX, startY);
+            if (endInitiated) maze.setEnd(endX, endY);
+
+            maze.setStart(startX, startY);
+            maze.setEnd(endX, endY);
+            for (int j = 0; j < types.size(); j++) {
+                std::string *type = static_cast<std::string *>(types.get(j));
+                for (int k = 0; k < nbUsesMaze; k++) {
+                    int steps = gameMaze(&maze, *type, nullptr);
+                    std::cout << "Maze " << i << " : game " << k
+                              << " resolved in " << steps << " steps"
+                              << std::endl;
+                }
+            }
+        }
+    }
+    return EXIT_SUCCESS;
 }
