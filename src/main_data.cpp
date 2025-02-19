@@ -14,7 +14,6 @@
 #include "lib/solver/breadth_first.hpp"
 #include "lib/stack.hpp"
 #include "lib/var.hpp"
-#include "lib/writer.hpp"
 
 /**
  * Affiche la documentation d'aide pour l'application de génération
@@ -110,12 +109,6 @@ int help(const int error, const std::string &command) {
 void generateMaze(Maze *maze, const std::string &algorithm, const int width,
                   const int height, const bool isPerfect,
                   const double probability, Show *show) {
-    // std::cout << "Parameters of generation : algorithm=" << algorithm
-    //           << ", width=" << width << ", height=" << height
-    //           << ", isPerfect=" << isPerfect;
-    // if (!isPerfect) std::cout << ", probability=" << probability;
-    // std::cout << std::endl;
-    const auto start = std::chrono::high_resolution_clock::now();
     if (algorithm == "back_tracking" || algorithm == "bt")
         algo_back_tracking(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "wall_maker" || algorithm == "wm")
@@ -126,16 +119,6 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
         algo_fractal(maze, width, isPerfect, probability, show);
     else
         exit(MAZE_COMMAND_ERROR);
-    // const auto end = std::chrono::high_resolution_clock::now();
-    // std::cout
-    //     << "Generated in "
-    //     << std::chrono::duration_cast<std::chrono::seconds>(end -
-    //     start).count()
-    //     << "."
-    //     << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-    //                .count() %
-    //            1000
-    //     << "s" << std::endl;
 }
 
 /**
@@ -145,8 +128,6 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
  * @param show Affichage
  */
 int gameMaze(Maze *maze, const std::string &type, Show *show) {
-    // std::cout << "Parameters of game : type=" << type << std::endl;
-    // const auto start = std::chrono::high_resolution_clock::now();
     int steps = 0;
     if (type == "fog" || type == "f") {
         steps = game_fog(maze, show);
@@ -157,16 +138,6 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
-    // const auto end = std::chrono::high_resolution_clock::now();
-    // std::cout
-    //     << "Resolved in "
-    //     << std::chrono::duration_cast<std::chrono::seconds>(end -
-    //     start).count()
-    //     << "."
-    //     << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-    //                .count() %
-    //            1000
-    //     << "s with " << steps << " steps" << std::endl;
     return steps;
 }
 
@@ -255,7 +226,7 @@ int main(const int argc, char *argv[]) {
         else if (strcmp(argv[i], "-ng") == 0 ||
                  strcmp(argv[i], "--number-generations") == 0) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
-            const int nbMaze = std::atoi(argv[i + 1]);
+            const int nbMaze = std::stoi(argv[i + 1]);
             if (nbMaze > 0)
                 nbMazeToGenerate = nbMaze;
             else
@@ -264,7 +235,7 @@ int main(const int argc, char *argv[]) {
         } else if (strcmp(argv[i], "-nu") == 0 ||
                    strcmp(argv[i], "--number-uses") == 0) {
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
-            const int nbUses = std::atoi(argv[i + 1]);
+            const int nbUses = std::stoi(argv[i + 1]);
             if (nbUses > 0)
                 nbUsesMaze = nbUses;
             else
@@ -288,21 +259,19 @@ int main(const int argc, char *argv[]) {
                         if (i + 1 < argc) {
                             if (strcmp(argv[i + 1], "back_tracking") == 0 ||
                                 strcmp(argv[i + 1], "bt") == 0) {
-                                std::string *algo =
-                                    new std::string("back_tracking");
+                                auto *algo = new std::string("back_tracking");
                                 algorithms.push(algo);
                             } else if (strcmp(argv[i + 1], "wall_maker") == 0 ||
                                        strcmp(argv[i + 1], "wm") == 0) {
-                                std::string *algo =
-                                    new std::string("wall_maker");
+                                auto *algo = new std::string("wall_maker");
                                 algorithms.push(algo);
                             } else if (strcmp(argv[i + 1], "diagonal") == 0 ||
                                        strcmp(argv[i + 1], "d") == 0) {
-                                std::string *algo = new std::string("diagonal");
+                                auto *algo = new std::string("diagonal");
                                 algorithms.push(algo);
                             } else if (strcmp(argv[i + 1], "fractal") == 0 ||
                                        strcmp(argv[i + 1], "f") == 0) {
-                                std::string *algo = new std::string("fractal");
+                                auto *algo = new std::string("fractal");
                                 algorithms.push(algo);
                             } else {
                                 return help(MAZE_COMMAND_ERROR);
@@ -377,15 +346,15 @@ int main(const int argc, char *argv[]) {
                 if (i + 1 < argc) {
                     if (strcmp(argv[i + 1], "fog") == 0 ||
                         strcmp(argv[i + 1], "f") == 0) {
-                        std::string *type = new std::string("fog");
+                        auto *type = new std::string("fog");
                         types.push(type);
                     } else if (strcmp(argv[i + 1], "fog_right") == 0 ||
                                strcmp(argv[i + 1], "fr") == 0) {
-                        std::string *type = new std::string("fog_right");
+                        auto *type = new std::string("fog_right");
                         types.push(type);
                     } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
                                strcmp(argv[i + 1], "fl") == 0) {
-                        std::string *type = new std::string("fog_left");
+                        auto *type = new std::string("fog_left");
                         types.push(type);
                     } else {
                         return help(MAZE_COMMAND_ERROR);
@@ -406,7 +375,7 @@ int main(const int argc, char *argv[]) {
     std::ofstream fileStats(outputStats);
     auto maze = Maze();
     while (!algorithms.empty()) {
-        std::string *algorithm = static_cast<std::string *>(algorithms.top());
+        auto *algorithm = static_cast<std::string *>(algorithms.top());
         algorithms.pop();
         for (int i = 0; i < nbMazeToGenerate; i++) {
             generateMaze(&maze, *algorithm, width, height, perfect, probability,
@@ -414,7 +383,7 @@ int main(const int argc, char *argv[]) {
             if (startInitiated) maze.setStart(startX, startY);
             if (endInitiated) maze.setEnd(endX, endY);
             for (int j = 0; j < types.size(); j++) {
-                std::string *type = static_cast<std::string *>(types.get(j));
+                auto *type = static_cast<std::string *>(types.get(j));
                 for (int k = 0; k < nbUsesMaze; k++) {
                     if (!startInitiated) maze.resetStart();
                     if (!endInitiated) maze.resetEnd();
