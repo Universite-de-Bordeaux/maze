@@ -190,6 +190,18 @@ class Maze {
      * @return Le générateur de nombres aléatoires
      */
     Rand *getRand() { return &rand_; }
+    /**
+     * @brief Réinitialise l'emplacement de départ du labyrinthe
+     */
+    void resetStart();
+    /**
+     * @brief Réinitialise l'emplacement d'arrivée du labyrinthe
+     */
+    void resetEnd();
+    /**
+     * @brief Réinitialise l'emplacement de départ et d'arrivée du labyrinthe
+     */
+    void resetStartEnd();
 
    private:
     int width_{};              ///< Largeur du labyrinthe

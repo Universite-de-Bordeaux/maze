@@ -413,18 +413,21 @@ int main(const int argc, char *argv[]) {
                          nullptr);
             if (startInitiated) maze.setStart(startX, startY);
             if (endInitiated) maze.setEnd(endX, endY);
-            solver_breadth_first(&maze, nullptr);
-            int nbCellsSolution = 0;
-            for (int j = 0; j < maze.getWidth(); j++) {
-                for (int k = 0; k < maze.getHeight(); k++) {
-                    if (maze.getCell(j, k)->getStatus() == MAZE_STATUS_WAY_OUT)
-                        nbCellsSolution++;
-                }
-            }
-            maze.clearMaze();
             for (int j = 0; j < types.size(); j++) {
                 std::string *type = static_cast<std::string *>(types.get(j));
                 for (int k = 0; k < nbUsesMaze; k++) {
+                    if (!startInitiated) maze.resetStart();
+                    if (!endInitiated) maze.resetEnd();
+                    solver_breadth_first(&maze, nullptr);
+                    int nbCellsSolution = 0;
+                    for (int x = 0; x < maze.getWidth(); x++) {
+                        for (int y = 0; y < maze.getHeight(); y++) {
+                            if (maze.getCell(x, y)->getStatus() ==
+                                MAZE_STATUS_WAY_OUT)
+                                nbCellsSolution++;
+                        }
+                    }
+                    maze.clearMaze();
                     int steps = gameMaze(&maze, *type, nullptr);
                     std::cout
                         << "i = " << i << ", j = " << j << ", k = " << k
