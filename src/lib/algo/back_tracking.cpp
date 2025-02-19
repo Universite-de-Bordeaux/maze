@@ -28,7 +28,7 @@ static Cell* nextNeighbor(const Cell* current, Rand* rand) {
     if (numberOfNeighbors == 0) return nullptr;
     Cell* listCell[numberOfNeighbors];
     current->getAbsoluteNeighborsNotVisited(
-        listCell);            // Récupérer les voisins non visités
+        listCell);  // Récupérer les voisins non visités
     const int random = rand->get(0, numberOfNeighbors - 1);
     return listCell[random];  // Retourner un voisin non visité au hasard
 }
@@ -140,4 +140,5 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
         }
     }
     refreshShow(show);
+    maze->clearMaze();
 }

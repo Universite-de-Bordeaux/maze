@@ -11,6 +11,7 @@
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/maze.hpp"
+#include "lib/solver/breadth_first.hpp"
 #include "lib/stack.hpp"
 #include "lib/var.hpp"
 #include "lib/writer.hpp"
@@ -109,11 +110,11 @@ int help(const int error, const std::string &command) {
 void generateMaze(Maze *maze, const std::string &algorithm, const int width,
                   const int height, const bool isPerfect,
                   const double probability, Show *show) {
-    std::cout << "Parameters of generation : algorithm=" << algorithm
-              << ", width=" << width << ", height=" << height
-              << ", isPerfect=" << isPerfect;
-    if (!isPerfect) std::cout << ", probability=" << probability;
-    std::cout << std::endl;
+    // std::cout << "Parameters of generation : algorithm=" << algorithm
+    //           << ", width=" << width << ", height=" << height
+    //           << ", isPerfect=" << isPerfect;
+    // if (!isPerfect) std::cout << ", probability=" << probability;
+    // std::cout << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
     if (algorithm == "back_tracking" || algorithm == "bt")
         algo_back_tracking(maze, width, height, isPerfect, probability, show);
@@ -144,7 +145,7 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
  * @param show Affichage
  */
 int gameMaze(Maze *maze, const std::string &type, Show *show) {
-    std::cout << "Parameters of game : type=" << type << std::endl;
+    // std::cout << "Parameters of game : type=" << type << std::endl;
     // const auto start = std::chrono::high_resolution_clock::now();
     int steps = 0;
     if (type == "fog" || type == "f") {
@@ -400,10 +401,10 @@ int main(const int argc, char *argv[]) {
             return help(MAZE_COMMAND_ERROR, argv[i]);
         }
     }
-    auto maze = Maze();
+
     std::ofstream fileLatex(outputLatex);
     std::ofstream fileStats(outputStats);
-
+    auto maze = Maze();
     while (!algorithms.empty()) {
         std::string *algorithm = static_cast<std::string *>(algorithms.top());
         algorithms.pop();
@@ -412,16 +413,27 @@ int main(const int argc, char *argv[]) {
                          nullptr);
             if (startInitiated) maze.setStart(startX, startY);
             if (endInitiated) maze.setEnd(endX, endY);
-
-            maze.setStart(startX, startY);
-            maze.setEnd(endX, endY);
+            solver_breadth_first(&maze, nullptr);
+            int nbCellsSolution = 0;
+            for (int j = 0; j < maze.getWidth(); j++) {
+                for (int k = 0; k < maze.getHeight(); k++) {
+                    if (maze.getCell(j, k)->getStatus() == MAZE_STATUS_WAY_OUT)
+                        nbCellsSolution++;
+                }
+            }
+            maze.clearMaze();
             for (int j = 0; j < types.size(); j++) {
                 std::string *type = static_cast<std::string *>(types.get(j));
                 for (int k = 0; k < nbUsesMaze; k++) {
                     int steps = gameMaze(&maze, *type, nullptr);
-                    std::cout << "Maze " << i << " : game " << k
-                              << " resolved in " << steps << " steps"
-                              << std::endl;
+                    std::cout
+                        << "i = " << i << ", j = " << j << ", k = " << k
+                        << ", algorithm=" << *algorithm
+                        << ", size width=" << width << ", height=" << height
+                        << ", perfect=" << perfect
+                        << ", probability=" << probability << ", type=" << *type
+                        << ", steps=" << steps
+                        << ", solution=" << nbCellsSolution << std::endl;
                 }
             }
         }
