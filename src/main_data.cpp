@@ -473,8 +473,14 @@ int main(const int argc, char *argv[]) {
                         << ", probability=" << probability << ", type=" << *type
                         << ", steps=" << steps
                         << ", solution=" << nbCellsSolution << std::endl;
-                    fileLatex << *algorithm << " & " << width << "x" << height
-                              << " & ";
+                    if (*algorithm == "back_tracking") {
+                        fileLatex << "back tracking";
+                    } else if (*algorithm == "wall_maker") {
+                        fileLatex << "wall maker";
+                    } else {
+                        fileLatex << *algorithm;
+                    }
+                    fileLatex << " & " << width << "x" << height << " & ";
                     if (perfect)
                         fileLatex << "Oui";
                     else
