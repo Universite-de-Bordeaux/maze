@@ -485,8 +485,16 @@ int main(const int argc, char *argv[]) {
                         fileLatex << "Oui";
                     else
                         fileLatex << "Non" << probability;
-                    fileLatex << " & " << *type << " & " << steps << " & "
-                              << nbCellsSolution << " \\\\" << std::endl;
+                    fileLatex << " & ";
+                    if (*type == "fog_left") {
+                        fileLatex << "fog left";
+                    } else if (*type == "fog_right") {
+                        fileLatex << "fog right";
+                    } else {
+                        fileLatex << *type;
+                    }
+                    fileLatex << " & " << steps << " & " << nbCellsSolution
+                              << " \\\\" << std::endl;
                 }
             }
         }
