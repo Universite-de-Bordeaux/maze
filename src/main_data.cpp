@@ -372,7 +372,74 @@ int main(const int argc, char *argv[]) {
     }
 
     std::ofstream fileLatex(outputLatex);
+    if (!fileLatex) {
+        std::cout << "File not found : " << outputLatex << std::endl;
+        return MAZE_FILE_ERROR;
+    }
     std::ofstream fileStats(outputStats);
+    if (!fileStats) {
+        std::cout << "File not found : " << outputStats << std::endl;
+        return MAZE_FILE_ERROR;
+    }
+    fileLatex << "\\begin{table}[ht]" << std::endl;
+    fileLatex << "\\centering" << std::endl;
+    fileLatex << "\\caption{Statistiques ";
+    if (types.size() == 1) {
+        auto *type = static_cast<std::string *>(types.get(0));
+        fileLatex << "pour le type de visite " << *type;
+    } else {
+        fileLatex << "pour les types de visite ";
+        for (int i = 0; i < types.size(); i++) {
+            auto *type = static_cast<std::string *>(types.get(i));
+            fileLatex << *type;
+            if (i < types.size() - 1) fileLatex << ", ";
+        }
+    }
+    fileLatex << " sur " << nbMazeToGenerate;
+    if (nbMazeToGenerate > 1) {
+        fileLatex << " labyrinthes";
+        if (perfect)
+            fileLatex << " parfaits";
+        else
+            fileLatex << " imparfaits";
+    } else {
+        fileLatex << " labyrinthe";
+        if (perfect)
+            fileLatex << " parfait";
+        else
+            fileLatex << " imparfait";
+    }
+    fileLatex << " de taille " << width << "x" << height;
+    if (!perfect) fileLatex << " avec une probabilité de " << probability;
+    if (nbMazeToGenerate > 1)
+        fileLatex << " générés";
+    else
+        fileLatex << " généré";
+    fileLatex << " avec";
+    if (algorithms.size() == 1) {
+        auto *algorithm = static_cast<std::string *>(algorithms.top());
+        fileLatex << " l'algorithme " << *algorithm;
+    } else {
+        fileLatex << " les algorithmes ";
+        for (int i = 0; i < algorithms.size(); i++) {
+            auto *algorithm = static_cast<std::string *>(algorithms.get(i));
+            fileLatex << *algorithm;
+            if (i < algorithms.size() - 1) fileLatex << ", ";
+        }
+    }
+    fileLatex << "}" << std::endl;
+    fileLatex << "\\begin{tabular}{";
+    if (perfect)
+        fileLatex << "lcccccc}";
+    else
+        fileLatex << "lccccccc}";
+    fileLatex << "\\toprule" << std::endl;
+    fileLatex << "Générateur & Taille & Parfait ";
+    if (!perfect) fileLatex << "& Probabilité ";
+    fileLatex << "& Visite & "
+                 "Nombre de pas & Optimale \\\\"
+              << std::endl;
+    fileLatex << "\\midrule" << std::endl;
     auto maze = Maze();
     while (!algorithms.empty()) {
         auto *algorithm = static_cast<std::string *>(algorithms.top());
@@ -406,9 +473,23 @@ int main(const int argc, char *argv[]) {
                         << ", probability=" << probability << ", type=" << *type
                         << ", steps=" << steps
                         << ", solution=" << nbCellsSolution << std::endl;
+                    fileLatex << *algorithm << " & " << width << "x" << height
+                              << " & ";
+                    if (perfect)
+                        fileLatex << "Oui & " << probability;
+                    else
+                        fileLatex << "Non";
+                    fileLatex << " & " << *type << " & " << steps << " & "
+                              << nbCellsSolution << " \\\\" << std::endl;
                 }
             }
         }
     }
+    fileLatex << "\\bottomrule" << std::endl;
+    fileLatex << "\\end{tabular}" << std::endl;
+    fileLatex << "\\end{table}" << std::endl;
+    fileLatex << "\\FloatBarrier" << std::endl;
+    fileLatex.close();
+    fileStats.close();
     return EXIT_SUCCESS;
 }
