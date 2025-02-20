@@ -452,6 +452,7 @@ int main(const int argc, char *argv[]) {
                  "Nombre de pas & Optimale \\\\"
               << std::endl;
     fileLatex << "\\midrule" << std::endl;
+    Stack stepsStack;
     auto maze = Maze();
     while (!algorithms.empty()) {
         auto *algorithm = static_cast<std::string *>(algorithms.top());
@@ -477,6 +478,7 @@ int main(const int argc, char *argv[]) {
                     }
                     maze.clearMaze();
                     int steps = gameMaze(&maze, *type, nullptr);
+                    stepsStack.push(new int(steps));
                     std::cout
                         << "i = " << i << ", j = " << j << ", k = " << k
                         << ", algorithm=" << *algorithm
@@ -517,6 +519,36 @@ int main(const int argc, char *argv[]) {
     fileLatex << "\\FloatBarrier" << std::endl;
     fileLatex.close();
     std::cout << "File " << outputLatex << " saved" << std::endl;
+    // Calcul des statistiques
+    // Calcul de la moyenne
+    int sum = 0;
+    for (int i = 0; i < stepsStack.size(); i++) {
+        auto *steps = static_cast<int *>(stepsStack.get(i));
+        sum += *steps;
+    }
+    double average = static_cast<double>(sum) / stepsStack.size();
+    // Calcul de la variance
+    double variance = 0;
+    for (int i = 0; i < stepsStack.size(); i++) {
+        auto *steps = static_cast<int *>(stepsStack.get(i));
+        variance += (*steps - average) * (*steps - average);
+    }
+    variance /= stepsStack.size();
+    // Calcul de l'écart-type
+    double standardDeviation = sqrt(variance);
+    // Calcul de l'écart-type de la moyenne
+    double standardDeviationAverage =
+        standardDeviation / sqrt(stepsStack.size());
+    fileStats << "Moyenne : " << average << std::endl;
+    std::cout << "Moyenne : " << average << std::endl;
+    fileStats << "Variance : " << variance << std::endl;
+    std::cout << "Variance : " << variance << std::endl;
+    fileStats << "Ecart-type : " << standardDeviation << std::endl;
+    std::cout << "Ecart-type : " << standardDeviation << std::endl;
+    fileStats << "Ecart-type de la moyenne : " << standardDeviationAverage
+              << std::endl;
+    std::cout << "Ecart-type de la moyenne : " << standardDeviationAverage
+              << std::endl;
     fileStats.close();
     std::cout << "File " << outputStats << " saved" << std::endl;
     return EXIT_SUCCESS;
