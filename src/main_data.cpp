@@ -476,9 +476,9 @@ int main(const int argc, char *argv[]) {
                     fileLatex << *algorithm << " & " << width << "x" << height
                               << " & ";
                     if (perfect)
-                        fileLatex << "Oui & " << probability;
+                        fileLatex << "Oui";
                     else
-                        fileLatex << "Non";
+                        fileLatex << "Non" << probability;
                     fileLatex << " & " << *type << " & " << steps << " & "
                               << nbCellsSolution << " \\\\" << std::endl;
                 }
