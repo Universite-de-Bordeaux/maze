@@ -391,7 +391,13 @@ int main(const int argc, char *argv[]) {
         fileLatex << "pour les types de visite ";
         for (int i = 0; i < types.size(); i++) {
             auto *type = static_cast<std::string *>(types.get(i));
-            fileLatex << *type;
+            if (*type == "fog_left") {
+                fileLatex << "fog left";
+            } else if (*type == "fog_right") {
+                fileLatex << "fog right";
+            } else {
+                fileLatex << *type;
+            }
             if (i < types.size() - 1) fileLatex << ", ";
         }
     }
@@ -423,7 +429,13 @@ int main(const int argc, char *argv[]) {
         fileLatex << " les algorithmes ";
         for (int i = 0; i < algorithms.size(); i++) {
             auto *algorithm = static_cast<std::string *>(algorithms.get(i));
-            fileLatex << *algorithm;
+            if (*algorithm == "back_tracking") {
+                fileLatex << "back tracking";
+            } else if (*algorithm == "wall_maker") {
+                fileLatex << "wall maker";
+            } else {
+                fileLatex << *algorithm;
+            }
             if (i < algorithms.size() - 1) fileLatex << ", ";
         }
     }
