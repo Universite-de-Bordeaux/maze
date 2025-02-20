@@ -430,9 +430,9 @@ int main(const int argc, char *argv[]) {
     fileLatex << "}" << std::endl;
     fileLatex << "\\begin{tabular}{";
     if (perfect)
-        fileLatex << "lcccccc}";
+        fileLatex << "lccccc}";
     else
-        fileLatex << "lccccccc}";
+        fileLatex << "lcccccc}";
     fileLatex << "\\toprule" << std::endl;
     fileLatex << "Générateur & Taille & Parfait ";
     if (!perfect) fileLatex << "& Probabilité ";
