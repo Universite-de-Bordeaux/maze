@@ -490,6 +490,8 @@ int main(const int argc, char *argv[]) {
     fileLatex << "\\end{table}" << std::endl;
     fileLatex << "\\FloatBarrier" << std::endl;
     fileLatex.close();
+    std::cout << "File " << outputLatex << " saved" << std::endl;
     fileStats.close();
+    std::cout << "File " << outputStats << " saved" << std::endl;
     return EXIT_SUCCESS;
 }
