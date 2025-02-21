@@ -460,6 +460,8 @@ int main(const int argc, char *argv[]) {
         for (int i = 0; i < nbMazeToGenerate; i++) {
             generateMaze(&maze, *algorithm, width, height, perfect, probability,
                          nullptr);
+            Show show(&maze);
+            show.create();
             if (startInitiated) maze.setStart(startX, startY);
             if (endInitiated) maze.setEnd(endX, endY);
             for (int j = 0; j < types.size(); j++) {
@@ -477,7 +479,8 @@ int main(const int argc, char *argv[]) {
                         }
                     }
                     maze.clearMaze();
-                    int steps = gameMaze(&maze, *type, nullptr);
+                    refreshShow(&show);
+                    int steps = gameMaze(&maze, *type, &show);
                     stepsStack.push(new int(steps));
                     std::cout
                         << "i = " << i << ", j = " << j << ", k = " << k
