@@ -455,6 +455,9 @@ int main(const int argc, char *argv[]) {
     fileLatex << "\\midrule" << std::endl;
     Stack stepsStack;
     auto maze = Maze();
+    long iteration =
+        algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
+    long currentIteration = 0;
     while (!algorithms.empty()) {
         auto *algorithm = static_cast<std::string *>(algorithms.top());
         algorithms.pop();
@@ -466,6 +469,7 @@ int main(const int argc, char *argv[]) {
             for (int j = 0; j < types.size(); j++) {
                 auto *type = static_cast<std::string *>(types.get(j));
                 for (int k = 0; k < nbUsesMaze; k++) {
+                    currentIteration++;
                     if (!startInitiated) maze.resetStart();
                     if (!endInitiated) maze.resetEnd();
                     solver_breadth_first(&maze, nullptr);
@@ -480,14 +484,16 @@ int main(const int argc, char *argv[]) {
                     maze.clearMaze();
                     int steps = gameMaze(&maze, *type, nullptr);
                     stepsStack.push(new int(steps));
-                    std::cout << "i = " << i << ", j = " << j << ", k = " << k
-                              << ", algorithm=" << *algorithm
-                              << ", size width=" << maze.getWidth()
-                              << ", height=" << maze.getHeight()
-                              << ", perfect=" << perfect
-                              << ", probability=" << probability
-                              << ", type=" << *type << ", steps=" << steps
-                              << ", solution=" << nbCellsSolution << std::endl;
+                    // std::cout << "i = " << i << ", j = " << j << ", k = " <<
+                    // k
+                    //           << ", algorithm=" << *algorithm
+                    //           << ", size width=" << maze.getWidth()
+                    //           << ", height=" << maze.getHeight()
+                    //           << ", perfect=" << perfect
+                    //           << ", probability=" << probability
+                    //           << ", type=" << *type << ", steps=" << steps
+                    //           << ", solution=" << nbCellsSolution <<
+                    //           std::endl;
                     if (*algorithm == "back_tracking") {
                         fileLatex << "back tracking";
                     } else if (*algorithm == "wall_maker") {
@@ -510,6 +516,24 @@ int main(const int argc, char *argv[]) {
                     }
                     fileLatex << " & " << steps << " & " << nbCellsSolution
                               << " \\\\" << std::endl;
+                    if (currentIteration <= 1 ||
+                        static_cast<int>(currentIteration * 100 / iteration) -
+                                static_cast<int>((currentIteration - 1) * 100 /
+                                                 iteration) !=
+                            0) {
+                        if (currentIteration * 100 / iteration > 0)
+                            std::cout << std::endl;
+                        std::cout << "Progress : "
+                                  << currentIteration * 100 / iteration
+                                  << "% - " << currentIteration << "/"
+                                  << iteration << " ";
+                        std::cout.flush();
+                    } else if (currentIteration * 10000 / iteration -
+                                   (currentIteration - 1) * 10000 / iteration !=
+                               0) {
+                        std::cout << ".";
+                        std::cout.flush();
+                    }
                 }
             }
         }
