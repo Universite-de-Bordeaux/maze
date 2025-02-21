@@ -116,7 +116,7 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
     else if (algorithm == "diagonal" || algorithm == "d")
         algo_diagonal(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "fractal" || algorithm == "f")
-        algo_fractal(maze, width, isPerfect, probability, show);
+        algo_fractal(maze, log2(width), isPerfect, probability, show);
     else
         exit(MAZE_COMMAND_ERROR);
 }
@@ -460,8 +460,6 @@ int main(const int argc, char *argv[]) {
         for (int i = 0; i < nbMazeToGenerate; i++) {
             generateMaze(&maze, *algorithm, width, height, perfect, probability,
                          nullptr);
-            Show show(&maze);
-            show.create();
             if (startInitiated) maze.setStart(startX, startY);
             if (endInitiated) maze.setEnd(endX, endY);
             for (int j = 0; j < types.size(); j++) {
@@ -479,17 +477,16 @@ int main(const int argc, char *argv[]) {
                         }
                     }
                     maze.clearMaze();
-                    refreshShow(&show);
-                    int steps = gameMaze(&maze, *type, &show);
+                    int steps = gameMaze(&maze, *type, nullptr);
                     stepsStack.push(new int(steps));
-                    std::cout
-                        << "i = " << i << ", j = " << j << ", k = " << k
-                        << ", algorithm=" << *algorithm
-                        << ", size width=" << width << ", height=" << height
-                        << ", perfect=" << perfect
-                        << ", probability=" << probability << ", type=" << *type
-                        << ", steps=" << steps
-                        << ", solution=" << nbCellsSolution << std::endl;
+                    std::cout << "i = " << i << ", j = " << j << ", k = " << k
+                              << ", algorithm=" << *algorithm
+                              << ", size width=" << maze.getWidth()
+                              << ", height=" << maze.getHeight()
+                              << ", perfect=" << perfect
+                              << ", probability=" << probability
+                              << ", type=" << *type << ", steps=" << steps
+                              << ", solution=" << nbCellsSolution << std::endl;
                     if (*algorithm == "back_tracking") {
                         fileLatex << "back tracking";
                     } else if (*algorithm == "wall_maker") {
