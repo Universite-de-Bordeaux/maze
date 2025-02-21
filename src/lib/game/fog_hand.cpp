@@ -10,6 +10,7 @@ int game_fog_hand(const Maze *maze, Show *show, const bool left) {
     int direction = 0;
     const int move = left ? 1 : 3;
     int steps = 0;
+    int count = 0;
     bool tmpChangeDirection = false;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
@@ -43,8 +44,11 @@ int game_fog_hand(const Maze *maze, Show *show, const bool left) {
             cell = neighbor;
         }
         steps++;
-        if (steps % (maze->getWidth() * maze->getHeight()) == 0) {
+        count++;
+        if (count >= maze->getWidth() * maze->getHeight() * maze->getWidth() *
+                         maze->getHeight()) {
             tmpChangeDirection = true;
+            count = 0;
         }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
