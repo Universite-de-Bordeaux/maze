@@ -116,7 +116,8 @@ void generateMaze(Maze *maze, const std::string &algorithm, const int width,
     else if (algorithm == "diagonal" || algorithm == "d")
         algo_diagonal(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "fractal" || algorithm == "f")
-        algo_fractal(maze, log2(width), isPerfect, probability, show);
+        algo_fractal(maze, static_cast<int>(log2(width)), isPerfect,
+                     probability, show);
     else
         exit(MAZE_COMMAND_ERROR);
 }
@@ -521,23 +522,25 @@ int main(const int argc, char *argv[]) {
     std::cout << "File " << outputLatex << " saved" << std::endl;
     // Calcul des statistiques
     // Calcul de la moyenne
-    int sum = 0;
+    long sum = 0;
     for (int i = 0; i < stepsStack.size(); i++) {
         auto *steps = static_cast<int *>(stepsStack.get(i));
         sum += *steps;
     }
-    double average = static_cast<double>(sum) / stepsStack.size();
+    long double average = static_cast<long double>(sum) /
+                          static_cast<long double>(stepsStack.size());
     // Calcul de la variance
-    double variance = 0;
+    long double variance = 0;
     for (int i = 0; i < stepsStack.size(); i++) {
         auto *steps = static_cast<int *>(stepsStack.get(i));
-        variance += (*steps - average) * (*steps - average);
+        variance += (static_cast<long double>(*steps) - average) *
+                    (static_cast<long double>(*steps) - average);
     }
     variance /= stepsStack.size();
     // Calcul de l'écart-type
-    double standardDeviation = sqrt(variance);
+    long double standardDeviation = sqrt(static_cast<double>(variance));
     // Calcul de l'écart-type de la moyenne
-    double standardDeviationAverage =
+    long double standardDeviationAverage =
         standardDeviation / sqrt(stepsStack.size());
     fileStats << "Moyenne : " << average << std::endl;
     std::cout << "Moyenne : " << average << std::endl;
