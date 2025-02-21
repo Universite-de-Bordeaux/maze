@@ -11,8 +11,11 @@ int game_fog_hand(const Maze *maze, Show *show, const bool left) {
     const int move = left ? 1 : 3;
     int steps = 0;
     int count = 0;
+    int loop = 0;
     bool tmpChangeDirection = false;
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
+    while (
+        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
+        steps <= pow(maze->getWidth() * maze->getHeight(), 3)) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
@@ -45,12 +48,16 @@ int game_fog_hand(const Maze *maze, Show *show, const bool left) {
         }
         steps++;
         count++;
-        if (count >= maze->getWidth() * maze->getHeight() * maze->getWidth() *
-                         maze->getHeight()) {
+        if (count >= maze->getWidth() * maze->getHeight() * 2 + loop) {
             tmpChangeDirection = true;
             count = 0;
+            loop++;
         }
     }
-    cell->setStatus(MAZE_STATUS_WAY_OUT);
-    return steps;
+    if (cell->getX() == maze->getEndX() && cell->getY() == maze->getEndY()) {
+        cell->setStatus(MAZE_STATUS_WAY_OUT);
+    } else {
+        cell->setStatus(MAZE_STATUS_HOPELESS);
+    }
+    return steps > pow(maze->getWidth() * maze->getHeight(), 3) ? -1 : steps;
 }
