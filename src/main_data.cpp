@@ -76,7 +76,8 @@ void help() {
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles : all, de, der, del, f, fr, fl, s, sr, sl, sde, "
+    std::cout << "    Types disponibles : all, de, der, del, f, fr, fl, s, sr, "
+                 "sl, sde, "
                  "sder, sdel, tt, ttr, ttl\n";
     std::cout << "                              all : tous les types\n";
     std::cout << "                              de : dead_end\n";
