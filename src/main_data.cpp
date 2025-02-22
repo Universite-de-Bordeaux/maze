@@ -222,7 +222,7 @@ struct size {
 };
 
 struct typesStruct {
-    int steps = 0;
+    long steps = 0;
     int sumOptimum = 0;
     int sumDiffOptimum = 0;
     int nbSolveValid = 0;
@@ -853,7 +853,7 @@ int main(const int argc, char *argv[]) {
         for (int j = 0; j < types.size(); j++) {
             auto *typesStruct =
                 static_cast<struct typesStruct *>(typesStructs.get(j));
-            std::string *type = static_cast<std::string *>(types.get(j));
+            auto *type = static_cast<std::string *>(types.get(j));
             int nbSolveValid = typesStruct->nbSolveValid;
             if (nbSolveValid > 0) {
                 long double average =
@@ -870,7 +870,7 @@ int main(const int argc, char *argv[]) {
                 // Calcul de la variance
                 long double variance = 0;
                 for (int i = 0; i < typesStructs.size(); i++) {
-                    int steps = typesStruct->steps;
+                    long steps = typesStruct->steps;
                     if (steps >= 0) {
                         variance +=
                             (static_cast<long double>(steps) - average) *
