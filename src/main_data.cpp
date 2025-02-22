@@ -567,7 +567,7 @@ int main(const int argc, char *argv[]) {
     long iteration =
         algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
     long currentIteration = 0;
-
+    const int nbAlgorithms = algorithms.size();
     while (!algorithms.empty()) {
         auto *algorithm = static_cast<std::string *>(algorithms.top());
         fileStats << "\\begin{table}[ht]" << std::endl;
@@ -589,10 +589,10 @@ int main(const int argc, char *argv[]) {
                       << "}" << std::endl;
         }
 
-        fileStats << "\\begin{tabular}{lcccc}"
+        fileStats << "\\begin{tabular}{lcccccc}"
                   << std::endl;  // mise en forme du tableau
-        fileStats << "\\toprule type & moyenne & écart-type & écart absolue "
-                     "optimum & écart relatif optimum \\\\"
+        fileStats << "\\toprule type & moyenne & écart-type & EAO & ERO & "
+                     "valide & optimale \\\\"
                   << std::endl;  // première ligne indiquant le contenu des
                                  // colonnes
 
@@ -604,6 +604,7 @@ int main(const int argc, char *argv[]) {
             int sumOptimum = 0;
             int sumDiffOptimum = 0;
             int nbSolveValid = 0;
+            int nbOptimalSolution = 0;
             for (int i = 0; i < nbMazeToGenerate; i++) {
                 generateMaze(&maze, *algorithm, width, height, perfect,
                              probability, nullptr);
@@ -630,6 +631,9 @@ int main(const int argc, char *argv[]) {
                         sumOptimum += nbCellsSolution;
                         sumDiffOptimum += steps - nbCellsSolution;
                         nbSolveValid++;
+                        if (steps == nbCellsSolution) {
+                            nbOptimalSolution++;
+                        }
                     }
 
                     stepsStack.push(new int(steps));
@@ -652,7 +656,12 @@ int main(const int argc, char *argv[]) {
                     std::cout
                         << "\rProgress : " << currentIteration * 100 / iteration
                         << "% - " << currentIteration << "/" << iteration
-                        << " - " << *algorithm << " - " << *type << std::flush;
+                        << " - algorithm " << nbAlgorithms - algorithms.size()
+                        << "/" << nbAlgorithms << " - type " << j + 1 << "/"
+                        << types.size() << " - maze " << i + 1 << "/"
+                        << nbMazeToGenerate << " - uses " << k + 1 << "/"
+                        << nbUsesMaze << " - " << *algorithm << " - " << *type
+                        << std::flush;
                 }
             }
 
@@ -673,8 +682,7 @@ int main(const int argc, char *argv[]) {
                                          static_cast<long double>(nbSolveValid);
 
             long double absoluteDiffOptimum = average - optimumAverage;
-            long double relativeDiffOptimum =
-                100 * (average / optimumAverage) - 100;
+            long double relativeDiffOptimum = 100 * (optimumAverage / average);
 
             // Calcul de la variance
             long double variance = 0;
@@ -691,14 +699,18 @@ int main(const int argc, char *argv[]) {
                 standardDeviation / sqrt(stepsStack.size());
 
             fileStats << replaceUnderscoresWithSpaces(*type) << " &";
-            fileStats << " $ " << average << " $ "
+            fileStats << "$ " << average << " $ "
                       << " & ";
-            fileStats << " $ " << standardDeviation << " $ "
+            fileStats << "$ " << standardDeviation << " $ "
                       << " & ";
-            fileStats << " $ " << absoluteDiffOptimum << " $ "
+            fileStats << "$ " << absoluteDiffOptimum << " $ "
                       << " & ";
-            fileStats << " $ " << relativeDiffOptimum << "\\%"
+            fileStats << "$ " << relativeDiffOptimum << "\\%"
                       << " $"
+                      << " & ";
+            fileStats << "$ " << nbSolveValid << " $"
+                      << " & ";
+            fileStats << "$ " << nbOptimalSolution << " $"
                       << " \\\\ " << std::endl;
         }
         fileStats << "\\bottomrule" << std::endl;
