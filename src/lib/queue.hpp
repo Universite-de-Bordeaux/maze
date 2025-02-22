@@ -20,6 +20,12 @@ class Queue {
      */
     void push(void *data);
     /**
+     * @brief Retourne un élément de la file
+     * @param index Index de l'élément
+     * @return Un élément de la file
+     */
+    void *get(int index) const;
+    /**
      * @brief Retire un élément de la file
      */
     void pop();
@@ -39,6 +45,11 @@ class Queue {
      * @return Vrai si la file est vide
      */
     bool empty() const;
+    /**
+     * @brief Retourne la taille de la file
+     * @return La taille de la file
+     */
+    int size() const { return size_; }
 
    private:
     void **data;    ///< Tableau contenant les éléments de la file

@@ -55,4 +55,11 @@ void *Queue::pop(Rand *rand) {
 
 void *Queue::front() const { return data[0]; }
 
+void *Queue::get(const int index) const {
+    if (index < 0 || index >= size_) {
+        return nullptr;
+    }
+    return data[index];
+}
+
 bool Queue::empty() const { return size_ == 0; }
