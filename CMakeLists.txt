@@ -11,6 +11,7 @@ set(SOURCE_FILES
         src/lib/checker/depth_first.cpp
         src/lib/game/fog.cpp
         src/lib/game/fog_hand.cpp
+        src/lib/game/splatoon.cpp
         src/lib/game/tom_thumb.cpp
         src/lib/game/tom_thumb_hand.cpp
         src/lib/game/walk.cpp
@@ -49,6 +50,7 @@ set(SOURCE_FILES_DATA
         src/lib/algo/back_tracking.cpp
         src/lib/algo/diagonal.cpp
         src/lib/algo/fractal.cpp
+        src/lib/game/splatoon.cpp
         src/lib/algo/wall_maker.cpp
         src/lib/cell.cpp
         src/lib/checker/depth_first.cpp

@@ -368,6 +368,9 @@ L'affichage graphique propose les contrôles suivants :
 - `fog` (f) : Visite avec brouillard. (par défaut)
 - `fog_right` (fr) : Brouillard à droite.
 - `fog_left` (fl) : Brouillard à gauche.
+- `splatoon` (s) : Marque et compte le nombre de fois que chaque cellule est visitée.
+- `splatoon_right` (sr) : Marque et compte le nombre de fois que chaque cellule est visitée à droite.
+- `splatoon_left` (sl) : Marque et compte le nombre de fois que chaque cellule est visitée à gauche.
 - `tom_thumb` (tt) : Marche le chemin.
 - `tom_thumb_right` (ttr) : Marque le chemin à droite.
 - `tom_thumb_left` (ttl) : Marque le chemin à gauche.

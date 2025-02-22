@@ -8,6 +8,7 @@
 #include "lib/checker/depth_first.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
+#include "lib/game/splatoon.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/game/walk.hpp"
@@ -124,11 +125,14 @@ void help() {
                  "labyrinthe avec affichage\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout
-        << "    Types disponibles :       f, fr, fl, w, wg, tt, ttr, ttl\n";
+    std::cout << "    Types disponibles :       f, fr, fl, s, sr, sl, tt, ttr, "
+                 "ttl, w, wg\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
+    std::cout << "                              s : splatoon\n";
+    std::cout << "                              sr : splatoon_right\n";
+    std::cout << "                              sl : splatoon_left\n";
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
@@ -263,16 +267,22 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_fog_hand(maze, show, false);
     } else if (type == "fog_left" || type == "fl") {
         steps = game_fog_hand(maze, show, true);
-    } else if (type == "walk" || type == "w") {
-        steps = game_walk(maze, show, false);
-    } else if (type == "walk_ghost" || type == "wg") {
-        steps = game_walk(maze, show, true);
+    } else if (type == "splatoon" || type == "s") {
+        steps = game_splatoon(maze, show);
+    } else if (type == "splatoon_right" || type == "sr") {
+        // steps = game_splatoon_hand(maze, show, false);
+    } else if (type == "splatoon_left" || type == "sl") {
+        // steps = game_splatoon_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
         steps = game_tom_thumb_hand(maze, show, false);
     } else if (type == "tom_thumb_left" || type == "ttl") {
         steps = game_tom_thumb_hand(maze, show, true);
+    } else if (type == "walk" || type == "w") {
+        steps = game_walk(maze, show, false);
+    } else if (type == "walk_ghost" || type == "wg") {
+        steps = game_walk(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -575,12 +585,15 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
                                    strcmp(argv[i + 1], "fl") == 0) {
                             type = "fog_left";
-                        } else if (strcmp(argv[i + 1], "walk") == 0 ||
-                                   strcmp(argv[i + 1], "w") == 0) {
-                            type = "walk";
-                        } else if (strcmp(argv[i + 1], "walk_ghost") == 0 ||
-                                   strcmp(argv[i + 1], "wg") == 0) {
-                            type = "walk_ghost";
+                        } else if (strcmp(argv[i + 1], "splatoon") == 0 ||
+                                   strcmp(argv[i + 1], "s") == 0) {
+                            type = "splatoon";
+                        } else if (strcmp(argv[i + 1], "splatoon_right") == 0 ||
+                                   strcmp(argv[i + 1], "sr") == 0) {
+                            type = "splatoon_right";
+                        } else if (strcmp(argv[i + 1], "splatoon_left") == 0 ||
+                                   strcmp(argv[i + 1], "sl") == 0) {
+                            type = "splatoon_left";
                         } else if (strcmp(argv[i + 1], "tom_thumb") == 0 ||
                                    strcmp(argv[i + 1], "tt") == 0) {
                             type = "tom_thumb";
@@ -591,6 +604,12 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "tom_thumb_left") == 0 ||
                                    strcmp(argv[i + 1], "ttl") == 0) {
                             type = "tom_thumb_left";
+                        } else if (strcmp(argv[i + 1], "walk") == 0 ||
+                                   strcmp(argv[i + 1], "w") == 0) {
+                            type = "walk";
+                        } else if (strcmp(argv[i + 1], "walk_ghost") == 0 ||
+                                   strcmp(argv[i + 1], "wg") == 0) {
+                            type = "walk_ghost";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }
