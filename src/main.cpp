@@ -6,9 +6,12 @@
 
 #include "lib/checker/breadth_first.hpp"
 #include "lib/checker/depth_first.hpp"
+#include "lib/game/dead_end.hpp"
+#include "lib/game/dead_end_hand.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/game/splatoon.hpp"
+#include "lib/game/splatoon_hand.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/game/walk.hpp"
@@ -125,8 +128,12 @@ void help() {
                  "labyrinthe avec affichage\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles :       f, fr, fl, s, sr, sl, tt, ttr, "
+    std::cout << "    Types disponibles :       de, der, del, f, fr, fl, s, "
+                 "sr, sl, tt, ttr, "
                  "ttl, w, wg\n";
+    std::cout << "                              de : dead_end\n";
+    std::cout << "                              der : dead_end_right\n";
+    std::cout << "                              del : dead_end_left\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
@@ -261,7 +268,13 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
     std::cout << "Parameters of game : type=" << type << std::endl;
     const auto start = std::chrono::high_resolution_clock::now();
     int steps = 0;
-    if (type == "fog" || type == "f") {
+    if (type == "dead_end" || type == "de") {
+        steps = game_dead_end(maze, show);
+    } else if (type == "dead_end_right" || type == "der") {
+        steps = game_dead_end_hand(maze, show, false);
+    } else if (type == "dead_end_left" || type == "del") {
+        steps = game_dead_end_hand(maze, show, true);
+    } else if (type == "fog" || type == "f") {
         steps = game_fog(maze, show);
     } else if (type == "fog_right" || type == "fr") {
         steps = game_fog_hand(maze, show, false);
@@ -270,9 +283,9 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
     } else if (type == "splatoon" || type == "s") {
         steps = game_splatoon(maze, show);
     } else if (type == "splatoon_right" || type == "sr") {
-        // steps = game_splatoon_hand(maze, show, false);
+        steps = game_splatoon_hand(maze, show, false);
     } else if (type == "splatoon_left" || type == "sl") {
-        // steps = game_splatoon_hand(maze, show, true);
+        steps = game_splatoon_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
@@ -576,8 +589,17 @@ int main(int argc, char *argv[]) {
                     strcmp(argv[i + 1], "--type") == 0) {
                     i++;
                     if (i + 1 < argc) {
-                        if (strcmp(argv[i + 1], "fog") == 0 ||
-                            strcmp(argv[i + 1], "f") == 0) {
+                        if (strcmp(argv[i + 1], "dead_end") == 0 ||
+                            strcmp(argv[i + 1], "de") == 0) {
+                            type = "dead_end";
+                        } else if (strcmp(argv[i + 1], "dead_end_right") == 0 ||
+                                   strcmp(argv[i + 1], "der") == 0) {
+                            type = "dead_end_right";
+                        } else if (strcmp(argv[i + 1], "dead_end_left") == 0 ||
+                                   strcmp(argv[i + 1], "del") == 0) {
+                            type = "dead_end_left";
+                        } else if (strcmp(argv[i + 1], "fog") == 0 ||
+                                   strcmp(argv[i + 1], "f") == 0) {
                             type = "fog";
                         } else if (strcmp(argv[i + 1], "fog_right") == 0 ||
                                    strcmp(argv[i + 1], "fr") == 0) {

@@ -56,9 +56,14 @@ maze_project/
 │           ├── breadth_first.hpp  # Algorithme de largeur
 │           └── depth_first.hpp    # Algorithme de profondeur
 │       └── game/                  # Jeux et visites interactives
+│           ├── dead_end.hpp       # Visite en marquant les cellules sans issue
+│           ├── dead_end_hand.hpp  # Visite en marquant les cellules sans issue à la main
 │           ├── fog.hpp            # Visite avec brouillard
 │           ├── fog_hand.hpp       # Visite avec brouillard à la main
-│           ├── tom_thumb_hand.hpp # Visite en marchant le chemin à la main
+│           ├── splatoon.hpp       # Visite en marquant le chemin et le nombre de visites par cellule
+│           ├── splatoon_hand.hpp  # Visite en marquant le chemin et le nombre de visites par cellule à la main
+│           ├── tom_thumb.hpp      # Visite en marquant le chemin
+│           ├── tom_thumb_hand.hpp # Visite en marquant le chemin à la main
 │           ├── walk.hpp           # Jeu de marche
 │       └── solver/                # Algorithmes de résolution
 │           ├── breadth_first.hpp  # Algorithme de largeur
@@ -365,6 +370,9 @@ L'affichage graphique propose les contrôles suivants :
 
 **Types de Jeu ou de visite** :
 
+- `dead_end` (de) : Visite en marquant les cellules sans issue.
+- `dead_end_right` (der) : Visite en marquant les cellules sans issue à droite.
+- `dead_end_left` (del) : Visite en marquant les cellules sans issue à gauche.
 - `fog` (f) : Visite avec brouillard. (par défaut)
 - `fog_right` (fr) : Brouillard à droite.
 - `fog_left` (fl) : Brouillard à gauche.
