@@ -6,6 +6,7 @@
 int game_tom_thumb(Maze *maze, Show *show) {
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
+    cell->setAlreadyVisited(true);
     refreshShow(show);
     int steps = 0;
     while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
@@ -39,6 +40,7 @@ int game_tom_thumb(Maze *maze, Show *show) {
             refreshShow(show, 2, showCell);
             cell = neighbor;
         }
+        cell->setAlreadyVisited(true);
         steps++;
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
