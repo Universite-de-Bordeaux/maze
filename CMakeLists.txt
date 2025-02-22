@@ -11,6 +11,7 @@ set(SOURCE_FILES
         src/lib/checker/depth_first.cpp
         src/lib/game/fog.cpp
         src/lib/game/fog_hand.cpp
+        src/lib/game/tom_thumb.cpp
         src/lib/game/tom_thumb_hand.cpp
         src/lib/game/walk.cpp
         src/lib/maze.cpp

@@ -368,6 +368,7 @@ L'affichage graphique propose les contrôles suivants :
 - `fog` (f) : Visite avec brouillard. (par défaut)
 - `fog_right` (fr) : Brouillard à droite.
 - `fog_left` (fl) : Brouillard à gauche.
+- `tom_thumb` (tt) : Marche le chemin.
 - `tom_thumb_right` (ttr) : Marque le chemin à droite.
 - `tom_thumb_left` (ttl) : Marque le chemin à gauche.
 - `walk` (w) : Marche normale. (nécessite l'activation de show)

@@ -8,6 +8,7 @@
 #include "lib/checker/depth_first.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
+#include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/game/walk.hpp"
 #include "lib/maze.hpp"
@@ -123,10 +124,12 @@ void help() {
                  "labyrinthe avec affichage\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles :       f, fr, fl, w, wg, ttr, ttl\n";
+    std::cout
+        << "    Types disponibles :       f, fr, fl, w, wg, tt, ttr, ttl\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
+    std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
     std::cout << "                              w : walk\n";
@@ -264,6 +267,8 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_walk(maze, show, false);
     } else if (type == "walk_ghost" || type == "wg") {
         steps = game_walk(maze, show, true);
+    } else if (type == "tom_thumb" || type == "tt") {
+        steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
         steps = game_tom_thumb_hand(maze, show, false);
     } else if (type == "tom_thumb_left" || type == "ttl") {
@@ -395,8 +400,8 @@ int main(int argc, char *argv[]) {
             bool perfect = false;
             std::string algorithm = "depth_first_left";
             while (i + 1 < argc && argv[i + 1][0] == '-' &&
-                   ((strcmp(argv[i + 1], "-p") == 0 ||
-                     strcmp(argv[i + 1], "--perfect") == 0) ||
+                   (strcmp(argv[i + 1], "-p") == 0 ||
+                    strcmp(argv[i + 1], "--perfect") == 0 ||
                     (strcmp(argv[i + 1], "-a") == 0 ||
                      strcmp(argv[i + 1], "--algorithm") == 0))) {
                 if (i + 1 < argc) {
@@ -499,8 +504,8 @@ int main(int argc, char *argv[]) {
                  strcmp(argv[i], "--resolve") == 0 ||
                  strcmp(argv[i], "-rs") == 0 ||
                  strcmp(argv[i], "--resolve-show") == 0) {
-            bool isShow = (strcmp(argv[i], "-rs") == 0 ||
-                           strcmp(argv[i], "--resolve-show") == 0);
+            bool isShow = strcmp(argv[i], "-rs") == 0 ||
+                          strcmp(argv[i], "--resolve-show") == 0;
             // Si aucun labyrinthe n'est chargé
             if (!mazeLoaded) {
                 std::cout << "No maze loaded" << std::endl;
@@ -547,8 +552,8 @@ int main(int argc, char *argv[]) {
         else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--game") == 0 ||
                  strcmp(argv[i], "-gs") == 0 ||
                  strcmp(argv[i], "--game-show") == 0) {
-            bool isShow = (strcmp(argv[i], "-gs") == 0 ||
-                           strcmp(argv[i], "--game-show") == 0);
+            bool isShow = strcmp(argv[i], "-gs") == 0 ||
+                          strcmp(argv[i], "--game-show") == 0;
             // Si aucun labyrinthe n'est chargé
             if (!mazeLoaded) {
                 std::cout << "No maze loaded" << std::endl;
@@ -576,6 +581,9 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "walk_ghost") == 0 ||
                                    strcmp(argv[i + 1], "wg") == 0) {
                             type = "walk_ghost";
+                        } else if (strcmp(argv[i + 1], "tom_thumb") == 0 ||
+                                   strcmp(argv[i + 1], "tt") == 0) {
+                            type = "tom_thumb";
                         } else if (strcmp(argv[i + 1], "tom_thumb_right") ==
                                        0 ||
                                    strcmp(argv[i + 1], "ttr") == 0) {
