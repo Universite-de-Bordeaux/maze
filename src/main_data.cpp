@@ -10,6 +10,8 @@
 #include "lib/algo/wall_maker.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
+#include "lib/game/tom_thumb.hpp"
+#include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
 #include "lib/solver/breadth_first.hpp"
 #include "lib/stack.hpp"
@@ -66,10 +68,14 @@ void help() {
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles :       f, fr, fl\n";
+    std::cout
+        << "    Types disponibles :       f, fr, fl, tt, ttr, ttl\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
+    std::cout << "                              tt : tom_thumb\n";
+    std::cout << "                              ttr : tom_thumb_right\n";
+    std::cout << "                              ttl : tom_thumb_left\n";
     std::cout << "\n";
 
     std::cout << "Pour plus d'informations, veuillez consulter la "
@@ -136,6 +142,12 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_fog_hand(maze, show, false);
     } else if (type == "fog_left" || type == "fl") {
         steps = game_fog_hand(maze, show, true);
+    } else if (type == "tom_thumb" || type == "tt") {
+        steps = game_tom_thumb(maze, show);
+    } else if (type == "tom_thumb_right" || type == "ttr") {
+        steps = game_tom_thumb_hand(maze, show, false);
+    } else if (type == "tom_thumb_left" || type == "ttl") {
+        steps = game_tom_thumb_hand(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -356,6 +368,18 @@ int main(const int argc, char *argv[]) {
                     } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
                                strcmp(argv[i + 1], "fl") == 0) {
                         auto *type = new std::string("fog_left");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "tom_thumb") == 0 ||
+                               strcmp(argv[i + 1], "tt") == 0) {
+                        auto *type = new std::string("tom_thumb");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "tom_thumb_right") == 0 ||
+                               strcmp(argv[i + 1], "ttr") == 0) {
+                        auto *type = new std::string("tom_thumb_right");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "tom_thumb_left") == 0 ||
+                               strcmp(argv[i + 1], "ttl") == 0) {
+                        auto *type = new std::string("tom_thumb_left");
                         types.push(type);
                     } else {
                         return help(MAZE_COMMAND_ERROR);

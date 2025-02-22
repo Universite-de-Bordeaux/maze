@@ -54,6 +54,8 @@ set(SOURCE_FILES_DATA
         src/lib/checker/depth_first.cpp
         src/lib/game/fog.cpp
         src/lib/game/fog_hand.cpp
+        src/lib/game/tom_thumb.cpp
+        src/lib/game/tom_thumb_hand.cpp
         src/lib/maze.cpp
         src/lib/queue.cpp
         src/lib/rand.cpp
