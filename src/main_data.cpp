@@ -45,7 +45,7 @@ void help() {
     std::cout << "-ol, --output-latex <fichier> Sauvegarde les statistiques "
                  "dans un fichier LaTeX\n";
     std::cout << "-os, --output-stats <fichier> Sauvegarde les statistiques "
-                 "dans un fichier texte\n";
+                 "dans un fichier LaTeX\n";
     std::cout
         << "-ng, --nb-generate <n>        Génère n labyrinthes (défaut : 1)\n";
     std::cout << "-nu, --nb-uses <n>            Utilise n fois le labyrinthe "
@@ -76,9 +76,12 @@ void help() {
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles :       all, f, fr, fl, s, sr, sl, tt, "
-                 "ttr, ttl\n";
+    std::cout << "    Types disponibles : all, de, der, del, f, fr, fl, s, sr, sl, sde, "
+                 "sder, sdel, tt, ttr, ttl\n";
     std::cout << "                              all : tous les types\n";
+    std::cout << "                              de : dead_end\n";
+    std::cout << "                              der : dead_end_right\n";
+    std::cout << "                              del : dead_end_left\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
@@ -93,10 +96,21 @@ void help() {
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
-    std::cout << "                              de : dead_end\n";
-    std::cout << "                              der : dead_end_right\n";
-    std::cout << "                              del : dead_end_left\n";
     std::cout << "\n";
+
+    std::cout << "POINTS DE DEPART\n";
+    std::cout << "------------------------------\n";
+    std::cout
+        << "-ps, --player-start <x> <y>   Définit la position de départ\n";
+    std::cout
+        << "-pe, --player-end <x> <y>     Définit la position d'arrivée\n";
+    std::cout << "  Formats acceptés :          pourcentages, indices, "
+                 "négatifs (relatifs)\n";
+    std::cout << "                              `0.5, 0.5` : centre\n";
+    std::cout
+        << "                              `0, 0` : coin supérieur gauche\n";
+    std::cout
+        << "                              `-1, -1` : coin inférieur droit\n";
 
     std::cout << "Pour plus d'informations, veuillez consulter la "
                  "documentation complète.\n";
