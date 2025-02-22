@@ -46,8 +46,8 @@ void help() {
                  "dans un fichier LaTeX\n";
     std::cout << "-os, --output-stats <fichier> Sauvegarde les statistiques "
                  "dans un fichier LaTeX\n";
-    std::cout
-        << "-ng, --nb-generate <n>        Génère n labyrinthes (défaut : 1)\n";
+    std::cout << "-ng, --number-generations <n>        Génère n labyrinthes "
+                 "(défaut : 1)\n";
     std::cout << "-nu, --nb-uses <n>            Utilise n fois le labyrinthe "
                  "(défaut : 1)\n";
 

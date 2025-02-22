@@ -10,6 +10,7 @@ Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe tr
 
 1. `maze_generator.out` : Génère des labyrinthes.
 2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
+3. `maze_data.out` : Génère des statistiques sur les visites dans les labyrinthes.
 
 <img alt="Exemple de labyrinthe généré avec ce projet" src="doc/maze.png" title="Labyrinthe"/>
 
@@ -34,6 +35,7 @@ maze_project/
 │   └── rapport.pdf                # Document technique complet
 ├── src/                           # Code source
 │   ├── main.cpp                   # Fichier principal du résolveur, vérificateur et joueur
+│   ├── maze_data.cpp              # Fichier principal du générateur de statistiques de visites
 │   ├── maze_generator.cpp         # Fichier principal du générateur
 │   └── instances/                 # Exemples de labyrinthes
 │   └── lib/                       # Bibliothèques
@@ -144,6 +146,7 @@ Ce projet comporte deux exécutables principaux :
 
 1. `maze_generator.out` : Génère des labyrinthes avec différents algorithmes.
 2. `maze.out` : Résout, vérifie et joue dans des labyrinthes.
+3. `maze_data.out` : Génère des statistiques sur les visites dans les labyrinthes.
 
 ### Commandes Générales
 
@@ -154,6 +157,8 @@ Ce projet comporte deux exécutables principaux :
 ./maze_generator.out -h
 ./maze.out --help
 ./maze.out -h
+./maze_data.out --help
+./maze_data.out -h
 ```
 
 #### Charger un labyrinthe :
@@ -381,9 +386,12 @@ L'affichage graphique propose les contrôles suivants :
 - `splatoon` (s) : Marque et compte le nombre de fois que chaque cellule est visitée.
 - `splatoon_right` (sr) : Marque et compte le nombre de fois que chaque cellule est visitée à droite.
 - `splatoon_left` (sl) : Marque et compte le nombre de fois que chaque cellule est visitée à gauche.
-- `splatoon_dead_end` (sde) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les cellules sans issue.
-- `splatoon_dead_end_right` (sder) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les cellules sans issue à droite.
-- `splatoon_dead_end_left` (sdel) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les cellules sans issue à gauche.
+- `splatoon_dead_end` (sde) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les
+  cellules sans issue.
+- `splatoon_dead_end_right` (sder) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les
+  cellules sans issue à droite.
+- `splatoon_dead_end_left` (sdel) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les
+  cellules sans issue à gauche.
 - `tom_thumb` (tt) : Marche le chemin.
 - `tom_thumb_right` (ttr) : Marque le chemin à droite.
 - `tom_thumb_left` (ttl) : Marque le chemin à gauche.
@@ -401,6 +409,111 @@ L'affichage graphique propose les contrôles suivants :
    ```bash
    ./maze.out -i maze.txt -gs -t w
    ```
+
+#### Générateur de Statistiques (`maze_data.out`)
+
+**Syntaxe de base** :
+
+```bash
+./maze_data.out [OPTIONS]
+```
+
+**Options** :
+
+| Option                      | Description                                              | Exemple                                |
+|-----------------------------|----------------------------------------------------------|----------------------------------------|
+| `-ol, --output-latex`       | Génère un fichier LaTeX avec l'ensemble des échantillons | `./maze_data.out -ol echantillons.tex` |
+| `-os, --output-stats`       | Génère un fichier texte avec les statistiques            | `./maze_data.out -os statistiques.txt` |
+| `-ng, --number-generations` | Spécifie le nombre de générations à effectuer            | `-ng 100`                              |
+| `-nu, --number-uses`        | Spécifie le nombre de visites à effectuer par génération | `-nu 100`                              |
+| `-g, --generate`            | Active la génération de labyrinthes                      | `./maze_data.out -g`                   |
+| `-ga, --game`               | Active la visite de labyrinthes                          | `./maze_data.out -ga`                  |
+
+Le fichier des statistiques contient les informations suivantes :
+
+- **Moyenne** : Moyenne du nombre de pas pour atteindre la sortie.
+- **Écart-type** : Écart-type du nombre de pas pour atteindre la sortie.
+- **Différence absolue et relative entre le nombre de pas et la solution optimale** : Différence entre le nombre de pas
+  et la solution optimale.
+- **Nombre de visites valides** : Nombre de visites valides.
+- **Pourcentage de solutions optimales** : Pourcentage de solutions optimales.
+
+##### Options de génération
+
+| Option            | Description                                         | Exemple  |
+|-------------------|-----------------------------------------------------|----------|
+| -a, --algorithm   | Ajoute un algorithme de génération aux échantillons | -a bt    |
+| -d, --dimension   | Ajoute une dimension aux échantillons               | -d 20 20 |
+| -i, --imperfect   | Spécifie si les labyrinthes sont imparfaits         | -i       |
+| -p, --probability | Spécifie la probabilité de suppression de murs      | -p 0.1   |
+
+**Algorithmes de Génération** :
+
+- `all` : Tous les algorithmes de génération.
+- `back_tracking` (bt) : Algorithme de backtracking (par défaut)
+- `wall_maker` (wm) : Algorithme wall maker.
+- `diagonal` (d) : Algorithme de génération en diagonale.
+- `fractal` (f) : Algorithme fractal.
+
+**Exemples** :
+
+1. Générer des statistiques sur les labyrinthes générés avec les algorithmes `bt` et `wm` et de dimensions `20x20` et
+   `30x30` :
+   ```bash
+   ./maze_data.out -g -d 20 20 -d 30 30 -a bt -a wm -ol echantillons.tex
+   ```
+
+##### Options de visite
+
+| Option     | Description                               | Exemple |
+|------------|-------------------------------------------|---------|
+| -t, --type | Ajoute un type de visite aux échantillons | -t f    |
+
+**Types de Jeu ou de visite** :
+
+- `all` : Tous les types de visite.
+- `dead_end` (de) : Visite en marquant les cellules sans issue.
+- `dead_end_right` (der) : Visite en marquant les cellules sans issue à droite.
+- `dead_end_left` (del) : Visite en marquant les cellules sans issue à gauche.
+- `fog` (f) : Visite avec brouillard. (par défaut)
+- `fog_right` (fr) : Brouillard à droite.
+- `fog_left` (fl) : Brouillard à gauche.
+- `splatoon` (s) : Marque et compte le nombre de fois que chaque cellule est visitée.
+- `splatoon_right` (sr) : Marque et compte le nombre de fois que chaque cellule est visitée à droite.
+- `splatoon_left` (sl) : Marque et compte le nombre de fois que chaque cellule est visitée à gauche.
+- `splatoon_dead_end` (sde) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les
+  cellules sans issue.
+- `splatoon_dead_end_right` (sder) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les
+  cellules sans issue à droite.
+- `splatoon_dead_end_left` (sdel) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les
+  cellules sans issue à gauche.
+- `tom_thumb` (tt) : Marche le chemin.
+- `tom_thumb_right` (ttr) : Marque le chemin à droite.
+- `tom_thumb_left` (ttl) : Marque le chemin à gauche.
+
+**Exemples** :
+
+1. Générer des statistiques sur les labyrinthes visités avec le type `fog` :
+   ```bash
+   ./maze_data.out -g -ga -t f -os statistiques.txt
+   ```
+
+2. Générer des statistiques sur les labyrinthes visités avec le type `splatoon` :
+   ```bash
+   ./maze_data.out -g -ga -t s -os statistiques.txt
+   ```
+
+3. Générer des statistiques sur les labyrinthes visités avec tous les types :
+   ```bash
+   ./maze_data.out -g -ga -t all -os statistiques.txt
+   ```
+
+##### Options sur la position du joueur durant la visite
+
+| Option              | Description                                                 | Exemple     |
+|---------------------|-------------------------------------------------------------|-------------|
+| -ps, --player-start | Spécifie la position de départ du joueur dans le labyrinthe | -ps 0.5 0.5 |
+| -pe, --player-end   | Spécifie la position d'arrivée du joueur dans le labyrinthe | -pe 0.5 0.5 |
 
 ## Codes d'Erreur
 
