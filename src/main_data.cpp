@@ -377,11 +377,6 @@ int main(const int argc, char *argv[]) {
         std::cout << "File not found : " << outputLatex << std::endl;
         return MAZE_FILE_ERROR;
     }
-    std::ofstream fileStats(outputStats);
-    if (!fileStats) {
-        std::cout << "File not found : " << outputStats << std::endl;
-        return MAZE_FILE_ERROR;
-    }
     fileLatex << "\\begin{table}[ht]" << std::endl;
     fileLatex << "\\centering" << std::endl;
     fileLatex << "\\caption{Statistiques ";
@@ -453,21 +448,56 @@ int main(const int argc, char *argv[]) {
                  "Nombre de pas & Optimale \\\\"
               << std::endl;
     fileLatex << "\\midrule" << std::endl;
+
+    std::ofstream fileStats(outputStats);
+    if (!fileStats) {
+        std::cout << "File not found : " << outputStats << std::endl;
+        return MAZE_FILE_ERROR;
+    }
+
+    fileStats << "\\begin{table}[ht]" << std::endl;
+    fileStats << "\\centering" << std::endl;
+    fileStats << "\\caption{Algo ";
+
+    auto *algorithm = static_cast<std::string *>(algorithms.top());
+
+    if (*algorithm == "back_tracking") {
+        fileStats << "back tracking";
+    } else if (*algorithm == "wall_maker") {
+        fileStats << "wall maker";
+    } else {
+        fileStats << *algorithm;
+    }
+    fileStats << "$" << width <<  " \\times " << height << "$";
+    if (perfect) {
+        fileStats << " parfait" << "}" << std::endl;
+    }
+    else {
+        fileStats << " imparfait" << "}" << std::endl;
+    }
+
+    fileStats << "\\begin{tabular}{lccc}" << std::endl; // mise en forme du tableau
+    fileStats << "\\toprule type & moyenne & écart-type" << std::endl; // première ligne indiquant le contenu des colonnes
+
+
     Stack stepsStack;
     auto maze = Maze();
     long iteration =
         algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
     long currentIteration = 0;
-    while (!algorithms.empty()) {
-        auto *algorithm = static_cast<std::string *>(algorithms.top());
-        algorithms.pop();
-        for (int i = 0; i < nbMazeToGenerate; i++) {
-            generateMaze(&maze, *algorithm, width, height, perfect, probability,
-                         nullptr);
-            if (startInitiated) maze.setStart(startX, startY);
-            if (endInitiated) maze.setEnd(endX, endY);
-            for (int j = 0; j < types.size(); j++) {
-                auto *type = static_cast<std::string *>(types.get(j));
+
+    fileStats << "\\midrule" << std::endl; // corps du tableau
+
+    for (int j = 0; j < types.size(); j++) {
+        auto *type = static_cast<std::string *>(types.get(j));
+        while (!algorithms.empty()) {
+            auto *algorithm = static_cast<std::string *>(algorithms.top());
+            algorithms.pop();
+            for (int i = 0; i < nbMazeToGenerate; i++) {
+                generateMaze(&maze, *algorithm, width, height, perfect, probability,
+                            nullptr);
+                if (startInitiated) maze.setStart(startX, startY);
+                if (endInitiated) maze.setEnd(endX, endY);
                 for (int k = 0; k < nbUsesMaze; k++) {
                     currentIteration++;
                     if (!startInitiated) maze.resetStart();
@@ -505,7 +535,7 @@ int main(const int argc, char *argv[]) {
                         fileLatex << *type;
                     }
                     fileLatex << " & " << steps << " & " << nbCellsSolution
-                              << " \\\\" << std::endl;
+                            << " \\\\" << std::endl;
                     std::cout
                         << "\rProgress : " << currentIteration * 100 / iteration
                         << "% - " << currentIteration << "/" << iteration << " "
@@ -513,47 +543,57 @@ int main(const int argc, char *argv[]) {
                 }
             }
         }
+        // Calcul de la moyenne
+        long sum = 0;
+        for (int i = 0; i < stepsStack.size(); i++) {
+            auto *steps = static_cast<int *>(stepsStack.get(i));
+            sum += *steps;
+        }
+        long double average = static_cast<long double>(sum) /
+                              static_cast<long double>(stepsStack.size());
+        // Calcul de la variance
+        long double variance = 0;
+        for (int i = 0; i < stepsStack.size(); i++) {
+            auto *steps = static_cast<int *>(stepsStack.get(i));
+            variance += (static_cast<long double>(*steps) - average) *
+                        (static_cast<long double>(*steps) - average);
+        }
+        variance /= stepsStack.size();
+        // Calcul de l'écart-type
+        long double standardDeviation = sqrt(static_cast<double>(variance));
+        // Calcul de l'écart-type de la moyenne
+        long double standardDeviationAverage =
+            standardDeviation / sqrt(stepsStack.size());
+        fileStats << *type << std::endl;
+        std::cout << "Type : " << *type << std::endl;
+        fileStats << average << "&" << std::endl;
+        std::cout << "Moyenne : " << average << std::endl;
+        // fileStats << variance << std::endl;
+        // std::cout << "Variance : " << variance << std::endl;
+        fileStats << standardDeviation << "&" << std::endl;
+        std::cout << "Ecart-type : " << standardDeviation << std::endl;
+        // fileStats << "Ecart-type de la moyenne : " << standardDeviationAverage
+                  // << std::endl;
+        // std::cout << "Ecart-type de la moyenne : " << standardDeviationAverage
+        //           << std::endl;
+        // calcul des statistiques
     }
+
+    // écriture de la fin des fichiers
     std::cout << std::endl;
-    fileLatex << "\\bottomrule" << std::endl;
+    fileStats << "\\bottomrule" << std::endl;
     fileLatex << "\\end{tabular}" << std::endl;
     fileLatex << "\\end{table}" << std::endl;
     fileLatex << "\\FloatBarrier" << std::endl;
     fileLatex.close();
     std::cout << "File " << outputLatex << " saved" << std::endl;
-    // Calcul des statistiques
-    // Calcul de la moyenne
-    long sum = 0;
-    for (int i = 0; i < stepsStack.size(); i++) {
-        auto *steps = static_cast<int *>(stepsStack.get(i));
-        sum += *steps;
-    }
-    long double average = static_cast<long double>(sum) /
-                          static_cast<long double>(stepsStack.size());
-    // Calcul de la variance
-    long double variance = 0;
-    for (int i = 0; i < stepsStack.size(); i++) {
-        auto *steps = static_cast<int *>(stepsStack.get(i));
-        variance += (static_cast<long double>(*steps) - average) *
-                    (static_cast<long double>(*steps) - average);
-    }
-    variance /= stepsStack.size();
-    // Calcul de l'écart-type
-    long double standardDeviation = sqrt(static_cast<double>(variance));
-    // Calcul de l'écart-type de la moyenne
-    long double standardDeviationAverage =
-        standardDeviation / sqrt(stepsStack.size());
-    fileStats << "Moyenne : " << average << std::endl;
-    std::cout << "Moyenne : " << average << std::endl;
-    fileStats << "Variance : " << variance << std::endl;
-    std::cout << "Variance : " << variance << std::endl;
-    fileStats << "Ecart-type : " << standardDeviation << std::endl;
-    std::cout << "Ecart-type : " << standardDeviation << std::endl;
-    fileStats << "Ecart-type de la moyenne : " << standardDeviationAverage
-              << std::endl;
-    std::cout << "Ecart-type de la moyenne : " << standardDeviationAverage
-              << std::endl;
+
+    fileLatex << "\\bottomrule" << std::endl;
+    fileStats << "\\end{tabular}" << std::endl;
+    fileStats << "\\end{table}" << std::endl;
+    fileStats << "\\FloatBarrier" << std::endl;
     fileStats.close();
     std::cout << "File " << outputStats << " saved" << std::endl;
+
     return EXIT_SUCCESS;
 }
