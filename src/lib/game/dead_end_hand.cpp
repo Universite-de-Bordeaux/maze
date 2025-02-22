@@ -20,7 +20,7 @@ int game_dead_end_hand(const Maze *maze, Show *show, const bool left) {
     while (
         (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
         steps <= pow(maze->getWidth() * maze->getHeight(), 3)) {
-        int nbNeighborsNotVisited =
+        const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
         if (nbNeighborsNotVisited == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);

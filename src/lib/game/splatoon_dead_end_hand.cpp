@@ -13,6 +13,10 @@ int game_splatoon_dead_end_hand(const Maze *maze, Show *show, const bool left) {
         for (int j = 0; j < maze->getHeight(); j++) counts[i][j] = 0;
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
+    if (cell->getAbsoluteNumberOfNeighborsNotVisited() <= 1) {
+        cell->setStatus(MAZE_STATUS_HOPELESS);
+        cell->setAlreadyVisited(true);
+    }
     counts[cell->getX()][cell->getY()]++;
     refreshShow(show);
     int direction = 0;
@@ -30,21 +34,25 @@ int game_splatoon_dead_end_hand(const Maze *maze, Show *show, const bool left) {
             refreshShow(show, 1, &cell);
             return -1;
         }
-        int minCount = MinCountCell(cell, counts);
+        int minCount = MinCountCell(cell, counts, true);
         for (int i = 0;
-             i < 3 && cell->getNeighbor(direction) == nullptr ||
-             counts[cell->getNeighbor(direction)->getX()]
-                   [cell->getNeighbor(direction)->getY()] != minCount;
+             i < 3 &&
+             (cell->getNeighbor(direction) == nullptr ||
+              counts[cell->getNeighbor(direction)->getX()]
+                    [cell->getNeighbor(direction)->getY()] != minCount ||
+              cell->getNeighbor(direction)->isAlreadyVisited());
              i++) {
             direction = (direction + move) % 4;
         }
         if (tmpChangeDirection) {
             int tmpDirection = (direction + 2) % 4;
-            minCount = MinCountCell(cell, counts);
+            minCount = MinCountCell(cell, counts, true);
             for (int i = 0;
-                 i < 3 && cell->getNeighbor(tmpDirection) == nullptr ||
-                 counts[cell->getNeighbor(tmpDirection)->getX()]
-                       [cell->getNeighbor(tmpDirection)->getY()] != minCount;
+                 i < 3 &&
+                 (cell->getNeighbor(tmpDirection) == nullptr ||
+                  counts[cell->getNeighbor(tmpDirection)->getX()]
+                        [cell->getNeighbor(tmpDirection)->getY()] != minCount ||
+                  cell->getNeighbor(direction)->isAlreadyVisited());
                  i++) {
                 tmpDirection = (tmpDirection + move + 2) % 4;
             }
@@ -58,10 +66,15 @@ int game_splatoon_dead_end_hand(const Maze *maze, Show *show, const bool left) {
         if (direction < 0) direction += 4;
         if (neighbor != nullptr) {
             neighbor->setStatus(MAZE_STATUS_CURRENT);
-            cell->setStatus(MAZE_STATUS_VISITED);
+            if (cell->getStatus() != MAZE_STATUS_HOPELESS)
+                cell->setStatus(MAZE_STATUS_VISITED);
             Cell *showCell[2] = {cell, neighbor};
             refreshShow(show, 2, showCell);
             cell = neighbor;
+        }
+        if (cell->getAbsoluteNumberOfNeighborsNotVisited() <= 1) {
+            cell->setStatus(MAZE_STATUS_HOPELESS);
+            cell->setAlreadyVisited(true);
         }
         counts[cell->getX()][cell->getY()]++;
         steps++;
