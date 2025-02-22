@@ -21,7 +21,7 @@
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
 #include "lib/solver/breadth_first.hpp"
-#include "lib/stack.hpp"
+#include "lib/queue.hpp"
 #include "lib/var.hpp"
 
 /**
@@ -221,12 +221,12 @@ int main(const int argc, char *argv[]) {
     }
     uint nbMazeToGenerate = 1;
     uint nbUsesMaze = 1;
-    Stack algorithms;
-    Stack sizes;
+    Queue algorithms;
+    Queue sizes;
+    Queue types;
     int width = 10, height = 10;
     bool perfect = true;
     double probability = 0.01;
-    auto types = Stack();
     bool startInitiated = false;
     int startX;
     int startY;
@@ -325,9 +325,9 @@ int main(const int argc, char *argv[]) {
                             if (strcmp(argv[i + 1], "all") == 0) {
                                 algorithms.push(
                                     new std::string("back_tracking"));
-                                algorithms.push(new std::string("wall_maker"));
                                 algorithms.push(new std::string("diagonal"));
                                 algorithms.push(new std::string("fractal"));
+                                algorithms.push(new std::string("wall_maker"));
                             } else if (strcmp(argv[i + 1], "back_tracking") ==
                                            0 ||
                                        strcmp(argv[i + 1], "bt") == 0) {
@@ -356,7 +356,8 @@ int main(const int argc, char *argv[]) {
                         strcmp(argv[i + 1], "--dimension") == 0) {
                         i++;
                         if (i + 2 < argc) {
-                            sizes.push(new size{atoi(argv[i+1]), atoi(argv[i+2])});
+                            sizes.push(
+                                new size{atoi(argv[i + 1]), atoi(argv[i + 2])});
                             i += 2;
                         }
                     }
@@ -413,6 +414,9 @@ int main(const int argc, char *argv[]) {
                 i++;
                 if (i + 1 < argc) {
                     if (strcmp(argv[i + 1], "all") == 0) {
+                        types.push(new std::string("dead_end"));
+                        types.push(new std::string("dead_end_right"));
+                        types.push(new std::string("dead_end_left"));
                         types.push(new std::string("fog"));
                         types.push(new std::string("fog_right"));
                         types.push(new std::string("fog_left"));
@@ -425,9 +429,6 @@ int main(const int argc, char *argv[]) {
                         types.push(new std::string("tom_thumb"));
                         types.push(new std::string("tom_thumb_right"));
                         types.push(new std::string("tom_thumb_left"));
-                        types.push(new std::string("dead_end"));
-                        types.push(new std::string("dead_end_right"));
-                        types.push(new std::string("dead_end_left"));
                     } else if (strcmp(argv[i + 1], "fog") == 0 ||
                                strcmp(argv[i + 1], "f") == 0) {
                         types.push(new std::string("fog"));
@@ -532,7 +533,7 @@ int main(const int argc, char *argv[]) {
         fileLatex << " généré";
     fileLatex << " avec";
     if (algorithms.size() == 1) {
-        auto *algorithm = static_cast<std::string *>(algorithms.top());
+        auto *algorithm = static_cast<std::string *>(algorithms.front());
         fileLatex << " l'algorithme " << *algorithm;
     } else {
         fileLatex << " les algorithmes ";
@@ -569,16 +570,16 @@ int main(const int argc, char *argv[]) {
     }
 
     auto maze = Maze();
-    long iteration =
-        algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
+    long iteration = sizes.size() * algorithms.size() * nbMazeToGenerate *
+                     types.size() * nbUsesMaze;
     long currentIteration = 0;
-    const int nbAlgorithms = algorithms.size();
     while (!sizes.empty()) {
-        auto *size = static_cast<struct size*>(sizes.top());
+        auto *size = static_cast<struct size *>(sizes.front());
+        sizes.pop();
         int width = size->width;
         int height = size->height;
-        while (!algorithms.empty()) {
-            auto *algorithm = static_cast<std::string *>(algorithms.top());
+        for (int h = 0; h < algorithms.size(); h++) {
+            auto *algorithm = static_cast<std::string *>(algorithms.get(h));
             fileStats << "\\begin{table}[ht]" << std::endl;
             fileStats << "\\centering" << std::endl;
             fileStats << "\\caption{Algo ";
@@ -606,10 +607,9 @@ int main(const int argc, char *argv[]) {
                                      // colonnes
 
             fileStats << "\\midrule" << std::endl;  // corps du tableau
-            algorithms.pop();
             for (int j = 0; j < types.size(); j++) {
                 auto *type = static_cast<std::string *>(types.get(j));
-                Stack stepsStack;
+                Queue stepsStack;
                 int sumOptimum = 0;
                 int sumDiffOptimum = 0;
                 int nbSolveValid = 0;
@@ -666,8 +666,8 @@ int main(const int argc, char *argv[]) {
                                   << currentIteration * 100 / iteration
                                   << "% - " << currentIteration << "/"
                                   << iteration << " - algorithm "
-                                  << nbAlgorithms - algorithms.size() << "/"
-                                  << nbAlgorithms << " - type " << j + 1 << "/"
+                                  << h+1 << "/"
+                                  << algorithms.size() << " - type " << j + 1 << "/"
                                   << types.size() << " - maze " << i + 1 << "/"
                                   << nbMazeToGenerate << " - uses " << k + 1
                                   << "/" << nbUsesMaze << " - " << *algorithm
