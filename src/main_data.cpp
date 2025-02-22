@@ -462,91 +462,96 @@ int main(const int argc, char *argv[]) {
     if (types.empty()) types.push(new std::string("fog"));
 
     std::ofstream fileLatex(outputLatex);
-    if (!fileLatex) {
-        std::cout << "File not found : " << outputLatex << std::endl;
-        return MAZE_FILE_ERROR;
-    }
-    fileLatex << "\\begin{table}[ht]" << std::endl;
-    fileLatex << "\\centering" << std::endl;
-    fileLatex << "\\caption{Statistiques ";
-    if (types.size() == 1) {
-        auto *type = static_cast<std::string *>(types.get(0));
-        fileLatex << "pour le type de visite "
-                  << replaceUnderscoresWithSpaces(*type);
-    } else {
-        fileLatex << "pour les types de visite ";
-        for (int i = 0; i < types.size(); i++) {
-            auto *type = static_cast<std::string *>(types.get(i));
-            fileLatex << replaceUnderscoresWithSpaces(*type);
-            if (i < types.size() - 1) fileLatex << ", ";
+    if (!outputLatex.empty()) {
+        std::cout << "Output file : " << outputLatex << std::endl;
+        if (!fileLatex) {
+            std::cout << "File not found : " << outputLatex << std::endl;
+            return MAZE_FILE_ERROR;
         }
-    }
-    fileLatex << " sur " << nbMazeToGenerate;
-    if (nbMazeToGenerate > 1) {
-        fileLatex << " labyrinthes";
-        if (perfect)
-            fileLatex << " parfaits";
-        else
-            fileLatex << " imparfaits";
-    } else {
-        fileLatex << " labyrinthe";
-        if (perfect)
-            fileLatex << " parfait";
-        else
-            fileLatex << " imparfait";
-    }
-    if (sizes.size() == 1) {
-        auto *size = static_cast<struct size *>(sizes.get(0));
-        fileLatex << " de taille " << size->width << "x" << size->height;
-    } else {
-        fileLatex << " de tailles ";
-        for (int i = 0; i < sizes.size(); i++) {
-            auto *size = static_cast<struct size *>(sizes.get(i));
-            fileLatex << size->width << "x" << size->height;
-            if (i < sizes.size() - 1) fileLatex << ", ";
-        }
-    }
-    if (!perfect) fileLatex << " avec une probabilité de " << probability;
-    if (nbMazeToGenerate > 1)
-        fileLatex << " générés";
-    else
-        fileLatex << " généré";
-    fileLatex << " avec";
-    if (algorithms.size() == 1) {
-        auto *algorithm = static_cast<std::string *>(algorithms.front());
-        fileLatex << " l'algorithme " << *algorithm;
-    } else {
-        fileLatex << " les algorithmes ";
-        for (int i = 0; i < algorithms.size(); i++) {
-            auto *algorithm = static_cast<std::string *>(algorithms.get(i));
-            if (*algorithm == "back_tracking") {
-                fileLatex << "back tracking";
-            } else if (*algorithm == "wall_maker") {
-                fileLatex << "wall maker";
-            } else {
-                fileLatex << *algorithm;
+        fileLatex << "\\begin{table}[ht]" << std::endl;
+        fileLatex << "\\centering" << std::endl;
+        fileLatex << "\\caption{Statistiques ";
+        if (types.size() == 1) {
+            auto *type = static_cast<std::string *>(types.get(0));
+            fileLatex << "pour le type de visite "
+                      << replaceUnderscoresWithSpaces(*type);
+        } else {
+            fileLatex << "pour les types de visite ";
+            for (int i = 0; i < types.size(); i++) {
+                auto *type = static_cast<std::string *>(types.get(i));
+                fileLatex << replaceUnderscoresWithSpaces(*type);
+                if (i < types.size() - 1) fileLatex << ", ";
             }
-            if (i < algorithms.size() - 1) fileLatex << ", ";
         }
+        fileLatex << " sur " << nbMazeToGenerate;
+        if (nbMazeToGenerate > 1) {
+            fileLatex << " labyrinthes";
+            if (perfect)
+                fileLatex << " parfaits";
+            else
+                fileLatex << " imparfaits";
+        } else {
+            fileLatex << " labyrinthe";
+            if (perfect)
+                fileLatex << " parfait";
+            else
+                fileLatex << " imparfait";
+        }
+        if (sizes.size() == 1) {
+            auto *size = static_cast<struct size *>(sizes.get(0));
+            fileLatex << " de taille " << size->width << "x" << size->height;
+        } else {
+            fileLatex << " de tailles ";
+            for (int i = 0; i < sizes.size(); i++) {
+                auto *size = static_cast<struct size *>(sizes.get(i));
+                fileLatex << size->width << "x" << size->height;
+                if (i < sizes.size() - 1) fileLatex << ", ";
+            }
+        }
+        if (!perfect) fileLatex << " avec une probabilité de " << probability;
+        if (nbMazeToGenerate > 1)
+            fileLatex << " générés";
+        else
+            fileLatex << " généré";
+        fileLatex << " avec";
+        if (algorithms.size() == 1) {
+            auto *algorithm = static_cast<std::string *>(algorithms.front());
+            fileLatex << " l'algorithme " << *algorithm;
+        } else {
+            fileLatex << " les algorithmes ";
+            for (int i = 0; i < algorithms.size(); i++) {
+                auto *algorithm = static_cast<std::string *>(algorithms.get(i));
+                if (*algorithm == "back_tracking") {
+                    fileLatex << "back tracking";
+                } else if (*algorithm == "wall_maker") {
+                    fileLatex << "wall maker";
+                } else {
+                    fileLatex << *algorithm;
+                }
+                if (i < algorithms.size() - 1) fileLatex << ", ";
+            }
+        }
+        fileLatex << "}" << std::endl;
+        fileLatex << "\\begin{tabular}{";
+        if (perfect)
+            fileLatex << "lccccc}";
+        else
+            fileLatex << "lcccccc}";
+        fileLatex << "\\toprule" << std::endl;
+        fileLatex << "Générateur & Taille & Parfait ";
+        if (!perfect) fileLatex << "& Probabilité ";
+        fileLatex << "& Visite & "
+                     "Nombre de pas & Optimale \\\\"
+                  << std::endl;
+        fileLatex << "\\midrule" << std::endl;
     }
-    fileLatex << "}" << std::endl;
-    fileLatex << "\\begin{tabular}{";
-    if (perfect)
-        fileLatex << "lccccc}";
-    else
-        fileLatex << "lcccccc}";
-    fileLatex << "\\toprule" << std::endl;
-    fileLatex << "Générateur & Taille & Parfait ";
-    if (!perfect) fileLatex << "& Probabilité ";
-    fileLatex << "& Visite & "
-                 "Nombre de pas & Optimale \\\\"
-              << std::endl;
-    fileLatex << "\\midrule" << std::endl;
 
     std::ofstream fileStats(outputStats);
-    if (!fileStats) {
-        std::cout << "File not found : " << outputStats << std::endl;
-        return MAZE_FILE_ERROR;
+    if (!outputStats.empty()) {
+        if (!fileStats) {
+            std::cout << "File not found : " << outputStats << std::endl;
+            return MAZE_FILE_ERROR;
+        }
     }
 
     auto maze = Maze();
@@ -561,33 +566,34 @@ int main(const int argc, char *argv[]) {
         int height = size->height;
         for (int h = 0; h < algorithms.size(); h++) {
             auto *algorithm = static_cast<std::string *>(algorithms.get(h));
-            fileStats << "\\begin{table}[ht]" << std::endl;
-            fileStats << "\\centering" << std::endl;
-            fileStats << "\\caption{Algo ";
-            if (*algorithm == "back_tracking") {
-                fileStats << "back tracking";
-            } else if (*algorithm == "wall_maker") {
-                fileStats << "wall maker";
-            } else {
-                fileStats << *algorithm;
-            }
-            fileStats << " $" << width << " \\times " << height << "$";
-            if (perfect) {
-                fileStats << " parfait"
-                          << "}" << std::endl;
-            } else {
-                fileStats << " imparfait"
-                          << "}" << std::endl;
-            }
+            if (!outputStats.empty()) {
+                fileStats << "\\begin{table}[ht]" << std::endl;
+                fileStats << "\\centering" << std::endl;
+                fileStats << "\\caption{Algorithme ";
+                fileStats << replaceUnderscoresWithSpaces(*algorithm);
+                fileStats << " $" << width << " \\times " << height << "$";
+                if (perfect) {
+                    fileStats << " parfait";
+                } else {
+                    fileStats << " imparfait avec une probabilité de "
+                              << probability;
+                }
+                fileStats << " pour " << nbMazeToGenerate
+                          << " labyrinthes générés et "
+                             "visités "
+                          << nbUsesMaze << " fois";
+                fileStats << "}" << std::endl;
 
-            fileStats << "\\begin{tabular}{lcccccc}"
-                      << std::endl;  // mise en forme du tableau
-            fileStats << "\\toprule type & moyenne & écart-type & EAO & ERO & "
-                         "valide & optimale \\\\"
-                      << std::endl;  // première ligne indiquant le contenu des
-                                     // colonnes
+                fileStats << "\\begin{tabular}{lcccccc}"
+                          << std::endl;  // mise en forme du tableau
+                fileStats
+                    << "\\toprule Type & Moyenne & Ecart-type & EAO & ERO & "
+                       "Valide & Optimale \\\\"
+                    << std::endl;  // première ligne indiquant le contenu des
+                // colonnes
 
-            fileStats << "\\midrule" << std::endl;  // corps du tableau
+                fileStats << "\\midrule" << std::endl;  // corps du tableau
+            }
             for (int j = 0; j < types.size(); j++) {
                 auto *type = static_cast<std::string *>(types.get(j));
                 Queue stepsStack;
@@ -667,22 +673,26 @@ int main(const int argc, char *argv[]) {
                         }
 
                         stepsStack.push(new int(steps));
-                        if (*algorithm == "back_tracking") {
-                            fileLatex << "back tracking";
-                        } else if (*algorithm == "wall_maker") {
-                            fileLatex << "wall maker";
-                        } else {
-                            fileLatex << *algorithm;
+                        if (!outputLatex.empty()) {
+                            if (*algorithm == "back_tracking") {
+                                fileLatex << "back tracking";
+                            } else if (*algorithm == "wall_maker") {
+                                fileLatex << "wall maker";
+                            } else {
+                                fileLatex << *algorithm;
+                            }
+                            fileLatex << " & " << width << "x" << height
+                                      << " & ";
+                            if (perfect)
+                                fileLatex << "Oui";
+                            else
+                                fileLatex << "Non" << probability;
+                            fileLatex << " & ";
+                            fileLatex << replaceUnderscoresWithSpaces(*type);
+                            fileLatex << " & " << steps << " & "
+                                      << nbCellsSolution << " \\\\"
+                                      << std::endl;
                         }
-                        fileLatex << " & " << width << "x" << height << " & ";
-                        if (perfect)
-                            fileLatex << "Oui";
-                        else
-                            fileLatex << "Non" << probability;
-                        fileLatex << " & ";
-                        fileLatex << replaceUnderscoresWithSpaces(*type);
-                        fileLatex << " & " << steps << " & " << nbCellsSolution
-                                  << " \\\\" << std::endl;
                         std::cout
                             << "\rProgress : "
                             << currentIteration * 100 / iteration << "% - "
@@ -733,57 +743,66 @@ int main(const int argc, char *argv[]) {
                 long double standardDeviation =
                     sqrt(static_cast<double>(variance));
 
-                fileStats << replaceUnderscoresWithSpaces(*type) << " &";
-                fileStats << "$ "
-                          << static_cast<int>(
-                                 round(static_cast<double>(average)))
-                          << " $ "
-                          << " & ";
-                fileStats << "$ "
-                          << static_cast<int>(
-                                 round(static_cast<double>(standardDeviation)))
-                          << " $ "
-                          << " & ";
-                fileStats << "$ "
-                          << static_cast<int>(round(
-                                 static_cast<double>(absoluteDiffOptimum)))
-                          << " $ "
-                          << " & ";
-                fileStats << "$ "
-                          << round(1000 *
-                                   static_cast<double>(relativeDiffOptimum)) /
-                                 1000
-                          << "\\%"
-                          << " $"
-                          << " & ";
-                fileStats << "$ " << nbSolveValid << " $"
-                          << " & ";
-                fileStats << "$ "
-                          << round(1000 *
-                                   static_cast<double>(nbOptimalSolution) /
-                                   static_cast<double>(nbSolveValid)) /
-                                 1000
-                          << "\\%"
-                          << " $"
-                          << " \\\\ " << std::endl;
+                if (!outputStats.empty()) {
+                    fileStats << replaceUnderscoresWithSpaces(*type) << " &";
+                    fileStats
+                        << "$ "
+                        << static_cast<int>(round(static_cast<double>(average)))
+                        << " $ "
+                        << " & ";
+                    fileStats << "$ "
+                              << static_cast<int>(round(
+                                     static_cast<double>(standardDeviation)))
+                              << " $ "
+                              << " & ";
+                    fileStats << "$ "
+                              << static_cast<int>(round(
+                                     static_cast<double>(absoluteDiffOptimum)))
+                              << " $ "
+                              << " & ";
+                    fileStats
+                        << "$ "
+                        << round(1000 *
+                                 static_cast<double>(relativeDiffOptimum)) /
+                               1000
+                        << "\\%"
+                        << " $"
+                        << " & ";
+                    fileStats << "$ " << nbSolveValid << " $"
+                              << " & ";
+                    fileStats
+                        << "$ "
+                        << round(1000 * static_cast<double>(nbOptimalSolution) /
+                                 static_cast<double>(nbSolveValid)) /
+                               1000
+                        << "\\%"
+                        << " $"
+                        << " \\\\ " << std::endl;
+                }
             }
-            fileStats << "\\bottomrule" << std::endl;
-            fileStats << "\\end{tabular}" << std::endl;
-            fileStats << "\\end{table}" << std::endl;
-            fileStats << "\\FloatBarrier" << std::endl;
+            if (!outputStats.empty()) {
+                fileStats << "\\bottomrule" << std::endl;
+                fileStats << "\\end{tabular}" << std::endl;
+                fileStats << "\\end{table}" << std::endl;
+                fileStats << "\\FloatBarrier" << std::endl;
+            }
         }
     }
 
-    // écriture de la fin des fichiers
     std::cout << std::endl;
-    fileLatex << "\\end{tabular}" << std::endl;
-    fileLatex << "\\end{table}" << std::endl;
-    fileLatex << "\\FloatBarrier" << std::endl;
+    // écriture de la fin des fichiers
+    if (!outputLatex.empty()) {
+        fileLatex << "\\end{tabular}" << std::endl;
+        fileLatex << "\\end{table}" << std::endl;
+        fileLatex << "\\FloatBarrier" << std::endl;
+        std::cout << "File " << outputLatex << " saved" << std::endl;
+    }
     fileLatex.close();
-    std::cout << "File " << outputLatex << " saved" << std::endl;
 
     fileStats.close();
-    std::cout << "File " << outputStats << " saved" << std::endl;
+    if (!outputStats.empty()) {
+        std::cout << "File " << outputStats << " saved" << std::endl;
+    }
 
     return EXIT_SUCCESS;
 }
