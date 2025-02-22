@@ -58,7 +58,10 @@ maze_project/
 │       └── game/                  # Jeux et visites interactives
 │           ├── fog.hpp            # Visite avec brouillard
 │           ├── fog_hand.hpp       # Visite avec brouillard à la main
-│           ├── tom_thumb_hand.hpp # Visite en marchant le chemin à la main
+│           ├── splatoon.hpp       # Visite en marquant le chemin et le nombre de visites par cellule
+│           ├── splatoon_hand.hpp  # Visite en marquant le chemin et le nombre de visites par cellule à la main
+│           ├── tom_thumb.hpp      # Visite en marquant le chemin
+│           ├── tom_thumb_hand.hpp # Visite en marquant le chemin à la main
 │           ├── walk.hpp           # Jeu de marche
 │       └── solver/                # Algorithmes de résolution
 │           ├── breadth_first.hpp  # Algorithme de largeur
