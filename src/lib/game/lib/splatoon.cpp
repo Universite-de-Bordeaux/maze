@@ -1,8 +1,5 @@
 #include "splatoon.hpp"
 
-#include "../../show.hpp"
-#include "../../var.hpp"
-
 int MinCountCell(const Cell *cell, int **counts) {
     int minCount = -1;
     const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
@@ -39,8 +36,8 @@ int nbMinCountCell(const Cell *cell, int **counts, const int minCount) {
     return nbMinCount;
 }
 
-void cellsMinCountCell(const Cell *cell, int **counts,
-                              const int minCount, Cell **cells) {
+void cellsMinCountCell(const Cell *cell, int **counts, const int minCount,
+                       Cell **cells) {
     int index = 0;
     const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
     const auto neighbors = new Cell *[nbNeighbors];
