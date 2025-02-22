@@ -9,6 +9,7 @@
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/game/splatoon.hpp"
+#include "lib/game/splatoon_hand.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/game/walk.hpp"
@@ -270,9 +271,9 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
     } else if (type == "splatoon" || type == "s") {
         steps = game_splatoon(maze, show);
     } else if (type == "splatoon_right" || type == "sr") {
-        // steps = game_splatoon_hand(maze, show, false);
+        steps = game_splatoon_hand(maze, show, false);
     } else if (type == "splatoon_left" || type == "sl") {
-        // steps = game_splatoon_hand(maze, show, true);
+        steps = game_splatoon_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
