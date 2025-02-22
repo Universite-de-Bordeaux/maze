@@ -11,6 +11,8 @@
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/game/splatoon.hpp"
+#include "lib/game/splatoon_dead_end.hpp"
+#include "lib/game/splatoon_dead_end_hand.hpp"
 #include "lib/game/splatoon_hand.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
@@ -140,6 +142,11 @@ void help() {
     std::cout << "                              s : splatoon\n";
     std::cout << "                              sr : splatoon_right\n";
     std::cout << "                              sl : splatoon_left\n";
+    std::cout << "                              sde : splatoon_dead_end\n";
+    std::cout
+        << "                              sder : splatoon_dead_end_right\n";
+    std::cout
+        << "                              sdel : splatoon_dead_end_left\n";
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
@@ -280,6 +287,12 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_fog_hand(maze, show, false);
     } else if (type == "fog_left" || type == "fl") {
         steps = game_fog_hand(maze, show, true);
+    } else if (type == "splatoon_dead_end" || type == "sde") {
+        steps = game_splatoon_dead_end(maze, show);
+    } else if (type == "splatoon_dead_end_right" || type == "sder") {
+        steps = game_splatoon_dead_end_hand(maze, show, false);
+    } else if (type == "splatoon_dead_end_left" || type == "sdel") {
+        steps = game_splatoon_dead_end_hand(maze, show, true);
     } else if (type == "splatoon" || type == "s") {
         steps = game_splatoon(maze, show);
     } else if (type == "splatoon_right" || type == "sr") {
@@ -607,6 +620,18 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
                                    strcmp(argv[i + 1], "fl") == 0) {
                             type = "fog_left";
+                        } else if (strcmp(argv[i + 1], "splatoon_dead_end") ==
+                                       0 ||
+                                   strcmp(argv[i + 1], "sde") == 0) {
+                            type = "splatoon_dead_end";
+                        } else if (strcmp(argv[i + 1],
+                                          "splatoon_dead_end_right") == 0 ||
+                                   strcmp(argv[i + 1], "sder") == 0) {
+                            type = "splatoon_dead_end_right";
+                        } else if (strcmp(argv[i + 1],
+                                          "splatoon_dead_end_left") == 0 ||
+                                   strcmp(argv[i + 1], "sdel") == 0) {
+                            type = "splatoon_dead_end_left";
                         } else if (strcmp(argv[i + 1], "splatoon") == 0 ||
                                    strcmp(argv[i + 1], "s") == 0) {
                             type = "splatoon";
