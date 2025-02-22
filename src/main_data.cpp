@@ -169,11 +169,11 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
     } else if (type == "splatoon_left" || type == "sl") {
         steps = game_splatoon_hand(maze, show, true);
     } else if (type == "splatoon_dead_end" || type == "sde") {
-        steps = game_splatoon(maze, show);
+        steps = game_splatoon_dead_end(maze, show);
     } else if (type == "splatoon_dead_end_right" || type == "sder") {
-        steps = game_splatoon_hand(maze, show, false);
+        steps = game_splatoon_dead_end_hand(maze, show, false);
     } else if (type == "splatoon_dead_end_left" || type == "sdel") {
-        steps = game_splatoon_hand(maze, show, true);
+        steps = game_splatoon_dead_end_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
@@ -224,15 +224,14 @@ int main(const int argc, char *argv[]) {
     Queue algorithms;
     Queue sizes;
     Queue types;
-    int width = 10, height = 10;
     bool perfect = true;
     double probability = 0.01;
     bool startInitiated = false;
-    int startX;
-    int startY;
+    long double startX;
+    long double startY;
     bool endInitiated = false;
-    int endX;
-    int endY;
+    long double endX;
+    long double endY;
     std::string outputLatex;
     std::string outputStats;
     // Parcours les arguments
@@ -244,47 +243,15 @@ int main(const int argc, char *argv[]) {
         if (strcmp(argv[i], "-ps") == 0 ||
             strcmp(argv[i], "--player-start") == 0) {
             if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);
-            long double x_tmp = std::stold(argv[i + 1]);
-            long double y_tmp = std::stold(argv[i + 2]);
-            if (x_tmp < 0)
-                startX =
-                    static_cast<int>(static_cast<long double>(width) + x_tmp);
-            else if (x_tmp > 0 && x_tmp < 1)
-                startX =
-                    static_cast<int>(static_cast<long double>(width) * x_tmp);
-            else
-                startX = static_cast<int>(x_tmp);
-            if (y_tmp < 0)
-                startY =
-                    static_cast<int>(static_cast<long double>(height) + y_tmp);
-            else if (y_tmp > 0 && y_tmp < 1)
-                startY =
-                    static_cast<int>(static_cast<long double>(height) * y_tmp);
-            else
-                startY = static_cast<int>(y_tmp);
+            startX = std::stold(argv[i + 1]);
+            startY = std::stold(argv[i + 2]);
             startInitiated = true;
             i += 2;
         } else if (strcmp(argv[i], "-pe") == 0 ||
                    strcmp(argv[i], "--player-end") == 0) {
             if (i + 2 >= argc) return help(MAZE_COMMAND_ERROR);
-            long double x_tmp = std::stold(argv[i + 1]);
-            long double y_tmp = std::stold(argv[i + 2]);
-            if (x_tmp < 0)
-                endX =
-                    static_cast<int>(static_cast<long double>(width) + x_tmp);
-            else if (x_tmp > 0 && x_tmp < 1)
-                endX =
-                    static_cast<int>(static_cast<long double>(width) * x_tmp);
-            else
-                endX = static_cast<int>(x_tmp);
-            if (y_tmp < 0)
-                endY =
-                    static_cast<int>(static_cast<long double>(height) + y_tmp);
-            else if (y_tmp > 0 && y_tmp < 1)
-                endY =
-                    static_cast<int>(static_cast<long double>(height) * y_tmp);
-            else
-                endY = static_cast<int>(y_tmp);
+            endX = std::stold(argv[i + 1]);
+            endY = std::stold(argv[i + 2]);
             endInitiated = true;
             i += 2;
         }  // Si l'utilisateur a précisé le nombre de labyrinthes à générer
@@ -310,8 +277,8 @@ int main(const int argc, char *argv[]) {
                    strcmp(argv[i], "--generate") == 0) {
             // Si l'utilisateur a spécifié des options
             while (i + 1 < argc && argv[i + 1][0] == '-' &&
-                   ((strcmp(argv[i + 1], "-a") == 0 ||
-                     strcmp(argv[i + 1], "--algorithm") == 0) ||
+                   (strcmp(argv[i + 1], "-a") == 0 ||
+                    strcmp(argv[i + 1], "--algorithm") == 0 ||
                     (strcmp(argv[i + 1], "-d") == 0 ||
                      strcmp(argv[i + 1], "--dimension") == 0) ||
                     (strcmp(argv[i + 1], "-i") == 0 ||
@@ -356,8 +323,8 @@ int main(const int argc, char *argv[]) {
                         strcmp(argv[i + 1], "--dimension") == 0) {
                         i++;
                         if (i + 2 < argc) {
-                            sizes.push(
-                                new size{atoi(argv[i + 1]), atoi(argv[i + 2])});
+                            sizes.push(new size{std::stoi(argv[i + 1]),
+                                                std::stoi(argv[i + 2])});
                             i += 2;
                         }
                     }
@@ -490,6 +457,9 @@ int main(const int argc, char *argv[]) {
             return help(MAZE_COMMAND_ERROR, argv[i]);
         }
     }
+    if (sizes.empty()) sizes.push(new size{10, 10});
+    if (algorithms.empty()) algorithms.push(new std::string("back_tracking"));
+    if (types.empty()) types.push(new std::string("fog"));
 
     std::ofstream fileLatex(outputLatex);
     if (!fileLatex) {
@@ -525,7 +495,17 @@ int main(const int argc, char *argv[]) {
         else
             fileLatex << " imparfait";
     }
-    fileLatex << " de taille " << width << "x" << height;
+    if (sizes.size() == 1) {
+        auto *size = static_cast<struct size *>(sizes.get(0));
+        fileLatex << " de taille " << size->width << "x" << size->height;
+    } else {
+        fileLatex << " de tailles ";
+        for (int i = 0; i < sizes.size(); i++) {
+            auto *size = static_cast<struct size *>(sizes.get(i));
+            fileLatex << size->width << "x" << size->height;
+            if (i < sizes.size() - 1) fileLatex << ", ";
+        }
+    }
     if (!perfect) fileLatex << " avec une probabilité de " << probability;
     if (nbMazeToGenerate > 1)
         fileLatex << " générés";
@@ -573,6 +553,7 @@ int main(const int argc, char *argv[]) {
     long iteration = sizes.size() * algorithms.size() * nbMazeToGenerate *
                      types.size() * nbUsesMaze;
     long currentIteration = 0;
+    const int nbSizes = sizes.size();
     while (!sizes.empty()) {
         auto *size = static_cast<struct size *>(sizes.front());
         sizes.pop();
@@ -617,8 +598,48 @@ int main(const int argc, char *argv[]) {
                 for (int i = 0; i < nbMazeToGenerate; i++) {
                     generateMaze(&maze, *algorithm, width, height, perfect,
                                  probability, nullptr);
-                    if (startInitiated) maze.setStart(startX, startY);
-                    if (endInitiated) maze.setEnd(endX, endY);
+                    if (startInitiated) {
+                        int x_tmp;
+                        int y_tmp;
+                        if (startX < 0)
+                            x_tmp = static_cast<int>(
+                                static_cast<long double>(width) + startX);
+                        else if (startX > 0 && startX < 1)
+                            x_tmp = static_cast<int>(
+                                static_cast<long double>(width) * startX);
+                        else
+                            x_tmp = static_cast<int>(startX);
+                        if (startY < 0)
+                            y_tmp = static_cast<int>(
+                                static_cast<long double>(height) + startY);
+                        else if (startY > 0 && startY < 1)
+                            y_tmp = static_cast<int>(
+                                static_cast<long double>(height) * startY);
+                        else
+                            y_tmp = static_cast<int>(startY);
+                        maze.setStart(x_tmp, y_tmp);
+                    }
+                    if (endInitiated) {
+                        int x_tmp;
+                        int y_tmp;
+                        if (endX < 0)
+                            x_tmp = static_cast<int>(
+                                static_cast<long double>(width) + endX);
+                        else if (endX > 0 && endX < 1)
+                            x_tmp = static_cast<int>(
+                                static_cast<long double>(width) * endX);
+                        else
+                            x_tmp = static_cast<int>(endX);
+                        if (endY < 0)
+                            y_tmp = static_cast<int>(
+                                static_cast<long double>(height) + endY);
+                        else if (endY > 0 && endY < 1)
+                            y_tmp = static_cast<int>(
+                                static_cast<long double>(height) * endY);
+                        else
+                            y_tmp = static_cast<int>(endY);
+                        maze.setEnd(x_tmp, y_tmp);
+                    }
                     for (int k = 0; k < nbUsesMaze; k++) {
                         currentIteration++;
                         if (!startInitiated) maze.resetStart();
@@ -662,17 +683,18 @@ int main(const int argc, char *argv[]) {
                         fileLatex << replaceUnderscoresWithSpaces(*type);
                         fileLatex << " & " << steps << " & " << nbCellsSolution
                                   << " \\\\" << std::endl;
-                        std::cout << "\rProgress : "
-                                  << currentIteration * 100 / iteration
-                                  << "% - " << currentIteration << "/"
-                                  << iteration << " - algorithm " << h + 1
-                                  << "/" << algorithms.size() << " - type "
-                                  << j + 1 << "/" << types.size() << " - maze "
-                                  << i + 1 << "/" << nbMazeToGenerate
-                                  << " - uses " << k + 1 << "/" << nbUsesMaze
-                                  << " - " << *algorithm << " - " << *type
-                                  << " - " << width << "x" << height
-                                  << std::flush;
+                        std::cout
+                            << "\rProgress : "
+                            << currentIteration * 100 / iteration << "% - "
+                            << currentIteration << "/" << iteration
+                            << " - size " << nbSizes - sizes.size() << "/"
+                            << nbSizes << " - algorithm " << h + 1 << "/"
+                            << algorithms.size() << " - type " << j + 1 << "/"
+                            << types.size() << " - maze " << i + 1 << "/"
+                            << nbMazeToGenerate << " - uses " << k + 1 << "/"
+                            << nbUsesMaze << " - " << *algorithm << " - "
+                            << *type << " - " << width << "x" << height
+                            << std::flush;
                     }
                 }
 
@@ -710,28 +732,37 @@ int main(const int argc, char *argv[]) {
                 variance /= stepsStack.size();
                 long double standardDeviation =
                     sqrt(static_cast<double>(variance));
-                long double standardDeviationAverage =
-                    standardDeviation / sqrt(stepsStack.size());
 
                 fileStats << replaceUnderscoresWithSpaces(*type) << " &";
-                fileStats << "$ " << static_cast<int>(round(average)) << " $ "
-                          << " & ";
-                fileStats << "$ " << static_cast<int>(round(standardDeviation))
+                fileStats << "$ "
+                          << static_cast<int>(
+                                 round(static_cast<double>(average)))
                           << " $ "
                           << " & ";
                 fileStats << "$ "
-                          << static_cast<int>(round(absoluteDiffOptimum))
+                          << static_cast<int>(
+                                 round(static_cast<double>(standardDeviation)))
                           << " $ "
                           << " & ";
-                fileStats << "$ " << round(1000 * relativeDiffOptimum) / 1000
+                fileStats << "$ "
+                          << static_cast<int>(round(
+                                 static_cast<double>(absoluteDiffOptimum)))
+                          << " $ "
+                          << " & ";
+                fileStats << "$ "
+                          << round(1000 *
+                                   static_cast<double>(relativeDiffOptimum)) /
+                                 1000
                           << "\\%"
                           << " $"
                           << " & ";
                 fileStats << "$ " << nbSolveValid << " $"
                           << " & ";
                 fileStats << "$ "
-                          << round( 1000 * static_cast<double>(nbOptimalSolution) /
-                                 static_cast<double>(nbSolveValid)) / 1000
+                          << round(1000 *
+                                   static_cast<double>(nbOptimalSolution) /
+                                   static_cast<double>(nbSolveValid)) /
+                                 1000
                           << "\\%"
                           << " $"
                           << " \\\\ " << std::endl;

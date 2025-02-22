@@ -1,7 +1,5 @@
 #include "fog_hand.hpp"
 
-#include <iostream>
-
 #include "../show.hpp"
 #include "../var.hpp"
 
