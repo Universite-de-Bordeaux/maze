@@ -22,12 +22,12 @@ static int defaultEndY(const int height, Rand *rand) {
     return rand->get(0, height - 1);
 }
 
-Maze::Maze() : Maze(0, 0, 0, 0, 0, 0) {};
+Maze::Maze() : Maze(0, 0, 0, 0, 0, 0){};
 
 Maze::Maze(const int width, const int height)
     : Maze(width, height, defaultStartX(width, &rand_),
            defaultStartY(height, &rand_), defaultEndX(width, &rand_),
-           defaultEndY(height, &rand_)) {};
+           defaultEndY(height, &rand_)){};
 
 Maze::Maze(const int width, const int height, const int startX,
            const int startY, const int endX, const int endY) {
