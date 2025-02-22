@@ -20,7 +20,10 @@ int game_splatoon_dead_end(Maze *maze, Show *show) {
     counts[cell->getX()][cell->getY()]++;
     refreshShow(show);
     int steps = 0;
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
+    while (cell->getX() != maze->getEndX() ||
+           cell->getY() != maze->getEndY() &&
+               steps <= pow(maze->getWidth() * maze->getHeight(), 3) &&
+               steps >= 0) {
         const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
         if (nbNeighborsNotVisited == 0) {
@@ -53,5 +56,7 @@ int game_splatoon_dead_end(Maze *maze, Show *show) {
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     refreshShow(show, 1, &cell);
-    return steps;
+    return steps > pow(maze->getWidth() * maze->getHeight(), 3) || steps < 0
+               ? -1
+               : steps;
 }
