@@ -62,6 +62,8 @@ maze_project/
 │           ├── fog_hand.hpp       # Visite avec brouillard à la main
 │           ├── splatoon.hpp       # Visite en marquant le chemin et le nombre de visites par cellule
 │           ├── splatoon_hand.hpp  # Visite en marquant le chemin et le nombre de visites par cellule à la main
+│           ├── splatoon_dead_end.hpp # Visite en marquant le chemin, les cellules sans issue et le nombre de visites par cellule
+│           ├── splatoon_dead_end_hand.hpp # Visite en marquant le chemin, les cellules sans issue et le nombre de visites par cellule à la main
 │           ├── tom_thumb.hpp      # Visite en marquant le chemin
 │           ├── tom_thumb_hand.hpp # Visite en marquant le chemin à la main
 │           ├── walk.hpp           # Jeu de marche
@@ -379,6 +381,9 @@ L'affichage graphique propose les contrôles suivants :
 - `splatoon` (s) : Marque et compte le nombre de fois que chaque cellule est visitée.
 - `splatoon_right` (sr) : Marque et compte le nombre de fois que chaque cellule est visitée à droite.
 - `splatoon_left` (sl) : Marque et compte le nombre de fois que chaque cellule est visitée à gauche.
+- `splatoon_dead_end` (sde) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les cellules sans issue.
+- `splatoon_dead_end_right` (sder) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les cellules sans issue à droite.
+- `splatoon_dead_end_left` (sdel) : Marque et compte le nombre de fois que chaque cellule est visitée, en marquant les cellules sans issue à gauche.
 - `tom_thumb` (tt) : Marche le chemin.
 - `tom_thumb_right` (ttr) : Marque le chemin à droite.
 - `tom_thumb_left` (ttl) : Marque le chemin à gauche.
