@@ -20,8 +20,8 @@
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
-#include "lib/solver/breadth_first.hpp"
 #include "lib/queue.hpp"
+#include "lib/solver/breadth_first.hpp"
 #include "lib/var.hpp"
 
 /**
@@ -665,13 +665,14 @@ int main(const int argc, char *argv[]) {
                         std::cout << "\rProgress : "
                                   << currentIteration * 100 / iteration
                                   << "% - " << currentIteration << "/"
-                                  << iteration << " - algorithm "
-                                  << h+1 << "/"
-                                  << algorithms.size() << " - type " << j + 1 << "/"
-                                  << types.size() << " - maze " << i + 1 << "/"
-                                  << nbMazeToGenerate << " - uses " << k + 1
-                                  << "/" << nbUsesMaze << " - " << *algorithm
-                                  << " - " << *type << std::flush;
+                                  << iteration << " - algorithm " << h + 1
+                                  << "/" << algorithms.size() << " - type "
+                                  << j + 1 << "/" << types.size() << " - maze "
+                                  << i + 1 << "/" << nbMazeToGenerate
+                                  << " - uses " << k + 1 << "/" << nbUsesMaze
+                                  << " - " << *algorithm << " - " << *type
+                                  << " - " << width << "x" << height
+                                  << std::flush;
                     }
                 }
 

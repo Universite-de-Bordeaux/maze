@@ -23,7 +23,7 @@ int game_splatoon_hand(const Maze *maze, Show *show, const bool left) {
     bool tmpChangeDirection = false;
     while (
         (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
-        steps <= pow(maze->getWidth() * maze->getHeight(), 3) && steps >= 0) {
+        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
@@ -77,7 +77,7 @@ int game_splatoon_hand(const Maze *maze, Show *show, const bool left) {
     } else {
         cell->setStatus(MAZE_STATUS_HOPELESS);
     }
-    return steps > pow(maze->getWidth() * maze->getHeight(), 3) || steps < 0
+    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
                ? -1
                : steps;
 }
