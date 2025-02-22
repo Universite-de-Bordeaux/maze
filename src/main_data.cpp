@@ -8,8 +8,12 @@
 #include "lib/algo/diagonal.hpp"
 #include "lib/algo/fractal.hpp"
 #include "lib/algo/wall_maker.hpp"
+#include "lib/game/dead_end.hpp"
+#include "lib/game/dead_end_hand.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
+#include "lib/game/splatoon.hpp"
+#include "lib/game/splatoon_hand.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
@@ -69,13 +73,19 @@ void help() {
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
     std::cout
-        << "    Types disponibles :       f, fr, fl, tt, ttr, ttl\n";
+        << "    Types disponibles :       f, fr, fl, s, sr, sl, tt, ttr, ttl\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
+    std::cout << "                              s : splatoon\n";
+    std::cout << "                              sr : splatoon_right\n";
+    std::cout << "                              sl : splatoon_left\n";
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
+    std::cout << "                              de : dead_end\n";
+    std::cout << "                              der : dead_end_right\n";
+    std::cout << "                              del : dead_end_left\n";
     std::cout << "\n";
 
     std::cout << "Pour plus d'informations, veuillez consulter la "
@@ -142,12 +152,24 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_fog_hand(maze, show, false);
     } else if (type == "fog_left" || type == "fl") {
         steps = game_fog_hand(maze, show, true);
+    } else if (type == "splatoon" || type == "s") {
+        steps = game_splatoon(maze, show);
+    } else if (type == "splatoon_right" || type == "sr") {
+        // steps = game_splatoon_hand(maze, show, false);
+    } else if (type == "splatoon_left" || type == "sl") {
+        // steps = game_splatoon_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
         steps = game_tom_thumb_hand(maze, show, false);
     } else if (type == "tom_thumb_left" || type == "ttl") {
         steps = game_tom_thumb_hand(maze, show, true);
+    } else if (type == "dead_end" || type == "de") {
+        steps = game_dead_end(maze, show);
+    } else if (type == "dead_end_right" || type == "der") {
+        steps = game_dead_end_hand(maze, show, false);
+    } else if (type == "dead_end_left" || type == "del") {
+        steps = game_dead_end_hand(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -369,6 +391,18 @@ int main(const int argc, char *argv[]) {
                                strcmp(argv[i + 1], "fl") == 0) {
                         auto *type = new std::string("fog_left");
                         types.push(type);
+                    } else if (strcmp(argv[i + 1], "splatoon") == 0 ||
+                               strcmp(argv[i + 1], "s") == 0) {
+                        auto *type = new std::string("splatoon");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "splatoon_right") == 0 ||
+                               strcmp(argv[i + 1], "sr") == 0) {
+                        auto *type = new std::string("splatoon_right");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "splatoon_left") == 0 ||
+                               strcmp(argv[i + 1], "sl") == 0) {
+                        auto *type = new std::string("splatoon_left");
+                        types.push(type);
                     } else if (strcmp(argv[i + 1], "tom_thumb") == 0 ||
                                strcmp(argv[i + 1], "tt") == 0) {
                         auto *type = new std::string("tom_thumb");
@@ -380,6 +414,18 @@ int main(const int argc, char *argv[]) {
                     } else if (strcmp(argv[i + 1], "tom_thumb_left") == 0 ||
                                strcmp(argv[i + 1], "ttl") == 0) {
                         auto *type = new std::string("tom_thumb_left");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "dead_end") == 0 ||
+                               strcmp(argv[i + 1], "de") == 0) {
+                        auto *type = new std::string("dead_end");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "dead_end_right") == 0 ||
+                               strcmp(argv[i + 1], "der") == 0) {
+                        auto *type = new std::string("dead_end_right");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "dead_end_left") == 0 ||
+                               strcmp(argv[i + 1], "del") == 0) {
+                        auto *type = new std::string("dead_end_left");
                         types.push(type);
                     } else {
                         return help(MAZE_COMMAND_ERROR);
@@ -415,6 +461,22 @@ int main(const int argc, char *argv[]) {
                 fileLatex << "fog left";
             } else if (*type == "fog_right") {
                 fileLatex << "fog right";
+            } else if (*type == "splatoon_right") {
+                fileLatex << "splatoon right";
+            } else if (*type == "splatoon_left") {
+                fileLatex << "splatoon left";
+            } else if (*type == "tom_thumb") {
+                fileLatex << "tom thumb";
+            } else if (*type == "tom_thumb_right") {
+                fileLatex << "tom thumb right";
+            } else if (*type == "tom_thumb_left") {
+                fileLatex << "tom thumb left";
+            } else if (*type == "dead_end_right") {
+                fileLatex << "dead end right";
+            } else if (*type == "dead_end_left") {
+                fileLatex << "dead end left";
+            } else if (*type == "dead_end") {
+                fileLatex << "dead end";
             } else {
                 fileLatex << *type;
             }
@@ -492,17 +554,19 @@ int main(const int argc, char *argv[]) {
     } else {
         fileStats << *algorithm;
     }
-    fileStats << "$" << width <<  " \\times " << height << "$";
+    fileStats << " $" << width << " \\times " << height << "$";
     if (perfect) {
-        fileStats << " parfait" << "}" << std::endl;
-    }
-    else {
-        fileStats << " imparfait" << "}" << std::endl;
+        fileStats << " parfait"
+                  << "}" << std::endl;
+    } else {
+        fileStats << " imparfait"
+                  << "}" << std::endl;
     }
 
-    fileStats << "\\begin{tabular}{lccc}" << std::endl; // mise en forme du tableau
-    fileStats << "\\toprule type & moyenne & écart-type" << std::endl; // première ligne indiquant le contenu des colonnes
-
+    fileStats << "\\begin{tabular}{lccc}"
+              << std::endl;  // mise en forme du tableau
+    fileStats << "\\toprule type & moyenne & écart-type"
+              << std::endl;  // première ligne indiquant le contenu des colonnes
 
     Stack stepsStack;
     auto maze = Maze();
@@ -510,7 +574,7 @@ int main(const int argc, char *argv[]) {
         algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
     long currentIteration = 0;
 
-    fileStats << "\\midrule" << std::endl; // corps du tableau
+    fileStats << "\\midrule" << std::endl;  // corps du tableau
 
     for (int j = 0; j < types.size(); j++) {
         auto *type = static_cast<std::string *>(types.get(j));
@@ -518,8 +582,8 @@ int main(const int argc, char *argv[]) {
             auto *algorithm = static_cast<std::string *>(algorithms.top());
             algorithms.pop();
             for (int i = 0; i < nbMazeToGenerate; i++) {
-                generateMaze(&maze, *algorithm, width, height, perfect, probability,
-                            nullptr);
+                generateMaze(&maze, *algorithm, width, height, perfect,
+                             probability, nullptr);
                 if (startInitiated) maze.setStart(startX, startY);
                 if (endInitiated) maze.setEnd(endX, endY);
                 for (int k = 0; k < nbUsesMaze; k++) {
@@ -555,11 +619,27 @@ int main(const int argc, char *argv[]) {
                         fileLatex << "fog left";
                     } else if (*type == "fog_right") {
                         fileLatex << "fog right";
+                    } else if (*type == "splatoon_right") {
+                        fileLatex << "splatoon right";
+                    } else if (*type == "splatoon_left") {
+                        fileLatex << "splatoon left";
+                    } else if (*type == "tom_thumb") {
+                        fileLatex << "tom thumb";
+                    } else if (*type == "tom_thumb_right") {
+                        fileLatex << "tom thumb right";
+                    } else if (*type == "tom_thumb_left") {
+                        fileLatex << "tom thumb left";
+                    } else if (*type == "dead_end_right") {
+                        fileLatex << "dead end right";
+                    } else if (*type == "dead_end_left") {
+                        fileLatex << "dead end left";
+                    } else if (*type == "dead_end") {
+                        fileLatex << "dead end";
                     } else {
                         fileLatex << *type;
                     }
                     fileLatex << " & " << steps << " & " << nbCellsSolution
-                            << " \\\\" << std::endl;
+                              << " \\\\" << std::endl;
                     std::cout
                         << "\rProgress : " << currentIteration * 100 / iteration
                         << "% - " << currentIteration << "/" << iteration << " "
@@ -588,17 +668,19 @@ int main(const int argc, char *argv[]) {
         // Calcul de l'écart-type de la moyenne
         long double standardDeviationAverage =
             standardDeviation / sqrt(stepsStack.size());
-        fileStats << *type << std::endl;
+        fileStats << *type << " & ";
         std::cout << "Type : " << *type << std::endl;
-        fileStats << average << "&" << std::endl;
+        fileStats << average << " & ";
         std::cout << "Moyenne : " << average << std::endl;
         // fileStats << variance << std::endl;
         // std::cout << "Variance : " << variance << std::endl;
-        fileStats << standardDeviation << "&" << std::endl;
+        fileStats << standardDeviation << "\\\\" << std::endl;
         std::cout << "Ecart-type : " << standardDeviation << std::endl;
-        // fileStats << "Ecart-type de la moyenne : " << standardDeviationAverage
-                  // << std::endl;
-        // std::cout << "Ecart-type de la moyenne : " << standardDeviationAverage
+        // fileStats << "Ecart-type de la moyenne : " <<
+        // standardDeviationAverage
+        // << std::endl;
+        // std::cout << "Ecart-type de la moyenne : " <<
+        // standardDeviationAverage
         //           << std::endl;
         // calcul des statistiques
     }
