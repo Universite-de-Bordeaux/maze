@@ -1,6 +1,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <random>
 #include <string>
 
@@ -562,6 +563,8 @@ int main(const int argc, char *argv[]) {
         std::cout << "File not found : " << outputStats << std::endl;
         return MAZE_FILE_ERROR;
     }
+//    fileStats << std::fixed;
+//    fileStats << std::setprecision(4);
 
     auto maze = Maze();
     long iteration =
@@ -699,18 +702,18 @@ int main(const int argc, char *argv[]) {
                 standardDeviation / sqrt(stepsStack.size());
 
             fileStats << replaceUnderscoresWithSpaces(*type) << " &";
-            fileStats << "$ " << average << " $ "
+            fileStats << "$ " << static_cast<int>(round(average)) << " $ "
                       << " & ";
-            fileStats << "$ " << standardDeviation << " $ "
+            fileStats << "$ " << static_cast<int>(round(standardDeviation)) << " $ "
                       << " & ";
-            fileStats << "$ " << absoluteDiffOptimum << " $ "
+            fileStats << "$ " << static_cast<int>(round(absoluteDiffOptimum)) << " $ "
                       << " & ";
-            fileStats << "$ " << relativeDiffOptimum << "\\%"
+            fileStats << "$ " << round(100*relativeDiffOptimum)/100 << "\\%"
                       << " $"
                       << " & ";
             fileStats << "$ " << nbSolveValid << " $"
                       << " & ";
-            fileStats << "$ " << nbOptimalSolution << " $"
+            fileStats << "$ " << static_cast<double>(nbOptimalSolution) / static_cast<double>(nbSolveValid) << "\\%" << " $"
                       << " \\\\ " << std::endl;
         }
         fileStats << "\\bottomrule" << std::endl;
