@@ -221,6 +221,14 @@ struct size {
     int height;
 };
 
+struct typesStruct {
+    int steps = 0;
+    int sumOptimum = 0;
+    int sumDiffOptimum = 0;
+    int nbSolveValid = 0;
+    int nbOptimalSolution = 0;
+};
+
 /**
  * Main
  * @param argc Nombre d'arguments
@@ -579,6 +587,10 @@ int main(const int argc, char *argv[]) {
         sizes.pop();
         int width = size->width;
         int height = size->height;
+        Queue typesStructs;
+        for (int j = 0; j < types.size(); j++) {
+            typesStructs.push(new typesStruct());
+        }
         for (int h = 0; h < algorithms.size(); h++) {
             auto *algorithm = static_cast<std::string *>(algorithms.get(h));
             if (!outputStats.empty()) {
@@ -601,10 +613,11 @@ int main(const int argc, char *argv[]) {
 
                 fileStats << "\\begin{tabular}{lcccccc}"
                           << std::endl;  // mise en forme du tableau
-                fileStats
-                    << "\\toprule Type & Moyenne & Ecart-type & EAO & ERO & "
-                       "Valide & Optimale \\\\"
-                    << std::endl;  // première ligne indiquant le contenu des
+                fileStats << "\\toprule Type & Moyenne & Ecart-type & EAO "
+                             "& ERO & "
+                             "Valide & Optimale \\\\"
+                          << std::endl;  // première ligne indiquant le
+                                         // contenu des
                 // colonnes
 
                 fileStats << "\\midrule" << std::endl;  // corps du tableau
@@ -616,6 +629,9 @@ int main(const int argc, char *argv[]) {
                 int sumDiffOptimum = 0;
                 int nbSolveValid = 0;
                 int nbOptimalSolution = 0;
+                auto *typesStruct =
+                    static_cast<struct typesStruct *>(typesStructs.get(j));
+
                 for (int i = 0; i < nbMazeToGenerate; i++) {
                     generateMaze(&maze, *algorithm, width, height, perfect,
                                  probability, nullptr);
@@ -721,7 +737,6 @@ int main(const int argc, char *argv[]) {
                             << std::flush;
                     }
                 }
-
                 // calcul des statistiques
                 // Calcul de la moyenne
                 long sum = 0;
@@ -756,6 +771,12 @@ int main(const int argc, char *argv[]) {
                 variance /= stepsStack.size();
                 long double standardDeviation =
                     sqrt(static_cast<double>(variance));
+
+                typesStruct->steps += sum;
+                typesStruct->sumOptimum += sumOptimum;
+                typesStruct->sumDiffOptimum += sumDiffOptimum;
+                typesStruct->nbSolveValid += nbSolveValid;
+                typesStruct->nbOptimalSolution += nbOptimalSolution;
 
                 if (!outputStats.empty()) {
                     fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
@@ -800,6 +821,110 @@ int main(const int argc, char *argv[]) {
                 fileStats << "\\end{table}" << std::endl;
                 fileStats << "\\FloatBarrier" << std::endl;
             }
+        }
+        if (!outputStats.empty()) {
+            fileStats << "\\begin{table}[ht]" << std::endl;
+            fileStats << "\\centering" << std::endl;
+            fileStats
+                << "\\caption{Statistiques pour les labyrinthes de taille "
+                   "$"
+                << width << " \\times " << height << "$";
+            if (perfect) {
+                fileStats << " parfait";
+            } else {
+                fileStats << " imparfait avec une probabilité de "
+                          << probability;
+            }
+            fileStats << " pour " << nbMazeToGenerate
+                      << " labyrinthes générés avec " << algorithms.size()
+                      << " algorithmes et visités " << nbUsesMaze << " fois";
+            fileStats << "}" << std::endl;
+
+            fileStats << "\\begin{tabular}{lcccccc}"
+                         "\n";  // mise en forme du tableau
+            fileStats << "\\toprule Type & Moyenne & Ecart-type & EAO "
+                         "& ERO & "
+                         "Valide & Optimale \\\\"
+                         "\n";  // première ligne indiquant le contenu des
+                                // colonnes
+
+            fileStats << "\\midrule" << std::endl;  // corps du tableau
+        }
+        for (int j = 0; j < types.size(); j++) {
+            auto *typesStruct =
+                static_cast<struct typesStruct *>(typesStructs.get(j));
+            std::string *type = static_cast<std::string *>(types.get(j));
+            int nbSolveValid = typesStruct->nbSolveValid;
+            if (nbSolveValid > 0) {
+                long double average =
+                    static_cast<long double>(typesStruct->steps) /
+                    static_cast<long double>(nbSolveValid);
+                long double optimumAverage =
+                    static_cast<long double>(typesStruct->sumOptimum) /
+                    static_cast<long double>(nbSolveValid);
+
+                long double absoluteDiffOptimum = average - optimumAverage;
+                long double relativeDiffOptimum =
+                    100 * (optimumAverage / average);
+
+                // Calcul de la variance
+                long double variance = 0;
+                for (int i = 0; i < typesStructs.size(); i++) {
+                    int steps = typesStruct->steps;
+                    if (steps >= 0) {
+                        variance +=
+                            (static_cast<long double>(steps) - average) *
+                            (static_cast<long double>(steps) - average);
+                    }
+                }
+                variance /= typesStructs.size();
+                long double standardDeviation =
+                    sqrt(static_cast<double>(variance));
+
+                if (!outputStats.empty()) {
+                    fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
+                    fileStats
+                        << "$ "
+                        << static_cast<int>(round(static_cast<double>(average)))
+                        << " $ "
+                        << " & ";
+                    fileStats << "$ "
+                              << static_cast<int>(round(
+                                     static_cast<double>(standardDeviation)))
+                              << " $ "
+                              << " & ";
+                    fileStats << "$ "
+                              << static_cast<int>(round(
+                                     static_cast<double>(absoluteDiffOptimum)))
+                              << " $ "
+                              << " & ";
+                    fileStats
+                        << "$ "
+                        << round(1000 *
+                                 static_cast<double>(relativeDiffOptimum)) /
+                               1000
+                        << "\\%"
+                        << " $"
+                        << " & ";
+                    fileStats << "$ " << nbSolveValid << " $"
+                              << " & ";
+                    fileStats << "$ "
+                              << round(1000 *
+                                       static_cast<double>(
+                                           typesStruct->nbOptimalSolution) /
+                                       static_cast<double>(nbSolveValid)) /
+                                     1000
+                              << "\\%"
+                              << " $"
+                              << " \\\\ " << std::endl;
+                }
+            }
+        }
+        if (!outputStats.empty()) {
+            fileStats << "\\bottomrule" << std::endl;
+            fileStats << "\\end{tabular}" << std::endl;
+            fileStats << "\\end{table}" << std::endl;
+            fileStats << "\\FloatBarrier" << std::endl;
         }
     }
 
