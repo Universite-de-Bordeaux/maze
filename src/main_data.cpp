@@ -69,7 +69,8 @@ void help() {
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles :       f, fr, fl, tt, ttr, ttl\n";
+    std::cout
+        << "    Types disponibles :       f, fr, fl, s, sr, sl, tt, ttr, ttl\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
@@ -145,6 +146,12 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_fog_hand(maze, show, false);
     } else if (type == "fog_left" || type == "fl") {
         steps = game_fog_hand(maze, show, true);
+    } else if (type == "splatoon" || type == "s") {
+        steps = game_splatoon(maze, show);
+    } else if (type == "splatoon_right" || type == "sr") {
+        // steps = game_splatoon_hand(maze, show, false);
+    } else if (type == "splatoon_left" || type == "sl") {
+        // steps = game_splatoon_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
     } else if (type == "tom_thumb_right" || type == "ttr") {
@@ -372,6 +379,18 @@ int main(const int argc, char *argv[]) {
                                strcmp(argv[i + 1], "fl") == 0) {
                         auto *type = new std::string("fog_left");
                         types.push(type);
+                    } else if (strcmp(argv[i + 1], "splatoon") == 0 ||
+                               strcmp(argv[i + 1], "s") == 0) {
+                        auto *type = new std::string("splatoon");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "splatoon_right") == 0 ||
+                               strcmp(argv[i + 1], "sr") == 0) {
+                        auto *type = new std::string("splatoon_right");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "splatoon_left") == 0 ||
+                               strcmp(argv[i + 1], "sl") == 0) {
+                        auto *type = new std::string("splatoon_left");
+                        types.push(type);
                     } else if (strcmp(argv[i + 1], "tom_thumb") == 0 ||
                                strcmp(argv[i + 1], "tt") == 0) {
                         auto *type = new std::string("tom_thumb");
@@ -418,6 +437,16 @@ int main(const int argc, char *argv[]) {
                 fileLatex << "fog left";
             } else if (*type == "fog_right") {
                 fileLatex << "fog right";
+            } else if (*type == "splatoon_right") {
+                fileLatex << "splatoon right";
+            } else if (*type == "splatoon_left") {
+                fileLatex << "splatoon left";
+            } else if (*type == "tom_thumb") {
+                fileLatex << "tom thumb";
+            } else if (*type == "tom_thumb_right") {
+                fileLatex << "tom thumb right";
+            } else if (*type == "tom_thumb_left") {
+                fileLatex << "tom thumb left";
             } else {
                 fileLatex << *type;
             }
@@ -560,6 +589,16 @@ int main(const int argc, char *argv[]) {
                         fileLatex << "fog left";
                     } else if (*type == "fog_right") {
                         fileLatex << "fog right";
+                    } else if (*type == "splatoon_right") {
+                        fileLatex << "splatoon right";
+                    } else if (*type == "splatoon_left") {
+                        fileLatex << "splatoon left";
+                    } else if (*type == "tom_thumb") {
+                        fileLatex << "tom thumb";
+                    } else if (*type == "tom_thumb_right") {
+                        fileLatex << "tom thumb right";
+                    } else if (*type == "tom_thumb_left") {
+                        fileLatex << "tom thumb left";
                     } else {
                         fileLatex << *type;
                     }
@@ -593,13 +632,13 @@ int main(const int argc, char *argv[]) {
         // Calcul de l'écart-type de la moyenne
         long double standardDeviationAverage =
             standardDeviation / sqrt(stepsStack.size());
-        fileStats << *type << std::endl;
+        fileStats << *type << " & ";
         std::cout << "Type : " << *type << std::endl;
-        fileStats << average << "&" << std::endl;
+        fileStats << average << " & ";
         std::cout << "Moyenne : " << average << std::endl;
         // fileStats << variance << std::endl;
         // std::cout << "Variance : " << variance << std::endl;
-        fileStats << standardDeviation << "&" << std::endl;
+        fileStats << standardDeviation << "\\\\" << std::endl;
         std::cout << "Ecart-type : " << standardDeviation << std::endl;
         // fileStats << "Ecart-type de la moyenne : " <<
         // standardDeviationAverage

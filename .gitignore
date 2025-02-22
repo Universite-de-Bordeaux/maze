@@ -204,3 +204,4 @@ src/instances/tmp/*
 default.nix
 .cmake
 .env
+*.tex
