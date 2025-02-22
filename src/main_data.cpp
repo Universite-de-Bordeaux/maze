@@ -13,6 +13,8 @@
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/game/splatoon.hpp"
+#include "lib/game/splatoon_dead_end.hpp"
+#include "lib/game/splatoon_dead_end_hand.hpp"
 #include "lib/game/splatoon_hand.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
@@ -53,7 +55,8 @@ void help() {
     std::cout << "-g, --generate                Génère un labyrinthe parfait\n";
     std::cout << "  -a, --algorithm <algo>      Sélectionne l'algorithme de "
                  "génération\n";
-    std::cout << "    Algorithmes disponibles : bt, wm, d, f\n";
+    std::cout << "    Algorithmes disponibles : all, bt, wm, d, f\n";
+    std::cout << "                              all : tous les algorithmes\n";
     std::cout << "                              bt : back_tracking (défaut)\n";
     std::cout << "                              wm : wall_maker\n";
     std::cout << "                              d : diagonal\n";
@@ -72,14 +75,20 @@ void help() {
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout
-        << "    Types disponibles :       f, fr, fl, s, sr, sl, tt, ttr, ttl\n";
+    std::cout << "    Types disponibles :       all, f, fr, fl, s, sr, sl, tt, "
+                 "ttr, ttl\n";
+    std::cout << "                              all : tous les types\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
     std::cout << "                              s : splatoon\n";
     std::cout << "                              sr : splatoon_right\n";
     std::cout << "                              sl : splatoon_left\n";
+    std::cout << "                              sde : splatoon_dead_end\n";
+    std::cout
+        << "                              sder : splatoon_dead_end_right\n";
+    std::cout
+        << "                              sdel : splatoon_dead_end_left\n";
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
@@ -157,6 +166,12 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
     } else if (type == "splatoon_right" || type == "sr") {
         steps = game_splatoon_hand(maze, show, false);
     } else if (type == "splatoon_left" || type == "sl") {
+        steps = game_splatoon_hand(maze, show, true);
+    } else if (type == "splatoon_dead_end" || type == "sde") {
+        steps = game_splatoon(maze, show);
+    } else if (type == "splatoon_dead_end_right" || type == "sder") {
+        steps = game_splatoon_hand(maze, show, false);
+    } else if (type == "splatoon_dead_end_left" || type == "sdel") {
         steps = game_splatoon_hand(maze, show, true);
     } else if (type == "tom_thumb" || type == "tt") {
         steps = game_tom_thumb(maze, show);
@@ -301,22 +316,26 @@ int main(const int argc, char *argv[]) {
                         strcmp(argv[i + 1], "--algorithm") == 0) {
                         i++;
                         if (i + 1 < argc) {
-                            if (strcmp(argv[i + 1], "back_tracking") == 0 ||
-                                strcmp(argv[i + 1], "bt") == 0) {
-                                auto *algo = new std::string("back_tracking");
-                                algorithms.push(algo);
+                            if (strcmp(argv[i + 1], "all") == 0) {
+                                algorithms.push(
+                                    new std::string("back_tracking"));
+                                algorithms.push(new std::string("wall_maker"));
+                                algorithms.push(new std::string("diagonal"));
+                                algorithms.push(new std::string("fractal"));
+                            } else if (strcmp(argv[i + 1], "back_tracking") ==
+                                           0 ||
+                                       strcmp(argv[i + 1], "bt") == 0) {
+                                algorithms.push(
+                                    new std::string("back_tracking"));
                             } else if (strcmp(argv[i + 1], "wall_maker") == 0 ||
                                        strcmp(argv[i + 1], "wm") == 0) {
-                                auto *algo = new std::string("wall_maker");
-                                algorithms.push(algo);
+                                algorithms.push(new std::string("wall_maker"));
                             } else if (strcmp(argv[i + 1], "diagonal") == 0 ||
                                        strcmp(argv[i + 1], "d") == 0) {
-                                auto *algo = new std::string("diagonal");
-                                algorithms.push(algo);
+                                algorithms.push(new std::string("diagonal"));
                             } else if (strcmp(argv[i + 1], "fractal") == 0 ||
                                        strcmp(argv[i + 1], "f") == 0) {
-                                auto *algo = new std::string("fractal");
-                                algorithms.push(algo);
+                                algorithms.push(new std::string("fractal"));
                             } else {
                                 return help(MAZE_COMMAND_ERROR);
                             }
@@ -388,54 +407,69 @@ int main(const int argc, char *argv[]) {
                     strcmp(argv[i + 1], "--type") == 0)) {
                 i++;
                 if (i + 1 < argc) {
-                    if (strcmp(argv[i + 1], "fog") == 0 ||
-                        strcmp(argv[i + 1], "f") == 0) {
-                        auto *type = new std::string("fog");
-                        types.push(type);
+                    if (strcmp(argv[i + 1], "all") == 0) {
+                        types.push(new std::string("fog"));
+                        types.push(new std::string("fog_right"));
+                        types.push(new std::string("fog_left"));
+                        types.push(new std::string("splatoon"));
+                        types.push(new std::string("splatoon_right"));
+                        types.push(new std::string("splatoon_left"));
+                        types.push(new std::string("splatoon_dead_end"));
+                        types.push(new std::string("splatoon_dead_end_right"));
+                        types.push(new std::string("splatoon_dead_end_left"));
+                        types.push(new std::string("tom_thumb"));
+                        types.push(new std::string("tom_thumb_right"));
+                        types.push(new std::string("tom_thumb_left"));
+                        types.push(new std::string("dead_end"));
+                        types.push(new std::string("dead_end_right"));
+                        types.push(new std::string("dead_end_left"));
+                    } else if (strcmp(argv[i + 1], "fog") == 0 ||
+                               strcmp(argv[i + 1], "f") == 0) {
+                        types.push(new std::string("fog"));
                     } else if (strcmp(argv[i + 1], "fog_right") == 0 ||
                                strcmp(argv[i + 1], "fr") == 0) {
-                        auto *type = new std::string("fog_right");
-                        types.push(type);
+                        types.push(new std::string("fog_right"));
                     } else if (strcmp(argv[i + 1], "fog_left") == 0 ||
                                strcmp(argv[i + 1], "fl") == 0) {
-                        auto *type = new std::string("fog_left");
-                        types.push(type);
+                        types.push(new std::string("fog_left"));
                     } else if (strcmp(argv[i + 1], "splatoon") == 0 ||
                                strcmp(argv[i + 1], "s") == 0) {
-                        auto *type = new std::string("splatoon");
-                        types.push(type);
+                        types.push(new std::string("splatoon"));
                     } else if (strcmp(argv[i + 1], "splatoon_right") == 0 ||
                                strcmp(argv[i + 1], "sr") == 0) {
-                        auto *type = new std::string("splatoon_right");
-                        types.push(type);
+                        types.push(new std::string("splatoon_right"));
                     } else if (strcmp(argv[i + 1], "splatoon_left") == 0 ||
                                strcmp(argv[i + 1], "sl") == 0) {
-                        auto *type = new std::string("splatoon_left");
-                        types.push(type);
+                        types.push(new std::string("splatoon_left"));
+                    } else if (strcmp(argv[i + 1], "splatoon_dead_end") == 0 ||
+                               strcmp(argv[i + 1], "sde") == 0) {
+                        types.push(new std::string("splatoon_dead_end"));
+                    } else if (strcmp(argv[i + 1], "splatoon_dead_end_right") ==
+                                   0 ||
+                               strcmp(argv[i + 1], "sder") == 0) {
+                        types.push(new std::string("splatoon_dead_end_right"));
+                    } else if (strcmp(argv[i + 1], "splatoon_dead_end_left") ==
+                                   0 ||
+                               strcmp(argv[i + 1], "sdel") == 0) {
+                        types.push(new std::string("splatoon_dead_end_left"));
                     } else if (strcmp(argv[i + 1], "tom_thumb") == 0 ||
                                strcmp(argv[i + 1], "tt") == 0) {
-                        auto *type = new std::string("tom_thumb");
-                        types.push(type);
+                        types.push(new std::string("tom_thumb"));
                     } else if (strcmp(argv[i + 1], "tom_thumb_right") == 0 ||
                                strcmp(argv[i + 1], "ttr") == 0) {
-                        auto *type = new std::string("tom_thumb_right");
-                        types.push(type);
+                        types.push(new std::string("tom_thumb_right"));
                     } else if (strcmp(argv[i + 1], "tom_thumb_left") == 0 ||
                                strcmp(argv[i + 1], "ttl") == 0) {
-                        auto *type = new std::string("tom_thumb_left");
-                        types.push(type);
+                        types.push(new std::string("tom_thumb_left"));
                     } else if (strcmp(argv[i + 1], "dead_end") == 0 ||
                                strcmp(argv[i + 1], "de") == 0) {
-                        auto *type = new std::string("dead_end");
-                        types.push(type);
+                        types.push(new std::string("dead_end"));
                     } else if (strcmp(argv[i + 1], "dead_end_right") == 0 ||
                                strcmp(argv[i + 1], "der") == 0) {
-                        auto *type = new std::string("dead_end_right");
-                        types.push(type);
+                        types.push(new std::string("dead_end_right"));
                     } else if (strcmp(argv[i + 1], "dead_end_left") == 0 ||
                                strcmp(argv[i + 1], "del") == 0) {
-                        auto *type = new std::string("dead_end_left");
-                        types.push(type);
+                        types.push(new std::string("dead_end_left"));
                     } else {
                         return help(MAZE_COMMAND_ERROR);
                     }
@@ -534,8 +568,6 @@ int main(const int argc, char *argv[]) {
         algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
     long currentIteration = 0;
 
-    fileStats << "\\midrule" << std::endl;  // corps du tableau
-    int sumOptimum = 0;
     while (!algorithms.empty()) {
         auto *algorithm = static_cast<std::string *>(algorithms.top());
         fileStats << "\\begin{table}[ht]" << std::endl;
@@ -559,14 +591,19 @@ int main(const int argc, char *argv[]) {
 
         fileStats << "\\begin{tabular}{lcccc}"
                   << std::endl;  // mise en forme du tableau
-        fileStats
-            << "\\toprule type & moyenne & écart-type & écart absolue "
-               "optimum & écart relatif optimum"
-            << std::endl;  // première ligne indiquant le contenu des colonnes
+        fileStats << "\\toprule type & moyenne & écart-type & écart absolue "
+                     "optimum & écart relatif optimum \\\\"
+                  << std::endl;  // première ligne indiquant le contenu des
+                                 // colonnes
+
+        fileStats << "\\midrule" << std::endl;  // corps du tableau
         algorithms.pop();
         for (int j = 0; j < types.size(); j++) {
             auto *type = static_cast<std::string *>(types.get(j));
             Stack stepsStack;
+            int sumOptimum = 0;
+            int sumDiffOptimum = 0;
+            int nbSolveValid = 0;
             for (int i = 0; i < nbMazeToGenerate; i++) {
                 generateMaze(&maze, *algorithm, width, height, perfect,
                              probability, nullptr);
@@ -585,9 +622,16 @@ int main(const int argc, char *argv[]) {
                                 nbCellsSolution++;
                         }
                     }
-                    sumOptimum += nbCellsSolution;
+
                     maze.clearMaze();
                     int steps = gameMaze(&maze, *type, nullptr);
+
+                    if (steps != -1) {
+                        sumOptimum += nbCellsSolution;
+                        sumDiffOptimum += steps - nbCellsSolution;
+                        nbSolveValid++;
+                    }
+
                     stepsStack.push(new int(steps));
                     if (*algorithm == "back_tracking") {
                         fileLatex << "back tracking";
@@ -617,15 +661,16 @@ int main(const int argc, char *argv[]) {
             long sum = 0;
             for (int i = 0; i < stepsStack.size(); i++) {
                 auto *steps = static_cast<int *>(stepsStack.get(i));
-                sum += *steps;
+                if (*steps >= 0) {
+                    sum += *steps;
+                }
             }
             long double average = static_cast<long double>(sum) /
-                                  static_cast<long double>(stepsStack.size());
+                                  static_cast<long double>(nbSolveValid);
 
             // Calcul de l'écart avec l'optimum
-            long double optimumAverage =
-                static_cast<long double>(sumOptimum) /
-                static_cast<long double>(stepsStack.size());
+            long double optimumAverage = static_cast<long double>(sumOptimum) /
+                                         static_cast<long double>(nbSolveValid);
 
             long double absoluteDiffOptimum = average - optimumAverage;
             long double relativeDiffOptimum =
@@ -635,23 +680,28 @@ int main(const int argc, char *argv[]) {
             long double variance = 0;
             for (int i = 0; i < stepsStack.size(); i++) {
                 auto *steps = static_cast<int *>(stepsStack.get(i));
-                variance += (static_cast<long double>(*steps) - average) *
-                            (static_cast<long double>(*steps) - average);
+                if (*steps >= 0) {
+                    variance += (static_cast<long double>(*steps) - average) *
+                                (static_cast<long double>(*steps) - average);
+                }
             }
             variance /= stepsStack.size();
-            // Calcul de l'écart-type
             long double standardDeviation = sqrt(static_cast<double>(variance));
-            // Calcul de l'écart-type de la moyenne
             long double standardDeviationAverage =
                 standardDeviation / sqrt(stepsStack.size());
-            fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
-            fileStats << "$ " << average << " & ";
-            // fileStats << variance << std::endl
-            fileStats << standardDeviation << " & ";
-            fileStats << absoluteDiffOptimum << " & ";
-            fileStats << relativeDiffOptimum << " $" << " \\\\ " << std::endl;
+
+            fileStats << replaceUnderscoresWithSpaces(*type) << " &";
+            fileStats << " $ " << average << " $ "
+                      << " & ";
+            fileStats << " $ " << standardDeviation << " $ "
+                      << " & ";
+            fileStats << " $ " << absoluteDiffOptimum << " $ "
+                      << " & ";
+            fileStats << " $ " << relativeDiffOptimum << "\\%"
+                      << " $"
+                      << " \\\\ " << std::endl;
         }
-    	fileStats << "\\bottomrule" << std::endl;
+        fileStats << "\\bottomrule" << std::endl;
         fileStats << "\\end{tabular}" << std::endl;
         fileStats << "\\end{table}" << std::endl;
         fileStats << "\\FloatBarrier" << std::endl;
