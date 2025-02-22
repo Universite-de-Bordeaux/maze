@@ -8,6 +8,7 @@
 #include "lib/checker/depth_first.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
+#include "lib/game/tom_thumb_hand.hpp"
 #include "lib/game/walk.hpp"
 #include "lib/maze.hpp"
 #include "lib/reader.hpp"
@@ -122,10 +123,12 @@ void help() {
                  "labyrinthe avec affichage\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout << "    Types disponibles :       f, fr, fl, w, wg\n";
+    std::cout << "    Types disponibles :       f, fr, fl, w, wg, ttr, ttl\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
+    std::cout << "                              ttr : tom_thumb_right\n";
+    std::cout << "                              ttl : tom_thumb_left\n";
     std::cout << "                              w : walk\n";
     std::cout << "                              wg : walk_ghost\n";
     std::cout << "\n";
@@ -261,6 +264,10 @@ void gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_walk(maze, show, false);
     } else if (type == "walk_ghost" || type == "wg") {
         steps = game_walk(maze, show, true);
+    } else if (type == "tom_thumb_right" || type == "ttr") {
+        steps = game_tom_thumb_hand(maze, show, false);
+    } else if (type == "tom_thumb_left" || type == "ttl") {
+        steps = game_tom_thumb_hand(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -569,6 +576,13 @@ int main(int argc, char *argv[]) {
                         } else if (strcmp(argv[i + 1], "walk_ghost") == 0 ||
                                    strcmp(argv[i + 1], "wg") == 0) {
                             type = "walk_ghost";
+                        } else if (strcmp(argv[i + 1], "tom_thumb_right") ==
+                                       0 ||
+                                   strcmp(argv[i + 1], "ttr") == 0) {
+                            type = "tom_thumb_right";
+                        } else if (strcmp(argv[i + 1], "tom_thumb_left") == 0 ||
+                                   strcmp(argv[i + 1], "ttl") == 0) {
+                            type = "tom_thumb_left";
                         } else {
                             return help(MAZE_COMMAND_ERROR);
                         }

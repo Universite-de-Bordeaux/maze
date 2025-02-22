@@ -58,6 +58,7 @@ maze_project/
 │       └── game/                  # Jeux et visites interactives
 │           ├── fog.hpp            # Visite avec brouillard
 │           ├── fog_hand.hpp       # Visite avec brouillard à la main
+│           ├── tom_thumb_hand.hpp # Visite en marchant le chemin à la main
 │           ├── walk.hpp           # Jeu de marche
 │       └── solver/                # Algorithmes de résolution
 │           ├── breadth_first.hpp  # Algorithme de largeur
@@ -367,6 +368,8 @@ L'affichage graphique propose les contrôles suivants :
 - `fog` (f) : Visite avec brouillard. (par défaut)
 - `fog_right` (fr) : Brouillard à droite.
 - `fog_left` (fl) : Brouillard à gauche.
+- `tom_thumb_right` (ttr) : Marque le chemin à droite.
+- `tom_thumb_left` (ttl) : Marque le chemin à gauche.
 - `walk` (w) : Marche normale. (nécessite l'activation de show)
 - `walk_ghost` (wg) : Marche sans visibilité. (nécessite l'activation de show)
 
