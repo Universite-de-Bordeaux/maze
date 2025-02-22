@@ -723,15 +723,15 @@ int main(const int argc, char *argv[]) {
                           << static_cast<int>(round(absoluteDiffOptimum))
                           << " $ "
                           << " & ";
-                fileStats << "$ " << round(100 * relativeDiffOptimum) / 100
+                fileStats << "$ " << round(1000 * relativeDiffOptimum) / 1000
                           << "\\%"
                           << " $"
                           << " & ";
                 fileStats << "$ " << nbSolveValid << " $"
                           << " & ";
                 fileStats << "$ "
-                          << static_cast<double>(nbOptimalSolution) /
-                                 static_cast<double>(nbSolveValid)
+                          << round( 1000 * static_cast<double>(nbOptimalSolution) /
+                                 static_cast<double>(nbSolveValid)) / 1000
                           << "\\%"
                           << " $"
                           << " \\\\ " << std::endl;
