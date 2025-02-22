@@ -10,6 +10,7 @@
 #include "lib/algo/wall_maker.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
+#include "lib/game/splatoon.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
@@ -68,11 +69,13 @@ void help() {
                  "labyrinthe\n";
     std::cout << "  -t, --type <type>           Sélectionne le type de jeu ou "
                  "de visite\n";
-    std::cout
-        << "    Types disponibles :       f, fr, fl, tt, ttr, ttl\n";
+    std::cout << "    Types disponibles :       f, fr, fl, tt, ttr, ttl\n";
     std::cout << "                              f : fog (default)\n";
     std::cout << "                              fr : fog_right\n";
     std::cout << "                              fl : fog_left\n";
+    std::cout << "                              s : splatoon\n";
+    std::cout << "                              sr : splatoon_right\n";
+    std::cout << "                              sl : splatoon_left\n";
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
@@ -492,17 +495,19 @@ int main(const int argc, char *argv[]) {
     } else {
         fileStats << *algorithm;
     }
-    fileStats << "$" << width <<  " \\times " << height << "$";
+    fileStats << "$" << width << " \\times " << height << "$";
     if (perfect) {
-        fileStats << " parfait" << "}" << std::endl;
-    }
-    else {
-        fileStats << " imparfait" << "}" << std::endl;
+        fileStats << " parfait"
+                  << "}" << std::endl;
+    } else {
+        fileStats << " imparfait"
+                  << "}" << std::endl;
     }
 
-    fileStats << "\\begin{tabular}{lccc}" << std::endl; // mise en forme du tableau
-    fileStats << "\\toprule type & moyenne & écart-type" << std::endl; // première ligne indiquant le contenu des colonnes
-
+    fileStats << "\\begin{tabular}{lccc}"
+              << std::endl;  // mise en forme du tableau
+    fileStats << "\\toprule type & moyenne & écart-type"
+              << std::endl;  // première ligne indiquant le contenu des colonnes
 
     Stack stepsStack;
     auto maze = Maze();
@@ -510,7 +515,7 @@ int main(const int argc, char *argv[]) {
         algorithms.size() * nbMazeToGenerate * types.size() * nbUsesMaze;
     long currentIteration = 0;
 
-    fileStats << "\\midrule" << std::endl; // corps du tableau
+    fileStats << "\\midrule" << std::endl;  // corps du tableau
 
     for (int j = 0; j < types.size(); j++) {
         auto *type = static_cast<std::string *>(types.get(j));
@@ -518,8 +523,8 @@ int main(const int argc, char *argv[]) {
             auto *algorithm = static_cast<std::string *>(algorithms.top());
             algorithms.pop();
             for (int i = 0; i < nbMazeToGenerate; i++) {
-                generateMaze(&maze, *algorithm, width, height, perfect, probability,
-                            nullptr);
+                generateMaze(&maze, *algorithm, width, height, perfect,
+                             probability, nullptr);
                 if (startInitiated) maze.setStart(startX, startY);
                 if (endInitiated) maze.setEnd(endX, endY);
                 for (int k = 0; k < nbUsesMaze; k++) {
@@ -559,7 +564,7 @@ int main(const int argc, char *argv[]) {
                         fileLatex << *type;
                     }
                     fileLatex << " & " << steps << " & " << nbCellsSolution
-                            << " \\\\" << std::endl;
+                              << " \\\\" << std::endl;
                     std::cout
                         << "\rProgress : " << currentIteration * 100 / iteration
                         << "% - " << currentIteration << "/" << iteration << " "
@@ -596,9 +601,11 @@ int main(const int argc, char *argv[]) {
         // std::cout << "Variance : " << variance << std::endl;
         fileStats << standardDeviation << "&" << std::endl;
         std::cout << "Ecart-type : " << standardDeviation << std::endl;
-        // fileStats << "Ecart-type de la moyenne : " << standardDeviationAverage
-                  // << std::endl;
-        // std::cout << "Ecart-type de la moyenne : " << standardDeviationAverage
+        // fileStats << "Ecart-type de la moyenne : " <<
+        // standardDeviationAverage
+        // << std::endl;
+        // std::cout << "Ecart-type de la moyenne : " <<
+        // standardDeviationAverage
         //           << std::endl;
         // calcul des statistiques
     }
