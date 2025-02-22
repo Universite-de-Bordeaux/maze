@@ -8,9 +8,12 @@
 #include "lib/algo/diagonal.hpp"
 #include "lib/algo/fractal.hpp"
 #include "lib/algo/wall_maker.hpp"
+#include "lib/game/dead_end.hpp"
+#include "lib/game/dead_end_hand.hpp"
 #include "lib/game/fog.hpp"
 #include "lib/game/fog_hand.hpp"
 #include "lib/game/splatoon.hpp"
+#include "lib/game/splatoon_hand.hpp"
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
@@ -80,6 +83,9 @@ void help() {
     std::cout << "                              tt : tom_thumb\n";
     std::cout << "                              ttr : tom_thumb_right\n";
     std::cout << "                              ttl : tom_thumb_left\n";
+    std::cout << "                              de : dead_end\n";
+    std::cout << "                              der : dead_end_right\n";
+    std::cout << "                              del : dead_end_left\n";
     std::cout << "\n";
 
     std::cout << "Pour plus d'informations, veuillez consulter la "
@@ -158,6 +164,12 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
         steps = game_tom_thumb_hand(maze, show, false);
     } else if (type == "tom_thumb_left" || type == "ttl") {
         steps = game_tom_thumb_hand(maze, show, true);
+    } else if (type == "dead_end" || type == "de") {
+        steps = game_dead_end(maze, show);
+    } else if (type == "dead_end_right" || type == "der") {
+        steps = game_dead_end_hand(maze, show, false);
+    } else if (type == "dead_end_left" || type == "del") {
+        steps = game_dead_end_hand(maze, show, true);
     } else {
         exit(MAZE_COMMAND_ERROR);
     }
@@ -403,6 +415,18 @@ int main(const int argc, char *argv[]) {
                                strcmp(argv[i + 1], "ttl") == 0) {
                         auto *type = new std::string("tom_thumb_left");
                         types.push(type);
+                    } else if (strcmp(argv[i + 1], "dead_end") == 0 ||
+                               strcmp(argv[i + 1], "de") == 0) {
+                        auto *type = new std::string("dead_end");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "dead_end_right") == 0 ||
+                               strcmp(argv[i + 1], "der") == 0) {
+                        auto *type = new std::string("dead_end_right");
+                        types.push(type);
+                    } else if (strcmp(argv[i + 1], "dead_end_left") == 0 ||
+                               strcmp(argv[i + 1], "del") == 0) {
+                        auto *type = new std::string("dead_end_left");
+                        types.push(type);
                     } else {
                         return help(MAZE_COMMAND_ERROR);
                     }
@@ -447,6 +471,12 @@ int main(const int argc, char *argv[]) {
                 fileLatex << "tom thumb right";
             } else if (*type == "tom_thumb_left") {
                 fileLatex << "tom thumb left";
+            } else if (*type == "dead_end_right") {
+                fileLatex << "dead end right";
+            } else if (*type == "dead_end_left") {
+                fileLatex << "dead end left";
+            } else if (*type == "dead_end") {
+                fileLatex << "dead end";
             } else {
                 fileLatex << *type;
             }
@@ -524,7 +554,7 @@ int main(const int argc, char *argv[]) {
     } else {
         fileStats << *algorithm;
     }
-    fileStats << "$" << width << " \\times " << height << "$";
+    fileStats << " $" << width << " \\times " << height << "$";
     if (perfect) {
         fileStats << " parfait"
                   << "}" << std::endl;
@@ -599,6 +629,12 @@ int main(const int argc, char *argv[]) {
                         fileLatex << "tom thumb right";
                     } else if (*type == "tom_thumb_left") {
                         fileLatex << "tom thumb left";
+                    } else if (*type == "dead_end_right") {
+                        fileLatex << "dead end right";
+                    } else if (*type == "dead_end_left") {
+                        fileLatex << "dead end left";
+                    } else if (*type == "dead_end") {
+                        fileLatex << "dead end";
                     } else {
                         fileLatex << *type;
                     }
