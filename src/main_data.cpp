@@ -694,16 +694,15 @@ int main(const int argc, char *argv[]) {
                                       << std::endl;
                         }
                         std::cout
-                            << "\rProgress : "
-                            << currentIteration * 100 / iteration << "% - "
-                            << currentIteration << "/" << iteration
-                            << " - size " << nbSizes - sizes.size() << "/"
-                            << nbSizes << " - algorithm " << h + 1 << "/"
-                            << algorithms.size() << " - type " << j + 1 << "/"
-                            << types.size() << " - maze " << i + 1 << "/"
-                            << nbMazeToGenerate << " - uses " << k + 1 << "/"
-                            << nbUsesMaze << " - " << *algorithm << " - "
-                            << *type << " - " << width << "x" << height
+                            << "\r" << currentIteration * 100 / iteration
+                            << "% - " << currentIteration << "/" << iteration
+                            << " | size " << width << "x" << height << " - "
+                            << nbSizes - sizes.size() << "/" << nbSizes
+                            << " | algorithm " << *algorithm << " - " << h + 1
+                            << "/" << algorithms.size() << " | type " << *type
+                            << " - " << j + 1 << "/" << types.size()
+                            << " | maze " << i + 1 << "/" << nbMazeToGenerate
+                            << " | uses " << k + 1 << "/" << nbUsesMaze
                             << std::flush;
                     }
                 }
@@ -744,7 +743,7 @@ int main(const int argc, char *argv[]) {
                     sqrt(static_cast<double>(variance));
 
                 if (!outputStats.empty()) {
-                    fileStats << replaceUnderscoresWithSpaces(*type) << " &";
+                    fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
                     fileStats
                         << "$ "
                         << static_cast<int>(round(static_cast<double>(average)))
