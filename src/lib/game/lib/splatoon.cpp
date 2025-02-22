@@ -1,12 +1,13 @@
 #include "splatoon.hpp"
 
-int MinCountCell(const Cell *cell, int **counts) {
+int MinCountCell(const Cell *cell, int **counts, const bool checkVisited) {
     int minCount = -1;
     const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
     const auto neighbors = new Cell *[nbNeighbors];
     cell->getAbsoluteNeighbors(neighbors);
     for (int i = 0; i < nbNeighbors; i++) {
-        if (neighbors[i] != nullptr) {
+        if (neighbors[i] != nullptr &&
+            (!checkVisited || !neighbors[i]->isAlreadyVisited())) {
             const int count =
                 counts[neighbors[i]->getX()][neighbors[i]->getY()];
             if (minCount == -1 || count < minCount) {
@@ -18,13 +19,15 @@ int MinCountCell(const Cell *cell, int **counts) {
     return minCount;
 }
 
-int nbMinCountCell(const Cell *cell, int **counts, const int minCount) {
+int nbMinCountCell(const Cell *cell, int **counts, const int minCount,
+                   const bool checkVisited) {
     int nbMinCount = 0;
     const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
     const auto neighbors = new Cell *[nbNeighbors];
     cell->getAbsoluteNeighbors(neighbors);
     for (int i = 0; i < nbNeighbors; i++) {
-        if (neighbors[i] != nullptr) {
+        if (neighbors[i] != nullptr &&
+            (!checkVisited || !neighbors[i]->isAlreadyVisited())) {
             const int count =
                 counts[neighbors[i]->getX()][neighbors[i]->getY()];
             if (count == minCount) {
@@ -37,13 +40,14 @@ int nbMinCountCell(const Cell *cell, int **counts, const int minCount) {
 }
 
 void cellsMinCountCell(const Cell *cell, int **counts, const int minCount,
-                       Cell **cells) {
+                       Cell **cells, const bool checkVisited) {
     int index = 0;
     const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
     const auto neighbors = new Cell *[nbNeighbors];
     cell->getAbsoluteNeighbors(neighbors);
     for (int i = 0; i < nbNeighbors; i++) {
-        if (neighbors[i] != nullptr) {
+        if (neighbors[i] != nullptr &&
+            (!checkVisited || !neighbors[i]->isAlreadyVisited())) {
             const int count =
                 counts[neighbors[i]->getX()][neighbors[i]->getY()];
             if (count == minCount) {
