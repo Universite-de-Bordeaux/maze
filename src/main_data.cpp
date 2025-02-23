@@ -22,6 +22,7 @@
 #include "lib/maze.hpp"
 #include "lib/queue.hpp"
 #include "lib/solver/breadth_first.hpp"
+#include "lib/stack.hpp"
 #include "lib/var.hpp"
 
 /**
@@ -218,7 +219,7 @@ struct typesStruct {
     int sumDiffOptimum = 0;
     int nbSolveValid = 0;
     int nbOptimalSolution = 0;
-    Queue stepsStack;
+    Queue stepsQueue;
 };
 
 std::string replaceUnderscoresWithSpaces(const std::string &str) {
@@ -634,7 +635,7 @@ int main(const int argc, char *argv[]) {
             }
             for (int j = 0; j < types.size(); j++) {
                 auto *type = static_cast<std::string *>(types.get(j));
-                Queue stepsStack;
+                Queue stepsQueue;
                 int sumOptimum = 0;
                 int sumDiffOptimum = 0;
                 int nbSolveValid = 0;
@@ -713,7 +714,7 @@ int main(const int argc, char *argv[]) {
                             }
                         }
 
-                        stepsStack.push(new int(steps));
+                        stepsQueue.push(new int(steps));
                         if (!outputLatex.empty()) {
                             if (*algorithm == "back_tracking") {
                                 fileLatex << "back tracking";
@@ -750,8 +751,8 @@ int main(const int argc, char *argv[]) {
                 // calcul des statistiques
                 // Calcul de la moyenne
                 long sum = 0;
-                for (int i = 0; i < stepsStack.size(); i++) {
-                    auto *steps = static_cast<int *>(stepsStack.get(i));
+                for (int i = 0; i < stepsQueue.size(); i++) {
+                    auto *steps = static_cast<int *>(stepsQueue.get(i));
                     if (*steps >= 0) {
                         sum += *steps;
                     }
@@ -770,15 +771,15 @@ int main(const int argc, char *argv[]) {
 
                 // Calcul de la variance
                 long double variance = 0;
-                for (int i = 0; i < stepsStack.size(); i++) {
-                    auto *steps = static_cast<int *>(stepsStack.get(i));
+                for (int i = 0; i < stepsQueue.size(); i++) {
+                    auto *steps = static_cast<int *>(stepsQueue.get(i));
                     if (*steps >= 0) {
                         variance +=
                             (static_cast<long double>(*steps) - average) *
                             (static_cast<long double>(*steps) - average);
                     }
                 }
-                variance /= stepsStack.size();
+                variance /= stepsQueue.size();
                 long double standardDeviation =
                     sqrt(static_cast<double>(variance));
 
@@ -787,6 +788,12 @@ int main(const int argc, char *argv[]) {
                 typesStruct->sumDiffOptimum += sumDiffOptimum;
                 typesStruct->nbSolveValid += nbSolveValid;
                 typesStruct->nbOptimalSolution += nbOptimalSolution;
+                for (int i = 0; i < stepsQueue.size(); i++) {
+                    auto *steps = static_cast<int *>(stepsQueue.get(i));
+                    if (*steps >= 0) {
+                        typesStruct->stepsQueue.push(new int(*steps));
+                    }
+                }
 
                 if (!outputStats.empty()) {
                     fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
@@ -861,11 +868,17 @@ int main(const int argc, char *argv[]) {
             auto *type = static_cast<std::string *>(types.get(j));
             int nbSolveValid = typesStruct->nbSolveValid;
             if (nbSolveValid > 0) {
-                long double average =
-                    static_cast<long double>(typesStruct->sum) /
-                    static_cast<long double>(nbSolveValid);
+                long sum = typesStruct->sum;
+                int sumOptimum = typesStruct->sumOptimum;
+                Queue stepsQueue = typesStruct->stepsQueue;
+                int nbOptimalSolution = typesStruct->nbOptimalSolution;
+
+                long double average = static_cast<long double>(sum) /
+                                      static_cast<long double>(nbSolveValid);
+
+                // Calcul de l'écart avec l'optimum
                 long double optimumAverage =
-                    static_cast<long double>(typesStruct->sumOptimum) /
+                    static_cast<long double>(sumOptimum) /
                     static_cast<long double>(nbSolveValid);
 
                 long double absoluteDiffOptimum = average - optimumAverage;
@@ -874,15 +887,15 @@ int main(const int argc, char *argv[]) {
 
                 // Calcul de la variance
                 long double variance = 0;
-                for (int i = 0; i < typesStructs.size(); i++) {
-                    long steps = typesStruct->sum;
-                    if (steps >= 0) {
+                for (int i = 0; i < stepsQueue.size(); i++) {
+                    auto *steps = static_cast<int *>(stepsQueue.get(i));
+                    if (*steps >= 0) {
                         variance +=
-                            (static_cast<long double>(steps) - average) *
-                            (static_cast<long double>(steps) - average);
+                            (static_cast<long double>(*steps) - average) *
+                            (static_cast<long double>(*steps) - average);
                     }
                 }
-                variance /= typesStructs.size();
+                variance /= stepsQueue.size();
                 long double standardDeviation =
                     sqrt(static_cast<double>(variance));
 
@@ -913,15 +926,14 @@ int main(const int argc, char *argv[]) {
                         << " & ";
                     fileStats << "$ " << nbSolveValid << " $"
                               << " & ";
-                    fileStats << "$ "
-                              << round(1000 *
-                                       static_cast<double>(
-                                           typesStruct->nbOptimalSolution) /
-                                       static_cast<double>(nbSolveValid)) /
-                                     1000
-                              << "\\%"
-                              << " $"
-                              << " \\\\ " << std::endl;
+                    fileStats
+                        << "$ "
+                        << round(1000 * static_cast<double>(nbOptimalSolution) /
+                                 static_cast<double>(nbSolveValid)) /
+                               1000
+                        << "\\%"
+                        << " $"
+                        << " \\\\ " << std::endl;
                 }
             }
         }
