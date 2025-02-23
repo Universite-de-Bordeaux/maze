@@ -1,3 +1,6 @@
+#include <sys/sysinfo.h>
+#include <unistd.h>
+
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -229,6 +232,30 @@ std::string replaceUnderscoresWithSpaces(const std::string &str) {
         result.replace(pos, 1, " ");
     }
     return result;
+}
+
+long getTotalSystemMemory() {
+    struct sysinfo memInfo{};
+    sysinfo(&memInfo);
+    long long totalPhysMem = static_cast<long long>(memInfo.totalram) +
+                             static_cast<long long>(memInfo.totalswap);
+    totalPhysMem *= memInfo.mem_unit;
+    return totalPhysMem;
+}
+
+long getCurrentRSS() {
+    long rss = 0L;
+    FILE *fp = nullptr;
+    if ((fp = fopen("/proc/self/statm", "r")) == nullptr) {
+        return static_cast<size_t>(0L); /* Can't open? */
+    }
+    char buffer[256];
+    if (fgets(buffer, sizeof(buffer), fp) == nullptr) {
+        fclose(fp);
+        return static_cast<size_t>(0L); /* Can't read? */
+    }
+    rss = strtol(buffer, nullptr, 10);
+    return rss * sysconf(_SC_PAGESIZE);
 }
 
 void contentStats(const std::string &outputStats, std::ofstream &file,
@@ -820,12 +847,22 @@ int main(const int argc, char *argv[]) {
                             std::cout
                                 << "\r" << currentIteration * 100 / iteration
                                 << "% - " << currentIteration << "/"
-                                << iteration << " | probability "
-                                << *probability << " - " << f + 1 << "/"
-                                << probabilities.size() << " | size " << width
-                                << "x" << height << " - " << g + 1 << "/"
-                                << sizes.size() << " | algorithm " << *algorithm
-                                << " - " << h + 1 << "/" << algorithms.size()
+                                << iteration << " | RAM used: "
+                                << round(static_cast<double>(getCurrentRSS()) /
+                                         1024.0 / 1024.0 / 1024.0 * 100.0) /
+                                       100.0
+                                << " GB"
+                                << " / "
+                                << round(static_cast<double>(
+                                             getTotalSystemMemory()) /
+                                         1024 / 1024 / 1024 * 100.0) /
+                                       100.0
+                                << " GB" << " | probability " << *probability
+                                << " - " << f + 1 << "/" << probabilities.size()
+                                << " | size " << width << "x" << height << " - "
+                                << g + 1 << "/" << sizes.size()
+                                << " | algorithm " << *algorithm << " - "
+                                << h + 1 << "/" << algorithms.size()
                                 << " | type " << *type << " - " << j + 1 << "/"
                                 << types.size() << " | maze " << i + 1 << "/"
                                 << nbMazeToGenerate << " | uses " << k + 1
