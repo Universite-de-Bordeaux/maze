@@ -21,7 +21,7 @@
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
-#include "lib/queue.hpp"
+#include "lib/queue_file.hpp"
 #include "lib/solver/breadth_first.hpp"
 #include "lib/var.hpp"
 
@@ -222,7 +222,7 @@ struct typesStruct {
     int sumDiffOptimum = 0;
     int nbSolveValid = 0;
     int nbOptimalSolution = 0;
-    Queue stepsQueue;
+    QueueFile stepsQueue;
 };
 
 std::string replaceUnderscoresWithSpaces(const std::string &str) {
@@ -235,7 +235,7 @@ std::string replaceUnderscoresWithSpaces(const std::string &str) {
 }
 
 long getTotalSystemMemory() {
-    struct sysinfo memInfo{};
+    struct sysinfo memInfo {};
     sysinfo(&memInfo);
     long long totalPhysMem = static_cast<long long>(memInfo.totalram) +
                              static_cast<long long>(memInfo.totalswap);
@@ -261,7 +261,7 @@ long getCurrentRSS() {
 void contentStats(const std::string &outputStats, std::ofstream &file,
                   const long double sum, const int sumOptimum,
                   const int nbSolveValid, const int nbOptimalSolution,
-                  const Queue &stepsQueue, const std::string *type) {
+                  const QueueFile &stepsQueue, const std::string *type) {
     const long double average =
         static_cast<long double>(sum) / static_cast<long double>(nbSolveValid);
 
@@ -339,11 +339,11 @@ int main(const int argc, char *argv[]) {
     }
     uint nbMazeToGenerate = 1;
     uint nbUsesMaze = 1;
-    Queue algorithms;
-    Queue sizes;
-    Queue types;
+    QueueFile algorithms("tmp/queue_algorithms.bin");
+    QueueFile sizes("tmp/queue_sizes.bin");
+    QueueFile types("tmp/queue_types.bin");
     bool perfect = true;
-    Queue probabilities;
+    QueueFile probabilities("tmp/queue_probabilities.bin");
     bool startInitiated = false;
     long double startX;
     long double startY;
@@ -694,7 +694,7 @@ int main(const int argc, char *argv[]) {
     long iteration = sizes.size() * algorithms.size() * nbMazeToGenerate *
                      types.size() * nbUsesMaze * probabilities.size();
     long currentIteration = 0;
-    Queue typesStats;
+    QueueFile typesStats("tmp/queue_types_stats.bin");
     for (int j = 0; j < types.size(); j++) {
         typesStats.push(new typesStruct());
     }
@@ -704,7 +704,9 @@ int main(const int argc, char *argv[]) {
             auto *size = static_cast<struct size *>(sizes.get(g));
             int width = size->width;
             int height = size->height;
-            Queue typesStructs;
+            QueueFile typesStructs("tmp/queue_types_structs_" +
+                                   std::to_string(f) + "_" + std::to_string(g) +
+                                   ".bin");
             for (int j = 0; j < types.size(); j++) {
                 typesStructs.push(new typesStruct());
             }
@@ -741,7 +743,10 @@ int main(const int argc, char *argv[]) {
                 }
                 for (int j = 0; j < types.size(); j++) {
                     auto *type = static_cast<std::string *>(types.get(j));
-                    Queue stepsQueue;
+                    QueueFile stepsQueue(
+                        "tmp/queue_steps_" + std::to_string(f) + "_" +
+                        std::to_string(g) + "_" + std::to_string(h) + "_" +
+                        std::to_string(j) + ".bin");
                     int sumOptimum = 0;
                     int sumDiffOptimum = 0;
                     int nbSolveValid = 0;
@@ -857,8 +862,9 @@ int main(const int argc, char *argv[]) {
                                              getTotalSystemMemory()) /
                                          1024 / 1024 / 1024 * 100.0) /
                                        100.0
-                                << " GB" << " | probability " << *probability
-                                << " - " << f + 1 << "/" << probabilities.size()
+                                << " GB"
+                                << " | probability " << *probability << " - "
+                                << f + 1 << "/" << probabilities.size()
                                 << " | size " << width << "x" << height << " - "
                                 << g + 1 << "/" << sizes.size()
                                 << " | algorithm " << *algorithm << " - "
@@ -940,7 +946,7 @@ int main(const int argc, char *argv[]) {
                 if (nbSolveValid > 0) {
                     long sum = typesStruct->sum;
                     int sumOptimum = typesStruct->sumOptimum;
-                    Queue stepsQueue = typesStruct->stepsQueue;
+                    QueueFile stepsQueue = typesStruct->stepsQueue;
                     int nbOptimalSolution = typesStruct->nbOptimalSolution;
 
                     contentStats(outputStats, fileStats, sum, sumOptimum,
@@ -998,7 +1004,7 @@ int main(const int argc, char *argv[]) {
         if (nbSolveValid > 0) {
             long sum = typesStat->sum;
             int sumOptimum = typesStat->sumOptimum;
-            Queue stepsQueue = typesStat->stepsQueue;
+            QueueFile stepsQueue = typesStat->stepsQueue;
             int nbOptimalSolution = typesStat->nbOptimalSolution;
 
             contentStats(outputStats, fileStats, sum, sumOptimum, nbSolveValid,

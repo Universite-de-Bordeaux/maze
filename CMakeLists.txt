@@ -72,6 +72,7 @@ set(SOURCE_FILES_DATA
         src/lib/game/tom_thumb_hand.cpp
         src/lib/maze.cpp
         src/lib/queue.cpp
+        src/lib/queue_file.cpp
         src/lib/rand.cpp
         src/lib/show.cpp
         src/lib/solver/breadth_first.cpp

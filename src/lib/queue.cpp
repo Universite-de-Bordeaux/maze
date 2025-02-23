@@ -1,7 +1,5 @@
 #include "queue.hpp"
 
-#include <time.h>
-
 Queue::Queue() {
     size_ = 0;
     capacity_ = 1;
