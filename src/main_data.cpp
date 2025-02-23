@@ -22,7 +22,6 @@
 #include "lib/maze.hpp"
 #include "lib/queue.hpp"
 #include "lib/solver/breadth_first.hpp"
-#include "lib/stack.hpp"
 #include "lib/var.hpp"
 
 /**
@@ -229,6 +228,63 @@ std::string replaceUnderscoresWithSpaces(const std::string &str) {
         result.replace(pos, 1, " ");
     }
     return result;
+}
+
+void contentStats(const std::string &outputStats, std::ofstream &file,
+                  const long double sum, const int sumOptimum,
+                  const int nbSolveValid, const int nbOptimalSolution,
+                  const Queue &stepsQueue, const std::string *type) {
+    const long double average =
+        static_cast<long double>(sum) / static_cast<long double>(nbSolveValid);
+
+    // Calcul de l'écart avec l'optimum
+    const long double optimumAverage = static_cast<long double>(sumOptimum) /
+                                       static_cast<long double>(nbSolveValid);
+
+    const long double absoluteDiffOptimum = average - optimumAverage;
+    const long double relativeDiffOptimum = 100 * (optimumAverage / average);
+
+    // Calcul de la variance
+    long double variance = 0;
+    for (int i = 0; i < stepsQueue.size(); i++) {
+        const auto *steps = static_cast<int *>(stepsQueue.get(i));
+        if (*steps >= 0) {
+            variance += (static_cast<long double>(*steps) - average) *
+                        (static_cast<long double>(*steps) - average);
+        }
+    }
+    variance /= stepsQueue.size();
+    const long double standardDeviation = sqrt(static_cast<double>(variance));
+
+    if (!outputStats.empty()) {
+        file << replaceUnderscoresWithSpaces(*type) << " & ";
+        file << "$ " << static_cast<int>(round(static_cast<double>(average)))
+             << " $ "
+             << " & ";
+        file << "$ "
+             << static_cast<int>(round(static_cast<double>(standardDeviation)))
+             << " $ "
+             << " & ";
+        file << "$ "
+             << static_cast<int>(
+                    round(static_cast<double>(absoluteDiffOptimum)))
+             << " $ "
+             << " & ";
+        file << "$ "
+             << round(1000 * static_cast<double>(relativeDiffOptimum)) / 1000
+             << "\\%"
+             << " $"
+             << " & ";
+        file << "$ " << nbSolveValid << " $"
+             << " & ";
+        file << "$ "
+             << round(1000 * static_cast<double>(nbOptimalSolution) /
+                      static_cast<double>(nbSolveValid)) /
+                    1000
+             << "\\%"
+             << " $"
+             << " \\\\ " << std::endl;
+    }
 }
 
 void endStats(const std::string &outputStats, std::ofstream &file) {
@@ -757,31 +813,9 @@ int main(const int argc, char *argv[]) {
                         sum += *steps;
                     }
                 }
-                long double average = static_cast<long double>(sum) /
-                                      static_cast<long double>(nbSolveValid);
 
-                // Calcul de l'écart avec l'optimum
-                long double optimumAverage =
-                    static_cast<long double>(sumOptimum) /
-                    static_cast<long double>(nbSolveValid);
-
-                long double absoluteDiffOptimum = average - optimumAverage;
-                long double relativeDiffOptimum =
-                    100 * (optimumAverage / average);
-
-                // Calcul de la variance
-                long double variance = 0;
-                for (int i = 0; i < stepsQueue.size(); i++) {
-                    auto *steps = static_cast<int *>(stepsQueue.get(i));
-                    if (*steps >= 0) {
-                        variance +=
-                            (static_cast<long double>(*steps) - average) *
-                            (static_cast<long double>(*steps) - average);
-                    }
-                }
-                variance /= stepsQueue.size();
-                long double standardDeviation =
-                    sqrt(static_cast<double>(variance));
+                contentStats(outputStats, fileStats, sum, sumOptimum,
+                             nbSolveValid, nbOptimalSolution, stepsQueue, type);
 
                 typesStruct->sum += sum;
                 typesStruct->sumOptimum += sumOptimum;
@@ -793,43 +827,6 @@ int main(const int argc, char *argv[]) {
                     if (*steps >= 0) {
                         typesStruct->stepsQueue.push(new int(*steps));
                     }
-                }
-
-                if (!outputStats.empty()) {
-                    fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
-                    fileStats
-                        << "$ "
-                        << static_cast<int>(round(static_cast<double>(average)))
-                        << " $ "
-                        << " & ";
-                    fileStats << "$ "
-                              << static_cast<int>(round(
-                                     static_cast<double>(standardDeviation)))
-                              << " $ "
-                              << " & ";
-                    fileStats << "$ "
-                              << static_cast<int>(round(
-                                     static_cast<double>(absoluteDiffOptimum)))
-                              << " $ "
-                              << " & ";
-                    fileStats
-                        << "$ "
-                        << round(1000 *
-                                 static_cast<double>(relativeDiffOptimum)) /
-                               1000
-                        << "\\%"
-                        << " $"
-                        << " & ";
-                    fileStats << "$ " << nbSolveValid << " $"
-                              << " & ";
-                    fileStats
-                        << "$ "
-                        << round(1000 * static_cast<double>(nbOptimalSolution) /
-                                 static_cast<double>(nbSolveValid)) /
-                               1000
-                        << "\\%"
-                        << " $"
-                        << " \\\\ " << std::endl;
                 }
             }
             endStats(outputStats, fileStats);
@@ -873,68 +870,8 @@ int main(const int argc, char *argv[]) {
                 Queue stepsQueue = typesStruct->stepsQueue;
                 int nbOptimalSolution = typesStruct->nbOptimalSolution;
 
-                long double average = static_cast<long double>(sum) /
-                                      static_cast<long double>(nbSolveValid);
-
-                // Calcul de l'écart avec l'optimum
-                long double optimumAverage =
-                    static_cast<long double>(sumOptimum) /
-                    static_cast<long double>(nbSolveValid);
-
-                long double absoluteDiffOptimum = average - optimumAverage;
-                long double relativeDiffOptimum =
-                    100 * (optimumAverage / average);
-
-                // Calcul de la variance
-                long double variance = 0;
-                for (int i = 0; i < stepsQueue.size(); i++) {
-                    auto *steps = static_cast<int *>(stepsQueue.get(i));
-                    if (*steps >= 0) {
-                        variance +=
-                            (static_cast<long double>(*steps) - average) *
-                            (static_cast<long double>(*steps) - average);
-                    }
-                }
-                variance /= stepsQueue.size();
-                long double standardDeviation =
-                    sqrt(static_cast<double>(variance));
-
-                if (!outputStats.empty()) {
-                    fileStats << replaceUnderscoresWithSpaces(*type) << " & ";
-                    fileStats
-                        << "$ "
-                        << static_cast<int>(round(static_cast<double>(average)))
-                        << " $ "
-                        << " & ";
-                    fileStats << "$ "
-                              << static_cast<int>(round(
-                                     static_cast<double>(standardDeviation)))
-                              << " $ "
-                              << " & ";
-                    fileStats << "$ "
-                              << static_cast<int>(round(
-                                     static_cast<double>(absoluteDiffOptimum)))
-                              << " $ "
-                              << " & ";
-                    fileStats
-                        << "$ "
-                        << round(1000 *
-                                 static_cast<double>(relativeDiffOptimum)) /
-                               1000
-                        << "\\%"
-                        << " $"
-                        << " & ";
-                    fileStats << "$ " << nbSolveValid << " $"
-                              << " & ";
-                    fileStats
-                        << "$ "
-                        << round(1000 * static_cast<double>(nbOptimalSolution) /
-                                 static_cast<double>(nbSolveValid)) /
-                               1000
-                        << "\\%"
-                        << " $"
-                        << " \\\\ " << std::endl;
-                }
+                contentStats(outputStats, fileStats, sum, sumOptimum,
+                             nbSolveValid, nbOptimalSolution, stepsQueue, type);
             }
         }
         endStats(outputStats, fileStats);
