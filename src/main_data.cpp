@@ -667,7 +667,7 @@ int main(const int argc, char *argv[]) {
 
     auto maze = Maze();
     long iteration = sizes.size() * algorithms.size() * nbMazeToGenerate *
-                     types.size() * nbUsesMaze;
+                     types.size() * nbUsesMaze * probabilities.size();
     long currentIteration = 0;
     Queue typesStats;
     for (int j = 0; j < types.size(); j++) {
@@ -822,10 +822,12 @@ int main(const int argc, char *argv[]) {
                             std::cout
                                 << "\r" << currentIteration * 100 / iteration
                                 << "% - " << currentIteration << "/"
-                                << iteration << " | size " << width << "x"
-                                << height << " - " << g + 1 << "/"
-                                << sizes.size() << " | algorithm " << *algorithm
-                                << " - " << h + 1 << "/" << algorithms.size()
+                                << iteration << " | " << *probability << " - "
+                                << f + 1 << "/" << probabilities.size()
+                                << " | size " << width << "x" << height << " - "
+                                << g + 1 << "/" << sizes.size()
+                                << " | algorithm " << *algorithm << " - "
+                                << h + 1 << "/" << algorithms.size()
                                 << " | type " << *type << " - " << j + 1 << "/"
                                 << types.size() << " | maze " << i + 1 << "/"
                                 << nbMazeToGenerate << " | uses " << k + 1
