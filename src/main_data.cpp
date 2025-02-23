@@ -207,6 +207,20 @@ int gameMaze(Maze *maze, const std::string &type, Show *show) {
     return steps;
 }
 
+struct size {
+    int width;
+    int height;
+};
+
+struct typesStruct {
+    long sum = 0;
+    int sumOptimum = 0;
+    int sumDiffOptimum = 0;
+    int nbSolveValid = 0;
+    int nbOptimalSolution = 0;
+    Queue stepsStack;
+};
+
 std::string replaceUnderscoresWithSpaces(const std::string &str) {
     std::string result = str;
     size_t pos = 0;
@@ -216,18 +230,14 @@ std::string replaceUnderscoresWithSpaces(const std::string &str) {
     return result;
 }
 
-struct size {
-    int width;
-    int height;
-};
-
-struct typesStruct {
-    long steps = 0;
-    int sumOptimum = 0;
-    int sumDiffOptimum = 0;
-    int nbSolveValid = 0;
-    int nbOptimalSolution = 0;
-};
+void endStats(const std::string &outputStats, std::ofstream &file) {
+    if (!outputStats.empty()) {
+        file << "\\bottomrule" << std::endl;
+        file << "\\end{tabular}" << std::endl;
+        file << "\\end{table}" << std::endl;
+        file << "\\FloatBarrier" << std::endl;
+    }
+}
 
 /**
  * Main
@@ -772,7 +782,7 @@ int main(const int argc, char *argv[]) {
                 long double standardDeviation =
                     sqrt(static_cast<double>(variance));
 
-                typesStruct->steps += sum;
+                typesStruct->sum += sum;
                 typesStruct->sumOptimum += sumOptimum;
                 typesStruct->sumDiffOptimum += sumDiffOptimum;
                 typesStruct->nbSolveValid += nbSolveValid;
@@ -815,12 +825,7 @@ int main(const int argc, char *argv[]) {
                         << " \\\\ " << std::endl;
                 }
             }
-            if (!outputStats.empty()) {
-                fileStats << "\\bottomrule" << std::endl;
-                fileStats << "\\end{tabular}" << std::endl;
-                fileStats << "\\end{table}" << std::endl;
-                fileStats << "\\FloatBarrier" << std::endl;
-            }
+            endStats(outputStats, fileStats);
         }
         if (!outputStats.empty()) {
             fileStats << "\\begin{table}[ht]" << std::endl;
@@ -857,7 +862,7 @@ int main(const int argc, char *argv[]) {
             int nbSolveValid = typesStruct->nbSolveValid;
             if (nbSolveValid > 0) {
                 long double average =
-                    static_cast<long double>(typesStruct->steps) /
+                    static_cast<long double>(typesStruct->sum) /
                     static_cast<long double>(nbSolveValid);
                 long double optimumAverage =
                     static_cast<long double>(typesStruct->sumOptimum) /
@@ -870,7 +875,7 @@ int main(const int argc, char *argv[]) {
                 // Calcul de la variance
                 long double variance = 0;
                 for (int i = 0; i < typesStructs.size(); i++) {
-                    long steps = typesStruct->steps;
+                    long steps = typesStruct->sum;
                     if (steps >= 0) {
                         variance +=
                             (static_cast<long double>(steps) - average) *
@@ -920,12 +925,7 @@ int main(const int argc, char *argv[]) {
                 }
             }
         }
-        if (!outputStats.empty()) {
-            fileStats << "\\bottomrule" << std::endl;
-            fileStats << "\\end{tabular}" << std::endl;
-            fileStats << "\\end{table}" << std::endl;
-            fileStats << "\\FloatBarrier" << std::endl;
-        }
+        endStats(outputStats, fileStats);
     }
 
     std::cout << std::endl;
