@@ -148,8 +148,11 @@ int help(const int error, const std::string &command) {
  * @param show Affichage
  */
 void generateMaze(Maze *maze, const std::string &algorithm, const int width,
-                  const int height, const bool isPerfect,
-                  const double probability, Show *show) {
+                  const int height, bool isPerfect, const double probability,
+                  Show *show) {
+    if (probability == 0.0) {
+        isPerfect = false;
+    }
     if (algorithm == "back_tracking" || algorithm == "bt")
         algo_back_tracking(maze, width, height, isPerfect, probability, show);
     else if (algorithm == "wall_maker" || algorithm == "wm")
@@ -315,7 +318,7 @@ int main(const int argc, char *argv[]) {
     Queue sizes;
     Queue types;
     bool perfect = true;
-    double probability = 0.01;
+    Queue probabilities;
     bool startInitiated = false;
     long double startX;
     long double startY;
@@ -372,7 +375,9 @@ int main(const int argc, char *argv[]) {
                     (strcmp(argv[i + 1], "-d") == 0 ||
                      strcmp(argv[i + 1], "--dimension") == 0) ||
                     (strcmp(argv[i + 1], "-i") == 0 ||
-                     strcmp(argv[i + 1], "--imperfect") == 0))) {
+                     strcmp(argv[i + 1], "--imperfect") == 0) ||
+                    (strcmp(argv[i + 1], "-p") == 0 ||
+                     strcmp(argv[i + 1], "--probability") == 0))) {
                 if (i + 1 < argc) {
                     // Si l'utilisateur a spécifié le type d'algorithme
                     if (strcmp(argv[i + 1], "-a") == 0 ||
@@ -434,8 +439,10 @@ int main(const int argc, char *argv[]) {
                         strcmp(argv[i + 1], "--probability") == 0) {
                         i++;
                         if (i + 1 < argc) {
-                            probability = std::stod(argv[i + 1]);
-                            if (probability <= 0.0 || probability > 1.0) {
+                            double probabilityTmp = std::stod(argv[i + 1]);
+                            probabilities.push(new double(probabilityTmp));
+
+                            if (probabilityTmp < 0.0 || probabilityTmp > 1.0) {
                                 return help(MAZE_COMMAND_ERROR);
                             }
                             i++;
@@ -550,6 +557,7 @@ int main(const int argc, char *argv[]) {
     if (sizes.empty()) sizes.push(new size{10, 10});
     if (algorithms.empty()) algorithms.push(new std::string("back_tracking"));
     if (types.empty()) types.push(new std::string("fog"));
+    if (probabilities.empty()) probabilities.push(new double(0.01));
 
     std::ofstream fileLatex(outputLatex);
     if (!outputLatex.empty()) {
@@ -598,7 +606,20 @@ int main(const int argc, char *argv[]) {
                 if (i < sizes.size() - 1) fileLatex << ", ";
             }
         }
-        if (!perfect) fileLatex << " avec une probabilité de " << probability;
+        if (!perfect) {
+            if (probabilities.size() == 1) {
+                auto *probability = static_cast<double *>(probabilities.get(0));
+                fileLatex << " avec une probabilité de " << *probability;
+            } else {
+                fileLatex << " avec des probabilités de ";
+                for (int i = 0; i < probabilities.size(); i++) {
+                    auto *probability =
+                        static_cast<double *>(probabilities.get(i));
+                    fileLatex << *probability;
+                    if (i < probabilities.size() - 1) fileLatex << ", ";
+                }
+            }
+        }
         if (nbMazeToGenerate > 1)
             fileLatex << " générés";
         else
@@ -652,238 +673,246 @@ int main(const int argc, char *argv[]) {
     for (int j = 0; j < types.size(); j++) {
         typesStats.push(new typesStruct());
     }
-    for (int g = 0; g < sizes.size(); g++) {
-        auto *size = static_cast<struct size *>(sizes.get(g));
-        int width = size->width;
-        int height = size->height;
-        Queue typesStructs;
-        for (int j = 0; j < types.size(); j++) {
-            typesStructs.push(new typesStruct());
-        }
-        for (int h = 0; h < algorithms.size(); h++) {
-            auto *algorithm = static_cast<std::string *>(algorithms.get(h));
+    for (int f = 0; f < probabilities.size(); f++) {
+        auto *probability = static_cast<double *>(probabilities.get(f));
+        for (int g = 0; g < sizes.size(); g++) {
+            auto *size = static_cast<struct size *>(sizes.get(g));
+            int width = size->width;
+            int height = size->height;
+            Queue typesStructs;
+            for (int j = 0; j < types.size(); j++) {
+                typesStructs.push(new typesStruct());
+            }
+            for (int h = 0; h < algorithms.size(); h++) {
+                auto *algorithm = static_cast<std::string *>(algorithms.get(h));
+                if (!outputStats.empty()) {
+                    fileStats << "\\begin{table}[ht]" << std::endl;
+                    fileStats << "\\centering" << std::endl;
+                    fileStats << "\\caption{Algorithme ";
+                    fileStats << replaceUnderscoresWithSpaces(*algorithm);
+                    fileStats << " $" << width << " \\times " << height << "$";
+                    if (perfect) {
+                        fileStats << " parfait";
+                    } else {
+                        fileStats << " imparfait avec une probabilité de "
+                                  << *probability;
+                    }
+                    fileStats << " pour " << nbMazeToGenerate
+                              << " labyrinthes générés et "
+                                 "visités "
+                              << nbUsesMaze << " fois";
+                    fileStats << "}" << std::endl;
+
+                    fileStats << "\\begin{tabular}{lcccccc}"
+                              << std::endl;  // mise en forme du tableau
+                    fileStats << "\\toprule Type & Moyenne & Ecart-type & EAO "
+                                 "& ERO & "
+                                 "Valide & Optimale \\\\"
+                              << std::endl;  // première ligne indiquant le
+                    // contenu des
+                    // colonnes
+
+                    fileStats << "\\midrule" << std::endl;  // corps du tableau
+                }
+                for (int j = 0; j < types.size(); j++) {
+                    auto *type = static_cast<std::string *>(types.get(j));
+                    Queue stepsQueue;
+                    int sumOptimum = 0;
+                    int sumDiffOptimum = 0;
+                    int nbSolveValid = 0;
+                    int nbOptimalSolution = 0;
+                    auto *typesStruct =
+                        static_cast<struct typesStruct *>(typesStructs.get(j));
+                    auto *typesStat =
+                        static_cast<struct typesStruct *>(typesStats.get(j));
+
+                    for (int i = 0; i < nbMazeToGenerate; i++) {
+                        generateMaze(&maze, *algorithm, width, height, perfect,
+                                     *probability, nullptr);
+                        if (startInitiated) {
+                            int x_tmp;
+                            int y_tmp;
+                            if (startX < 0)
+                                x_tmp = static_cast<int>(
+                                    static_cast<long double>(width) + startX);
+                            else if (startX > 0 && startX < 1)
+                                x_tmp = static_cast<int>(
+                                    static_cast<long double>(width) * startX);
+                            else
+                                x_tmp = static_cast<int>(startX);
+                            if (startY < 0)
+                                y_tmp = static_cast<int>(
+                                    static_cast<long double>(height) + startY);
+                            else if (startY > 0 && startY < 1)
+                                y_tmp = static_cast<int>(
+                                    static_cast<long double>(height) * startY);
+                            else
+                                y_tmp = static_cast<int>(startY);
+                            maze.setStart(x_tmp, y_tmp);
+                        }
+                        if (endInitiated) {
+                            int x_tmp;
+                            int y_tmp;
+                            if (endX < 0)
+                                x_tmp = static_cast<int>(
+                                    static_cast<long double>(width) + endX);
+                            else if (endX > 0 && endX < 1)
+                                x_tmp = static_cast<int>(
+                                    static_cast<long double>(width) * endX);
+                            else
+                                x_tmp = static_cast<int>(endX);
+                            if (endY < 0)
+                                y_tmp = static_cast<int>(
+                                    static_cast<long double>(height) + endY);
+                            else if (endY > 0 && endY < 1)
+                                y_tmp = static_cast<int>(
+                                    static_cast<long double>(height) * endY);
+                            else
+                                y_tmp = static_cast<int>(endY);
+                            maze.setEnd(x_tmp, y_tmp);
+                        }
+                        for (int k = 0; k < nbUsesMaze; k++) {
+                            currentIteration++;
+                            if (!startInitiated) maze.resetStart();
+                            if (!endInitiated) maze.resetEnd();
+                            solver_breadth_first(&maze, nullptr);
+                            int nbCellsSolution = 0;
+                            for (int x = 0; x < maze.getWidth(); x++) {
+                                for (int y = 0; y < maze.getHeight(); y++) {
+                                    if (maze.getCell(x, y)->getStatus() ==
+                                        MAZE_STATUS_WAY_OUT)
+                                        nbCellsSolution++;
+                                }
+                            }
+
+                            maze.clearMaze();
+                            int steps = gameMaze(&maze, *type, nullptr);
+
+                            if (steps != -1) {
+                                sumOptimum += nbCellsSolution;
+                                sumDiffOptimum += steps - nbCellsSolution;
+                                nbSolveValid++;
+                                if (steps == nbCellsSolution) {
+                                    nbOptimalSolution++;
+                                }
+                            }
+
+                            stepsQueue.push(new int(steps));
+                            if (!outputLatex.empty()) {
+                                if (*algorithm == "back_tracking") {
+                                    fileLatex << "back tracking";
+                                } else if (*algorithm == "wall_maker") {
+                                    fileLatex << "wall maker";
+                                } else {
+                                    fileLatex << *algorithm;
+                                }
+                                fileLatex << " & " << width << "x" << height
+                                          << " & ";
+                                if (perfect)
+                                    fileLatex << "Oui";
+                                else
+                                    fileLatex << "Non" << *probability;
+                                fileLatex << " & ";
+                                fileLatex
+                                    << replaceUnderscoresWithSpaces(*type);
+                                fileLatex << " & " << steps << " & "
+                                          << nbCellsSolution << " \\\\"
+                                          << std::endl;
+                            }
+                            std::cout
+                                << "\r" << currentIteration * 100 / iteration
+                                << "% - " << currentIteration << "/"
+                                << iteration << " | size " << width << "x"
+                                << height << " - " << g + 1 << "/"
+                                << sizes.size() << " | algorithm " << *algorithm
+                                << " - " << h + 1 << "/" << algorithms.size()
+                                << " | type " << *type << " - " << j + 1 << "/"
+                                << types.size() << " | maze " << i + 1 << "/"
+                                << nbMazeToGenerate << " | uses " << k + 1
+                                << "/" << nbUsesMaze << std::flush;
+                        }
+                    }
+                    // calcul des statistiques
+                    // Calcul de la moyenne
+                    long sum = 0;
+                    for (int i = 0; i < stepsQueue.size(); i++) {
+                        auto *steps = static_cast<int *>(stepsQueue.get(i));
+                        if (*steps >= 0) {
+                            sum += *steps;
+                        }
+                    }
+
+                    contentStats(outputStats, fileStats, sum, sumOptimum,
+                                 nbSolveValid, nbOptimalSolution, stepsQueue,
+                                 type);
+
+                    typesStruct->sum += sum;
+                    typesStruct->sumOptimum += sumOptimum;
+                    typesStruct->sumDiffOptimum += sumDiffOptimum;
+                    typesStruct->nbSolveValid += nbSolveValid;
+                    typesStruct->nbOptimalSolution += nbOptimalSolution;
+                    typesStat->sum += sum;
+                    typesStat->sumOptimum += sumOptimum;
+                    typesStat->sumDiffOptimum += sumDiffOptimum;
+                    typesStat->nbSolveValid += nbSolveValid;
+                    typesStat->nbOptimalSolution += nbOptimalSolution;
+                    for (int i = 0; i < stepsQueue.size(); i++) {
+                        auto *steps = static_cast<int *>(stepsQueue.get(i));
+                        if (*steps >= 0) {
+                            typesStruct->stepsQueue.push(new int(*steps));
+                            typesStat->stepsQueue.push(new int(*steps));
+                        }
+                    }
+                }
+                endStats(outputStats, fileStats);
+            }
             if (!outputStats.empty()) {
                 fileStats << "\\begin{table}[ht]" << std::endl;
                 fileStats << "\\centering" << std::endl;
-                fileStats << "\\caption{Algorithme ";
-                fileStats << replaceUnderscoresWithSpaces(*algorithm);
-                fileStats << " $" << width << " \\times " << height << "$";
+                fileStats
+                    << "\\caption{Statistiques pour les labyrinthes de taille "
+                       "$"
+                    << width << " \\times " << height << "$";
                 if (perfect) {
                     fileStats << " parfait";
                 } else {
                     fileStats << " imparfait avec une probabilité de "
-                              << probability;
+                              << *probability;
                 }
                 fileStats << " pour " << nbMazeToGenerate
-                          << " labyrinthes générés et "
-                             "visités "
-                          << nbUsesMaze << " fois";
+                          << " labyrinthes générés avec " << algorithms.size()
+                          << " algorithmes et visités " << nbUsesMaze
+                          << " fois";
                 fileStats << "}" << std::endl;
 
                 fileStats << "\\begin{tabular}{lcccccc}"
-                          << std::endl;  // mise en forme du tableau
+                             "\n";  // mise en forme du tableau
                 fileStats << "\\toprule Type & Moyenne & Ecart-type & EAO "
                              "& ERO & "
                              "Valide & Optimale \\\\"
-                          << std::endl;  // première ligne indiquant le
-                                         // contenu des
+                             "\n";  // première ligne indiquant le contenu des
                 // colonnes
 
                 fileStats << "\\midrule" << std::endl;  // corps du tableau
             }
             for (int j = 0; j < types.size(); j++) {
-                auto *type = static_cast<std::string *>(types.get(j));
-                Queue stepsQueue;
-                int sumOptimum = 0;
-                int sumDiffOptimum = 0;
-                int nbSolveValid = 0;
-                int nbOptimalSolution = 0;
                 auto *typesStruct =
                     static_cast<struct typesStruct *>(typesStructs.get(j));
-                auto *typesStat =
-                    static_cast<struct typesStruct *>(typesStats.get(j));
+                auto *type = static_cast<std::string *>(types.get(j));
+                int nbSolveValid = typesStruct->nbSolveValid;
+                if (nbSolveValid > 0) {
+                    long sum = typesStruct->sum;
+                    int sumOptimum = typesStruct->sumOptimum;
+                    Queue stepsQueue = typesStruct->stepsQueue;
+                    int nbOptimalSolution = typesStruct->nbOptimalSolution;
 
-                for (int i = 0; i < nbMazeToGenerate; i++) {
-                    generateMaze(&maze, *algorithm, width, height, perfect,
-                                 probability, nullptr);
-                    if (startInitiated) {
-                        int x_tmp;
-                        int y_tmp;
-                        if (startX < 0)
-                            x_tmp = static_cast<int>(
-                                static_cast<long double>(width) + startX);
-                        else if (startX > 0 && startX < 1)
-                            x_tmp = static_cast<int>(
-                                static_cast<long double>(width) * startX);
-                        else
-                            x_tmp = static_cast<int>(startX);
-                        if (startY < 0)
-                            y_tmp = static_cast<int>(
-                                static_cast<long double>(height) + startY);
-                        else if (startY > 0 && startY < 1)
-                            y_tmp = static_cast<int>(
-                                static_cast<long double>(height) * startY);
-                        else
-                            y_tmp = static_cast<int>(startY);
-                        maze.setStart(x_tmp, y_tmp);
-                    }
-                    if (endInitiated) {
-                        int x_tmp;
-                        int y_tmp;
-                        if (endX < 0)
-                            x_tmp = static_cast<int>(
-                                static_cast<long double>(width) + endX);
-                        else if (endX > 0 && endX < 1)
-                            x_tmp = static_cast<int>(
-                                static_cast<long double>(width) * endX);
-                        else
-                            x_tmp = static_cast<int>(endX);
-                        if (endY < 0)
-                            y_tmp = static_cast<int>(
-                                static_cast<long double>(height) + endY);
-                        else if (endY > 0 && endY < 1)
-                            y_tmp = static_cast<int>(
-                                static_cast<long double>(height) * endY);
-                        else
-                            y_tmp = static_cast<int>(endY);
-                        maze.setEnd(x_tmp, y_tmp);
-                    }
-                    for (int k = 0; k < nbUsesMaze; k++) {
-                        currentIteration++;
-                        if (!startInitiated) maze.resetStart();
-                        if (!endInitiated) maze.resetEnd();
-                        solver_breadth_first(&maze, nullptr);
-                        int nbCellsSolution = 0;
-                        for (int x = 0; x < maze.getWidth(); x++) {
-                            for (int y = 0; y < maze.getHeight(); y++) {
-                                if (maze.getCell(x, y)->getStatus() ==
-                                    MAZE_STATUS_WAY_OUT)
-                                    nbCellsSolution++;
-                            }
-                        }
-
-                        maze.clearMaze();
-                        int steps = gameMaze(&maze, *type, nullptr);
-
-                        if (steps != -1) {
-                            sumOptimum += nbCellsSolution;
-                            sumDiffOptimum += steps - nbCellsSolution;
-                            nbSolveValid++;
-                            if (steps == nbCellsSolution) {
-                                nbOptimalSolution++;
-                            }
-                        }
-
-                        stepsQueue.push(new int(steps));
-                        if (!outputLatex.empty()) {
-                            if (*algorithm == "back_tracking") {
-                                fileLatex << "back tracking";
-                            } else if (*algorithm == "wall_maker") {
-                                fileLatex << "wall maker";
-                            } else {
-                                fileLatex << *algorithm;
-                            }
-                            fileLatex << " & " << width << "x" << height
-                                      << " & ";
-                            if (perfect)
-                                fileLatex << "Oui";
-                            else
-                                fileLatex << "Non" << probability;
-                            fileLatex << " & ";
-                            fileLatex << replaceUnderscoresWithSpaces(*type);
-                            fileLatex << " & " << steps << " & "
-                                      << nbCellsSolution << " \\\\"
-                                      << std::endl;
-                        }
-                        std::cout
-                            << "\r" << currentIteration * 100 / iteration
-                            << "% - " << currentIteration << "/" << iteration
-                            << " | size " << width << "x" << height << " - "
-                            << g + 1 << "/" << sizes.size() << " | algorithm "
-                            << *algorithm << " - " << h + 1 << "/"
-                            << algorithms.size() << " | type " << *type << " - "
-                            << j + 1 << "/" << types.size() << " | maze "
-                            << i + 1 << "/" << nbMazeToGenerate << " | uses "
-                            << k + 1 << "/" << nbUsesMaze << std::flush;
-                    }
-                }
-                // calcul des statistiques
-                // Calcul de la moyenne
-                long sum = 0;
-                for (int i = 0; i < stepsQueue.size(); i++) {
-                    auto *steps = static_cast<int *>(stepsQueue.get(i));
-                    if (*steps >= 0) {
-                        sum += *steps;
-                    }
-                }
-
-                contentStats(outputStats, fileStats, sum, sumOptimum,
-                             nbSolveValid, nbOptimalSolution, stepsQueue, type);
-
-                typesStruct->sum += sum;
-                typesStruct->sumOptimum += sumOptimum;
-                typesStruct->sumDiffOptimum += sumDiffOptimum;
-                typesStruct->nbSolveValid += nbSolveValid;
-                typesStruct->nbOptimalSolution += nbOptimalSolution;
-                typesStat->sum += sum;
-                typesStat->sumOptimum += sumOptimum;
-                typesStat->sumDiffOptimum += sumDiffOptimum;
-                typesStat->nbSolveValid += nbSolveValid;
-                typesStat->nbOptimalSolution += nbOptimalSolution;
-                for (int i = 0; i < stepsQueue.size(); i++) {
-                    auto *steps = static_cast<int *>(stepsQueue.get(i));
-                    if (*steps >= 0) {
-                        typesStruct->stepsQueue.push(new int(*steps));
-                        typesStat->stepsQueue.push(new int(*steps));
-                    }
+                    contentStats(outputStats, fileStats, sum, sumOptimum,
+                                 nbSolveValid, nbOptimalSolution, stepsQueue,
+                                 type);
                 }
             }
             endStats(outputStats, fileStats);
         }
-        if (!outputStats.empty()) {
-            fileStats << "\\begin{table}[ht]" << std::endl;
-            fileStats << "\\centering" << std::endl;
-            fileStats
-                << "\\caption{Statistiques pour les labyrinthes de taille "
-                   "$"
-                << width << " \\times " << height << "$";
-            if (perfect) {
-                fileStats << " parfait";
-            } else {
-                fileStats << " imparfait avec une probabilité de "
-                          << probability;
-            }
-            fileStats << " pour " << nbMazeToGenerate
-                      << " labyrinthes générés avec " << algorithms.size()
-                      << " algorithmes et visités " << nbUsesMaze << " fois";
-            fileStats << "}" << std::endl;
-
-            fileStats << "\\begin{tabular}{lcccccc}"
-                         "\n";  // mise en forme du tableau
-            fileStats << "\\toprule Type & Moyenne & Ecart-type & EAO "
-                         "& ERO & "
-                         "Valide & Optimale \\\\"
-                         "\n";  // première ligne indiquant le contenu des
-                                // colonnes
-
-            fileStats << "\\midrule" << std::endl;  // corps du tableau
-        }
-        for (int j = 0; j < types.size(); j++) {
-            auto *typesStruct =
-                static_cast<struct typesStruct *>(typesStructs.get(j));
-            auto *type = static_cast<std::string *>(types.get(j));
-            int nbSolveValid = typesStruct->nbSolveValid;
-            if (nbSolveValid > 0) {
-                long sum = typesStruct->sum;
-                int sumOptimum = typesStruct->sumOptimum;
-                Queue stepsQueue = typesStruct->stepsQueue;
-                int nbOptimalSolution = typesStruct->nbOptimalSolution;
-
-                contentStats(outputStats, fileStats, sum, sumOptimum,
-                             nbSolveValid, nbOptimalSolution, stepsQueue, type);
-            }
-        }
-        endStats(outputStats, fileStats);
     }
     if (!outputStats.empty()) {
         fileStats << "\\begin{table}[ht]" << std::endl;
@@ -898,7 +927,19 @@ int main(const int argc, char *argv[]) {
         if (perfect) {
             fileStats << " parfait";
         } else {
-            fileStats << " imparfait avec une probabilité de " << probability;
+            if (probabilities.size() == 1) {
+                auto *probability = static_cast<double *>(probabilities.get(0));
+                fileStats << " imparfait avec une probabilité de "
+                          << *probability;
+            } else {
+                fileStats << " imparfait avec des probabilités de ";
+                for (int i = 0; i < probabilities.size(); i++) {
+                    auto *probability =
+                        static_cast<double *>(probabilities.get(i));
+                    fileStats << *probability;
+                    if (i < probabilities.size() - 1) fileStats << ", ";
+                }
+            }
         }
         fileStats << " pour " << nbMazeToGenerate
                   << " labyrinthes générés avec " << algorithms.size()
