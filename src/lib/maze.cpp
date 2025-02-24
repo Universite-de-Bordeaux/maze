@@ -85,6 +85,7 @@ void Maze::setWidthHeight(const int width, const int height) {
 
 void Maze::setWidthHeight(const int width, const int height, const int startX,
                           const int startY, const int endX, const int endY) {
+    freeMaze();
     width_ = width, height_ = height;
     start_[0] = startX, start_[1] = startY;
     end_[0] = endX, end_[1] = endY;
@@ -98,7 +99,6 @@ void Maze::setCell(const int x, const int y, Cell *cell) const {
 }
 
 void Maze::generate() {
-    freeMaze();
     if (width_ <= 0 || height_ <= 0) {
         return;
     }
@@ -172,7 +172,7 @@ void Maze::addWall(const Cell *cell1, const Cell *cell2) const {
     }
 }
 
-void Maze::removeWall(int x, int y, bool horizontal) const {
+void Maze::removeWall(const int x, const int y, const bool horizontal) const {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return;
     }
