@@ -182,7 +182,7 @@ void Cell::freeWall(const int i) const {
         return;
     }
     if (getWall(i) != nullptr) {
-        delete walls_[i];
+        // delete walls_[i];
     }
 }
 

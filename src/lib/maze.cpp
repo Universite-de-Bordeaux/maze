@@ -22,7 +22,9 @@ static int defaultEndY(const int height, Rand *rand) {
     return rand->get(0, height - 1);
 }
 
-Maze::Maze() : Maze(0, 0, 0, 0, 0, 0) {};
+Maze::Maze() : Maze(0, 0, 0, 0, 0, 0) {
+    start_[0] = start_[1] = end_[0] = end_[1] = 0;
+}
 
 Maze::Maze(const int width, const int height)
     : Maze(width, height, defaultStartX(width, &rand_),
@@ -31,10 +33,7 @@ Maze::Maze(const int width, const int height)
 
 Maze::Maze(const int width, const int height, const int startX,
            const int startY, const int endX, const int endY) {
-    width_ = width, height_ = height;
-    generate();
-    start_[0] = startX, start_[1] = startY;
-    end_[0] = endX, end_[1] = endY;
+    setWidthHeight(width, height, startX, startY, endX, endY);
 }
 
 Maze::~Maze() { freeMaze(); }
@@ -87,9 +86,9 @@ void Maze::setWidthHeight(const int width, const int height) {
 void Maze::setWidthHeight(const int width, const int height, const int startX,
                           const int startY, const int endX, const int endY) {
     width_ = width, height_ = height;
-    generate();
     start_[0] = startX, start_[1] = startY;
     end_[0] = endX, end_[1] = endY;
+    generate();
 }
 
 void Maze::setCells(Cell ***cells) { cells_ = cells; }
@@ -99,18 +98,15 @@ void Maze::setCell(const int x, const int y, Cell *cell) const {
 }
 
 void Maze::generate() {
-    if (cells_ != nullptr) {
-        freeMaze();
+    freeMaze();
+    if (width_ <= 0 || height_ <= 0) {
+        return;
     }
     cells_ = new Cell **[width_];
     for (int i = 0; i < width_; i++) {
         cells_[i] = new Cell *[height_];
-    }
-
-    for (int x = 0; x < width_; x++) {
-        for (int y = 0; y < height_; y++) {
-            const auto cell = new Cell(x, y, width_, height_);
-            cells_[x][y] = cell;
+        for (int j = 0; j < height_; j++) {
+            cells_[i][j] = new Cell(i, j, width_, height_);
         }
     }
     initNeighborsCells_();
@@ -176,7 +172,7 @@ void Maze::addWall(const Cell *cell1, const Cell *cell2) const {
     }
 }
 
-void Maze::removeWall(const int x, const int y, const bool horizontal) const {
+void Maze::removeWall(int x, int y, bool horizontal) const {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
         return;
     }
@@ -256,21 +252,22 @@ void Maze::initNeighborsCells_() const {
 
 void Maze::freeMaze() {
     if (cells_ != nullptr) {
-        // for (int i = 0; i < width_; ++i) {
-        //     for (int j = 0; j < height_; ++j) {
-        //         delete cells_[i][j];
-        //         cells_[i][j] = nullptr;
-        //     }
-        //     delete[] cells_[i];
-        //     cells_[i] = nullptr;
-        // }
-        // delete[] cells_;
+        for (int i = 0; i < width_; ++i) {
+            if (cells_[i] != nullptr) {
+                for (int j = 0; j < height_; ++j) {
+                    if (cells_[i][j] != nullptr) {
+                        delete cells_[i][j];
+                        cells_[i][j] = nullptr;
+                    }
+                }
+                delete[] cells_[i];
+                cells_[i] = nullptr;
+            }
+        }
+        delete[] cells_;
         cells_ = nullptr;
     }
-    start_[0] = defaultStartX(width_, &rand_),
-    start_[1] = defaultStartY(height_, &rand_);
-    end_[0] = defaultEndX(width_, &rand_),
-    end_[1] = defaultEndY(height_, &rand_);
+    start_[0] = start_[1] = end_[0] = end_[1] = 0;
 }
 
 void Maze::clearMaze() const {
