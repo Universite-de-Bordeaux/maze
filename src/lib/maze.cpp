@@ -256,6 +256,13 @@ void Maze::freeMaze() {
             if (cells_[i] != nullptr) {
                 for (int j = 0; j < height_; ++j) {
                     if (cells_[i][j] != nullptr) {
+                        if (cells_[i][j]->getWall(MAZE_CELL_BOTTOM) !=
+                            nullptr) {
+                            delete cells_[i][j]->getWall(MAZE_CELL_BOTTOM);
+                        }
+                        if (cells_[i][j]->getWall(MAZE_CELL_RIGHT) != nullptr) {
+                            delete cells_[i][j]->getWall(MAZE_CELL_RIGHT);
+                        }
                         delete cells_[i][j];
                         cells_[i][j] = nullptr;
                     }

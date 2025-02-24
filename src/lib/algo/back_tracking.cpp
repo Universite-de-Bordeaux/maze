@@ -42,6 +42,7 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
         show->create();
     }
     auto stack = Stack();
+    auto stackFree = Stack();
 
     Cell* cellStart = maze->getCell(0, 0);
     cellStart->setAlreadyVisited(true);
@@ -83,6 +84,7 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
             newCoordPtr->x = newCoord.x;
             newCoordPtr->y = newCoord.y;
             stack.push(newCoordPtr);
+            stackFree.push(newCoordPtr);
             currentCell->setStatus(MAZE_STATUS_VISITED);
             neighbor->setStatus(MAZE_STATUS_CURRENT);
             Cell* showCells[2] = {currentCell, neighbor};
@@ -132,6 +134,7 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
                 newCoordPtr->x = neighbors[0].x;
                 newCoordPtr->y = neighbors[0].y;
                 stack.push(newCoordPtr);
+                stackFree.push(newCoordPtr);
                 currentCell->setStatus(MAZE_STATUS_VISITED);
                 maze->getCell(neighbors[0].x, neighbors[0].y)
                     ->setStatus(MAZE_STATUS_CURRENT);
@@ -140,5 +143,10 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
         }
     }
     refreshShow(show);
+    while (!stackFree.empty()) {
+        const auto* temp = static_cast<coordinate*>(stackFree.top());
+        delete temp;
+        stackFree.pop();
+    }
     maze->clearMaze();
 }
