@@ -705,7 +705,8 @@ int main(const int argc, char *argv[]) {
             int height = size->height;
             Queue typesStructs;
             for (int j = 0; j < types.size(); j++) {
-                typesStructs.push(new typesStruct());
+                auto *typesStructTmp = new typesStruct();
+                typesStructs.push(typesStructTmp);
             }
             for (int h = 0; h < algorithms.size(); h++) {
                 auto *algorithm = static_cast<std::string *>(algorithms.get(h));
@@ -1024,6 +1025,21 @@ int main(const int argc, char *argv[]) {
     if (!outputStats.empty()) {
         std::cout << "File " << outputStats << " saved" << std::endl;
     }
-
+    while (!algorithms.empty()) {
+        delete static_cast<std::string *>(algorithms.front());
+        algorithms.pop();
+    }
+    while (!sizes.empty()) {
+        delete static_cast<struct size *>(sizes.front());
+        sizes.pop();
+    }
+    while (!types.empty()) {
+        delete static_cast<std::string *>(types.front());
+        types.pop();
+    }
+    while (!probabilities.empty()) {
+        delete static_cast<double *>(probabilities.front());
+        probabilities.pop();
+    }
     return EXIT_SUCCESS;
 }
