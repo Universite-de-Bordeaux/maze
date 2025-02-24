@@ -22,12 +22,12 @@ static int defaultEndY(const int height, Rand *rand) {
     return rand->get(0, height - 1);
 }
 
-Maze::Maze() : Maze(0, 0, 0, 0, 0, 0){};
+Maze::Maze() : Maze(0, 0, 0, 0, 0, 0) {};
 
 Maze::Maze(const int width, const int height)
     : Maze(width, height, defaultStartX(width, &rand_),
            defaultStartY(height, &rand_), defaultEndX(width, &rand_),
-           defaultEndY(height, &rand_)){};
+           defaultEndY(height, &rand_)) {};
 
 Maze::Maze(const int width, const int height, const int startX,
            const int startY, const int endX, const int endY) {
@@ -132,33 +132,32 @@ void Maze::setEnd(const int x, const int y) {
     if (y >= height_) end_[1] = height_ - 1;
 }
 
-bool Maze::addWall(const int x, const int y, const bool horizontal) const {
+void Maze::addWall(const int x, const int y, const bool horizontal) const {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
-        return false;
+        return;
     }
     Cell *cell = getCell(x, y);
     const auto wall = new Wall(horizontal);
     if (horizontal) {
         cell->setWall(MAZE_CELL_BOTTOM, wall);
-        if (cell->getNeighbor(MAZE_CELL_BOTTOM) == nullptr) return false;
+        if (cell->getNeighbor(MAZE_CELL_BOTTOM) == nullptr) return;
         cell->getNeighbor(MAZE_CELL_BOTTOM)->setWall(MAZE_CELL_TOP, wall);
         cell->getNeighbor(MAZE_CELL_BOTTOM)
             ->setNeighbor(MAZE_CELL_TOP, nullptr);
         cell->setNeighbor(MAZE_CELL_BOTTOM, nullptr);
     } else {
         cell->setWall(MAZE_CELL_RIGHT, wall);
-        if (cell->getNeighbor(MAZE_CELL_RIGHT) == nullptr) return false;
+        if (cell->getNeighbor(MAZE_CELL_RIGHT) == nullptr) return;
         cell->getNeighbor(MAZE_CELL_RIGHT)->setWall(MAZE_CELL_LEFT, wall);
         cell->getNeighbor(MAZE_CELL_RIGHT)
             ->setNeighbor(MAZE_CELL_LEFT, nullptr);
         cell->setNeighbor(MAZE_CELL_RIGHT, nullptr);
     }
-    return true;
 }
 
-bool Maze::addWall(const Cell *cell1, const Cell *cell2) const {
+void Maze::addWall(const Cell *cell1, const Cell *cell2) const {
     if (cell1 == nullptr || cell2 == nullptr) {
-        return false;
+        return;
     }
     if (cell1->getX() == cell2->getX()) {
         if (cell1->getY() == cell2->getY() + 1) {
@@ -175,12 +174,11 @@ bool Maze::addWall(const Cell *cell1, const Cell *cell2) const {
             return addWall(cell1->getX(), cell1->getY(), false);
         }
     }
-    return false;
 }
 
-bool Maze::removeWall(const int x, const int y, const bool horizontal) const {
+void Maze::removeWall(const int x, const int y, const bool horizontal) const {
     if (x < 0 || x >= width_ || y < 0 || y >= height_) {
-        return false;
+        return;
     }
     Cell *cell = cells_[x][y];
     Wall *wall;
@@ -203,12 +201,11 @@ bool Maze::removeWall(const int x, const int y, const bool horizontal) const {
         cell->setNeighbor(MAZE_CELL_RIGHT, cell->getNeighbor(MAZE_CELL_RIGHT));
     }
     delete wall;
-    return true;
 }
 
-bool Maze::removeWall(const Cell *cell1, const Cell *cell2) const {
+void Maze::removeWall(const Cell *cell1, const Cell *cell2) const {
     if (cell1 == nullptr || cell2 == nullptr) {
-        return false;
+        return;
     }
     if (cell1->getX() == cell2->getX()) {
         if (cell1->getY() == cell2->getY() + 1) {
@@ -225,7 +222,6 @@ bool Maze::removeWall(const Cell *cell1, const Cell *cell2) const {
             return removeWall(cell1->getX(), cell1->getY(), false);
         }
     }
-    return false;
 }
 
 void Maze::initNeighborsCells_() const {

@@ -137,14 +137,14 @@ class Maze {
      * @param horizontal Vrai si le mur est horizontal, faux sinon
      * @return Vrai si le mur a été ajouté ou supprimé, faux sinon
      */
-    bool addWall(int x, int y, bool horizontal) const;
+    void addWall(int x, int y, bool horizontal) const;
     /**
      * @brief Ajoute un mur entre deux cellules
      * @param cell1 Cellule 1
      * @param cell2 Cellule 2
      * @return Vrai si le mur a été ajouté ou supprimé, faux sinon
      */
-    bool addWall(const Cell *cell1, const Cell *cell2) const;
+    void addWall(const Cell *cell1, const Cell *cell2) const;
     /**
      * @brief Supprime un mur
      * @param x Coordonnée x du mur
@@ -152,14 +152,14 @@ class Maze {
      * @param horizontal Vrai si le mur est horizontal, faux sinon
      * @return Vrai si le mur a été supprimé, faux sinon
      */
-    bool removeWall(int x, int y, bool horizontal) const;
+    void removeWall(int x, int y, bool horizontal) const;
     /**
      * @brief Supprime un mur entre deux cellules
      * @param cell1 Cellule 1
      * @param cell2 Cellule 2
      * @return Vrai si le mur a été supprimé, faux sinon
      */
-    bool removeWall(const Cell *cell1, const Cell *cell2) const;
+    void removeWall(const Cell *cell1, const Cell *cell2) const;
     /**
      * @brief Génère un labyrinthe
      */

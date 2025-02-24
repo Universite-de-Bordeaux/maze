@@ -35,11 +35,7 @@ void read(const std::string& filename, Maze* maze) {
                     exit(MAZE_FILE_ERROR);
                 }
 
-                // ajout du mur en prenant en compte les potentielles erreurs
-                // renvoyé par addWall
-                if (!maze->addWall(x, y, orientation == 'H')) {
-                    exit(MAZE_FILE_ERROR);
-                }
+                maze->addWall(x, y, orientation == 'H');
             }
             getline(file, line);
         }
