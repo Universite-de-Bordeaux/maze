@@ -1,8 +1,8 @@
 #include "breadth_first.hpp"
 
 #include "../queue.hpp"
-#include "../stack.hpp"
 #include "../show.hpp"
+#include "../stack.hpp"
 #include "../var.hpp"
 
 struct positionHistory {
@@ -61,8 +61,9 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                     refreshShow(show);
 
                     while (!stack.empty()) {
-                        auto *temp = static_cast<positionHistory *>(stack.top());
-                        delete temp;
+                        const auto *temp =
+                            static_cast<positionHistory *>(stack.top());
+                        if (temp != &startHistory) delete temp;
                         stack.pop();
                     }
                     return true;
@@ -78,8 +79,8 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
     }
     refreshShow(show);
     while (!stack.empty()) {
-        auto *temp = static_cast<positionHistory *>(stack.top());
-        delete temp;
+        const auto *temp = static_cast<positionHistory *>(stack.top());
+        if (temp != &startHistory) delete temp;
         stack.pop();
     }
     return false;
