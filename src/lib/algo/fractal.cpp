@@ -82,7 +82,8 @@ static bool add_wall_perfect(Maze *maze, const int mid) {
 static void quad_maze(Maze *maze) {
     const int old_width = maze->getWidth();
     const int old_height = maze->getHeight();
-    const auto new_maze = Maze(old_width, old_height);
+    auto new_maze = Maze();
+    new_maze.setWidthHeight(old_width, old_height);
     // copie de maze dans new_maze
     for (int i = 0; i < old_width; i++) {
         for (int j = 0; j < old_height; j++) {
