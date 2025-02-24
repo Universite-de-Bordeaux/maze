@@ -21,6 +21,10 @@ int game_splatoon(Maze *maze, Show *show) {
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
             refreshShow(show, 1, &cell);
+            for (int i = 0; i < maze->getWidth(); i++) {
+                delete[] counts[i];
+            }
+            delete[] counts;
             return -1;
         }
         const int minCount = MinCountCell(cell, counts);
@@ -42,5 +46,9 @@ int game_splatoon(Maze *maze, Show *show) {
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     refreshShow(show, 1, &cell);
+    for (int i = 0; i < maze->getWidth(); i++) {
+        delete[] counts[i];
+    }
+    delete[] counts;
     return steps;
 }

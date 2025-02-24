@@ -1,5 +1,6 @@
 #include "splatoon_hand.hpp"
 
+#include "../checker/breadth_first.hpp"
 #include "../show.hpp"
 #include "../var.hpp"
 #include "lib/splatoon.hpp"
@@ -28,6 +29,10 @@ int game_splatoon_hand(const Maze *maze, Show *show, const bool left) {
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
             refreshShow(show, 1, &cell);
+            for (int i = 0; i < maze->getWidth(); i++) {
+                delete[] counts[i];
+            }
+            delete[] counts;
             return -1;
         }
         int minCount = MinCountCell(cell, counts);
@@ -77,6 +82,10 @@ int game_splatoon_hand(const Maze *maze, Show *show, const bool left) {
     } else {
         cell->setStatus(MAZE_STATUS_HOPELESS);
     }
+    for (int i = 0; i < maze->getWidth(); i++) {
+        delete[] counts[i];
+    }
+    delete[] counts;
     return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
                ? -1
                : steps;
