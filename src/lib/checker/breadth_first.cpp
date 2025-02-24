@@ -13,6 +13,7 @@ struct positionHistory {
 void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
                            bool *isValid, bool *isPerfect) {
     Queue queue;
+    Queue queueFree;
     bool imperfect = false;
     refreshShow(show);
     Cell *start = maze->getCell(0, 0);
@@ -51,6 +52,7 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
                 next->y = neighbor->getY();
                 next->parent = current;
                 queue.push(next);
+                queueFree.push(next);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
             }
@@ -63,6 +65,12 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
             const Cell *cell = maze->getCell(i, j);
             if (!cell->isAlreadyVisited()) {
                 if (isValid != nullptr) *isValid = false;
+                while (!queueFree.empty()) {
+                    const auto *temp =
+                        static_cast<positionHistory *>(queueFree.front());
+                    if (temp != &startHistory) delete temp;
+                    queueFree.pop();
+                }
                 return;
             }
         }
@@ -74,5 +82,10 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
         } else {
             if (isPerfect != nullptr) *isPerfect = false;
         }
+    }
+    while (!queueFree.empty()) {
+        const auto *temp = static_cast<positionHistory *>(queueFree.front());
+        if (temp != &startHistory) delete temp;
+        queueFree.pop();
     }
 }

@@ -17,6 +17,7 @@ struct positionHistory {
 void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
                          Show *show, bool *isValid, bool *isPerfect) {
     Stack stack;
+    auto stackFree = Stack();
     bool imperfect = false;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return;
@@ -68,6 +69,7 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
                 next->y = neighbor->getY();
                 next->parent = current;
                 stack.push(next);
+                stackFree.push(next);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
             }
@@ -79,6 +81,12 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
             const Cell *cell = maze->getCell(i, j);
             if (!cell->isAlreadyVisited()) {
                 if (isValid != nullptr) *isValid = false;
+                while (!stackFree.empty()) {
+                    const auto *temp =
+                        static_cast<positionHistory *>(stackFree.top());
+                    if (temp != &startHistory) delete temp;
+                    stackFree.pop();
+                }
                 return;
             }
         }
@@ -90,5 +98,10 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
         } else {
             if (isPerfect != nullptr) *isPerfect = false;
         }
+    }
+    while (!stackFree.empty()) {
+        const auto *temp = static_cast<positionHistory *>(stackFree.top());
+        if (temp != &startHistory) delete temp;
+        stackFree.pop();
     }
 }

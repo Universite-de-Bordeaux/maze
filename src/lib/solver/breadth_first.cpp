@@ -12,21 +12,24 @@ struct positionHistory {
 };
 
 bool solver_breadth_first(const Maze *maze, Show *show) {
-    Queue queue;
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return false;
     }
     refreshShow(show);
     positionHistory startHistory = {maze->getStartX(), maze->getStartY(),
                                     nullptr};
+    Queue queue;
+    Queue queueFree;
+    Stack stack;
+    Stack stackFree;
     queue.push(&startHistory);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
-    Stack stack;
     while (!queue.empty()) {
         auto *current = static_cast<positionHistory *>(queue.front());
         queue.pop();
         stack.push(current);
+        stackFree.push(current);
         const int x = current->x;
         const int y = current->y;
         Cell *cell = maze->getCell(x, y);
@@ -41,6 +44,7 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                 next->y = neighbor->getY();
                 next->parent = current;
                 queue.push(next);
+                queueFree.push(next);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
                 if (neighbor->getX() == maze->getEndX() &&
@@ -59,12 +63,11 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                         currentPath = currentPath->parent;
                     }
                     refreshShow(show);
-
-                    while (!stack.empty()) {
+                    while (!queueFree.empty()) {
                         const auto *temp =
-                            static_cast<positionHistory *>(stack.top());
+                            static_cast<positionHistory *>(queueFree.front());
                         if (temp != &startHistory) delete temp;
-                        stack.pop();
+                        queueFree.pop();
                     }
                     return true;
                 }
@@ -78,10 +81,10 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
         }
     }
     refreshShow(show);
-    while (!stack.empty()) {
-        const auto *temp = static_cast<positionHistory *>(stack.top());
+    while (!queueFree.empty()) {
+        const auto *temp = static_cast<positionHistory *>(queueFree.front());
         if (temp != &startHistory) delete temp;
-        stack.pop();
+        queueFree.pop();
     }
     return false;
 }

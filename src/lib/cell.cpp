@@ -181,8 +181,8 @@ void Cell::freeWall(const int i) const {
     if (i < 0 || i > 3) {
         return;
     }
-    if (getWall(i) != nullptr) {
-        // delete walls_[i];
+    if (!isWall(i)) {
+        delete walls_[i];
     }
 }
 

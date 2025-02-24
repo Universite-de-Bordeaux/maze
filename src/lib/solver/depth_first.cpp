@@ -13,6 +13,7 @@ struct positionHistory {
 
 bool solver_depth_first(const Maze *maze, Show *show, const bool left) {
     Stack stack;
+    auto stackFree = Stack();
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return false;
     }
@@ -50,6 +51,7 @@ bool solver_depth_first(const Maze *maze, Show *show, const bool left) {
                 next->direction = (index + 2) % 4;
                 next->parent = current;
                 stack.push(next);
+                stackFree.push(next);
                 neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
                 if (neighbor->getX() == maze->getEndX() &&
@@ -68,6 +70,12 @@ bool solver_depth_first(const Maze *maze, Show *show, const bool left) {
                         currentPath = currentPath->parent;
                     }
                     refreshShow(show);
+                    while (!stackFree.empty()) {
+                        const auto *temp =
+                            static_cast<positionHistory *>(stackFree.top());
+                        if (temp != &startHistory) delete temp;
+                        stackFree.pop();
+                    }
                     return true;
                 }
             } else {
@@ -80,5 +88,10 @@ bool solver_depth_first(const Maze *maze, Show *show, const bool left) {
         }
     }
     refreshShow(show);
+    while (!stackFree.empty()) {
+        const auto *temp = static_cast<positionHistory *>(stackFree.top());
+        if (temp != &startHistory) delete temp;
+        stackFree.pop();
+    }
     return false;
 }

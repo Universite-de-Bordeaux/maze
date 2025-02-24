@@ -136,9 +136,9 @@ static void getNeighbors(const Maze* maze, const wall_maker* wall,
     }
 }
 
-void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
-                     const int y, const bool horizontal, int& nbBorders,
-                     int& j) {
+void processNeighbor(const Maze* maze, Queue& queue, Stack& stack,
+                     Stack& stackFree, const int x, const int y,
+                     const bool horizontal, int& nbBorders, int& j) {
     Wall* neighbor = maze->getWall(x, y, horizontal);
     if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
         neighbor->setAlreadyVisited(true);
@@ -152,6 +152,7 @@ void processNeighbor(const Maze* maze, Queue& queue, Stack& stack, const int x,
         wall->horizontal = horizontal;
         queue.push(wall);
         stack.push(wall);
+        stackFree.push(wall);
         j++;
     }
 }
@@ -166,6 +167,7 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
     Wall* current = maze->getWall(wall->x, wall->y, wall->horizontal);
     Queue queue;
     Stack stack;
+    Stack stackFree;
     queue.push(wall);
     stack.push(wall);
     current->setAlreadyVisited(true);
@@ -184,8 +186,9 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
         getNeighbors(maze, wall, neighbors);
         const int nbNeighborsNotVisited = getNbNeighborsNotVisited(maze, wall);
         for (int i = 0; i < nbNeighbors; i++) {
-            processNeighbor(maze, queue, stack, neighbors[i].x, neighbors[i].y,
-                            neighbors[i].horizontal, nbBorders, j);
+            processNeighbor(maze, queue, stack, stackFree, neighbors[i].x,
+                            neighbors[i].y, neighbors[i].horizontal, nbBorders,
+                            j);
         }
         if (nbNeighbors - nbNeighborsNotVisited >= 3 ||
             (nbNeighbors == 2 && nbNeighborsNotVisited == 0)) {
@@ -203,6 +206,11 @@ static void validWall(const Maze* maze, wall_maker* wall, int& nbBorders,
             current_tmp->setAlreadyVisited(false);
         }
     }
+    while (!stackFree.empty()) {
+        const auto* temp = static_cast<wall_maker*>(stackFree.top());
+        delete temp;
+        stackFree.pop();
+    }
 }
 
 void algo_wall_maker(Maze* maze, const int width, const int height,
@@ -213,6 +221,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
     }
     refreshShow(show);
     Stack stack;
+    auto stackFree = Stack();
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             for (int i = 0; i < 2; i++) {
@@ -222,12 +231,14 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                     wall->y = y;
                     wall->horizontal = false;
                     stack.push(wall);
+                    stackFree.push(wall);
                 } else if (i == 1 && y < height - 1) {
                     auto* wall = new wall_maker;
                     wall->x = x;
                     wall->y = y;
                     wall->horizontal = true;
                     stack.push(wall);
+                    stackFree.push(wall);
                 }
             }
         }
@@ -261,6 +272,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
             Cell* cell2;
         };
         Stack stackDoubleCell;
+        Stack stackFreeDoubleCell;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int i = 0; i < 2; i++) {
@@ -271,7 +283,10 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS &&
                             cell2->getStatus() ==
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                            stackDoubleCell.push(new double_cell{cell1, cell2});
+                            auto* temp =
+                                new double_cell{cell1, cell2};
+                            stackDoubleCell.push(temp);
+                            stackFreeDoubleCell.push(temp);
                         }
                     } else if (i == 1 && y < height - 1) {
                         Cell* cell2 = maze->getCell(x, y + 1);
@@ -279,7 +294,10 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS &&
                             cell2->getStatus() ==
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                            stackDoubleCell.push(new double_cell{cell1, cell2});
+                            auto *temp =
+                                new double_cell{cell1, cell2};
+                            stackDoubleCell.push(temp);
+                            stackFreeDoubleCell.push(temp);
                         }
                     }
                 }
@@ -300,6 +318,12 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
             }
             maze->clearMaze();
         }
+        while (!stackFreeDoubleCell.empty()) {
+            const auto* temp =
+                static_cast<double_cell*>(stackFreeDoubleCell.top());
+            delete temp;
+            stackFreeDoubleCell.pop();
+        }
     }
     if (!perfect) {
         refreshShow(show);
@@ -318,5 +342,10 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                 }
             }
         }
+    }
+    while (!stackFree.empty()) {
+        const auto* temp = static_cast<wall_maker*>(stackFree.top());
+        delete temp;
+        stackFree.pop();
     }
 }
