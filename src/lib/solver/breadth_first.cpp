@@ -1,6 +1,7 @@
 #include "breadth_first.hpp"
 
 #include "../queue.hpp"
+#include "../stack.hpp"
 #include "../show.hpp"
 #include "../var.hpp"
 
@@ -21,9 +22,11 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
     queue.push(&startHistory);
     maze->getStartCell()->setStatus(MAZE_STATUS_VISITED);
     maze->getStartCell()->setAlreadyVisited(true);
+    Stack stack;
     while (!queue.empty()) {
         auto *current = static_cast<positionHistory *>(queue.front());
         queue.pop();
+        stack.push(current);
         const int x = current->x;
         const int y = current->y;
         Cell *cell = maze->getCell(x, y);
@@ -56,6 +59,12 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
                         currentPath = currentPath->parent;
                     }
                     refreshShow(show);
+
+                    while (!stack.empty()) {
+                        auto *temp = static_cast<positionHistory *>(stack.top());
+                        delete temp;
+                        stack.pop();
+                    }
                     return true;
                 }
             } else {
@@ -68,5 +77,10 @@ bool solver_breadth_first(const Maze *maze, Show *show) {
         }
     }
     refreshShow(show);
+    while (!stack.empty()) {
+        auto *temp = static_cast<positionHistory *>(stack.top());
+        delete temp;
+        stack.pop();
+    }
     return false;
 }
