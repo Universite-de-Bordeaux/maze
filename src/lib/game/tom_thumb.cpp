@@ -9,7 +9,9 @@ int game_tom_thumb(Maze *maze, Show *show) {
     cell->setAlreadyVisited(true);
     refreshShow(show);
     int steps = 0;
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
+    while (
+        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
+        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
@@ -45,5 +47,7 @@ int game_tom_thumb(Maze *maze, Show *show) {
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     refreshShow(show, 1, &cell);
-    return steps;
+    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
+               ? -1
+               : steps;
 }

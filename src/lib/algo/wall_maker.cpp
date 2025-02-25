@@ -283,8 +283,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS &&
                             cell2->getStatus() ==
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                            auto* temp =
-                                new double_cell{cell1, cell2};
+                            auto* temp = new double_cell{cell1, cell2};
                             stackDoubleCell.push(temp);
                             stackFreeDoubleCell.push(temp);
                         }
@@ -294,8 +293,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS &&
                             cell2->getStatus() ==
                                 MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-                            auto *temp =
-                                new double_cell{cell1, cell2};
+                            auto* temp = new double_cell{cell1, cell2};
                             stackDoubleCell.push(temp);
                             stackFreeDoubleCell.push(temp);
                         }

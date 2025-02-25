@@ -20,10 +20,9 @@ int game_splatoon_dead_end(Maze *maze, Show *show) {
     counts[cell->getX()][cell->getY()]++;
     refreshShow(show);
     int steps = 0;
-    while (cell->getX() != maze->getEndX() ||
-           cell->getY() != maze->getEndY() &&
-               steps <= pow(maze->getWidth() * maze->getHeight(), 2) &&
-               steps >= 0) {
+    while (
+        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
+        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
         const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
         if (nbNeighborsNotVisited == 0) {

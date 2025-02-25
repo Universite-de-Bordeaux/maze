@@ -16,7 +16,9 @@ int game_splatoon(Maze *maze, Show *show) {
     counts[cell->getX()][cell->getY()]++;
     refreshShow(show);
     int steps = 0;
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
+    while (
+        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
+        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
@@ -50,5 +52,7 @@ int game_splatoon(Maze *maze, Show *show) {
         delete[] counts[i];
     }
     delete[] counts;
-    return steps;
+    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
+               ? -1
+               : steps;
 }

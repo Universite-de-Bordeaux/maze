@@ -19,7 +19,9 @@ int game_walk(const Maze *maze, Show *show, const bool ghost) {
         refreshShow(show, 1, &cell);
     }
     int steps = 0;
-    while (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) {
+    while (
+        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
+        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
@@ -71,5 +73,7 @@ int game_walk(const Maze *maze, Show *show, const bool ghost) {
         }
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
-    return steps;
+    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
+               ? -1
+               : steps;
 }
