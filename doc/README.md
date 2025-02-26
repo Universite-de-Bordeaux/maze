@@ -135,8 +135,44 @@ Le projet implémente plusieurs algorithmes pour la génération, la résolution
 ### Jeu et visite dans le Labyrinthe
 
 1. **Fog** :
-    - Marche avec un champ de vision limité.
+    - Visite dans le brouillard.
     - Fichier : [`src/lib/game/fog.hpp`](../src/lib/game/fog.hpp).
+
+2. **Fog Hand** :
+    - Visite dans le brouillard avec la main gauche ou droite.
+    - Fichier : [`src/lib/game/fog_hand.hpp`](../src/lib/game/fog_hand.hpp).
+
+3. **Dead End** :
+    - Visite en marquant dans les culs-de-sac.
+    - Fichier : [`src/lib/game/dead_end.hpp`](../src/lib/game/dead_end.hpp).
+
+4. **Dead End Hand** :
+    - Visite en marquant dans les culs-de-sac avec la main gauche ou droite.
+    - Fichier : [`src/lib/game/dead_end_hand.hpp`](../src/lib/game/dead_end_hand.hpp).
+
+5. **Tom Thumb** :
+    - Visite en marquant les cellules visitées.
+    - Fichier : [`src/lib/game/tom_thumb.hpp`](../src/lib/game/tom_thumb.hpp).
+
+6. **Tom Thumb Hand** :
+    - Visite en marquant les cellules visitées avec la main gauche ou droite.
+    - Fichier : [`src/lib/game/tom_thumb_hand.hpp`](../src/lib/game/tom_thumb_hand.hpp).
+
+7. **Splatoon** :
+    - Visite en marquant le nombre de passages par cellule.
+    - Fichier : [`src/lib/game/splatoon.hpp`](../src/lib/game/splatoon.hpp).
+
+8. **Splatoon Hand** :
+    - Visite en marquant le nombre de passages par cellule avec la main gauche ou droite.
+    - Fichier : [`src/lib/game/splatoon_hand.hpp`](../src/lib/game/splatoon_hand.hpp).
+
+9. **Splatoon Dead End** :
+    - Visite en marquant le nombre de passages par cellule et les culs-de-sac.
+    - Fichier : [`src/lib/game/splatoon_dead_end.hpp`](../src/lib/game/splatoon_dead_end.hpp).
+
+10. **Splatoon Dead End Hand** :
+    - Visite en marquant le nombre de passages par cellule et les culs-de-sac avec la main gauche ou droite.
+    - Fichier : [`src/lib/game/splatoon_dead_end_hand.hpp`](../src/lib/game/splatoon_dead_end_hand.hpp).
 
 2. **Walk** :
     - Marche interactive dans le labyrinthe.
