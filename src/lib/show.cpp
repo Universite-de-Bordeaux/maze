@@ -57,13 +57,14 @@ void Show::create() {
         const bool priorityWidth = maze_->getWidth() / desktopSize.width >
                                    maze_->getHeight() / desktopSize.height;
         if (priorityWidth) {
-            cellSize_ = static_cast<float>(static_cast<double>(desktopSize.width) /
-                                           static_cast<double>(maze_->getWidth()) *
-                                           MAZE_MAX_WINDOW_RATIO);
+            cellSize_ = static_cast<float>(
+                static_cast<double>(desktopSize.width) /
+                static_cast<double>(maze_->getWidth()) * MAZE_MAX_WINDOW_RATIO);
         } else {
-            cellSize_ = static_cast<float>(static_cast<double>(desktopSize.height) /
-                        static_cast<double>(maze_->getHeight()) *
-                        MAZE_MAX_WINDOW_RATIO);
+            cellSize_ =
+                static_cast<float>(static_cast<double>(desktopSize.height) /
+                                   static_cast<double>(maze_->getHeight()) *
+                                   MAZE_MAX_WINDOW_RATIO);
         }
     }
     renderWindow_ = new sf::RenderWindow(
@@ -239,7 +240,7 @@ void Show::drawCells_() const {
     }
 }
 
-void Show::refreshMaze() { // NOLINT
+void Show::refreshMaze() {  // NOLINT
     eventHandler();
     // clearBlack();
     drawCells_();
@@ -422,7 +423,7 @@ void Show::setDelay(const float delay) {
     delay_ = std::chrono::microseconds(static_cast<int>(delay * 1000));
 }
 
-void Show::resetValues() { // NOLINT
+void Show::resetValues() {  // NOLINT
     // Réinitialisation des paramètres par défaut
     std::ifstream envFile(MAZE_ENV_FILE);
     if (envFile.is_open()) {
@@ -483,7 +484,9 @@ void Show::resetValues() { // NOLINT
         defaultView.zoom(1.0f);
 
         // Ajustement de la taille de la fenêtre
-        renderWindow_->setSize(sf::Vector2u(static_cast<unsigned int>(viewWidth), static_cast<unsigned int>(viewHeight)));
+        renderWindow_->setSize(
+            sf::Vector2u(static_cast<unsigned int>(viewWidth),
+                         static_cast<unsigned int>(viewHeight)));
 
         // Applique la nouvelle vue
         renderWindow_->setView(defaultView);

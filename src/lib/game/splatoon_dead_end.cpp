@@ -2,8 +2,8 @@
 
 #include "../show.hpp"
 #include "../var.hpp"
-#include "lib/splatoon.hpp"
 #include "lib/limits.hpp"
+#include "lib/splatoon.hpp"
 
 int game_splatoon_dead_end(Maze *maze, Show *show) {
     const auto counts = new int *[maze->getWidth()];
