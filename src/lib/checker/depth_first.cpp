@@ -50,21 +50,11 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
             refreshShow(show, 1, &cell, false);
         }
         for (int i = 0; i < 4; i++) {
-            int index;
-            if (left) {
-                index = (current->direction - i) % 4;
-            } else {
-                index = (current->direction + i) % 4;
-            }
-            if (index < 0) {
-                index += 4;
-            }
+            const int index = (current->direction + left ? i : i + 2) % 4;
             Cell *neighbor = cell->getNeighbor(index);
             if (neighbor != nullptr && !neighbor->isAlreadyVisited()) {
-                auto *next = new positionHistory;
-                next->x = neighbor->getX();
-                next->y = neighbor->getY();
-                next->parent = current;
+                auto *next = new positionHistory{
+                    neighbor->getX(), neighbor->getY(), index, current};
                 stack.push(next);
                 stackFree.push(next);
                 neighbor->setStatus(MAZE_STATUS_VISITED);

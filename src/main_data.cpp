@@ -694,6 +694,7 @@ int main(const int argc, char *argv[]) {
                      types.size() * nbUsesMaze * probabilities.size();
     long currentIteration = 0;
     Queue typesStats;
+    Queue stepsFree;
     for (int j = 0; j < types.size(); j++) {
         typesStats.push(new typesStruct());
     }
@@ -822,8 +823,9 @@ int main(const int argc, char *argv[]) {
                                     nbOptimalSolution++;
                                 }
                             }
-
-                            stepsQueue.push(new int(steps));
+                            auto stepsTmp = new int(steps);
+                            stepsQueue.push(stepsTmp);
+                            stepsFree.push(stepsTmp);
                             if (!outputLatex.empty()) {
                                 if (*algorithm == "back_tracking") {
                                     fileLatex << "back tracking";
@@ -1040,6 +1042,10 @@ int main(const int argc, char *argv[]) {
     while (!probabilities.empty()) {
         delete static_cast<double *>(probabilities.front());
         probabilities.pop();
+    }
+    while (!stepsFree.empty()) {
+        delete static_cast<int *>(stepsFree.front());
+        stepsFree.pop();
     }
     return EXIT_SUCCESS;
 }
