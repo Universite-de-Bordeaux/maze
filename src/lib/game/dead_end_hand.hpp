@@ -13,6 +13,6 @@
  * utilisée
  * @return Le nombre de pas pour sortir du labyrinthe
  */
-int game_dead_end_hand(Maze* maze, Show* show, bool left);
+int game_dead_end_hand(const Maze* maze, Show* show, bool left);
 
 #endif  // GAME_DEAD_END_HAND_HPP

@@ -1030,7 +1030,7 @@ int main(const int argc, char *argv[]) {
         algorithms.pop();
     }
     while (!sizes.empty()) {
-        delete static_cast<struct size *>(sizes.front());
+        delete static_cast<size *>(sizes.front());
         sizes.pop();
     }
     while (!types.empty()) {

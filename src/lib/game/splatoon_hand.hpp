@@ -13,6 +13,6 @@
  * utilisée
  * @return Le nombre de pas pour sortir du labyrinthe
  */
-int game_splatoon_hand(Maze* maze, Show* show, bool left);
+int game_splatoon_hand(const Maze* maze, Show* show, bool left);
 
 #endif  // GAME_SPLATOON_HAND_HPP

@@ -26,13 +26,16 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
                         const double probability, Show *show) {
     if ((isHorizontal ? !whereStart->top : !whereStart->left) <= *a &&
         *a < *maxA - (isHorizontal ? whereStart->top : whereStart->left)) {
-        const int startB = (isHorizontal ? (whereStart->left ? *b : 0)
-                                         : (whereStart->top ? *b : 0));
-        const int endB = (isHorizontal ? (whereStart->left ? *maxB : *b)
-                                       : (whereStart->top ? *maxB : *b));
+        const int startB = isHorizontal      ? (whereStart->left ? *b : 0)
+                           : whereStart->top ? *b
+                                             : 0;
+        const int endB = isHorizontal      ? (whereStart->left ? *maxB : *b)
+                         : whereStart->top ? *maxB
+                                           : *b;
         if (startB == endB) {
-            (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
-                                 : (whereStart->left ? 1 : -1);
+            *a += isHorizontal       ? (whereStart->top ? 1 : -1)
+                  : whereStart->left ? 1
+                                     : -1;
             return;
         }
         const int rb = maze->getRand()->get(startB, endB - 1);
@@ -49,8 +52,9 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
                 maze->getCell(isHorizontal ? bb : *a, isHorizontal ? *a : bb);
             refreshShow(show, 1, &cell, false);
         }
-        (*a) += isHorizontal ? (whereStart->top ? 1 : -1)
-                             : (whereStart->left ? 1 : -1);
+        *a += isHorizontal       ? (whereStart->top ? 1 : -1)
+              : whereStart->left ? 1
+                                 : -1;
         Cell *cell =
             maze->getCell(isHorizontal ? rb : *a, isHorizontal ? *a : rb);
         refreshShow(show, 1, &cell, true);

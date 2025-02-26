@@ -4,8 +4,8 @@
 #include "../../maze.hpp"
 #include "../../cell.hpp"
 
-bool whileCondition(Maze *maze, Cell*cell, int steps);
+bool whileCondition(const Maze *maze, const Cell *cell, int steps);
 
-int resultSteps(Maze *maze, int steps);
+int resultSteps(const Maze *maze, int steps);
 
 #endif  // GAME_LIMITS_HPP

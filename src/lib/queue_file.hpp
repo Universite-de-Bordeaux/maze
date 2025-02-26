@@ -1,3 +1,4 @@
+#pragma once
 #include <fstream>
 #include <string>
 
@@ -76,7 +77,7 @@ class QueueFile {
      */
     void load();
     /**
-     * Redimentionne le tampon
+     * Redimensionne le tampon
      * @param new_size Nouvelle taille du tampon
      */
     void resize_buffer(int new_size);

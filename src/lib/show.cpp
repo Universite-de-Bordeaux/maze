@@ -57,13 +57,13 @@ void Show::create() {
         const bool priorityWidth = maze_->getWidth() / desktopSize.width >
                                    maze_->getHeight() / desktopSize.height;
         if (priorityWidth) {
-            cellSize_ = static_cast<float>(desktopSize.width) /
-                        static_cast<float>(maze_->getWidth()) *
-                        MAZE_MAX_WINDOW_RATIO;
+            cellSize_ = static_cast<float>(static_cast<double>(desktopSize.width) /
+                                           static_cast<double>(maze_->getWidth()) *
+                                           MAZE_MAX_WINDOW_RATIO);
         } else {
-            cellSize_ = static_cast<float>(desktopSize.height) /
-                        static_cast<float>(maze_->getHeight()) *
-                        MAZE_MAX_WINDOW_RATIO;
+            cellSize_ = static_cast<float>(static_cast<double>(desktopSize.height) /
+                        static_cast<double>(maze_->getHeight()) *
+                        MAZE_MAX_WINDOW_RATIO);
         }
     }
     renderWindow_ = new sf::RenderWindow(
@@ -239,7 +239,7 @@ void Show::drawCells_() const {
     }
 }
 
-void Show::refreshMaze() {
+void Show::refreshMaze() { // NOLINT
     eventHandler();
     // clearBlack();
     drawCells_();
@@ -422,7 +422,7 @@ void Show::setDelay(const float delay) {
     delay_ = std::chrono::microseconds(static_cast<int>(delay * 1000));
 }
 
-void Show::resetValues() {
+void Show::resetValues() { // NOLINT
     // Réinitialisation des paramètres par défaut
     std::ifstream envFile(MAZE_ENV_FILE);
     if (envFile.is_open()) {
@@ -467,7 +467,7 @@ void Show::resetValues() {
 
     // Réinitialisation de la position de la souris et du coin en haut à gauche
     lastMousePosition_ = sf::Vector2i(0, 0);
-    // Le coin en haut à gauche du labyrinthe est à (0, 0)
+    // Le coin en haut à gauche du labyrinthe est à (0, 0).
     lastViewCenter_ = sf::Vector2f(0, 0);
 
     // Réinitialisation du RENDER WINDOW View
@@ -483,7 +483,7 @@ void Show::resetValues() {
         defaultView.zoom(1.0f);
 
         // Ajustement de la taille de la fenêtre
-        renderWindow_->setSize(sf::Vector2u(viewWidth, viewHeight));
+        renderWindow_->setSize(sf::Vector2u(static_cast<unsigned int>(viewWidth), static_cast<unsigned int>(viewHeight)));
 
         // Applique la nouvelle vue
         renderWindow_->setView(defaultView);
@@ -522,7 +522,7 @@ void Show::loadColorsFromEnv_(const std::string &key, sf::Color &color) {
                         default:;
                     }
                     count++;
-                } catch (const std::invalid_argument &ia) {
+                } catch (const std::invalid_argument &) {
                     // Gestion d'erreur si un token n'est pas un nombre valide
                     std::cerr
                         << "Erreur lors du parsage de la couleur : " << key

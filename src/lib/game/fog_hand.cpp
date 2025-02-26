@@ -4,7 +4,7 @@
 #include "../var.hpp"
 #include "lib/limits.hpp"
 
-int game_fog_hand(Maze *maze, Show *show, const bool left) {
+int game_fog_hand(const Maze *maze, Show *show, const bool left) {
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
     refreshShow(show);

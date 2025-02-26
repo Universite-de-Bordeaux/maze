@@ -12,7 +12,6 @@
  * @param show Affichage du labyrinthe
  * @param isValid Pointeur pour savoir si le labyrinthe est valide
  * @param isPerfect Pointeur pour savoir si le labyrinthe est parfait
- * @param makePerfect Si le labyrinthe doit être transformé en parfait
  */
 void checker_depth_first(const Maze* maze, bool perfect, bool left, Show* show,
                          bool* isValid, bool* isPerfect);

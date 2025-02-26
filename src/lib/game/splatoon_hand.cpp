@@ -6,7 +6,7 @@
 #include "lib/limits.hpp"
 #include "lib/splatoon.hpp"
 
-int game_splatoon_hand(Maze *maze, Show *show, const bool left) {
+int game_splatoon_hand(const Maze *maze, Show *show, const bool left) {
     const auto counts = new int *[maze->getWidth()];
     for (int i = 0; i < maze->getWidth(); i++) {
         counts[i] = new int[maze->getHeight()];

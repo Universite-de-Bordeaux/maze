@@ -7,7 +7,7 @@
 #include "../show.hpp"
 #include "../var.hpp"
 
-static bool add_wall_imperfect(Maze *maze, const int mid,
+static void add_wall_imperfect(Maze *maze, const int mid,
                                const double probability) {
     for (int i = 0; i < maze->getHeight(); i++) {
         maze->addWall(mid - 1, i, false);
@@ -34,7 +34,6 @@ static bool add_wall_imperfect(Maze *maze, const int mid,
             maze->addWall(mid + remove[3], mid - 1, true);
         }
     }
-    return true;
 }
 
 static bool add_wall_perfect(Maze *maze, const int mid) {
@@ -127,10 +126,7 @@ void algo_fractal(Maze *maze, int n, const bool perfect,
 
         // ajout des murs
         if (!perfect) {
-            if (!add_wall_imperfect(maze, maze->getHeight() / 2, probability)) {
-                std::cerr << "Error: add_wall" << std::endl;
-                return;
-            }
+            add_wall_imperfect(maze, maze->getHeight() / 2, probability);
         } else {
             if (!add_wall_perfect(maze, maze->getHeight() / 2)) {
                 std::cerr << "Error: add_wall" << std::endl;

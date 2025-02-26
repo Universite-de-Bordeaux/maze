@@ -158,14 +158,14 @@ class Show {
      * @param key Clé
      * @param color Couleur
      */
-    void loadColorsFromEnv_(const std::string &key, sf::Color &color);
+    static void loadColorsFromEnv_(const std::string &key, sf::Color &color);
     /**
      * @brief Divise une chaîne de caractères en tokens
      * @param str Chaîne de caractères
      * @param delimiter Délimiteur
      * @return Queue de tokens
      */
-    Queue splitString_(const std::string &str, char delimiter);
+    static Queue splitString_(const std::string &str, char delimiter);
 };
 
 /**

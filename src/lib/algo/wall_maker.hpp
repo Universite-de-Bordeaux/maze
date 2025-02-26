@@ -1,5 +1,5 @@
-#ifndef ALGO_WALLMAKER_HPP
-#define ALGO_WALLMAKER_HPP
+#ifndef ALGO_WALL_MAKER_HPP
+#define ALGO_WALL_MAKER_HPP
 
 #include "../maze.hpp"
 #include "../show.hpp"
@@ -16,4 +16,4 @@
 void algo_wall_maker(Maze* maze, int width, int height, bool perfect,
                      double probability, Show* show);
 
-#endif  // ALGO_WALLMAKER_HPP
+#endif  // ALGO_WALL_MAKER_HPP

@@ -112,7 +112,7 @@ void QueueFile::pop() {
     }
 
     // Suppression du premier élément du tampon
-    auto new_buffer = new void*[buffer_size_ - 1];
+    const auto new_buffer = new void*[buffer_size_ - 1];
     std::copy(buffer_ + 1, buffer_ + buffer_used_, new_buffer);
     delete[] buffer_;
     buffer_ = new_buffer;

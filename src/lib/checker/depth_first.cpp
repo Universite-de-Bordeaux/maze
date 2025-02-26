@@ -1,8 +1,5 @@
 #include "depth_first.hpp"
 
-#include <iostream>
-#include <thread>
-
 #include "../cell.hpp"
 #include "../maze.hpp"
 #include "../stack.hpp"

@@ -256,16 +256,16 @@ int main(const int argc, char *argv[]) {
                  strcmp(argv[i], "--generate") == 0 ||
                  strcmp(argv[i], "-gs") == 0 ||
                  strcmp(argv[i], "--generate-show") == 0) {
-            const bool isShow = (strcmp(argv[i], "-gs") == 0 ||
-                                 strcmp(argv[i], "--generate-show") == 0);
+            const bool isShow = strcmp(argv[i], "-gs") == 0 ||
+                                strcmp(argv[i], "--generate-show") == 0;
             std::string algorithm = "back_tracking";
             int width = 10, height = 10;
             bool perfect = true;
             double probability = 0.01;
             // Si l'utilisateur a spécifié des options
             while (i + 1 < argc && argv[i + 1][0] == '-' &&
-                   ((strcmp(argv[i + 1], "-a") == 0 ||
-                     strcmp(argv[i + 1], "--algorithm") == 0) ||
+                   (strcmp(argv[i + 1], "-a") == 0 ||
+                    strcmp(argv[i + 1], "--algorithm") == 0 ||
                     (strcmp(argv[i + 1], "-d") == 0 ||
                      strcmp(argv[i + 1], "--dimension") == 0) ||
                     (strcmp(argv[i + 1], "-i") == 0 ||
