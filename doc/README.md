@@ -174,8 +174,12 @@ Le projet implémente plusieurs algorithmes pour la génération, la résolution
     - Visite en marquant le nombre de passages par cellule et les culs-de-sac avec la main gauche ou droite.
     - Fichier : [`src/lib/game/splatoon_dead_end_hand.hpp`](../src/lib/game/splatoon_dead_end_hand.hpp).
 
-2. **Walk** :
+11. **Walk** :
     - Marche interactive dans le labyrinthe.
+    - Fichier : [`src/lib/game/walk.hpp`](../src/lib/game/walk.hpp).
+
+12. **Walk Ghost** :
+    - Marche interactive sans afficher le labyrinthe.
     - Fichier : [`src/lib/game/walk.hpp`](../src/lib/game/walk.hpp).
 
 ## Fichiers Principaux
