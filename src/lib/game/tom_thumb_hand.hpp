@@ -13,6 +13,6 @@
  * utilisée
  * @return Le nombre de pas pour sortir du labyrinthe
  */
-int game_tom_thumb_hand(const Maze* maze, Show* show, bool left);
+int game_tom_thumb_hand(Maze* maze, Show* show, bool left);
 
 #endif  // GAME_TOM_THUMB_HAND_HPP

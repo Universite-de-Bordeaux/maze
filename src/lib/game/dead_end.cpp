@@ -2,6 +2,7 @@
 
 #include "../show.hpp"
 #include "../var.hpp"
+#include "lib/limits.hpp"
 
 int game_dead_end(Maze *maze, Show *show) {
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
@@ -12,9 +13,7 @@ int game_dead_end(Maze *maze, Show *show) {
     }
     refreshShow(show);
     int steps = 0;
-    while (
-        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
-        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
+    while (whileCondition(maze, cell, steps)) {
         const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
         if (nbNeighborsNotVisited == 0) {
@@ -45,7 +44,5 @@ int game_dead_end(Maze *maze, Show *show) {
     }
     cell->setStatus(MAZE_STATUS_WAY_OUT);
     refreshShow(show, 1, &cell);
-    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
-               ? -1
-               : steps;
+    return resultSteps(maze, steps);
 }

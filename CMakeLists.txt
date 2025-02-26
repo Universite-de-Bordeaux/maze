@@ -11,6 +11,7 @@ set(SOURCE_FILES
         src/lib/checker/depth_first.cpp
         src/lib/game/dead_end.cpp
         src/lib/game/dead_end_hand.cpp
+        src/lib/game/lib/limits.cpp
         src/lib/game/lib/splatoon.cpp
         src/lib/game/fog.cpp
         src/lib/game/fog_hand.cpp
@@ -58,6 +59,7 @@ set(SOURCE_FILES_DATA
         src/lib/algo/fractal.cpp
         src/lib/game/dead_end.cpp
         src/lib/game/dead_end_hand.cpp
+        src/lib/game/lib/limits.cpp
         src/lib/game/lib/splatoon.cpp
         src/lib/game/splatoon.cpp
         src/lib/game/splatoon_hand.cpp

@@ -3,6 +3,7 @@
 #include "../show.hpp"
 #include "../var.hpp"
 #include "lib/splatoon.hpp"
+#include "lib/limits.hpp"
 
 int game_splatoon_dead_end(Maze *maze, Show *show) {
     const auto counts = new int *[maze->getWidth()];
@@ -20,9 +21,7 @@ int game_splatoon_dead_end(Maze *maze, Show *show) {
     counts[cell->getX()][cell->getY()]++;
     refreshShow(show);
     int steps = 0;
-    while (
-        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
-        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
+    while (whileCondition(maze, cell, steps)) {
         const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
         if (nbNeighborsNotVisited == 0) {
@@ -63,7 +62,5 @@ int game_splatoon_dead_end(Maze *maze, Show *show) {
         delete[] counts[i];
     }
     delete[] counts;
-    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
-               ? -1
-               : steps;
+    return resultSteps(maze, steps);
 }

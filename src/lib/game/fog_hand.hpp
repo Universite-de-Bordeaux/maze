@@ -13,6 +13,6 @@
  * utilisée
  * @return Le nombre de pas pour sortir du labyrinthe
  */
-int game_fog_hand(const Maze* maze, Show* show, bool left);
+int game_fog_hand(Maze* maze, Show* show, bool left);
 
 #endif  // GAME_FOG_HAND_HPP

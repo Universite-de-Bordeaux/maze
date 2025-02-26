@@ -2,8 +2,9 @@
 
 #include "../show.hpp"
 #include "../var.hpp"
+#include "lib/limits.hpp"
 
-int game_dead_end_hand(const Maze *maze, Show *show, const bool left) {
+int game_dead_end_hand(Maze *maze, Show *show, const bool left) {
     Cell *cell = maze->getCell(maze->getStartX(), maze->getStartY());
     cell->setStatus(MAZE_STATUS_CURRENT);
     if (cell->getAbsoluteNumberOfNeighborsNotVisited() <= 1) {
@@ -17,9 +18,7 @@ int game_dead_end_hand(const Maze *maze, Show *show, const bool left) {
     int count = 0;
     int loop = 0;
     bool tmpChangeDirection = false;
-    while (
-        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
-        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
+    while (whileCondition(maze, cell, steps)) {
         const int nbNeighborsNotVisited =
             cell->getAbsoluteNumberOfNeighborsNotVisited();
         if (nbNeighborsNotVisited == 0) {
@@ -74,7 +73,5 @@ int game_dead_end_hand(const Maze *maze, Show *show, const bool left) {
     } else {
         cell->setStatus(MAZE_STATUS_HOPELESS);
     }
-    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
-               ? -1
-               : steps;
+    return resultSteps(maze, steps);
 }

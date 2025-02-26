@@ -2,9 +2,10 @@
 
 #include "../show.hpp"
 #include "../var.hpp"
+#include "lib/limits.hpp"
 #include "lib/splatoon.hpp"
 
-int game_splatoon_dead_end_hand(const Maze *maze, Show *show, const bool left) {
+int game_splatoon_dead_end_hand(Maze *maze, Show *show, const bool left) {
     const auto counts = new int *[maze->getWidth()];
     for (int i = 0; i < maze->getWidth(); i++) {
         counts[i] = new int[maze->getHeight()];
@@ -25,9 +26,7 @@ int game_splatoon_dead_end_hand(const Maze *maze, Show *show, const bool left) {
     int count = 0;
     int loop = 0;
     bool tmpChangeDirection = false;
-    while (
-        (cell->getX() != maze->getEndX() || cell->getY() != maze->getEndY()) &&
-        steps <= pow(maze->getWidth() * maze->getHeight(), 2) && steps >= 0) {
+    while (whileCondition(maze, cell, steps)) {
         const int nbNeighbors = cell->getAbsoluteNumberOfNeighbors();
         if (nbNeighbors == 0) {
             cell->setStatus(MAZE_STATUS_HOPELESS);
@@ -98,7 +97,5 @@ int game_splatoon_dead_end_hand(const Maze *maze, Show *show, const bool left) {
         delete[] counts[i];
     }
     delete[] counts;
-    return steps > pow(maze->getWidth() * maze->getHeight(), 2) || steps < 0
-               ? -1
-               : steps;
+    return resultSteps(maze, steps);
 }
