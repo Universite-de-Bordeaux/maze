@@ -21,7 +21,6 @@
 #include "lib/game/tom_thumb.hpp"
 #include "lib/game/tom_thumb_hand.hpp"
 #include "lib/maze.hpp"
-#include "lib/queue_file.hpp"
 #include "lib/solver/breadth_first.hpp"
 #include "lib/var.hpp"
 
@@ -235,7 +234,7 @@ std::string replaceUnderscoresWithSpaces(const std::string &str) {
 }
 
 long getTotalSystemMemory() {
-    struct sysinfo memInfo {};
+    struct sysinfo memInfo{};
     sysinfo(&memInfo);
     long long totalPhysMem = static_cast<long long>(memInfo.totalram) +
                              static_cast<long long>(memInfo.totalswap);
