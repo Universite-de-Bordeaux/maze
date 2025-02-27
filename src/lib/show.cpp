@@ -28,6 +28,7 @@ Show::Show(Maze *maze) {
     colorConfig_.wayOut = sf::Color(MAZE_STATUS_WAY_OUT_COLOR, 255);
     colorConfig_.current = sf::Color(MAZE_STATUS_CURRENT_COLOR, 255);
 
+    // Charge les couleurs personnalisées depuis le fichier .env
     loadColorsFromEnv_("MAZE_WALL_COLOR", colorConfig_.wall);
     loadColorsFromEnv_("MAZE_WALL_START_COLOR", colorConfig_.wallStart);
     loadColorsFromEnv_("MAZE_WALL_END_COLOR", colorConfig_.wallEnd);
@@ -50,6 +51,8 @@ void Show::create() {
     cellSize_ = 50;
     lastDisplay_ = std::chrono::high_resolution_clock::now();
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
+
+    // Ajuste la taille des cellules pour que le labyrinthe s'adapte à l'écran
     if (static_cast<float>(maze_->getWidth()) * cellSize_ >
             desktopSize.width * MAZE_MAX_WINDOW_RATIO ||
         static_cast<float>(maze_->getHeight()) * cellSize_ >
@@ -67,6 +70,8 @@ void Show::create() {
                                    MAZE_MAX_WINDOW_RATIO);
         }
     }
+
+    // Création de la fenêtre
     renderWindow_ = new sf::RenderWindow(
         sf::VideoMode(static_cast<unsigned int>(
                           static_cast<float>(maze_->getWidth()) * cellSize_),
@@ -75,6 +80,7 @@ void Show::create() {
         "Maze");
     renderWindow_->setVerticalSyncEnabled(true);
 
+    // Positionne la fenêtre au centre de l'écran
     const sf::Vector2i screenCenter(static_cast<int>(desktopSize.width / 2),
                                     static_cast<int>(desktopSize.height / 2));
     renderWindow_->setPosition(
@@ -101,11 +107,13 @@ bool Show::isOpen() const {
 void Show::eventHandler() {  // NOLINT
     sf::Event event{};
     while (renderWindow_->pollEvent(event)) {
+        // Fermeture de la fenêtre
         if (event.type == sf::Event::Closed ||
             (event.type == sf::Event::KeyPressed &&
              event.key.code == sf::Keyboard::Escape)) {
             renderWindow_->close();
         }
+        // Gestion des touches du clavier
         if (event.type == sf::Event::KeyPressed) {
             const auto key = event.key.code;
             if (key == sf::Keyboard::D) {
@@ -141,6 +149,7 @@ void Show::eventHandler() {  // NOLINT
                 resetValues();
             }
         } else if (event.type == sf::Event::MouseWheelScrolled) {
+            // Gestion du zoom
             if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
                 static constexpr float zoomFactor = 1.1f;
                 if (event.mouseWheelScroll.delta > 0) {
@@ -157,11 +166,11 @@ void Show::eventHandler() {  // NOLINT
                           << std::endl;
             }
         } else if (event.type == sf::Event::MouseButtonPressed) {
+            // Gestion du déplacement de la vue avec la souris
             if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     isDragging_ = true;
                     lastMousePosition_ = sf::Mouse::getPosition(*renderWindow_);
-                    // Enregistrez le centre actuel de la vue
                     lastViewCenter_ = renderWindow_->getView().getCenter();
                 }
             } else {
@@ -178,22 +187,18 @@ void Show::eventHandler() {  // NOLINT
             }
         } else if (event.type == sf::Event::MouseMoved && isDragging_) {
             if (maze_->getWidth() <= 100 && maze_->getHeight() <= 100) {
-                // Récupérez la position actuelle de la souris
                 sf::Vector2i mousePosition =
                     sf::Mouse::getPosition(*renderWindow_);
-                // Calculez le changement de position
                 const sf::Vector2i delta = mousePosition - lastMousePosition_;
-                // Convertir le delta en pixels en un décalage proportionnel
+
                 sf::View currentView = renderWindow_->getView();
                 const float scale =
                     currentView.getSize().x /
                     static_cast<float>(renderWindow_->getSize().x);
-                // Calcul du décalage en coordonné monde
                 sf::Vector2f offset(static_cast<float>(-delta.x) / scale,
                                     static_cast<float>(-delta.y) / scale);
-                // Met à jour le centre de la vue
+
                 sf::Vector2f newCenter = lastViewCenter_ + offset;
-                // Limiter le déplacement dans les limites de la grille
                 newCenter.x = std::max(
                     0.0f, std::min(newCenter.x,
                                    static_cast<float>(maze_->getWidth()) *
@@ -202,12 +207,13 @@ void Show::eventHandler() {  // NOLINT
                     0.0f, std::min(newCenter.y,
                                    static_cast<float>(maze_->getHeight()) *
                                        cellSize_ * zoomLevel_));
-                // Met à jour la vue
+
                 currentView.setCenter(newCenter);
                 renderWindow_->setView(currentView);
-                // Mise à jour de la dernière position de la souris et du centre
+
                 lastMousePosition_ = mousePosition;
                 lastViewCenter_ = newCenter;
+
                 clearBlack();
                 refreshMaze();
             }
@@ -242,32 +248,41 @@ void Show::drawCells_() const {
 
 void Show::refreshMaze() {  // NOLINT
     eventHandler();
-    // clearBlack();
     drawCells_();
     refreshDisplay();
 }
 
 void Show::drawCell_(const Cell *cell) const {
     const float scaledSize = cellSize_ * zoomLevel_;
-    sf::RectangleShape visited(sf::Vector2f(scaledSize, scaledSize));
-    visited.setPosition(static_cast<float>(cell->getX()) * scaledSize,
-                        static_cast<float>(cell->getY()) * scaledSize);
-    if (cell->getStatus() == MAZE_STATUS_IDLE) {
-        visited.setFillColor(colorConfig_.idle);
-    } else if (cell->getStatus() == MAZE_STATUS_VISITED) {
-        visited.setFillColor(colorConfig_.visited);
-    } else if (cell->getStatus() == MAZE_STATUS_HOPELESS) {
-        visited.setFillColor(colorConfig_.hopeless);
-    } else if (cell->getStatus() == MAZE_STATUS_TOO_MANY_NEIGHBORS) {
-        visited.setFillColor(colorConfig_.tooManyNeighbors);
-    } else if (cell->getStatus() == MAZE_STATUS_WAY_OUT) {
-        visited.setFillColor(colorConfig_.wayOut);
-    } else if (cell->getStatus() == MAZE_STATUS_CURRENT) {
-        visited.setFillColor(colorConfig_.current);
-    } else {
-        visited.setFillColor(sf::Color::Black);
+    sf::RectangleShape cellShape(sf::Vector2f(scaledSize, scaledSize));
+    cellShape.setPosition(static_cast<float>(cell->getX()) * scaledSize,
+                          static_cast<float>(cell->getY()) * scaledSize);
+
+    // Détermine la couleur en fonction de l'état de la cellule
+    switch (cell->getStatus()) {
+        case MAZE_STATUS_IDLE:
+            cellShape.setFillColor(colorConfig_.idle);
+            break;
+        case MAZE_STATUS_VISITED:
+            cellShape.setFillColor(colorConfig_.visited);
+            break;
+        case MAZE_STATUS_HOPELESS:
+            cellShape.setFillColor(colorConfig_.hopeless);
+            break;
+        case MAZE_STATUS_TOO_MANY_NEIGHBORS:
+            cellShape.setFillColor(colorConfig_.tooManyNeighbors);
+            break;
+        case MAZE_STATUS_WAY_OUT:
+            cellShape.setFillColor(colorConfig_.wayOut);
+            break;
+        case MAZE_STATUS_CURRENT:
+            cellShape.setFillColor(colorConfig_.current);
+            break;
+        default:
+            cellShape.setFillColor(sf::Color::Black);
+            break;
     }
-    renderWindow_->draw(visited);
+    renderWindow_->draw(cellShape);
 }
 
 void Show::drawWall_(const Cell *cell, const int orientation) const {
@@ -277,11 +292,13 @@ void Show::drawWall_(const Cell *cell, const int orientation) const {
         const float scaledSize = cellSize_ * zoomLevel_;
         sf::RectangleShape wall(sf::Vector2f(scaledSize, 1));
         wall.setFillColor(colorConfig_.wall);
+
         if (x == maze_->getEndX() && y == maze_->getEndY()) {
             wall.setFillColor(colorConfig_.wallEnd);
         } else if (x == maze_->getStartX() && y == maze_->getStartY()) {
             wall.setFillColor(colorConfig_.wallStart);
         }
+
         const Cell *neighbor = nullptr;
         if (orientation == MAZE_CELL_TOP) {
             neighbor = maze_->getCell(x, y - 1);
@@ -304,6 +321,7 @@ void Show::drawWall_(const Cell *cell, const int orientation) const {
             wall.setPosition(static_cast<float>(x) * scaledSize + scaledSize,
                              static_cast<float>(y) * scaledSize);
         }
+
         if (neighbor->getX() == maze_->getEndX() &&
             neighbor->getY() == maze_->getEndY()) {
             wall.setFillColor(colorConfig_.wallEnd);
@@ -311,6 +329,7 @@ void Show::drawWall_(const Cell *cell, const int orientation) const {
                    neighbor->getY() == maze_->getStartY()) {
             wall.setFillColor(colorConfig_.wallStart);
         }
+
         renderWindow_->draw(wall);
     }
 }
@@ -333,6 +352,7 @@ void Show::drawFrontier_(const Cell *cell, const int orientation) const {
         frontier.setSize(sf::Vector2f(1, scaledSize));
         frontier.setPosition(0, static_cast<float>(cell->getY()) * scaledSize);
     }
+
     frontier.setFillColor(cell->getX() == maze_->getEndX() &&
                                   cell->getY() == maze_->getEndY()
                               ? colorConfig_.wallEnd
@@ -347,22 +367,26 @@ void Show::drawCell(const Cell *cell) const {
     const int x = cell->getX();
     const int y = cell->getY();
     drawCell_(cell);
+
     // Dessin des murs
     if (y > 0) {
         drawWall_(cell, MAZE_CELL_TOP);
     } else if (y == 0) {
         drawFrontier_(cell, MAZE_CELL_TOP);
     }
+
     if (x < maze_->getWidth() - 1) {
         drawWall_(cell, MAZE_CELL_RIGHT);
     } else if (x == maze_->getWidth() - 1) {
         drawFrontier_(cell, MAZE_CELL_RIGHT);
     }
+
     if (y < maze_->getHeight() - 1) {
         drawWall_(cell, MAZE_CELL_BOTTOM);
     } else if (y == maze_->getHeight() - 1) {
         drawFrontier_(cell, MAZE_CELL_BOTTOM);
     }
+
     if (x > 0) {
         drawWall_(cell, MAZE_CELL_LEFT);
     } else if (x == 0) {
@@ -454,7 +478,7 @@ void Show::resetValues() {  // NOLINT
         setLowFreq(lowFreq);
         envFile.close();
     } else {
-        // Si le fichier .env n'existe pas, utilisez les valeurs par défaut
+        // Valeurs par défaut si le fichier .env n'existe pas
         setRefreshRate(60);
         setDelay(0.0f);
         setLowFreq(false);
@@ -466,32 +490,22 @@ void Show::resetValues() {  // NOLINT
     // Réinitialisation du drapeau de déplacement
     isDragging_ = false;
 
-    // Réinitialisation de la position de la souris et du coin en haut à gauche
+    // Réinitialisation de la position de la souris et du centre de la vue
     lastMousePosition_ = sf::Vector2i(0, 0);
-    // Le coin en haut à gauche du labyrinthe est à (0, 0).
     lastViewCenter_ = sf::Vector2f(0, 0);
 
-    // Réinitialisation du RENDER WINDOW View
+    // Réinitialisation de la vue de la fenêtre
     if (renderWindow_ != nullptr) {
-        // Calcul de la taille de la vue en fonction de la taille des cellules
         float viewWidth = static_cast<float>(maze_->getWidth()) * cellSize_;
         float viewHeight = static_cast<float>(maze_->getHeight()) * cellSize_;
 
-        // Création d'une nouvelle vue centrée sur le coin en haut à gauche
         sf::View defaultView(sf::FloatRect(0, 0, viewWidth, viewHeight));
-
-        // Échelle initialisée à 1.0f
         defaultView.zoom(1.0f);
 
-        // Ajustement de la taille de la fenêtre
         renderWindow_->setSize(
             sf::Vector2u(static_cast<unsigned int>(viewWidth),
                          static_cast<unsigned int>(viewHeight)));
-
-        // Applique la nouvelle vue
         renderWindow_->setView(defaultView);
-
-        // Efface l'écran
         clearBlack();
         refreshMaze();
     }
@@ -526,14 +540,11 @@ void Show::loadColorsFromEnv_(const std::string &key, sf::Color &color) {
                     }
                     count++;
                 } catch (const std::invalid_argument &) {
-                    // Gestion d'erreur si un token n'est pas un nombre valide
                     std::cerr
                         << "Erreur lors du parsage de la couleur : " << key
                         << std::endl;
                     break;
                 }
-
-                // Libère la mémoire de l'objet string
                 delete tokenPtr;
                 tokens.pop();
             }
@@ -552,14 +563,11 @@ Queue Show::splitString_(const std::string &str, const char delimiter) {
     size_t end = str.find(delimiter);
 
     while (end != std::string::npos) {
-        // Extrait la sous-chaîne de `start` à `end`
         const std::string token = str.substr(start, end - start);
-        // Alloue de la mémoire pour la chaîne et ajoute à la queue
         q.push(new std::string(token));
         start = end + 1;
         end = str.find(delimiter, start);
     }
-    // Ajoute le dernier token après le dernier délimiteur
     const std::string lastToken = str.substr(start);
     q.push(new std::string(lastToken));
 
