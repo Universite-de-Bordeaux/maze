@@ -68,7 +68,6 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
     coordinate startCoord = {0, 0};
     stack.push(&startCoord);
 
-    // Boucle principale de génération du labyrinthe
     while (!stack.empty()) {
         // Récupération de la cellule courante
         const auto* currentCoord = static_cast<coordinate*>(stack.top());
@@ -152,7 +151,7 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
                         }
                     }
                 }
-                // On crée un passage avec le premier voisin found
+                // On crée un passage avec le premier voisin trouvé
                 maze->removeWall(currentCell,
                                  maze->getCell(neighbors[0].x, neighbors[0].y));
                 auto* newCoordPtr = new coordinate(neighbors[0]);

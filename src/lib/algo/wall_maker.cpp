@@ -380,7 +380,7 @@ void algo_wall_maker(Maze* maze, const int width, const int height,
             stackFreeDoubleCell.pop();
         }
     }
-    // Ajoute des murs aléatoirement si le labyrinthe n'est pas parfait
+    // Supprime des murs aléatoirement si le labyrinthe n'est pas parfait
     if (!perfect) {
         refreshShow(show);
         for (int x = 0; x < width; x++) {

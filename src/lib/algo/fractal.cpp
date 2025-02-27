@@ -23,16 +23,12 @@ static void add_wall_imperfect(Maze *maze, const int mid,
     }
     // Tableau pour stocker les positions où retirer des murs
     int remove[4];
-    // Retrait d'un mur aléatoire à gauche
     remove[0] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(mid - 1, remove[0], false);
-    // Retrait d'un mur aléatoire en haut
     remove[1] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(remove[1], mid - 1, true);
-    // Retrait d'un mur aléatoire à droite
     remove[2] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(mid - 1, mid + remove[2], false);
-    // Retrait d'un mur aléatoire en bas
     remove[3] = maze->getRand()->get(0, mid - 1);
     maze->removeWall(mid + remove[3], mid - 1, true);
     // Rajout d'un mur aléatoire avec une probabilité donnée
@@ -152,9 +148,7 @@ void algo_fractal(Maze *maze, int n, const bool perfect,
         show->destroy();
         show->create();
     }
-    // Rafraîchissement de l'affichage initial
     refreshShow(show);
-    // Boucle principale de génération fractale
     while (n > 0) {
         // Duplication du labyrinthe en quadrants
         quad_maze(maze);
@@ -163,7 +157,7 @@ void algo_fractal(Maze *maze, int n, const bool perfect,
             add_wall_imperfect(maze, maze->getHeight() / 2, probability);
         } else {
             if (!add_wall_perfect(maze, maze->getHeight() / 2)) {
-                // Gestion d'erreur en cas d'echec
+                // Gestion d'erreur en cas d'échec
                 std::cerr << "Error: add_wall" << std::endl;
                 return;
             }

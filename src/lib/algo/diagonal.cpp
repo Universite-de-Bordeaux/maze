@@ -90,7 +90,6 @@ void algo_diagonal(Maze *maze, const int width, const int height,
     int x = whereStart.left ? 0 : width - 1;  // Position initiale sur l'axe X
     int y = whereStart.top ? 0 : height - 1;  // Position initiale sur l'axe Y
 
-    // Boucle de génération des sorties diagonales
     while ((!whereStart.left <= x && x < width - whereStart.left) ||
            (!whereStart.top <= y && y < height - whereStart.top)) {
         // Décide aléatoirement de l'ordre de création des sorties
