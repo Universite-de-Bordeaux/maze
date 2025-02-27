@@ -40,8 +40,7 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
         }
         const int rb = maze->getRand()->get(startB, endB - 1);
         for (int bb = startB; bb <= endB; bb++) {
-            if (bb != rb &&
-                (perfect || maze->getRand()->get(1 - probability))) {
+            if (bb != rb && (perfect || !maze->getRand()->get(probability))) {
                 if (isHorizontal) {
                     maze->addWall(bb, *a - !whereStart->top, isHorizontal);
                 } else {
