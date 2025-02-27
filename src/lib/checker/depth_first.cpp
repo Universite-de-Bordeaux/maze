@@ -10,34 +10,29 @@ struct positionHistory {
     int x;
     int y;
     int direction;
-    positionHistory *parent;
+    positionHistory *parent;  // Pointeur vers le nœud parent
 };
 
-// Fonction principale pour vérifier le labyrinthe en utilisant un parcours en
-// profondeur (DFS)
 void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
                          Show *show, bool *isValid, bool *isPerfect) {
-    Stack stack;      // Pile pour gérer le parcours DFS
+    Stack stack;
     Stack stackFree;  // Pile pour gérer la libération de la mémoire
-    bool imperfect =
-        false;  // Drapeau pour vérifier si le labyrinthe est parfait
+    bool imperfect = false;
 
     // Vérification des cellules de départ et d'arrivée
     if (maze->getStartCell() == nullptr || maze->getEndCell() == nullptr) {
         return;
     }
 
-    refreshShow(show);  // Rafraîchissement initial de l'affichage
+    refreshShow(show);
 
     // Initialisation du point de départ
     Cell *start = maze->getCell(0, 0);
     positionHistory startHistory = {0, 0, 0, nullptr};
-    stack.push(&startHistory);  // Ajout de la position initiale à la pile
-    start->setStatus(
-        MAZE_STATUS_VISITED);  // Marquage de la cellule de départ comme visitée
+    stack.push(&startHistory);
+    start->setStatus(MAZE_STATUS_VISITED);
     start->setAlreadyVisited(true);
 
-    // Parcours en profondeur (DFS)
     while (!stack.empty()) {
         // Extraction de l'élément au sommet de la pile
         auto *current = static_cast<positionHistory *>(stack.top());
@@ -62,11 +57,9 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
                 2) {
                 cell->setStatus(MAZE_STATUS_HOPELESS);
             }
-            refreshShow(show, 1, &cell,
-                        true);  // Mise à jour de l'affichage pour cette cellule
+            refreshShow(show, 1, &cell, true);
         } else {
-            refreshShow(show, 1, &cell,
-                        false);  // Mise à jour normale de l'affichage
+            refreshShow(show, 1, &cell, false);
         }
 
         // Exploration des voisins
@@ -79,16 +72,15 @@ void checker_depth_first(const Maze *maze, const bool perfect, const bool left,
                 auto *next = new positionHistory{
                     // Création d'un nouvel élément d'historique
                     neighbor->getX(), neighbor->getY(), index, current};
-                stack.push(next);      // Ajout à la pile principale
-                stackFree.push(next);  // Ajout à la pile pour la libération
-                neighbor->setStatus(
-                    MAZE_STATUS_VISITED);  // Marquage comme visitée
+                stack.push(next);
+                stackFree.push(next);
+                neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
             }
         }
     }
 
-    refreshShow(show);  // Rafraîchissement final de l'affichage
+    refreshShow(show);
 
     // Vérification si toutes les cellules ont été visitées
     for (int i = 0; i < maze->getWidth(); i++) {

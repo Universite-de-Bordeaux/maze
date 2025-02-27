@@ -14,22 +14,18 @@ struct positionHistory {
 void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
                            bool *isValid, bool *isPerfect) {
     // Initialisation des structures de données
-    Queue queue;      // File d'attente pour le parcours BFS
+    Queue queue;
     Queue queueFree;  // File d'attente pour gérer la libération de la mémoire
-    bool imperfect =
-        false;          // Drapeau pour vérifier si le labyrinthe est parfait
-    refreshShow(show);  // Rafraîchissement de l'affichage
+    bool imperfect = false;
+    refreshShow(show);
 
     // Initialisation du point de départ
     Cell *start = maze->getCell(0, 0);
     positionHistory startHistory = {0, 0, nullptr};
-    queue.push(
-        &startHistory);  // Ajout de la position initiale à la file d'attente
-    start->setStatus(
-        MAZE_STATUS_VISITED);  // Marquage de la cellule de départ comme visitée
+    queue.push(&startHistory);
+    start->setStatus(MAZE_STATUS_VISITED);
     start->setAlreadyVisited(true);
 
-    // Parcours en largeur (BFS)
     while (!queue.empty()) {
         // Extraction de l'élément devant la file d'attente
         auto *current = static_cast<positionHistory *>(queue.front());
@@ -53,11 +49,9 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
                 2) {
                 cell->setStatus(MAZE_STATUS_HOPELESS);
             }
-            refreshShow(show, 1, &cell,
-                        true);  // Mise à jour de l'affichage pour cette cellule
+            refreshShow(show, 1, &cell, true);
         } else {
-            refreshShow(show, 1, &cell,
-                        false);  // Mise à jour normale de l'affichage
+            refreshShow(show, 1, &cell, false);
         }
 
         // Exploration des voisins
@@ -69,17 +63,15 @@ void checker_breadth_first(const Maze *maze, const bool perfect, Show *show,
                 next->x = neighbor->getX();
                 next->y = neighbor->getY();
                 next->parent = current;
-                queue.push(next);  // Ajout à la file d'attente principale
-                queueFree.push(
-                    next);  // Ajout à la file d'attente pour la libération
-                neighbor->setStatus(
-                    MAZE_STATUS_VISITED);  // Marquage comme visitée
+                queue.push(next);
+                queueFree.push(next);
+                neighbor->setStatus(MAZE_STATUS_VISITED);
                 neighbor->setAlreadyVisited(true);
             }
         }
     }
 
-    refreshShow(show);  // Rafraîchissement final de l'affichage
+    refreshShow(show);
 
     // Vérification si toutes les cellules ont été visitées
     for (int i = 0; i < maze->getWidth(); i++) {
