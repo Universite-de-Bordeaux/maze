@@ -18,7 +18,7 @@ struct start {
  * @param isHorizontal Si la sortie est horizontale
  * @param whereStart Position de départ de la sortie
  * @param perfect Si le labyrinthe est parfait
- * @param probability Probabilité d'ajouter une paroie
+ * @param probability Probabilité d'ajouter un mur
  * @param show Objet pour afficher le labyrinthe
  */
 static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
@@ -48,11 +48,11 @@ static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,
         // Génère une position aléatoire pour la sortie
         const int rb = maze->getRand()->get(startB, endB - 1);
 
-        // Parcourt les positions pour créer les parois et la sortie
+        // Parcourt les positions pour créer les murs et la sortie
         for (int bb = startB; bb <= endB; bb++) {
             if (bb != rb && (perfect || !maze->getRand()->get(probability))) {
                 if (isHorizontal) {
-                    // Ajoute une paroi si ce n'est pas la position de la sortie
+                    // Ajoute un mur si ce n'est pas la position de la sortie
                     maze->addWall(bb, *a - !whereStart->top, isHorizontal);
                 } else {
                     maze->addWall(*a - !whereStart->left, bb, isHorizontal);
