@@ -14,17 +14,28 @@ Ce projet est développé dans le cadre de la formation CMI OPTIM et regroupe tr
 
 <img alt="Exemple de labyrinthe généré avec ce projet" src="doc/maze.png" title="Labyrinthe"/>
 
+## Auteurs
+
+- **Arnaud Aloyse** : [GitHub](https://github.com/aloyse33)
+- **Facca Ethan** : [GitHub](https://github.com/untypequicode)
+- **Glasson Lucien** : [GitHub](https://github.com/lulu-froid)
+
+## Liens Utiles
+
+- **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
+- **Documentation Technique** : [Documentation](doc/README.md)
+- **Repository GitHub** : [Lien GitHub](https://github.com/Universite-de-Bordeaux/maze)
 ## Sommaire
 
 1. [Description](#description)
-2. [Structure du Projet](#structure-du-projet)
-3. [Prérequis](#prérequis)
-4. [Compilation](#compilation)
-5. [Utilisation](#utilisation)
-6. [Codes d'Erreur](#codes-derreur)
-7. [Exemples Complets](#exemples-complets)
-8. [Auteurs](#auteurs)
-9. [Liens Utiles](#liens-utiles)
+2. [Auteurs](#auteurs)
+3. [Liens Utiles](#liens-utiles)
+4. [Structure du Projet](#structure-du-projet)
+5. [Prérequis](#prérequis)
+6. [Compilation](#compilation)
+7. [Utilisation](#utilisation)
+8. [Codes d'Erreur](#codes-derreur)
+9. [Exemples Complets](#exemples-complets)
 
 ## Structure du Projet
 
@@ -545,15 +556,3 @@ Le fichier des statistiques contient les informations suivantes :
 # Lancez le jeu avec le type de jeu par défaut (fog)
 ./maze.out -i mon_labyrinthe.txt -g -t f
 ```
-
-## Auteurs
-
-- **Arnaud Aloyse** : [GitHub](https://github.com/aloyse33)
-- **Facca Ethan** : [GitHub](https://github.com/untypequicode)
-- **Glasson Lucien** : [GitHub](https://github.com/lulu-froid)
-
-## Liens Utiles
-
-- **Rapport de Projet** : [Rapport PDF](doc/rapport.pdf)
-- **Documentation Technique** : [Documentation](doc/README.md)
-- **Repository GitHub** : [Lien GitHub](https://github.com/Universite-de-Bordeaux/maze)
