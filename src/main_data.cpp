@@ -234,7 +234,7 @@ std::string replaceUnderscoresWithSpaces(const std::string &str) {
 }
 
 long getTotalSystemMemory() {
-    struct sysinfo memInfo{};
+    struct sysinfo memInfo {};
     sysinfo(&memInfo);
     long long totalPhysMem = static_cast<long long>(memInfo.totalram) +
                              static_cast<long long>(memInfo.totalswap);
