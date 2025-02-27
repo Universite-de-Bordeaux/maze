@@ -18,7 +18,7 @@ struct start {
  * @param isHorizontal Si la sortie est horizontale
  * @param whereStart Position de départ de la sortie
  * @param perfect Si le labyrinthe est parfait
- * @param probability Probabilité d'ajouter une paroi
+ * @param probability Probabilité d'ajouter une paroie
  * @param show Objet pour afficher le labyrinthe
  */
 static void create_exit(int *a, const int *maxA, const int *b, const int *maxB,

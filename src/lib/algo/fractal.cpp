@@ -11,7 +11,7 @@
  * @brief Ajoute des murs de manière imparfaite dans le labyrinthe
  * @param maze Le labyrinthe dans lequel ajouter des murs
  * @param mid La position médiane pour l'ajout de murs
- * @param probability La probabilité d'ajouter un mur
+ * @param probability La probabilité d'imperfection
  */
 static void add_wall_imperfect(Maze *maze, const int mid,
                                const double probability) {
@@ -97,8 +97,8 @@ static bool add_wall_perfect(Maze *maze, const int mid) {
 }
 
 /**
- * @brief Crée un labyrinthe en quadrants
- * @param maze Le labyrinthe à créer
+ * @brief Double la taille d'un labyrinthe en le quadruplant
+ * @param maze Le labyrinthe à modifier
  */
 static void quad_maze(Maze *maze) {
     // Récupération des dimensions actuelles du labyrinthe

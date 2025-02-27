@@ -17,7 +17,7 @@ struct wall_maker {
  * @brief Compte le nombre de voisins d'un mur
  * @param maze Le labyrinthe
  * @param wall Le mur à analyser
- * @return Le nombre de voisins de le mur
+ * @return Le nombre de voisins du mur
  */
 static int getNbNeighbors(const Maze* maze, const wall_maker* wall) {
     int nbNeighbors = 0;
@@ -167,7 +167,7 @@ static void getNeighbors(const Maze* maze, const wall_maker* wall,
  * @param maze Le labyrinthe
  * @param queue La file d'attente
  * @param stack La pile
- * @param stackFree La pile de mémoire libre
+ * @param stackFree La pile de libération de mémoire
  * @param x Coordonnée x du voisin
  * @param y Coordonnée y du voisin
  * @param horizontal Orientation du voisin

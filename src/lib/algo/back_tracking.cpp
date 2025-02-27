@@ -4,11 +4,11 @@
 #include "../stack.hpp"
 
 /**
- * @brief Calcule le nombre de voisins relativement non visités d'une cellule
+ * @brief Calcule le nombre relatif de voisins non visités d'une cellule
  * @param maze Le labyrinthe
  * @param currentX La coordonnée X de la cellule courante
  * @param currentY La coordonnée Y de la cellule courante
- * @return Le nombre de voisins relativement non visités
+ * @return Le nombre relatif de voisins non visités
  */
 static int numberRelativeNeighbors(const Maze* maze, const int currentX,
                                    const int currentY) {
@@ -112,7 +112,8 @@ void algo_back_tracking(Maze* maze, const int width, const int height,
             const int numberOfNeighbors =
                 numberRelativeNeighbors(maze, currentX, currentY);
             if (numberOfNeighbors <= 0) {
-                // Cas où aucun chemin n'est possible : on désespère la cellule
+                // Cas où aucun chemin n'est possible : on met le statut
+                // de la cellule à désespéré
                 currentCell->setStatus(MAZE_STATUS_HOPELESS);
                 stack.pop();
                 // Pour les labyrinthes non parfaits, on a une probabilité de
