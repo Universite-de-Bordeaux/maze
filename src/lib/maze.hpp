@@ -202,14 +202,25 @@ class Maze {
      * @brief Réinitialise l'emplacement de départ et d'arrivée du labyrinthe
      */
     void resetStartEnd();
+    /**
+     * @brief Définit le mode de test
+     * @param testingMode Vrai si le mode de test est activé, faux sinon
+     */
+    void setTestingMode(const bool testingMode) { testingMode_ = testingMode; }
+    /**
+     * @brief Retourne le mode de test
+     * @return Vrai si le mode de test est activé, faux sinon
+     */
+    bool getTestingMode() const { return testingMode_; }
 
    private:
-    int width_{};              ///< Largeur du labyrinthe
-    int height_{};             ///< Hauteur du labyrinthe
-    Cell ***cells_ = nullptr;  ///< Cellules du labyrinthe
-    int start_[2] = {0, 0};    ///< Coordonnées de la cellule de départ
-    int end_[2] = {0, 0};      ///< Coordonnées de la cellule d'arrivée
-    Rand rand_;                ///< Générateur de nombres aléatoires
+    int width_{};               ///< Largeur du labyrinthe
+    int height_{};              ///< Hauteur du labyrinthe
+    Cell ***cells_ = nullptr;   ///< Cellules du labyrinthe
+    int start_[2] = {0, 0};     ///< Coordonnées de la cellule de départ
+    int end_[2] = {0, 0};       ///< Coordonnées de la cellule d'arrivée
+    Rand rand_;                 ///< Générateur de nombres aléatoires
+    bool testingMode_ = false;  ///< Mode de test
 
     /**
      * @brief Initialise les cellules du labyrinthe
