@@ -353,7 +353,7 @@ int main(const int argc, char *argv[]) {
     std::string outputStats;
     // Parcours les arguments
     for (int i = 1; i < argc; i++) {
-        // Vérifie si l'argument est une commande
+        // Si l'utilisateur veut afficher l'aide
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
             return help(MAZE_OK);
         // Si l'utilisateur veut afficher le labyrinthe
@@ -477,15 +477,16 @@ int main(const int argc, char *argv[]) {
                 }
             }
         }
-        // Vérifie si le labyrinthe est valide
-        // Si l'utilisateur veut sauvegarder le labyrinthe chargé en mémoire
+        // Si l'utilisateur veut sauvegarder le résultat des visites
         else if (strcmp(argv[i], "-ol") == 0 ||
                  strcmp(argv[i], "--output-latex") == 0) {
             // Si aucun fichier n'est spécifié
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
             outputLatex = argv[i + 1];
             i++;
-        } else if (strcmp(argv[i], "-os") == 0 ||
+        }
+        // Si l'utilisateur veut sauvegarder les statistiques
+        else if (strcmp(argv[i], "-os") == 0 ||
                    strcmp(argv[i], "--output-stats") == 0) {
             // Si aucun fichier n'est spécifié
             if (i + 1 >= argc) return help(MAZE_COMMAND_ERROR);
