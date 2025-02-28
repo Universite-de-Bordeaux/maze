@@ -201,7 +201,6 @@ fabric.properties
 src/instances/tmp/*
 !src/instances/tmp/.gitkeep
 .fleet
-default.nix
 .cmake
 .env
 *.tex
