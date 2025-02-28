@@ -1,12 +1,7 @@
-{pkgs ? import <nixpkgs> {
- }}:
-pkgs.mkShell {
-  buildInputs = with pkgs; [
-    cmake
-    gnumake
-    sfml
-  ];
-  shellHook = ''
-    zsh
-  '';
+{ pkgs ? import <nixpkgs> {} }:
+  pkgs.mkShell {
+    nativeBuildInputs = with pkgs.buildPackages; [ cmake gnumake sfml ];
+    shellHook = ''
+        zsh
+    '';
 }
