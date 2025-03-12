@@ -122,7 +122,7 @@ sudo pacman -S gcc cmake make sfml
 #### Sur NixOS :
 
 ```bash
-nix-shell -p gcc cmake make sfml
+nix-shell
 ```
 
 #### Sur macOS (avec Homebrew) :
