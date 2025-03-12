@@ -5,7 +5,6 @@
 #include <SFML/Window/Event.hpp>
 #include <fstream>
 #include <iostream>
-#include <random>
 #include <thread>
 
 #include "var.hpp"
